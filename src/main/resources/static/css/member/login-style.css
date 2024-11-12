@@ -1,0 +1,108 @@
+/* 전체 화면 가운데 정렬 */
+body, html {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+/* 레이아웃 컨테이너 */
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* 왼쪽 로그인 이미지 */
+.login-image {
+  width: 350px;
+  height: 250px;
+  background-image: url('path_to_your_image.jpg'); /* 여기에 모니터 이미지를 넣으세요 */
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 오른쪽 로그인 폼과 가입하기 섹션 컨테이너 */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 로그인 폼과 가입하기 섹션 공통 스타일 */
+.login-form, .signup-section {
+  width: 300px;
+  background-color: #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* 로고 이미지 */
+.login-form .logo {
+  width: 100px; /* 로고 이미지 크기 */
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #29B4ED;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-form button:hover {
+  background-color: #007bff;
+}
+
+/* ID/PW 찾기 링크 */
+.login-form .links {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.login-form .links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-form .links div {
+  color: #888;
+}
+
+/* 가입하기 섹션 텍스트 스타일 */
+.signup-section {
+  font-size: 14px;
+  color: #555;
+}
+
+.signup-section a {
+  color: #007bff;
+  text-decoration: none;
+}
