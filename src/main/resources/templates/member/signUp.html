@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 가입</title>
+  <!-- <th:block th:replace="~{common/common}"></th:block> -->
+  <link rel="stylesheet" href="/CodeGram/src/main/resources/static/css/member/signUp-style.css">
+</head>
+<body>
+
+  <main>
+
+    <section class="signUp-content">
+
+      <h2>회원 가입</h2>
+
+      <!-- 현재 주소 : /member/signUp (GET) 요청 주소 : /member/signUp (POST) -->
+      <form action="signUp" method="POST" name="signUpForm" id="signUpForm">
+
+        <!--이름 입력 -->
+        <div class="signUp-input-area">
+          <input type="text" name="memberName" id="memberName" placeholder="이름" maxlength="30" autocomplete="off">
+        </div>
+        <!-- 이메일 입력 -->
+        <div class="signUp-input-area">
+          <input type="email" name="memberEmail" id="memberEmail" placeholder="이메일" maxlength="30" autocomplete="off">
+          <button id="sendAuthKeyBtn" type="button">인증번호 받기</button>
+        </div>
+        <div class="signUp-message" id="emailMessage">유효한 이메일을 입력해주세요.</div>
+
+        <!-- 인증번호 입력 -->
+        <div class="signUp-input-area">
+          <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력" maxlength="6" autocomplete="off">
+          <button id="checkAuthKeyBtn" type="button">인증하기</button>
+        </div>
+        <div class="signUp-message" id="authKeyMessage"></div>
+
+
+        <!-- 아이디 입력 -->
+        <div class="signUp-input-area">
+          <input type="text" name="memberId" id="memberId" placeholder="아이디" maxlength="30" autocomplete="off">
+        </div>
+
+        <!-- 비밀번호/비밀번호 확인 입력 -->
+        <div class="signUp-input-area">
+          <input type="password" name="memberPw" id="memberPw" placeholder="비밀번호" maxlength="20">
+        </div>
+        <div class="signUp-input-area">
+          <input type="password" name="memberPwConfirm" id="memberPwConfirm" placeholder="비밀번호 확인" maxlength="20">
+        </div>
+        <div class="signUp-message" id="pwMessage">영어, 숫자, 특수문자 1글자 이상, 6~20자 사이.</div>
+
+        <!-- 닉네임 입력 -->
+        <div class="signUp-input-area">
+          <input type="text" name="memberNickname" id="memberNickname" placeholder="닉네임" maxlength="10">
+        </div>
+        <div class="signUp-message" id="nickMessage">한글, 영어, 숫자로만 3~10글자</div>
+
+        <!-- 생년월일 입력 (드롭다운) -->
+        <div class="signUp-input-area" style="display: flex; gap: 10px;">
+        
+        <!-- 연도 선택 -->
+        <select name="birthYear" id="birthYear"></select>
+        
+        <!-- 월 선택 -->
+        <select name="birthMonth" id="birthMonth"></select>
+        
+        <!-- 일 선택 -->
+        <select name="birthDay" id="birthDay"></select>
+        
+        </div>
+        <div class="signUp-message" id="birthdayMessage">생년월일을 선택해주세요.</div>
+      
+        <!-- 회원가입 버튼 -->
+        <button type="submit" id="signUpBtn">회원가입</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- 회원 가입 JS 추가 -->
+<script src="/CodeGram/src/main/resources/static/js/member/signUp.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 페이지</title>
+  <link rel="stylesheet" href="/CodeGram/src/main/resources/static/css/member/login-style.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- 왼쪽 로그인 이미지 -->
+    <div class="login-image"></div>
+
+    <!-- 오른쪽 로그인 폼과 가입하기 섹션 -->
+    <div class="form-container">
+      <!-- 로그인 폼 -->
+      <div class="login-form">
+        <!-- 로고 이미지 -->
+        <img src="path_to_logo_image.png" alt="로고" class="logo">
+        
+        <input type="text" placeholder="아이디">
+        <input type="password" placeholder="비밀번호">
+        <button>로그인</button>
+
+        <div class="links">
+          <a href="#">ID 찾기</a>
+          <div>/</div>
+          <a href="#">PW 찾기</a>
+        </div>
+      </div>
+
+      <!-- 가입하기 섹션 (로그인 폼 아래) -->
+      <div class="signup-section">
+        계정이 없으신가요? <a href="signUp">가입하기</a>
+      </div>
+    </div>
+  </div>
+  <!-- 푸터 추가 -->
+  <th:block th:replace="푸터 좌표"></th:block>
+<script src="/CodeGram/src/main/resources/static/js/member/login.js"></script>
+</body>
+</html>
