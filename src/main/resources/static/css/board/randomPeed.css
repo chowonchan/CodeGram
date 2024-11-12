@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+}
+.main-content {
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  padding: 20px;
+  margin: auto;
+  margin-top: 29px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 반응형 그리드 */
+  gap: 10px; /* 게시물 간의 간격 */
+  max-width: 950px; /* 그리드의 최대 너비 */
+  width: 100%;
+}
+
+.post-item {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 290px; /* 고정된 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+}
