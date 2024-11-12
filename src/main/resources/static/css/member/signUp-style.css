@@ -1,0 +1,91 @@
+ /* 화면 가운데 정렬 및 스타일링 */
+ body, html {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  }
+  
+  .signUp-content {
+  background-color: #d9d9d9;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  }
+  
+  h2 {
+  margin-top: 0;
+  color: #333;
+  }
+  
+  .signUp-input-area {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  }
+  
+  .signUp-input-area select,
+  .signUp-input-area input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  }
+
+  button#signUpBtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #29B4ED;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  }
+  
+  button#signUpBtn:hover {
+  background-color: #007bff;
+  }
+  
+  .signUp-message {
+  color: #888;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+  }
+
+
+  #sendAuthKeyBtn, #checkAuthKeyBtn{
+    border-radius: 5px;
+    width: 110px;
+    height: 42px;
+    margin-top: 3px; 
+  }
+
+    /* ********** 가입 약관********** */
+    .secession-terms{
+      width: 500px;
+      height: 300px;
+      border: 1px solid black;
+      
+      overflow: auto;
+      /* 내용이 요소를 벗어나는 경우 방향에 맞춰서 자동으로 스크롤 추가 */
+    
+      font-family: sans-serif; /* 돋움체 */
+      font-size: 14px;
+    }
+    .agree-check{
+      justify-content: center;
+      display: flex;
+    }
+

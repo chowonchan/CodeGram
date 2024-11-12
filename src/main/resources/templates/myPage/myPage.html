@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로필 페이지</title>
+  <link rel="stylesheet" href="/CodeGram/src/main/resources/static/css/myPage/myPage-style.css"></link>
+</head>
+<body>
+
+  <!-- 사이드바 제외한 프로필 페이지 컨테이너 -->
+  <div class="profile-container">
+    <!-- 프로필 헤더 -->
+    <div class="profile-header">
+      <div class="profile-image">
+        <span>📷</span>
+      </div>
+      <div class="profile-info">
+        <h2>member_nickname</h2>
+        <p>게시물 0 &nbsp;&nbsp; 팔로워 0만 &nbsp;&nbsp; 팔로우 0</p>
+        <p>member_name</p>
+        <div class="profile-buttons">
+          <button>프로필 편집</button>
+          <button>완료된 스토리 보기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 프로필 소개 -->
+    <div class="profile-bio">(소개글)</div>
+
+    <!-- 탭 메뉴 -->
+    <div class="tabs">
+      <div class="tab">게시물</div>
+      <div class="tab">저장됨</div>
+    </div>
+
+    <!-- 게시물 그리드 -->
+    <div class="post-grid">
+      <div class="post"><div class="post-inner"></div></div>
+      <div class="post"><div class="post-inner"></div></div>
+      <div class="post"><div class="post-inner"></div></div>
+    </div>
+
+    <!-- 푸터 추가 -->
+    <th:block th:replace="푸터 좌표"></th:block>
+</body>
+</html>
