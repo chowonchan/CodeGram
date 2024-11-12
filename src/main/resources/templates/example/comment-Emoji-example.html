@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emoji Buttons</title>
+  <style>
+    button {
+      font-size: 24px;
+      margin: 5px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>HTML Emoji Example</h1>
+
+  <!-- 버튼 이모지들 -->
+  <button onclick="addEmoji('&#128512;')">😀</button>
+  <button onclick="addEmoji('&#128513;')">😃</button>
+  <button onclick="addEmoji('&#128514;')">😄</button>
+  <button onclick="addEmoji('&#128515;')">😁</button>
+  <button onclick="addEmoji('&#128516;')">😆</button>
+  <button onclick="addEmoji('&#128517;')">😅</button>
+  <button onclick="addEmoji('&#128518;')">😂</button>
+  <button onclick="addEmoji('&#128519;')">🤣</button>
+  <button onclick="addEmoji('&#128520;')">😜</button>
+  <button onclick="addEmoji('&#128521;')">😝</button>
+  <button onclick="addEmoji('&#128522;')">😊</button>
+  <button onclick="addEmoji('&#128523;')">😋</button>
+  <button onclick="addEmoji('&#128524;')">😏</button>
+  <button onclick="addEmoji('&#128525;')">😍</button>
+  <button onclick="addEmoji('&#128526;')">😘</button>
+
+  <!-- 텍스트 영역 -->
+  <textarea id="emojiTextArea" placeholder="이모지를 클릭하면 여기에 추가됩니다..."></textarea>
+  
+  <!-- 결과 출력 영역 -->
+  <h5 id="outPutArea1"></h5>
+  <br>
+  <hr>
+  <br>
+  <h5 id="outPutArea2"></h5>
+
+  <script>
+    const textArea = document.getElementById('emojiTextArea');
+    // 이모지 버튼 클릭 시, 해당 이모지를 텍스트 영역에 삽입하는 함수
+    function addEmoji(emoji) {
+      textArea.value += emoji; // 이모지를 현재 텍스트 영역에 추가
+      textArea.focus(); // 텍스트 영역에 포커스를 맞춰줌
+    }
+
+    // 텍스트 영역에 출력된 내용을 #outPutArea1에 추가하는 함수 (이모지 그림 출력)
+    function emojiPrint1() {
+      const textArea = document.getElementById('emojiTextArea');
+      const outPutArea1 = document.getElementById('outPutArea1');
+      outPutArea1.innerHTML = textArea.value; // 텍스트 영역의 값을 #outPutArea1에 출력
+    }
+
+    // 텍스트 영역에 출력된 내용을 #outPutArea2에 이모지 코드로 추가하는 함수
+    function emojiPrint2() {
+      const textArea = document.getElementById('emojiTextArea');
+      const outPutArea2 = document.getElementById('outPutArea2');
+      const emojiText = textArea.value;
+
+      // 이모지들을 유니코드 코드로 변환하여 텍스트로 출력
+      const emojiCodes = emojiText.split('').map(char => {
+        // 각 문자(이모지)를 유니코드 번호로 변환
+        return `&#${char.charCodeAt(0)};`;
+      }).join(''); // 코드들을 이어서 하나의 문자열로 합침
+
+      outPutArea2.innerText = emojiCodes; // 코드들만 출력
+    }
+
+    // 주기적으로 텍스트 영역에 출력된 내용을 두 번째 영역에 반영
+    textArea.addEventListener("input", () => {
+      emojiPrint1();
+      emojiPrint2();
+    });
+  </script>
+</body>
+</html>
