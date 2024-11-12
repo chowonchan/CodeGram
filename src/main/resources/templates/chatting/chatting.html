@@ -22,6 +22,10 @@
       margin: 10px 20px;
     }
 
+    .writeBtn{
+      float: right;
+    }
+
     .MessageTitle {
       margin: 10px 20px;
     }
@@ -35,7 +39,7 @@
       height: 100vh;
       width: 100%;
       /* margin-top: 20px;
-      margin-bottom: 50px; */
+  margin-bottom: 50px; */
       display: flex;
       ;
     }
@@ -128,17 +132,6 @@
     /* ------------------------------------------------- */
 
 
-    .send-message {
-      align-items: center;
-      justify-content: center;
-      /* 수평 중앙 정렬 */
-      padding: 10px 15px;
-      background-color: rgb(14, 148, 237);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
 
 
 
@@ -153,7 +146,40 @@
       border-radius: 8px;
       height: 100vh;
       display: flex;
+
+      align-items: center;
+      justify-content: center;
       flex-direction: column;
+    }
+
+    .DMLogo {
+      /* align-items: center;
+      justify-content: center;
+      display: flex; */
+      float: center;
+    }
+
+    .my-message {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .sendMessage {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+
+      width: 120px;
+      /* 수평 중앙 정렬 */
+      padding: 10px 0;
+      background-color: rgb(14, 148, 237);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     .chat-header {
@@ -255,7 +281,140 @@
       border-radius: 8px;
       display: none;
     }
+
+
+
+
+
+
+
+
+
+    /* -------------------  메시지 보내기 css -------------------*/
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* 메시지 보내기 모달창 기본 숨기기 */
+    #chattingSearchMember {
+      display: none;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.65);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-container {
+      background-color: white;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 400px;
+    }
+
+    .modal-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid #dbdbdb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      flex: 1;
+      text-align: center;
+    }
+
+    .close-button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 5px;
+    }
+
+    .modal-search {
+      padding: 8px 16px;
+      border-bottom: 1px solid #dbdbdb;
+    }
+
+    .search-label {
+      display: block;
+      color: #262626;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: #a8a8a8;
+    }
+
+    .modal-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .no-results {
+      padding: 16px;
+      text-align: center;
+      color: #8e8e8e;
+      font-size: 14px;
+    }
+
+    .modal-footer {
+      padding: 8px 16px;
+      border-top: 1px solid #dbdbdb;
+    }
+
+    .send-button {
+      width: 100%;
+      padding: 7px 16px;
+      background-color: #0095f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      opacity: 0.3;
+    }
+
+    .send-button:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
   </style>
+
+  <!-- <link rel="stylesheet" href="/css/chatting/chatting.css"> -->
 </head>
 
 <body>
@@ -265,31 +424,34 @@
   <div class="chatting-area">
     <ul class="chatting-list">
 
-      <th:block th:each="room : ${roomList}">
-        <h2 class="memberId" th:text="${session.memberId}">내 아이디</h2>
+      <th:block th:each="chatRoom : ${chatRoomList}">
+        <h2 class="memberId" th:text="${session.memberId}">내 아이디
+          <img src="writeBtn.png" class="writeBtn">
+        </h2>
+
 
         <br>
 
         <h3 class="MessageTitle">메시지</h3>
         <!-- th:chat-no : li 태그에 임의의 속성 chat-no를 추가하는데
                   타임리프를 이용해 출력된 값을 chat-no 속성 값으로 대입 -->
-        <li class="chatting-item" th:chat-no="${room.chattingRoomNo}" th:target-no="${room.targetNo}">
+        <li class="chatting-item" th:chat-no="${chatRoom.chatRoomNo}" th:target-no="${chatRoom.targetNo}">
           <div class="item-header">
 
-            <img th:if="${room.targetProfile}" class="list-profile" th:src="${room.targetProfile}">
+            <img th:if="${chatRoom.targetProfile}" class="list-profile" th:src="${chatRoom.targetProfile}">
 
-            <img th:unless="${room.targetProfile}" class="list-profile" th:src="#{user.default.image}">
+            <img th:unless="${chatRoom.targetProfile}" class="list-profile" th:src="#{user.default.image}">
 
           </div>
           <div class="item-body">
             <p>
-              <span class="target-name" th:text="${room.targetNickname}">상대방 이름</span>
-              <span class="recent-send-time" th:text="${room.sendTime}">메세지 보낸 시간</span>
+              <span class="target-name" th:text="${chatRoom.targetNickname}">상대방 이름</span>
+              <span class="recent-send-time" th:text="${chatRoom.sendTime}">메세지 보낸 시간</span>
             </p>
             <div>
-              <p class="recent-message" th:text="${room.lastMessage}">메세지 내용</p>
+              <p class="recent-message" th:text="${chatRoom.lastMessage}">메세지 내용</p>
 
-              <p th:if="${room.notReadCount > 0}" class="not-read-count" th:text="${room.notReadCount}"></p>
+              <p th:if="${chatRoom.notReadCount > 0}" class="not-read-count" th:text="${chatRoom.notReadCount}"></p>
             </div>
           </div>
         </li>
@@ -300,21 +462,133 @@
 
     <div class="chat-container">
 
-
-
-      <div class="chat-messages" id="chatMessages" th:chat-no="${room.chattingRoomNo}" th:target-no="${room.targetNo}">
-        <!-- 메시지들이 여기에 추가됩니다 -->
+      <div>
+        <img src="DM로고.png" class="DMLogo">
+        <h2 class="my-message">내 메시지</h2>
+        <h4>친구나 그룹에 비공개 사진과 메시지를 보내 보세요</h4>
       </div>
 
-      <div class="chat-input">
+      <button class="sendMessage">메시지 보내기</button>
+
+
+
+      <!-- 메시지들이 여기에 추가됩니다 -->
+      <!-- <div class="chat-messages" id="chatMessages" th:chat-no="${chatRoom.chattingchatRoomNo}" th:target-no="${chatRoom.targetNo}">
+      </div> -->
+
+      <!-- <div class="chat-input">
         <label class="upload-label" for="imageUpload">📷</label>
         <input type="file" id="imageUpload" class="image-upload" accept="image/*">
         <img id="imagePreview" class="image-preview">
         <input type="text" class="message-input" id="messageInput" placeholder="메시지 보내기...">
         <button class="send-button" id="sendButton">보내기</button>
+      </div> -->
+
+
+    </div>
+  </div>
+
+
+  <div class="modal-overlay" id="chattingSearchMember">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title">새로운 메시지</div>
+        <div style="width: 24px;"></div>
+        <button class="close-button">✕</button>
+      </div>
+
+      <div class="modal-search">
+        <label class="search-label">받는 사람:</label>
+        <input type="text" class="search-input" placeholder="검색..." autocomplete="off">
+      </div>
+
+      <div class="modal-content">
+        <div class="no-results">제안을 찾을 수 없습니다.</div>
+        <div class="search-results"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="send-button" disabled>채팅</button>
       </div>
     </div>
   </div>
+
+
+
+
+
+
+
+  <th:block th:replace="~{chatting/chattingSearchMember}"></th:block>
+
+  <script>
+
+    const sendMessage = document.querySelector(".sendMessage");
+    sendMessage.addEventListener("click", () => {
+
+      chattingSearchMember.style.display = "flex";
+    });
+
+
+
+
+    /* ---------------------- 메시지 보내기 js ------------------ */
+    const members = [
+      { memberId: 1, memberName: 'member01', memberNickName: '홍길동', profileImg: '/api/placeholder/36/36' },
+      { memberId: 2, memberName: 'member02', memberNickName: '김철수', profileImg: '/api/placeholder/36/36' },
+      { memberId: 3, memberName: 'member03', memberNickName: '박지영', profileImg: '/api/placeholder/36/36' },
+      { memberId: 4, memberName: 'member04', memberNickName: '최예림', profileImg: '/api/placeholder/36/36' },
+    ];
+
+    document.querySelector('.close-button').addEventListener('click', () => {
+      document.querySelector('.modal-overlay').style.display = 'none';
+    });
+
+    const searchInput = document.querySelector('.search-input');
+    const sendButton = document.querySelector('.send-button');
+    const searchResults = document.querySelector('.search-results');
+    const noResultsMessage = document.querySelector('.no-results');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      if (query) {
+        const filteredMembers = members.filter(member =>
+          member.memberName.toLowerCase().includes(query) ||
+          member.memberNickName.toLowerCase().includes(query)
+        );
+
+        if (filteredMembers.length > 0) {
+          searchResults.innerHTML = filteredMembers.map(member => `
+              <div class="profile-item" data-memberId="${member.memberId}">
+                  <img src="${member.profileImg}" alt="${member.memberNickName}">
+                  <div>
+                      <div class="memberNickName">${member.memberNickName}</div>
+                      <div class="memberName">@${member.memberName}</div>
+                  </div>
+              </div>
+          `).join('');
+          noResultsMessage.style.display = 'none';
+        } else {
+          noResultsMessage.style.display = 'block';
+          searchResults.innerHTML = '';
+        }
+      } else {
+        searchResults.innerHTML = '';
+        noResultsMessage.style.display = 'block';
+      }
+
+      sendButton.disabled = !query;
+      sendButton.style.opacity = query ? '1' : '0.3';
+    });
+
+    searchResults.addEventListener('click', (e) => {
+      const selectedmember = e.target.closest('.profile-item');
+      if (selectedmember) {
+        sendButton.disabled = false;
+        sendButton.style.opacity = '1';
+      }
+    });
+  </script>
 
 </body>
 
