@@ -22,8 +22,10 @@
       margin: 10px 20px;
     }
 
-    .writeBtn{
+    .sendMessage2 {
       float: right;
+      border: none;
+      cursor: pointer;
     }
 
     .MessageTitle {
@@ -426,7 +428,7 @@
 
       <th:block th:each="chatRoom : ${chatRoomList}">
         <h2 class="memberId" th:text="${session.memberId}">내 아이디
-          <img src="writeBtn.png" class="writeBtn">
+          <button class="sendMessage2"><img src="writeBtn.png"></button>
         </h2>
 
 
@@ -524,8 +526,12 @@
   <script>
 
     const sendMessage = document.querySelector(".sendMessage");
+    const sendMessage2 = document.querySelector(".sendMessage2");
     sendMessage.addEventListener("click", () => {
+      chattingSearchMember.style.display = "flex";
+    });
 
+    sendMessage2.addEventListener("click", () => {
       chattingSearchMember.style.display = "flex";
     });
 
