@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codegram Sidebar</title>
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body th:fragment="header">
+    <div class="sidebar">
+        <div>
+            <div class="logo">Codegram</div>
+            <div class="nav-item">
+                <span class="fa-solid fa-house"></span>
+                <span>홈</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-solid fa-magnifying-glass"></span>
+                <span>검색</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-solid fa-compass"></span>
+                <span>탐색 탭</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-solid fa-envelope"></span>
+                <span>메시지</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-solid fa-heart"></span>
+                <span>알림</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-regular fa-square-plus"></span>
+                <span>게시물 작성</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-regular fa-square-plus"></span>
+                <span>스토리 작성</span>
+            </div>
+            <div class="nav-item">
+                <span class="fa-solid fa-user"></span>
+                <span>프로필</span>
+            </div>
+        </div>
+        <div class="more">
+            <span class="fa-solid fa-bars"></span>
+            <span>더보기</span>
+            <div class="more-menu">
+                <div id="moreTab">
+                    <span class="fa-solid fa-gear"></span>
+                    <div>설정</div>
+                </div>
+                <div id="moreTab">
+                    <span class="fa-solid fa-history"></span>
+                    <div>내 활동</div>
+                </div>
+                <div id="moreTab">
+                    <span class="fa-solid fa-flag"></span>
+                    <div>저장됨</div>
+                </div>
+                <div id="moreTab">
+                    <span class="fa-solid fa-sun"></span>
+                    <div>모드 전환</div>
+                </div>
+                <div id="moreTab">
+                    <span></span>
+                    <div>로그아웃</div>
+                </div>
+            </div>
+      </div>
+    </div>
+    <script>
+      const moreButton = document.querySelector('.more');
+      const moreMenu = document.querySelector('.more-menu');
+      const sidebar = document.querySelector('.sidebar');
+      const logo = document.querySelector('.logo');
+  
+      // 특정 탭을 클릭했을 때만 사이드바 축소
+      const narrowTabs = document.querySelectorAll('.nav-item:nth-child(3), .nav-item:nth-child(5), .nav-item:nth-child(6)');
+
+      narrowTabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+              sidebar.classList.toggle('narrow');
+
+              // 부드러운 전환을 위해 opacity를 0으로 설정
+              logo.style.opacity = '0';
+              setTimeout(() => {
+                if (sidebar.classList.contains('narrow')) {
+                    logo.innerHTML = '<span class="fa-solid fa-bug"></span>'; // 새로운 아이콘으로 변경
+                } else {
+                    logo.textContent = 'Codegram'; // 원래 로고 텍스트로 복원
+                }
+                // 변경 후 opacity를 1로 설정하여 다시 보이게 함
+                logo.style.opacity = '1';
+              }, 300); // 300ms 후에 변경 (CSS 전환 시간과 일치)
+          });
+      });
+  
+      moreButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // 이벤트 전파 중지
+          moreMenu.style.display = moreMenu.style.display === 'flex' ? 'none' : 'flex';
+          moreButton.classList.toggle('active');
+      });
+  
+      // 문서 전체에 클릭 이벤트 추가
+      document.addEventListener('click', function(event) {
+          if (!moreButton.contains(event.target) && !moreMenu.contains(event.target)) {
+              moreMenu.style.display = 'none';
+              moreButton.classList.remove('active');
+          }
+      });
+    </script>
+    <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
+</body>
+</html>
+
