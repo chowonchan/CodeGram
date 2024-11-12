@@ -60,3 +60,14 @@
       }
     }
   };
+
+/* 필수 입력 항목의 유효성검사 여부를 체크하기 위한 객체(체크리스트) */
+const checkObj = {
+  "memberName"      : false,
+  "memberEmail"     : false,
+  "authKey"         : false,
+  "memberPw"        : false,
+  "memberPwConfirm" : false,
+  "memberNickname"  : false,
+  "memberBirth"     : false
+};
