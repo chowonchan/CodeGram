@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인 페이지</title>
-  <link rel="stylesheet" href="/CodeGram/src/main/resources/static/css/member/login-style.css">
+  <link rel="stylesheet" href="/css/member/login-style.css">
 </head>
 <body>
 
-  <div class="container">
     <!-- 왼쪽 로그인 이미지 -->
     <div class="login-image"></div>
 
     <!-- 오른쪽 로그인 폼과 가입하기 섹션 -->
-    <div class="form-container">
+    <section class="login-content">
       <!-- 로그인 폼 -->
-      <div class="login-form">
+      <div action="login" method="POST" name = "loginForm" id="loginFor" class="loginForm" >
+        
         <!-- 로고 이미지 -->
         <img src="path_to_logo_image.png" alt="로고" class="logo">
-        
-        <input type="text" placeholder="아이디">
-        <input type="password" placeholder="비밀번호">
-        <button>로그인</button>
+        <input type="text" name="memberId" placeholder="아이디">
+        <input type="password" name="memberPw" placeholder="비밀번호">
+        <button >로그인</button>
 
-        <div class="links">
+        <div class="signup-find-area">
           <a href="#">ID 찾기</a>
           <div>/</div>
           <a href="#">PW 찾기</a>
@@ -34,10 +33,10 @@
       <div class="signup-section">
         계정이 없으신가요? <a href="signUp">가입하기</a>
       </div>
-    </div>
-  </div>
+    </section>
+
   <!-- 푸터 추가 -->
-  <th:block th:replace="푸터 좌표"></th:block>
+  <!-- <th:block th:replace="푸터 좌표"></th:block> -->
 <script src="/CodeGram/src/main/resources/static/js/member/login.js"></script>
 </body>
 </html>

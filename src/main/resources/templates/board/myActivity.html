@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible=" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myActivity</title>
+    <link rel="stylesheet" href="/css/board/myActivity.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+  <!-- 헤더 조각 포함 -->
+  <div class="header-container" th:replace="fragments/header :: header"></div>
+
+  <!-- 메인 콘텐츠 영역 -->
+  <div class="main-content">
+    <div class="activity-container">
+      <div class="activity-section">
+          <div class="activity-list-title">
+            <h3>내 활동</h3>
+          </div>
+          <ul class="activity-list">
+              <li>
+                  <span>
+                    <div class="fa-solid fa-comment"></div>
+                    <p><strong>반응</strong><br><small style="color: #666666">좋아요, 댓글 및 회원님의 기타 반응을 검토하고 삭제합니다.</small></p>
+                  </span>
+              </li>
+              <li>
+                  <span>
+                    <div class="fa-solid fa-folder"></div>
+                    <p><strong>게시물</strong><br><small style="color: #666666">내가 올린 게시물을 보거나 보관하거나 삭제합니다.</small></p>
+                  </span>
+              </li>
+          </ul>
+      </div>
+
+      <div class="activity-area">
+        <div class="activity-area-title">
+          <a href="#" class="fa-regular fa-heart"> 좋아요</a>
+          <a href="#" class="fa-regular fa-comment"> 댓글</a>
+        </div>
+        <div class="posts-grid">
+            <!-- 게시물 예제 -->
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+            <div class="post-item">게시물</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 조각 포함 -->
+  <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
