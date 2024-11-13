@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Post Modal</title>
+
+    <style>
+
+      /** <  모달창 뒷배경 > **/
+      .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+
+          /* 투명도 65%의 검정배경 */
+          background-color: #000000a6;
+          width: 100%;
+          height: 120%;
+      }
+
+      .modal-overlay-top {
+          height: 68px;
+          display: flex;
+          justify-content: end;
+      }
+
+      .modal-overlay-bottom {
+          height: 68px;
+      }
+      /** </ 모달창 뒷배경 > **/
+
+      
+      /** <  close-button Css > **/
+      /* 전체 버튼 스타일 */
+
+      .close-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          width: 34px;
+          height: 34px;
+          padding: 10px;
+      }
+
+      /* SVG 기본 스타일 */
+      .close-button svg {
+          width: 18px;
+          height: 18px;
+          fill: none; /* 내부 채우기 없음 */
+          stroke: currentColor;
+          transition: transform 0.2s, color 0.2s;
+      }
+
+      /* 선 스타일 */
+      .close-button-line-diagonal {
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-width: 3;
+      }
+
+      /* 아이콘의 기본 색상 */
+      .close-button {
+          color: #ffffff;
+      }
+
+      /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
+      .close-button:hover {
+          color: #ff9999;
+          transform: scale(1.2);
+      }
+      /** </ close-button Css > **/
+
+    </style>
+</head>
+<body>
+
+  <h1>투명도 테스트</h1>
+  <h1 style="color: red;">투명도 테스트</h1>
+
+  <div id="modalOverlay" class="modal-overlay">
+      <div id="modalOverlayTop" class="modal-overlay-top">
+          <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
+          <div class="close-button">
+              <svg aria-label="Close" role="img" viewBox="0 0 24 24">
+                  <title>Close</title>
+                  <polyline class="close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
+                  <line class="close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
+              </svg>
+          </div>
+      </div>
+
+      <div>
+          <div>
+
+          </div>
+      </div>
+
+      <div id="modalOverlayBottom" class="modal-overlay-bottom">aa </div>
+  </div>
+
+
+</body>
+</html>
