@@ -7,10 +7,11 @@
     <title>Codegram RandomPeed</title>
     <link rel="stylesheet" href="/css/board/randomPeed.css">
     <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
 </head>
 <body>
     <!-- 헤더 조각 포함 -->
-    <th:block class="header-container" th:replace="fragments/header :: header"></th:block>
+    <div class="header-container" th:replace="fragments/header :: header"></div>
 
     <!-- 메인 콘텐츠 영역 -->
     <div class="main-content">
@@ -26,6 +27,7 @@
             <div class="post-item">게시물</div>
             <div class="post-item">게시물</div>
         </div>
+        <div th:replace="fragments/footer :: footer"></div>
     </div>
 </body>
 </html>
