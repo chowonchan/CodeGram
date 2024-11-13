@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instagram 클론</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" th:href="/css/myPage.css">
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 </head>
 
 <body>
@@ -19,69 +21,22 @@
             <a href="#">스토리5</a>
         </nav>
     </header> -->
+  <div id="root"></div>
 
-
-  <!-- 피드 영역 -->
-  <div class="feed-margin">
-    <div class="feed">
-      <!-- 게시물 1 article마다 게시물 1개임 -->
-      <article class="board-article">
-        <div class="post">
-
-          <div class="post-header">
-            <!-- 게시물 프로필 -->
-            <div class="profile-margin">
-              <div class="user-profile">
-                <div class="pointer">
-                  <div class="user-profile-img">
-                    <a class="radius" th:href="/${member_nickname}">
-                      <img src="https://via.placeholder.com/50" alt="user1">
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="board-n-a">
-                <span>사용자1</span>
-              </div>
-            </div>
-            <div class="more-options">...</div>
-          </div>
-
-          <div> <!-- 게시물 이미지 -->
-            <img
-              src="https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202306/04/138bdfca-3e86-4c09-9632-d22df52a0484.jpg"
-              alt="post1" class="post-image">
-          </div>
-
-          <div class="important-box"> <!-- 게시물 정보 -->
-            <section>
-              <section class="section-1">
-                <div class="box-1">
-                  <span class="margin-1">
-                    <div>H</div>
-                  </span>
-                  <span class="margin-1">
-                    <div>C</div>
-                  </span>
-                </div>
-                <div class="box-2">
-                  <div class="item">K</div>
-                </div>
-              </section>
-              <div>좋아요 0개</div>
-              <div class="post-caption">
-                <span>member_nickname</span> 여기에 게시물 내용이 들어갑니다.
-                <span class="detailBtn">더보기...</span>
-              </div>
-              <div class="coment-box">댓글 달기...</div>
-            </section>
-          </div>
-
+  <script>
+    // React 컴포넌트를 정의
+    function App() {
+      return (
+        <div>
+          <h1>React 앱이 HTML에 삽입되었습니다!</h1>
+          <p>이 내용은 React 컴포넌트입니다.</p>
         </div>
-      </article>
+      );
+    }
 
-    </div>
-  </div>
+    // ReactDOM을 사용하여 'root' div에 React 앱 렌더링
+    ReactDOM.render(<App/>, document.getElementById('root'));
+  </script>
 
 
 
