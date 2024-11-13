@@ -28,4 +28,35 @@ public class MemberServiceImpl implements MemberService{
 	  return loginMember;
   }
   
+  // 회원 가입
+  @Override
+  public int signUp(Member inputMember) {
+  	
+  	// 비밀번호 암호화(BCrypt)
+  	String encPw = encoder.encode(inputMember.getMemberPw());
+  	inputMember.setMemberPw(encPw);
+  	
+		// text 타입의 input은 값이 작성이 안되면 "" (빈칸)
+		// checkbox, radio가 체크가 안되면 null
+		
+  	
+  	// 3) mapper 호출 후 결과 반환
+  	
+  	return mapper.signUp(inputMember);
+  }
+  
+  @Override
+  public int emailCheck(String email) {
+  return mapper.emailCheck(email);
+  }
+  
+  @Override
+  public int nicknameCheck(String nickname) {
+  	return mapper.nicknameCheck(nickname);
+  }
+  @Override
+  public int idCheck(String id) {
+  	return mapper.idCheck(id);
+  }
+
 }
