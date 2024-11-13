@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.kh.cgram.member.mapper.MemberMapper">
 
+
 <!-- 로그인 -->
   <!-- 여기의 Member는 별칭이다 (DBConfig 참고) -->
   <select id="login" parameterType="Member">

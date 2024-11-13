@@ -10,64 +10,66 @@
 <body th:fragment="header">
     <div class="sidebar">
         <div>
-            <div class="logo">Codegram</div>
-            <div class="nav-item">
+            <a class="logo" href="#">
+                <span>Codegram</span>
+            </a>
+            <a class="nav-item" href="#">
                 <span class="fa-solid fa-house"></span>
                 <span>홈</span>
-            </div>
+            </a>
             <div class="nav-item">
                 <span class="fa-solid fa-magnifying-glass"></span>
                 <span>검색</span>
             </div>
-            <div class="nav-item">
+            <a class="nav-item" href="/">
                 <span class="fa-solid fa-compass"></span>
                 <span>탐색 탭</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a class="nav-item" href="#">
                 <span class="fa-solid fa-envelope"></span>
                 <span>메시지</span>
-            </div>
+            </a>
             <div class="nav-item">
                 <span class="fa-solid fa-heart"></span>
                 <span>알림</span>
             </div>
-            <div class="nav-item">
+            <a class="nav-item" href="#">
                 <span class="fa-regular fa-square-plus"></span>
                 <span>게시물 작성</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a class="nav-item" href="#">
                 <span class="fa-regular fa-square-plus"></span>
                 <span>스토리 작성</span>
-            </div>
-            <div class="nav-item">
+            </a>
+            <a class="nav-item" href="#">
                 <span class="fa-solid fa-user"></span>
                 <span>프로필</span>
-            </div>
+            </a>
         </div>
         <div class="more">
             <span class="fa-solid fa-bars"></span>
             <span>더보기</span>
             <div class="more-menu">
-                <div id="moreTab">
+                <a id="moreTab" href="#">
                     <span class="fa-solid fa-gear"></span>
                     <div>설정</div>
-                </div>
-                <div id="moreTab">
+                </a>
+                <a id="moreTab" href="/board/myActivity">
                     <span class="fa-solid fa-history"></span>
                     <div>내 활동</div>
-                </div>
-                <div id="moreTab">
+                </a>
+                <a id="moreTab" href="#">
                     <span class="fa-solid fa-flag"></span>
                     <div>저장됨</div>
-                </div>
-                <div id="moreTab">
+                </a>
+                <a id="moreTab" href="#">
                     <span class="fa-solid fa-sun"></span>
                     <div>모드 전환</div>
-                </div>
-                <div id="moreTab">
+                </a>
+                <a id="moreTab" href="#">
                     <span></span>
                     <div>로그아웃</div>
-                </div>
+                </a>
             </div>
       </div>
     </div>
@@ -78,7 +80,7 @@
       const logo = document.querySelector('.logo');
   
       // 특정 탭을 클릭했을 때만 사이드바 축소
-      const narrowTabs = document.querySelectorAll('.nav-item:nth-child(3), .nav-item:nth-child(5), .nav-item:nth-child(6)');
+      const narrowTabs = document.querySelectorAll('.nav-item:nth-child(3), .nav-item:nth-child(6)');
 
       narrowTabs.forEach(tab => {
           tab.addEventListener('click', () => {
@@ -88,7 +90,7 @@
               logo.style.opacity = '0';
               setTimeout(() => {
                 if (sidebar.classList.contains('narrow')) {
-                    logo.innerHTML = '<span class="fa-solid fa-bug"></span>'; // 새로운 아이콘으로 변경
+                    logo.innerHTML = '<a class="fa-brands fa-instagram" href="#"></a>'; // 새로운 아이콘으로 변경
                 } else {
                     logo.textContent = 'Codegram'; // 원래 로고 텍스트로 복원
                 }
