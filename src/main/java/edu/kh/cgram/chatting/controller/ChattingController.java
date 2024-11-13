@@ -7,27 +7,49 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.cgram.chatting.dto.ChattingRoom;
+import edu.kh.cgram.chatting.service.ChattingService;
 import lombok.RequiredArgsConstructor;
 
-
 @Controller
-@RequestMapping("chatting")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class ChattingController {
-	
-	@RequestMapping("/")
-	  public String chattingPage(
-//	    @SessionAttribute("loginMember") Member loginMember,
-//	    Model model
-	  ){
-//	    List<ChattingRoom> roomList 
-//	      = service.selectRoomList(loginMember.getMemberNo());
-//
-//	    model.addAttribute("roomList", roomList);
 
-	    return "chatting/chatting";
-	  }
+	private final ChattingService service;
+
+	@RequestMapping("/chatting")
+	public String chattingPage(
+	    @SessionAttribute("loginMember") Member loginMember,
+			Model model) {
+		
+//    List<ChattingRoom> roomList 
+//    = service.selectRoomList(loginMember.getMemberNo());
+
+		model.addAttribute("chatRoomList", null);
+		return "chatting/chatting";
+	}
+
+	
+//  @GetMapping("selectTarget")
+//  @ResponseBody
+//  public List<Member> selectTarget(
+//    @RequestParam("query") String query,
+//    @SessionAttribute("loginMember") Member loginMember
+//  ){
+//    return service.selectTarget(query, null);
+//  }
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
