@@ -64,13 +64,32 @@
   text-align: left;
   }
 
+  .IdMessage {
+  color: #888;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+  }
+
 
   #sendAuthKeyBtn, #checkAuthKeyBtn{
+    background-color: #29B4ED;
+    color: white;
+    border: none;
     border-radius: 5px;
     width: 110px;
     height: 42px;
     margin-top: 3px; 
   }
+
+  button#sendAuthKeyBtn:hover {
+    background-color: #007bff;
+    }
+
+  button#checkAuthKeyBtn:hover {
+    background-color: #007bff;
+    }
 
     /* ********** 가입 약관********** */
     .secession-terms{
