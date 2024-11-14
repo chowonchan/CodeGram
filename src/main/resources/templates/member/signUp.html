@@ -22,6 +22,7 @@
         <div class="signUp-input-area">
           <input type="text" name="memberName" id="memberName" placeholder="이름" maxlength="30" autocomplete="off">
         </div>
+        <div class="signUp-message" id="nameMessage">이름을 입력해주세요.</div>
         <!-- 이메일 입력 -->
         <div class="signUp-input-area">
           <input type="email" name="memberEmail" id="memberEmail" placeholder="이메일" maxlength="30" autocomplete="off">
@@ -73,7 +74,9 @@
         <div class="signUp-message" id="birthdayMessage">생년월일을 선택해주세요.</div>
       
         <!-- 회원가입 버튼 -->
-        <button type="submit" id="signUpBtn">회원가입</button>
+        <form action="/member/terms" method="GET">
+          <button type="submit" id="signUpBtn">회원가입</button>
+        </form>
       </form>
     </section>
   </main>

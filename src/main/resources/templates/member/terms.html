@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원가입 약관 동의</title>
-  <link rel="stylesheet" href="/CodeGram/src/main/resources/static/css/member/signUp-style.css">
+  <link rel="stylesheet" href="/css/member/signUp-style.css">
 </head>
 <body>
   <main>
@@ -110,10 +110,10 @@
       </div>
 
       <!-- 약관 동의 체크박스와 버튼 -->
-      <form action="signUp" method="POST">
+      <form action="/member/signUp" method="POST">
         <div class="agree-check">
-          <input type="checkbox" name="agree" id="agree" required>
-          <label for="agree">위 약관에 동의합니다.</label>  
+            <input type="checkbox" name="agree" id="agree" required>
+            <label for="agree">위 약관에 동의합니다.</label>  
         </div>
         <button type="submit" id="signUpBtn">회원가입</button>
       </form>
