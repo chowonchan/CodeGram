@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* 기본 스타일 초기화 */
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      /* 가로 스크롤 방지 */
+      overflow-y: auto;
+      /* 세로 스크롤 허용 */
+    }
+
+    .info-main {
+      height: 100vh;
+      padding-bottom: 50px;
+      /* 맨 아래 여백 추가 */
+    }
+
+
+    /* 모달 백그라운드 */
+    .modal-background {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    /* 모달 창 */
+    .modal-container {
+      width: 40%;
+      min-height: 40%;
+      /* 세로 사이즈를 더 크게 설정 */
+      background-color: #f8f8f8;
+      padding: 30px 20px;
+      /* 상하 패딩을 늘려서 여백 추가 */
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    /* 모달 상단 영역 */
+    .modal-header {
+      display: flex;
+      justify-content: flex-end;
+      /* 제목을 가운데로 배치 */
+      align-items: center;
+      margin: 10px 0 38px 0;
+      position: relative;
+    }
+
+    /* 제목 가운데 배치 */
+    .modal-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #666;
+      background-color: #fdd897;
+      padding: 8px 16px;
+      border-radius: 20px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* 닫기 및 삭제 버튼 */
+    .button-group {
+      display: flex;
+      gap: 5px;
+      /* 닫기와 삭제 버튼 간격 */
+      position: absolute;
+      top: 6px;
+      right: 0;
+    }
+
+    .close-btn,
+    .delete-btn {
+      background-color: #e0e0e0;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .close-btn:hover,
+    .delete-btn:hover {
+      background-color: #fdd897;
+    }
+
+    /* 테이블 스타일 */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .info-table th,
+    .info-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .info-table th {
+      background-color: #e6e6e6;
+      font-weight: normal;
+    }
+
+    .info-table td a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    /* 클릭 시 이미지 이동 텍스트 스타일 */
+    .board-image {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+
+
+    .page-btn.active {
+      background-color: #E8D8C3;
+      /* 원하는 색상으로 변경 */
+      border-radius: 5px;
+    }
+
+
+    /* 링크 기본 스타일 */
+    .clickable-link {
+      color: #007bff;
+      /* 파란색 텍스트 */
+      text-decoration: underline;
+      /* 밑줄 추가 */
+      cursor: pointer;
+      /* 클릭 가능한 커서 */
+    }
+
+    /* 링크에 마우스를 올렸을 때 스타일 */
+    .clickable-link:hover {
+      color: #0056b3;
+      /* 더 짙은 파란색으로 변경 */
+      text-decoration: none;
+      /* 밑줄 제거 */
+    }
+
+
+    /* ----------------- SideMenu CSS ----------------------- */
+
+    .left-side {
+      position: fixed;
+      /* 고정 */
+      top: 80px;
+      /* 헤더 높이만큼 아래로 위치 */
+      bottom: 0;
+      left: 0;
+      width: 300px;
+      background-color: #F5E6CC;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      /* 내용이 많아지면 스크롤 생성 */
+    }
+
+
+    .left-side h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .side-menu {
+      display: flex;
+      flex-direction: column;
+      /* 세로 정렬 */
+      gap: 15px;
+      /* 항목 사이 간격 */
+      padding: 0;
+      list-style: none;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .side-menu li {
+      width: 100%;
+    }
+
+    .side-menu a {
+      display: block;
+      padding: 10px 15px;
+      text-align: center;
+      color: #333;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .side-menu a:hover {
+      background-color: #E8D8C3;
+    }
+
+    /*  --------------------- Main-Content CSS --------------------- */
+
+    /* main-content 섹션 스타일 수정 */
+    .main-content {
+      margin-left: 300px;
+      /* 사이드바 너비만큼 */
+      padding: 100px 30px 50px;
+      /* 상단 헤더, 좌우 여백, 하단 여백 */
+      min-height: 100vh;
+      background-color: #fff;
+      user-select: none;
+      -webkit-user-drag: none;
+      -moz-user-select: none;
+    }
+
+    .admin-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* 테이블 컨테이너 수정 */
+    .table-container {
+      background-color: #F5E6CC;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+
+    /* 테이블 스타일 수정 */
+    .admin-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      user-select: none;
+      -webkit-user-drag: none;
+      -moz-user-select: none;
+    }
+
+    .admin-table td a {
+      color: #007bff;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid #e0d9d0;
+      background-color: #F5E6CC;
+    }
+
+    .admin-table th {
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .admin-table tbody tr {
+      height: 50px;
+    }
+
+    .admin-table tbody tr:hover {
+      background-color: #fff;
+    }
+
+    .add {
+      display: none;
+    }
+
+
+    /* 검색 영역 수정 */
+    .search-area {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      /* 상대 위치 설정 */
+    }
+
+    /* 검색 입력창 수정 */
+    .search-input {
+      padding: 8px 35px 8px 15px;
+      /* 오른쪽 패딩을 아이콘 공간만큼 확보 */
+      border: 1px solid rgba(235, 235, 235, 1);
+      border-radius: 5px;
+      width: 200px;
+    }
+
+    /* 검색 아이콘 스타일 */
+    .search-area img {
+      position: absolute;
+      /* 절대 위치 설정 */
+      right: 10px;
+      /* 오른쪽에서 10px 떨어짐 */
+      top: 50%;
+      /* 상단에서 50% 위치 */
+      transform: translateY(-50%);
+      /* 세로 중앙 정렬 */
+      width: 20px;
+      /* 아이콘 크기 조정 */
+      height: 20px;
+      /* 아이콘 크기 조정 */
+      cursor: pointer;
+      /* 마우스 오버시 포인터 표시 */
+    }
+
+    /* 페이지네이션 수정 */
+    /* 페이지네이션 영역 스타일 */
+    .pagination-area {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0;
+      user-select: none;
+      -webkit-user-drag: none;
+      -moz-user-select: none;
+    }
+
+    /* 페이지네이션 기본 스타일 */
+    .pagination {
+      list-style: none;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 0;
+    }
+
+    /* 페이지네이션 항목 스타일 */
+    .pagination li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 페이지네이션 링크 스타일 */
+    .pagination a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      padding: 0 6px;
+      border-radius: 4px;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    /* 일반 페이지 링크 호버 효과 */
+    .pagination a:hover:not(.current) {
+      background-color: #E8D8C3;
+    }
+
+    /* 현재 페이지 스타일 */
+    .pagination .current {
+      background-color: #333;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* 이전/다음 페이지 화살표 스타일 */
+    .pagination li:first-child a,
+    .pagination li:last-child a,
+    .pagination li:nth-child(2) a,
+    .pagination li:nth-last-child(2) a {
+      font-size: 18px;
+    }
+
+    /* 비활성화된 페이지네이션 링크 스타일 (필요한 경우) */
+    .pagination .disabled a {
+      color: #ccc;
+      pointer-events: none;
+      background-color: transparent;
+    }
+
+
+    /* ****** 현재 status-btn 시 적용되지 않는다******** */
+    #memberList #status-btn,
+    #memberList #warning-btn {
+      width: 100px;
+      background: none;
+      /* 배경 제거 */
+      border: none;
+      /* 테두리 제거 */
+      font-size: 1.3em;
+      /* 글씨 크기 증가 (필요에 따라 조정) */
+      padding: 10px 0;
+      /* 버튼의 여백 조정 (선택 사항) */
+      cursor: pointer;
+      /* 마우스 커서 변경 */
+      color: inherit;
+      /* 부모 요소의 글씨 색상 상속 */
+    }
+
+
+    /*----  상세정보 모달창 ----*/
+    /* 모달 백그라운드 */
+    .modal-background {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+
+    /* 테이블 스타일 */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .info-table th,
+    .info-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .info-table th {
+      background-color: #e6e6e6;
+      font-weight: normal;
+    }
+
+    .info-table td a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    /* 클릭 시 이미지 이동 텍스트 스타일 */
+    .image-link {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+
+
+    /* 링크 기본 스타일 */
+    .clickable-link {
+      color: #007bff;
+      /* 파란색 텍스트 */
+      text-decoration: underline;
+      /* 밑줄 추가 */
+      cursor: pointer;
+      /* 클릭 가능한 커서 */
+    }
+
+    /* 링크에 마우스를 올렸을 때 스타일 */
+    .clickable-link:hover {
+      color: #0056b3;
+      /* 더 짙은 파란색으로 변경 */
+      text-decoration: none;
+      /* 밑줄 제거 */
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <th:block th:replace="~{admin/header}"></th:block>
+
+    <section class="main-content"> <!-- main-content 클래스를 section에 추가 -->
+      <div class="admin-main"> <!-- div로 감싸서 구조화 -->
+        <h1>회원 목록</h1>
+
+        <!-- 검색 영역 -->
+        <form class="search-area" id="boardSearch">
+          <input type="text" class="search-input" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+          <button><img src="/images/search.png"></button>
+        </form>
+
+        <!-- 테이블 영역 -->
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>아이디</th>
+                <th>닉네임</th>
+                <th>가입일</th>
+                <th>게시글 수</th>
+                <th>팔로우 수</th>
+                <th>팔로워 수</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="memberList">
+              <!-- <tr th:each="member : ${memberList}">
+                <td th:text="${memberNo}">1</td>
+                <td th:text="${memberEmail}">hong</td>
+                <td th:text="${memberNickname}">홍길동</td>
+                <td th:text="${enrollDate}">2024-03-21 14:00:44</td>
+                <td th:text="${boardCount}">2</td>
+                <td th:text="${commentCount}">2</td>
+                <td>
+                  <button id="status-btn" class="status" th:text="${statusContent}">정상</button>
+                </td>
+              </tr> -->
+              <!-- 추가 행들... -->
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="pagination-area">
+          <div id="likePaginationBox" class="pagination"></div>
+        </div>
+
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const memberList = document.querySelector("#memberList");
+
+    const selectMemberList = (cp = 1) => {
+      fetch("/manager/selectMemberList?cp=" + cp)
+        .then(response => {
+          if (response.ok) return response.json();
+          throw new Error("에러");
+        })
+        .then(map => {
+
+
+          const list = map.memberList;
+          const pagination = map.pagination;
+
+          memberList.innerHTML = ""; // Clear previous list
+
+          list.forEach(member => {
+            const tr = document.createElement("tr");
+
+            // Create member data cells
+            const th1 = document.createElement("td");
+            th1.innerText = member.memberNo;
+
+            const td2 = document.createElement("td");
+            td2.innerText = member.memberEmail;
+
+            const td3 = document.createElement("td");
+            td3.innerText = member.memberNickname;
+
+            const td4 = document.createElement("td");
+            td4.innerText = member.enrollDate;
+
+            const td5 = document.createElement("td");
+            td5.innerText = member.boardCount;
+
+            const td6 = document.createElement("td");
+            td5.innerText = member.boardCount;
+
+            const td7 = document.createElement("td");
+            td5.innerText = member.boardCount;
+
+            const td8 = document.createElement("td");
+            td6.innerText = member.commentCount;
+
+            const td9 = document.createElement("td");
+            const statusButton = document.createElement("button");
+            statusButton.id = "status-btn";
+
+
+
+            renderPagination(pagination);
+
+
+
+            // let currentIndex = 0; // Initialize currentIndex here
+            // const statuses = ['정상', '경고', '탈퇴'];
+
+            statusButton.innerText = member.memberDelFl === 'N' ? '정상' : '탈퇴';
+            statusButton.style.color = member.memberDelFl === 'N' ? 'green' : 'red';
+
+            td7.append(statusButton);
+
+            td7.append(warningButton);
+
+            // td7.append(warningBtn);
+
+
+            tr.append(th1, td2, td3, td4, td5, td6, td7, td8, td9);
+            memberList.append(tr);
+
+            statusButton.addEventListener("click", () => {
+              const btnText = statusButton.innerText;
+
+              if (btnText === '정상' && !confirm("탈퇴 하시겠습니까?")) {
+                return;
+              }
+              /* 탈퇴 여부 변경 */
+              fetch("/manager/changeStatus", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: member.memberNo
+              })
+                .then(response => {
+                  if (response.ok) return response.text();
+                  throw new Error("탈퇴 변경 오류");
+                })
+                .then(result => {
+                  if (result > 0) {
+                    if (btnText === '정상') alert("탈퇴 메시지가 발송 되었습니다");
+
+                    statusButton.innerText = btnText === '정상' ? '탈퇴' : '정상';
+                    statusButton.style.color = btnText === '정상' ? 'red' : 'green';
+
+                  } else {
+                    alert("변경 실패");
+                  }
+
+                })
+                .catch(err => console.error(err));
+
+
+              /* 메일 발송 */
+              fetch("/email/secessionMessage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: member.memberEmail
+              })
+                .then(response => {
+                  if (response.ok) return response.text();
+                  throw new Error("이메일 발송 실패");
+                })
+                .then(result => {
+                  // 백엔드 작성 후 나머지 코드 작성 예정
+                  console.log(result);
+
+                })
+                .catch(err => console.error(err));
+
+            }); // statusButton end
+
+
+
+            warningButton.addEventListener("click", () => {
+              confirm("경고 메시지를 보내시겠습니까?");
+
+              // 게시글 작성자에게 알림 보내기
+              const content2
+                = `잘못된 게시글 작성으로 인해 경고 메시지를 보냅니다`;
+
+              sendNotification(
+                "warningAlarm",
+                location.pathname, // 게시글 상세 조회 페이지 주소
+                member.memberNo,
+                content2
+              );
+
+            })
+
+
+          });
+        })
+        .catch(err => console.error(err));
+    }
+
+
+
+
+
+    const paginationBox = document.querySelector(".pagination");
+
+    const renderPagination = (pagination) => {
+
+      // let paginationBox;
+
+      paginationBox.innerHTML = '';  // 기존 페이지 버튼 초기화
+
+      const createPageButton = (page, text, isActive = false) => {
+        const button = document.createElement("a");
+        button.href = "#";
+        button.classList.add("page-btn");
+        button.dataset.page = page;
+        button.textContent = text;
+
+        if (isActive) button.classList.add("active");
+
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          const cp = parseInt(event.target.dataset.page);
+
+          // 모든 페이지 버튼에서 active 클래스를 제거
+          document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+
+          // 현재 클릭된 버튼에 active 클래스 추가
+          button.classList.add("active");
+
+          selectMemberList(cp);
+        });
+
+        return button;
+      };
+
+      // <<, < 버튼 추가
+      paginationBox.appendChild(createPageButton(1, "<<"));
+      paginationBox.appendChild(createPageButton(pagination.prevPage, "<"));
+
+      // 동적 페이지 번호 버튼 생성
+      for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+        const isActive = i === pagination.currentPage;
+        paginationBox.appendChild(createPageButton(i, i, isActive));
+      }
+
+      // >, >> 버튼 추가
+      paginationBox.appendChild(createPageButton(pagination.nextPage, ">"));
+      paginationBox.appendChild(createPageButton(pagination.maxPage, ">>"));
+    };
+
+
+    // DOMContentLoaded 이벤트
+    document.addEventListener("DOMContentLoaded", () => {
+      selectMemberList();
+    });
+
+
+
+
+    // 검색 
+    (() => {
+
+      // 쿼리스트링 모두 얻어와 관리하는 객체
+      const params = new URLSearchParams(location.search);
+
+      const key = params.get("key");
+      const query = params.get("query");
+
+      if (key === null) return; //검색이 아니면 함수 종료
+
+      document.querySelector("#searchQuery").value = query;
+
+      const options = document.querySelectorAll("#searchKey > option");
+      options.forEach(op => {
+        // op : <option> 태그
+        if (op.value === key) { // option의 valeu와 key가 같다면
+          op.selected = true; // selected 속성 추가
+          return;
+        }
+      })
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
