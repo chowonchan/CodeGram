@@ -31,10 +31,9 @@ body {
   margin: auto;
   height: 100vh;
   width: 100%;
-  /* margin-top: 20px;
-margin-bottom: 50px; */
-  display: flex;
-  ;
+
+  margin-left: 80px;
+  display: flex;;
 }
 
 /*  채팅 목록 */
@@ -42,7 +41,7 @@ margin-bottom: 50px; */
   background: white;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
-  width: 30%;
+  width: 40%;
 
   list-style: none;
   overflow: auto;
@@ -417,3 +416,23 @@ margin-bottom: 50px; */
   opacity: 0.3;
   cursor: default;
 }
+
+
+.result-row{
+	width: 100%;
+	height: 50px;
+	padding: 5px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+}
+
+.result-row:hover{	background-color: #dadada;}
+
+.result-row > *{ 
+	margin-right: 10px;
+	user-select: none;
+}
+
+
+.result-row-img{ width: 40px;}

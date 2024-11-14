@@ -1,3 +1,7 @@
+let selectChattingNo; // 선택한 채팅방 번호
+
+
+
 const sendMessage = document.querySelector(".sendMessage");
 // const sendMessage2 = document.querySelector(".sendMessage2");
 
@@ -47,7 +51,7 @@ const sendMessageTarget = () => {
 
   // 웹소켓 핸들러로 전달할 채팅 관련 데이터를 담은 객체 생성
   const chattingObj = {
-    "targetNo": selectTargetNo,    // 메시지를 받을 대상의 회원 번호(웹소켓)
+    "partnerNo": selcectPartnerNo,    // 메시지를 받을 대상의 회원 번호(웹소켓)
     "messageContent": msg,         // 전달할 메시지 내용
     "chattingRoomNo": selectChattingNo // 채팅방 번호(DB 저장용도)
   }
@@ -61,7 +65,7 @@ const sendMessageTarget = () => {
     + `<span class="chat-preview">${msg}</span>`;
 
   const url = location.pathname + "?chat-no=" + selectChattingNo;
-  sendNotification("chatting", url, selectTargetNo, content);
+  sendNotification("chatting", url, selcectPartnerNo, content);
 
 
   inputChatting.value = ""; // 보낸 채팅 내용 삭제
@@ -136,16 +140,13 @@ if (chattingSock != undefined) {
 
 
 /* ---------------------- 메시지 보내기 버튼 js ------------------ */
-const members = [
-  { memberId: 1, memberName: 'member01', memberNickName: '홍길동', profileImg: '/api/placeholder/36/36' },
-  { memberId: 2, memberName: 'member02', memberNickName: '김철수', profileImg: '/api/placeholder/36/36' },
-  { memberId: 3, memberName: 'member03', memberNickName: '박지영', profileImg: '/api/placeholder/36/36' },
-  { memberId: 4, memberName: 'member04', memberNickName: '최예림', profileImg: '/api/placeholder/36/36' },
-];
-
 document.querySelector('.close-button').addEventListener('click', () => {
+  
   document.querySelector('.modal-overlay').style.display = 'none';
 });
+
+
+
 
 const searchInput = document.querySelector('.search-input');
 const sendButton = document.querySelector('.send-button');
@@ -153,44 +154,80 @@ const searchResults = document.querySelector('.search-results');
 const noResultsMessage = document.querySelector('.no-results');
 const modalOverlay = document.querySelector('#modal-overlay');
 
-searchInput.addEventListener('input', (e) => {
+// --------------------------- 사용자 검색 ---------------------------
+searchInput.addEventListener("input", () => {
 
-  const query = e.target.value.trim().toLowerCase();
+  // 입력된 값
+  const query = searchInput.value.trim();
 
-
-
-
-  if (query) {
-    const filteredMembers = members.filter(member =>
-      member.memberName.toLowerCase().includes(query) ||
-      member.memberNickName.toLowerCase().includes(query)
-    );
-
-    if (filteredMembers.length > 0) {
-      searchResults.innerHTML = filteredMembers.map(member => `
-              <div class="profile-item" data-memberId="${member.memberId}">
-                  <img src="${member.profileImg}" alt="${member.memberNickName}">
-                  <div>
-                      <div class="memberNickName">${member.memberNickName}</div>
-                      <div class="memberName">@${member.memberName}</div>
-                  </div>
-              </div>
-          `).join('');
-      noResultsMessage.style.display = 'none';
-    } else {
-      noResultsMessage.style.display = 'block';
-      searchResults.innerHTML = '';
-    }
-  } else {
-    searchResults.innerHTML = '';
-    noResultsMessage.style.display = 'block';
+  // 입력된 값이 없을 경우
+  if (query.length === 0) {
+    searchResults.innerHTML = ""; // 검색 결과 목록 삭제
+    return;
   }
 
-  sendButton.disabled = !query;
-  sendButton.style.opacity = query ? '1' : '0.3';
+  // 입력된 값이 있을 경우
+  fetch("/chatting/selectSearch?query=" + query)
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error("검색 실패");
+    })
+    .then(list => {
+      
+      console.log(list);
+
+      searchResults.innerHTML = ""; // 이전 검색 결과 비우기
+
+      if (list.length == 0) {
+        noResultsMessage.style.display = 'none';
+        const li = document.createElement("li");
+        li.classList.add("result-row");
+        li.innerText = "일치하는 회원이 없습니다";
+        searchResults.append(li);
+        return;
+      }
+
+      for (let member of list) {
+        noResultsMessage.style.display = 'none';
+        // li요소 생성(한 행을 감싸는 요소)
+        const li = document.createElement("li");
+        li.classList.add("result-row");
+        li.setAttribute("data-id", member.memberNo);
+
+        // 프로필 이미지 요소
+        const img = document.createElement("img");
+        img.classList.add("result-row-img");
+
+        // 프로필 이미지 여부에 따른 src 속성 선택
+        if (member.profileImg == null) img.setAttribute("src", userDefaultImage);
+        else img.setAttribute("src", member.profileImg);
+
+        let nickname = member.memberNickname;
+        let name = member.memberName;
+
+        const span = document.createElement("span");
+        span.innerHTML = `${name}`.replace(query, `<mark>${query}</mark>`);
+
+        // 요소 조립(화면에 추가)
+        li.append(img, span);
+        searchResults.append(li);
+
+        // 클릭 시 채팅방 입장 함수 호출
+        li.addEventListener("click", chattingEnter);
+
+      }
+
+
+    })
+    .catch(err => console.error(err));
+
 });
 
-searchResults.addEventListener("click", chattingEnter);
+
+
+
+
+
 
 
 // ----------------------------------------------------------------------
@@ -200,13 +237,13 @@ const chattingEnter = (e) => {
   // e.currentTarget : 이벤트 리스너가 설정된 요소
 
   // data-id 값을 얻어와 저장(참여자 회원 번호)
-  const targetNo = e.currentTarget.dataset.id;
-  // console.log(targetNo);
+  const partnerNo = e.currentTarget.dataset.id;
+  // console.log(partnerNo);
 
   fetch("/chatting/enter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: targetNo
+    body: partnerNo
   })
     .then(response => {
       if (response.ok) return response.text();
@@ -272,7 +309,7 @@ const selectRoomList = () => {
         const li = document.createElement("li");
         li.classList.add("chatting-item");
         li.setAttribute("chat-no", chatRoom.chattingRoomNo);
-        li.setAttribute("target-no", chatRoom.targetNo);
+        li.setAttribute("target-no", chatRoom.partnerNo);
 
         if (chatRoom.chattingRoomNo == selectChattingNo) {
           li.classList.add("select");
@@ -360,7 +397,7 @@ const selectRoomList = () => {
 // ----------------------------------------------------
 
 // 채팅방 목록에 이벤트를 추가하는 함수 
-const roomListAddEvent = () => {
+const chatRoomListAddEvent = () => {
   const chattingItemList = document.getElementsByClassName("chatting-item");
 
   for (let item of chattingItemList) {
@@ -368,7 +405,7 @@ const roomListAddEvent = () => {
 
       // 전역변수에 채팅방 번호, 상대 번호, 상태 프로필, 상대 이름 저장
       selectChattingNo = item.getAttribute("chat-no");
-      selectTargetNo = item.getAttribute("target-no");
+      selcectPartnerNo = item.getAttribute("partner-no");
 
       selectTargetProfile = item.children[0].children[0].getAttribute("src");
       selectTargetName = item.children[1].children[0].children[0].innerText;
@@ -391,6 +428,7 @@ const roomListAddEvent = () => {
 
 // ----------------------------------------------------
 
+// 비동기로 메세지 목록을 조회하는 함수
 const selectChattingFn = () => {
 
   fetch(`/chatting/selectMessage?chattingNo=${selectChattingNo}`)
