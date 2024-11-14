@@ -18,15 +18,29 @@ public class MemberServiceImpl implements MemberService{
   @Autowired // BCrypt 암호화 객체 의존성 주입 받기
   private BCryptPasswordEncoder encoder;
   
+//  @Override
+//  public Member login(String memberId, String memberPw) {
+//  	Member loginMember = mapper.login(memberId);
+//  	if(loginMember == null) return null;
+//		if( !encoder.matches(memberPw, loginMember.getMemberPw()) ) {
+//			return null;
+//		}
+//	  return loginMember;
+//  }
+  
   @Override
   public Member login(String memberId, String memberPw) {
-  	Member loginMember = mapper.login(memberId);
-  	if(loginMember == null) return null;
-		if( !encoder.matches(memberPw, loginMember.getMemberPw()) ) {
-			return null;
-		}
-	  return loginMember;
+      Member loginMember = mapper.login(memberId);
+      if (loginMember == null) return null;
+
+      // 암호화된 비밀번호 대신 평문 비밀번호로 비교
+      if (!memberPw.equals(loginMember.getMemberPw())) {
+          return null;
+      }
+
+      return loginMember;
   }
+
   
   // 회원 가입
   @Override
