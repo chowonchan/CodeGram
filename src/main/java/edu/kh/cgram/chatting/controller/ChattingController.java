@@ -1,11 +1,12 @@
 package edu.kh.cgram.chatting.controller;
 
-import java.lang.reflect.Member;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,38 +14,63 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.cgram.chatting.dto.ChattingRoom;
 import edu.kh.cgram.chatting.service.ChattingService;
+import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/chatting")
 @RequiredArgsConstructor
 public class ChattingController {
 
 	private final ChattingService service;
 
-	@RequestMapping("/chatting")
+  @GetMapping("") 
 	public String chattingPage(
 	    @SessionAttribute("loginMember") Member loginMember,
 			Model model) {
 		
-//    List<ChattingRoom> roomList 
-//    = service.selectRoomList(loginMember.getMemberNo());
+    List<ChattingRoom> chatRoomList 
+    = service.chatRoomList(loginMember.getMemberNo());
 
-		model.addAttribute("chatRoomList", null);
+		model.addAttribute("chatRoomList", chatRoomList);
 		return "chatting/chatting";
 	}
+	
 
+	// 채팅 상대 검색
+  @GetMapping("selectSearch")
+  @ResponseBody
+  public List<Member> selectSearch(
+    @SessionAttribute("loginMember") Member loginMember ,
+    @RequestParam("query") String query
+  ){
+  	
+    return service.selectSearch(query, loginMember.getMemberNo());
+  }
 	
-//  @GetMapping("selectTarget")
-//  @ResponseBody
-//  public List<Member> selectTarget(
-//    @RequestParam("query") String query,
-//    @SessionAttribute("loginMember") Member loginMember
-//  ){
-//    return service.selectTarget(query, null);
-//  }
+  
+  @ResponseBody
+  @PostMapping("enter")
+  public int chattingEnter(
+  		@RequestBody int partnerNo,
+  		@SessionAttribute("loginMember") Member loginMember
+  		) {
+  	
+    int chattingNo 
+    = service.chattingEnter(partnerNo, loginMember.getMemberNo());
+
+  return chattingNo;
+  	
+  }
 	
-	
+  
+  @GetMapping("chatRoomList")
+  @ResponseBody
+  public List<ChattingRoom> selectRoomList(
+    @SessionAttribute("loginMember") Member loginMember){
+
+    return service.chatRoomList(loginMember.getMemberNo());
+  }
 	
 	
 	

@@ -20,7 +20,9 @@
     <ul class="chatting-list">
 
       <th:block th:each="chatRoom : ${chatRoomList}">
-        <h2 class="memberId" th:text="${session.memberId}">내 아이디
+
+      
+        <h2 class="memberId" th:text="${session.loginMember.memberId}">내 아이디
           <button class="sendMessage"><img src="/images/writeBtn.png"></button>
         </h2>
 
@@ -28,19 +30,18 @@
         <br>
 
         <h3 class="MessageTitle">메시지</h3>
-        <!-- th:chat-no : li 태그에 임의의 속성 chat-no를 추가하는데
-                  타임리프를 이용해 출력된 값을 chat-no 속성 값으로 대입 -->
-        <li class="chatting-item" th:chat-no="${chatRoom.chatRoomNo}" th:target-no="${chatRoom.targetNo}">
+
+        <li class="chatting-item" th:chat-no="${chatRoom.chattingRoomNo}" th:partner-no="${chatRoom.partnerNo}">
           <div class="item-header">
 
-            <img th:if="${chatRoom.targetProfile}" class="list-profile" th:src="${chatRoom.targetProfile}">
+            <img th:if="${chatRoom.partnerProfile}" class="list-profile" th:src="${chatRoom.partnerProfile}">
 
-            <img th:unless="${chatRoom.targetProfile}" class="list-profile" th:src="#{user.default.image}">
+            <img th:unless="${chatRoom.partnerProfile}" class="list-profile" th:src="#{user.default.image}">
 
           </div>
           <div class="item-body">
             <p>
-              <span class="target-name" th:text="${chatRoom.targetNickname}">상대방 이름</span>
+              <span class="partner-name" th:text="${chatRoom.partnerNickname}">상대방 이름</span>
               <span class="recent-send-time" th:text="${chatRoom.sendTime}">메세지 보낸 시간</span>
             </p>
             <div>
@@ -72,7 +73,7 @@
 
       <!-- 메시지들이 여기에 추가됩니다 -->
       <!-- <ul class="chat-messages" id="chatMessages" th:chat-no="${chatRoom.chattingRoomNo}"
-        th:target-no="${chatRoom.targetNo}">
+        th:target-no="${chatRoom.partnerNo}">
 
       </ul> -->
 
@@ -111,7 +112,12 @@
     </div>
   </div>
 
+	<script th:inline="javascript">
+		const userDefaultImage = /*[[#{user.default.image}]]*/ '기본 이미지';
 
+    const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ '로그인 회원 번호';
+    const loginMemberNickname = /*[[${session.loginMember?.memberNickname}]]*/ '로그인 회원 닉네임';
+	</script>
 
   <script src="/js/chatting/chatting.js"></script>
 
