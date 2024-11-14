@@ -1,4 +1,4 @@
-package edu.kh.cgram.board;
+package edu.kh.cgram.board.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
