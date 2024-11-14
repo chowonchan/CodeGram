@@ -22,8 +22,7 @@ public class MemberServiceImpl implements MemberService{
 //  public Member login(String memberId, String memberPw) {
 //  	Member loginMember = mapper.login(memberId);
 //  	if(loginMember == null) return null;
-//		if( !encoder.matches(memberPw, loginMember.getMemberPw()) ) {
-//			return null;
+
 //		}
 //	  return loginMember;
 //  }
@@ -32,10 +31,12 @@ public class MemberServiceImpl implements MemberService{
   public Member login(String memberId, String memberPw) {
       Member loginMember = mapper.login(memberId);
       if (loginMember == null) return null;
-
+      // 암호화된 비밀번호로 비교
+		if( !encoder.matches(memberPw, loginMember.getMemberPw()) ) {
+		return null;
       // 암호화된 비밀번호 대신 평문 비밀번호로 비교
-      if (!memberPw.equals(loginMember.getMemberPw())) {
-          return null;
+//      if (!memberPw.equals(loginMember.getMemberPw())) {
+//          return null;
       }
 
       return loginMember;
@@ -45,18 +46,17 @@ public class MemberServiceImpl implements MemberService{
   // 회원 가입
   @Override
   public int signUp(Member inputMember) {
-  	
-  	// 비밀번호 암호화(BCrypt)
-  	String encPw = encoder.encode(inputMember.getMemberPw());
-  	inputMember.setMemberPw(encPw);
-  	
-		// text 타입의 input은 값이 작성이 안되면 "" (빈칸)
-		// checkbox, radio가 체크가 안되면 null
-		
-  	
-  	// 3) mapper 호출 후 결과 반환
-  	
-  	return mapper.signUp(inputMember);
+      // 비밀번호가 null 또는 빈 문자열인지 확인
+      if (inputMember.getMemberPw() == null || inputMember.getMemberPw().isEmpty()) {
+          throw new IllegalArgumentException("Password cannot be null or empty");
+      }
+      
+      // 비밀번호 암호화(BCrypt)
+      String encPw = encoder.encode(inputMember.getMemberPw());
+      inputMember.setMemberPw(encPw);
+
+      // mapper 호출 후 결과 반환
+      return mapper.signUp(inputMember);
   }
   
   @Override

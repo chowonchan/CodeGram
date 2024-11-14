@@ -26,20 +26,30 @@
 	WHERE MEMBER_ID = #{memberID}
 	AND   MEMBER_DEL_BAN_FL = '1'
   </select>
-    <!-- MEMBER_DEL_FL = '1' -> 정상 회원 -->
+    <!-- MEMBER_DEL_BAN_FL = '1' -> 정상 회원 -->
     
   <!-- 회원 가입 -->
-  <insert id="signUp" parameterType="Member">
-  	INSERT INTO "MEMBER"
-	VALUES(
-		SEQ_MEMBER_NO.NEXTVAL, 
-		#{memberName}, 
-		#{memberEmail},
-		#{memberId},
-		#{memberPw},
-		#{memberNickname},
-		NULL, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
-  </insert>
+<insert id="signUp" parameterType="Member">
+    INSERT INTO "MEMBER" (
+        MEMBER_NO, 
+        MEMBER_NAME, 
+        MEMBER_EMAIL, 
+        MEMBER_ID, 
+        MEMBER_PW, 
+        MEMBER_NICKNAME,
+        MEMBER_BIRTH
+    ) VALUES (
+        SEQ_MEMBER_NO.NEXTVAL, 
+        #{memberName}, 
+        #{memberEmail}, 
+        #{memberId}, 
+        #{memberPw}, 
+        #{memberNickname},
+        #{memberBirth}
+        
+    )
+</insert>
+
 
   <!-- 이메일 중복 검사 -->
   <select id="emailCheck" resultType="_int">
