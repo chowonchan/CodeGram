@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: new URLSearchParams({ memberId, memberPw }),
     })
       .then((response) => {
+        console.log("응답 상태 코드:", response.status);
         if (response.redirected) {
           window.location.href = response.url; // 성공 시 리다이렉트
         } else if (response.ok) {

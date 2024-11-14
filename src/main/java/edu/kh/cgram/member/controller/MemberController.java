@@ -1,6 +1,10 @@
 package edu.kh.cgram.member.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,16 +40,18 @@ public class MemberController {
 	public String login(		
 			@RequestParam("memberId")String memberId,
 			@RequestParam("memberPw")String memberPw,
-//			@RequestParam(name="saveId", required = false) String saveId,
+			@RequestParam(name="saveId", required = false) String saveId,
 			RedirectAttributes ra,
-			Model model,
-			HttpServletResponse resp
+			Model model
+			,HttpServletResponse resp
 			) {
 
 		// 로그인 서비스 호출
 		Member loginMember = service.login(memberId, memberPw);
+		
 		if(loginMember == null) { // 로그인 실패
 			ra.addFlashAttribute("message", "이메일 또는 비밀번호가 일치하지 않습니다");
+			return "redirect:/member/login";
 		}
 		else { // 로그인 성공
 			model.addAttribute("loginMember", loginMember);
@@ -57,9 +63,10 @@ public class MemberController {
 //				cookie.setMaxAge(60*60*24*30); // 30일 초 단위로 작성
 //			}
 //			resp.addCookie(cookie); // resp 객체에 추가해서 클라이언트에게 전달
-		}
-		return "redirect:/login"; // 메인 페이지 리다이렉트
+			return "redirect:/"; // 메인 페이지 리다이렉트
+		} 
 	}
+	
 	
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
