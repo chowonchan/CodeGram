@@ -28,4 +28,5 @@ public class RedisConfig {
 	 template.setConnectionFactory(redisConnectionFactory);
 	 return template; // 설정된 RedisTemplate 반환
 	 }
+
 }

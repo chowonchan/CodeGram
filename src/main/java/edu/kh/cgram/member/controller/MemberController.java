@@ -1,5 +1,9 @@
 package edu.kh.cgram.member.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.member.dto.Member;
@@ -19,7 +21,6 @@ import edu.kh.cgram.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-@ApplicationScope
 @SessionAttributes({"loginMember"})
 @Controller
 @RequestMapping("member")
@@ -37,7 +38,7 @@ public class MemberController {
 	public String login(		
 			@RequestParam("memberId")String memberId,
 			@RequestParam("memberPw")String memberPw,
-			@RequestParam(name="saveId", required = false) String saveId,
+			@RequestParam(name="saveEmail", required = false) String saveEmail,
 			RedirectAttributes ra,
 			Model model
 			,HttpServletResponse resp
@@ -79,23 +80,17 @@ public class MemberController {
   }
 
 	//약관 동의 후 회원가입 페이지로 이동
-	@PostMapping("terms")
+	@GetMapping("signUp")
 	public String agreeTerms(
 	       @RequestParam(name = "agree", required = false) Boolean agree,
 	       RedirectAttributes ra) {
 	
 	   if (Boolean.TRUE.equals(agree)) {
-	       return "redirect:member/signUp"; // 약관에 동의한 경우 회원가입 페이지로 이동
+	       return "member/signUp"; // 약관에 동의한 경우 회원가입 페이지로 이동
 	   } else {
 	       ra.addFlashAttribute("message", "약관에 동의해야 회원가입이 가능합니다.");
 	       return "redirect:/terms"; // 동의하지 않은 경우 약관 동의 페이지로 다시 이동
 	   }
-	}
-
-	//회원가입 페이지 이동
-	@GetMapping("signUp")
-	public String signUpPage() {
-	   return "member/signUp"; // 회원가입 페이지로 이동
 	}
 	
 	//회원가입 처리
@@ -103,7 +98,9 @@ public class MemberController {
 	public String signUp(
 	       @ModelAttribute Member inputMember,
 	       RedirectAttributes ra) {
-	
+//    // 로그 찍기
+//    log.info("회원가입 데이터: {}", inputMember);
+		
 	   // 회원가입 서비스 호출
 	   int result = service.signUp(inputMember);
 	
