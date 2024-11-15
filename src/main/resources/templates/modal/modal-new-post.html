@@ -102,7 +102,31 @@
         background-color: #fff;
         border-bottom: solid 1px #DBDBDB;
         border-radius: 10px 10px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
       }
+
+      .mtbtn {
+        width: 50px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+      }
+
+      .modal-content-top-next {
+        font-weight: bold;
+        font-size: 15px;
+        color: #0095F6;
+        &:hover {
+          color: #0060F6;
+        }
+      }
+
 
       .modal-content-left {
         width: 734px;
@@ -121,21 +145,7 @@
         align-items: center;
       }
 
-      .modal-content-right {
-        width: 339px;
-        height: 734px;
-        background-color: #fff;
-        border-left: solid 1px #DBDBDB;
-        border-radius: 0 0 10px 0;
-      }
-
       .modal-content-left-inner-button {
-        width: 133px;
-        height: 32px;
-        padding: 10px;
-        cursor: pointer;
-      }
-      .modal-content-left-inner-button-content {
         width: 133px;
         height: 32px;
         background-color: #0095F6;
@@ -144,35 +154,63 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         border-radius: 8px;
+
+        &:hover {
+          background-color: #0050F6;
+        }
+
       }
 
+      
+      .modal-content-right {
+        width: 339px;
+        height: 734px;
+        background-color: #fff;
+        border-left: solid 1px #DBDBDB;
+        border-radius: 0 0 10px 0;
+      }
+
+
       .hide {
-        display: none;
+        display: none !important;
+      }
+
+      .hidden {
+        visibility: hidden;
+        pointer-events: none;
       }
 
       .modal-expand {
         width: 1074px;
       }
 
+      .fcenter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
     </style>
 </head>
 <body>
 
-  <span onclick="document.getElementById('modalOverlay').classList.remove('hide');" style="background-color: aquamarine;">
+  <span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px;">
     누르면 모달</span>
-  <h1 style="color: red;">투명도 테스트</h1>
+  <h1 style="color: red;">작동하면 냅둬라...</h1>
+  <h2>못고치겠다....</h2>
   <h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
   <h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
 
   <!-- 사진 업로드 모달 -->
   <div id="modalOverlay" class="modal-overlay hide">
-    
+
     <div id="modalOverlayBackground" class="modal-overlay-background"></div>
     <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
     <div id="modalCloseButton" class="modal-close-button">
-        <svg aria-label="Close" role="img" viewBox="0 0 24 24">
+        <svg aria-label="닫기 버튼 아이콘" role="img" viewBox="0 0 24 24">
             <title>Close</title>
             <polyline class="modal-close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
             <line class="modal-close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
@@ -181,12 +219,28 @@
 
     <div id="modalOverlayMiddle" class="modal-overlay-middle">
       <div id="modalContent" class="modal-content">
-        <div id="modalContentTop" class="modal-content-top modal-expand"></div> <!-- 여기에 modal-expand 테스트 진행중 -->
+
+        <div id="modalContentTop" class="modal-content-top">
+
+          <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn hide" >
+            <!-- 뒤로가기 버튼 -->
+            <svg aria-label="뒤로가기 아이콘" height="24" role="img" viewBox="0 0 24 24" width="24">
+                <title>Back</title>
+                <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="2.909" x2="22.001" y1="12.004" y2="12.004"></line>
+                <polyline fill="none" points="9.276 4.726 2.001 12.004 9.276 19.274" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+            </svg>
+          </div>
+
+          <div id="modalContentTopText" class="modal-content-top-text" style="text-align: center; flex-grow: 1;"></div>
+          <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
+        </div>
+
+
         <div style="display: flex;">
           <div id="modalContentLeft" class="modal-content-left">
             <div id="modalContentLeftInner" class="modal-content-left-inner">
-              <div>
-                <svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="77" viewBox="0 0 96 77" fill="none">
+              <div id="modalPostNew" class="hide">
+                <svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="96" viewBox="0 0 96 77" fill="none">
                   <rect x="4" y="7.72168" width="52" height="52" rx="10" transform="rotate(-3 4 7.72168)" fill="white" stroke="black"/>
                   <path d="M7.21627 53.7294C7.21627 53.7294 13.5611 45.8327 17.6266 40.7728L28.8275 48.3253L38.3724 36.9502" stroke="black"/>
                   <circle cx="15.2431" cy="20.7012" r="4.5" transform="rotate(-3 15.2431 20.7012)" stroke="black"/>
@@ -195,30 +249,48 @@
                   <path d="M56.3 48.7287L73.7783 49.6447C79.0179 49.9193 83.0427 54.3894 82.7681 59.6289L82.6111 62.6256L46.1587 60.7153L46.3158 57.7185C46.5904 52.479 51.0605 48.4541 56.3 48.7287Z" fill="black" stroke="black"/>
                 </svg>
               </div>
-              <div style="font-size: 20px; padding: 14px;">사진을 여기에 끌어다 놓으세요</div>
-              <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button">
-                <div id="modalContentLeftInnerButtonContent" class="modal-content-left-inner-button-content">컴퓨터에서 선택</div>
+              <div id="modalPostErr" class="hide">  <!-- js로 stroke, fill 값 변경 가능한지 이후 확인 -->
+                <svg aria-label="파일 업로드 오류 아이콘"  width="96" height="96" viewBox="0 0 98 98" fill="none">
+                  <circle cx="49" cy="49" r="48" stroke="black"/>
+                  <circle cx="49" cy="67" r="6" stroke="black"/>
+                  <path d="M51.9823 25.2558L52.7792 25.7871C53.3251 26.151 53.7665 26.651 54.0599 27.2377C54.3453 27.8087 54.4811 28.4427 54.4545 29.0805L53.5298 51.2749C53.5123 51.6954 53.4358 52.1113 53.3028 52.5106L53.0682 53.2144C52.7517 54.1637 52.1279 54.9805 51.2952 55.5356L50.5547 56.0293C50.0943 56.3362 49.5533 56.5 49 56.5C48.4467 56.5 47.9057 56.3362 47.4453 56.0293L46.7048 55.5356C45.8721 54.9805 45.2483 54.1637 44.9318 53.2144L44.6972 52.5106C44.5642 52.1113 44.4877 51.6954 44.4702 51.2749L43.5455 29.0805C43.5189 28.4427 43.6547 27.8087 43.9401 27.2377C44.2335 26.651 44.6749 26.151 45.2208 25.7871L46.0177 25.2558C46.7569 24.763 47.6255 24.5 48.5139 24.5H49.4861C50.3745 24.5 51.2431 24.763 51.9823 25.2558Z" stroke="black"/>
+                </svg>
               </div>
+
+              <div id="modalContentLeftInnerText" class="modal-content-left-inner-text" style="font-size: 20px; padding: 14px;"></div>
+              <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px;"></div>
+              <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
+            </div>
+
+            <div id="modalContentLeftImg" class="modal-content-left-img hide">
+              <div id="modalContentLeftImgView" class="modal-content-left-img-view"></div>
+              <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
             </div>
           </div>
 
           <div id="modalContentRight" class="modal-content-right hide"></div>
+
         </div>
       </div>
+    </div>
+
+    <div onclick="" style="top:0; left:0; right:0; bottom: 0; background-color: #000000a6; width: 100%; height: 100%; position: absolute; z-index: 5; display: none; align-items: center; justify-content: center;"> 
+      <!-- 이렇게 주면 고장난다... 그럼 어띃게 하냐... 1. visibility 를 이용하고 포인터 이벤트를 모조리 막아버린다 ==> 이벤트 재선언 해야하는지 테스트 -->
+       <!-- 2. 함수를 조금 더 꼬아본다 ==> 처음은 display none 이었다가... 클릭하면 none 을 없에고... 다시 누르면... ==> 이게 더 나아보임 -->
+      <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column;">
+        <div style="width: 100%; height: 106px; display: flex; flex-direction: column;"></div>
+        <div></div>
+        <div></div>
+      </div>
+      <!-- Z index 가 5 초과인 삭제창 모달을 등록하고, 배경 클릭시 사라질 것임. 만약 모달창 아무데나 눌러서 사라지면 하나를 더 만들어볼것 -->
     </div>
   </div>
 
   <script>
-    // 모달 확장 테스트용
-    document.getElementById("modalContentTop").addEventListener("click", () => {
-      
-      document.getElementById("modalContent").style.width = "1074px";
-      document.getElementById("modalContentTop").style.width = "1074px";
+    // 이벤트 경우의 수가 너무 많다.......................................................................
+    // 아아아아아악.......................................................................................
 
-      document.getElementById("modalContentLeft").style.borderRadius = "0 0 0 10px";
-      document.getElementById("modalContentLeft").innerHTML="";
-      document.getElementById("modalContentRight").classList.remove("hide");
-    });
+    
 
     // 발생 문제 ==> X버튼이나 배경 클릭으로 껐다가 다시켜면 작성중이던 화면이 나옴
     // ==> 지우거나 변경한 값들을 모조리 초기화 시켜줄 수 있어야 함
@@ -227,18 +299,162 @@
 
     // 모달 X 버튼 클릭
     document.getElementById("modalCloseButton").addEventListener("click", () => {
-      document.getElementById("modalOverlay").classList.add("hide");
+
+      modalCloseAlert();
+
     });
+
+    function modalCloseAlert() {
+      if(modalProgress > 1) {
+        // 삭제하시겠습니까? 모달
+        // 진행중인 내용이 모두 사라집니다
+        // 확인 취소
+        // 취소를 누르면 삭제? 모달 제거 + break;
+      }
+      document.getElementById("modalOverlay").classList.add("hide");
+    }
 
     // 모달 반투명 배경 클릭
     document.getElementById("modalOverlayBackground").addEventListener("click", () => {
-      document.getElementById("modalOverlay").classList.add("hide");
+
+      modalCloseAlert();
+
     });
 
-    // 사진 추가 버튼 클릭
+    // 사진 추가 버튼 클릭  ==================================================================================================================================
     document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
-      alert("컴퓨터에서 선택 클릭됨");
+      let a = confirm("이미지 삽입은 테스트중");
+
+      if(a === true) modalWithImg();
+      if(a === false) modalError();
     });
+
+    let modalProgress = 1;
+    // 0. 에러
+    // 1. 초기
+    // 2. 순서변경
+    // 3. 이미지 편집
+    // 4. 글 등록
+
+
+
+    const modalContent = document.getElementById("modalContent");
+
+    const modalTop = document.getElementById("modalContentTop");
+    const modalTopPrev = document.getElementById("modalContentTopPrev");
+    const modalTopText = document.getElementById("modalContentTopText");
+    const modalTopNext = document.getElementById("modalContentTopNext");
+
+    const modalLeft = document.getElementById("modalContentLeft");
+    const modalRight = document.getElementById("modalContentRight");
+
+    const filename = "등록 시도한 파일의 이름.확장자"
+
+
+
+    // 이벤트 넣을때는 매우 신중하게!
+    
+    function modalNew() {
+      // 모달 초기값 지정
+      // top 가로, content 가로, right display: none;
+      // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
+      modalContent.style.width = "734px";
+      modalTop.style.width = "734px";
+      modalRight.classList.add("hide");
+
+      document.getElementById('modalOverlay').classList.remove("hide");
+      document.getElementById("modalContentLeftInner").classList.remove("hide");
+      document.getElementById("modalPostNew").classList.remove("hide");
+      document.getElementById("modalPostErr").classList.add("hide");
+
+      document.getElementById("modalContentTopNext").classList.add("hide");
+      document.getElementById("modalContentTopPrev").classList.add("hide");
+
+      modalTopText.innerText = "새 게시물 만들기";
+      document.getElementById("modalContentLeftInnerText").innerText = "사진을 여기에 끌어다 놓으세요."
+      document.getElementById("modalContentLeftInnerButton").innerText = "컴퓨터에서 선택"
+
+      modalProgress = 1;
+    }
+
+    function modalError() {
+      // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
+      modalContent.style.width = "734px";
+      modalTop.style.width = "734px";
+      document.getElementById("modalPostNew").classList.add("hide");
+      document.getElementById("modalPostErr").classList.remove("hide");
+
+      document.getElementById("modalContentTopNext").classList.add("hide");
+      document.getElementById("modalContentTopPrev").classList.add("hide");
+      
+      modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
+      document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
+      document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."   /* 파일 이름을 반환받는 const 함수 내용 추후 수정 */
+      document.getElementById("modalContentLeftInnerButton").innerText = "다른 파일 선택"
+
+      modalProgress = 0;
+    }
+
+    function modalWithImg() {
+      // 상단 텍스트 변경 및 버튼 좌, 우 생성
+      // 내부 이미지, 내부 텍스트, 버튼 글자 제거
+      document.getElementById("modalContentLeftInner").classList.add("hide");
+      document.getElementById("modalContentLeftImg").classList.remove("hide");
+
+      document.getElementById("modalContentTopPrev").classList.remove("hide");
+                              // 해결 방법: 이벤트 리스너는 한 번만 등록하고, 필요 시 removeEventListener를 사용하거나 한 번만 실행되도록 합니다.
+      document.getElementById("modalContentTopNext").classList.remove("hide");
+      
+
+      modalTopText.innerText = "이미지 순서 변경";
+      document.getElementById("modalContentTopNext").innerText = "다음"
+
+      modalProgress = 2;
+    }
+
+    /*   function modalImgEdit() {
+      // top 가로, content 가로, right display:none classLisr Remove
+      // right에 게시글 작성이 가
+    } */
+
+    function modalWrite() {
+      // right 에 게시글 작성내용
+      //새 게시물 만들기
+      modalContent.style.width = "1074px";
+      modalTop.style.width = "1074px";
+      modalLeft.style.borderRadius = "0 0 0 10px";
+      modalRight.classList.remove("hide");
+
+      modalProgress = 4;
+    }
+
+    document.getElementById("modalContentTopPrev").addEventListener("click", () => {
+      switch(modalProgress) {
+        case 2 : modalCloseAlert(); break;
+        // case 3 : modalWithImg(); break;
+        // case 4 : modalImgEdit(); break;
+        case 4 : modalWithImg(); break;
+        default : break;
+      }
+    });
+
+    document.getElementById("modalContentTopNext").addEventListener("click", () => {
+      switch(modalProgress) {
+        case 2 : modalWrite(); break;
+        // case 2 : modalImgEdit(); break;
+        // case 3 : modalWrite(); break;
+
+        case 4 : // 게시글 등록...
+        
+        default : break;
+      }
+    });
+
+
   </script>
 </body>
 </html>
+
+
+
+    <!-- // <form enctype="multipart/form-data" method="POST" role="presentation"><input accept="image/jpeg,image/png,image/heic,image/heif" multiple="" type="file"></form> -->
