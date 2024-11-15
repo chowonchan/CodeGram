@@ -17,21 +17,50 @@
       <div action="login" method="POST" name = "loginForm" id="loginFor" class="loginForm" >
         
         <!-- 로고 이미지 -->
-        <img src="path_to_logo_image.png" alt="로고" class="logo">
+        <h2>CodeGram</h2>
         <input type="text" name="memberId" placeholder="아이디">
         <input type="password" name="memberPw" placeholder="비밀번호">
         <button >로그인</button>
 
         <div class="signup-find-area">
-          <a href="#">ID 찾기</a>
+          <a href="#" onclick="openModal('idModal')">ID 찾기</a>
           <div>/</div>
-          <a href="#">PW 찾기</a>
+          <a href="#" onclick="openModal('pwModal')">PW 찾기</a>
+        </div>
+      </div>
+      <!-- ID 찾기 모달 -->
+      <div id="idModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('idModal')">&times;</span>
+          <h3>ID 찾기</h3>
+          <p>가입한 이름과, 이메일, 생년원일을 입력하세요.</p>
+          <p> 
+            <input type="name" placeholder="이름 입력">
+            <input type="email" placeholder="이메일 입력">
+            <div class="signUp-input-area" style="display: flex; gap: 10px; justify-content: center;">
+              <select name="birthYear" id="birthYear"></select>
+              <select name="birthMonth" id="birthMonth"></select>
+              <select name="birthDay" id="birthDay"></select>
+            </div>
+          </p>
+          <button type="button">ID 찾기</button>
+        </div>
+      </div>
+
+      <!-- PW 찾기 모달 -->
+      <div id="pwModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal('pwModal')">&times;</span>
+          <h3>PW 찾기</h3>
+          <p>비밀번호 찾기 관련 정보를 입력하세요.</p>
+          <input type="email" placeholder="이메일 입력">
+          <button type="button">PW 찾기</button>
         </div>
       </div>
 
       <!-- 가입하기 섹션 (로그인 폼 아래) -->
       <div class="signup-section">
-        계정이 없으신가요? <a href="signUp">가입하기</a>
+        계정이 없으신가요? <a href="terms">가입하기</a>
       </div>
     </section>
 

@@ -1,11 +1,14 @@
 package edu.kh.cgram.member.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.member.mapper.MemberMapper;
+import edu.kh.cgram.member.util.HangulUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -71,6 +74,18 @@ public class MemberServiceImpl implements MemberService{
   @Override
   public int idCheck(String id) {
   	return mapper.idCheck(id);
+  }
+  
+  @Override
+  public List<Member> searchMembersByName(String keyword) {
+  	// 초성 검색 패턴 생성
+  	String chosungPattern = HangulUtils.getChosungPattern(keyword);
+  	return mapper.searchMembersByName(chosungPattern);
+  }
+  
+  @Override
+  public List<Member> searchMembersByNickname(String keyword) {
+  	return mapper.searchMembersByNickname(keyword);
   }
 
 }

@@ -595,6 +595,33 @@ ALTER TABLE "STORY_LIKE"
             );
 
 
+-- 해시태그 테이블 추가
+--==================================================
+CREATE TABLE "HASHTAG"
+(
+    "TAG_NAME" VARCHAR2(60) NOT NULL,
+    "BOARD_NO" NUMBER       NOT NULL
+);
+
+COMMENT ON COLUMN "HASHTAG"."TAG_NAME" IS '태그명';
+
+COMMENT ON COLUMN "HASHTAG"."BOARD_NO" IS '피드 번호(SEQ_BOARD_NO)';
+
+ALTER TABLE "HASHTAG"
+    ADD CONSTRAINT "PK_HASHTAG" PRIMARY KEY (
+                                             "TAG_NAME",
+                                             "BOARD_NO"
+        );
+
+ALTER TABLE "HASHTAG"
+    ADD CONSTRAINT "FK_BOARD_TO_HASHTAG_1" FOREIGN KEY (
+                                                        "BOARD_NO"
+        )
+        REFERENCES "BOARD" (
+                            "BOARD_NO"
+            );
+
+
 -- 시퀀스 목록
 --====================================================================================================
 

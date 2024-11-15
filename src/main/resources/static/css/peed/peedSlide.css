@@ -1,0 +1,91 @@
+
+/* ------------------------------------------------------------------------- */
+
+/* slide css 모음 */
+
+.post-images-container {
+  position: relative;
+  width: 468px;
+  overflow: hidden;
+  border-top: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+}
+
+.image-track {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+}
+
+.post-image {
+  flex-shrink: 0;
+  width: 468px;
+  height: 468px;
+  object-fit: cover;
+}
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  opacity: 0.92;
+  transition: opacity 0.2s ease;
+}
+
+.slider-button:hover {
+  opacity: 1;
+}
+
+.prev-button {
+  left: 8px;
+}
+
+.next-button {
+  right: 8px;
+}
+
+.slider-button svg {
+  width: 24px;
+  height: 24px;
+  stroke: #262626;
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 1;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #A8A8A8;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #0095f6;
+}
+
+/* ------------------------------------------------------------------------- */

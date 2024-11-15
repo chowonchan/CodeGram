@@ -81,10 +81,7 @@ window.onload = function() {
   birthMessage.innerText = "생년월일은 현재 날짜 기준으로 5,113일 이상 차이나야 합니다.";
   birthMessage.classList.add("error");
   birthMessage.classList.remove("confirm");
-  checkObj.memberBirth
-  
-  
-  = false; // 유효하지 않은 생년월일로 기록
+  checkObj.memberBirth = false; // 유효하지 않은 생년월일로 기록
   }
   }
   
@@ -519,7 +516,7 @@ const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn");
 
 checkAuthKeyBtn.addEventListener("click",()=>{
 
-  // + (추가조건) xkdlajrk 00:00인 경우 버튼 클릭 막기
+  // + (추가조건)  타이머가 00:00인 경우 버튼 클릭 막기
   if(min === 0 && sec=== 0){
     alert("인증 번호 입력 제한 시간을 초과하였습니다");
     return;
@@ -542,7 +539,7 @@ checkAuthKeyBtn.addEventListener("click",()=>{
     "email" : memberEmail.value, // 입력한 이메일
     "authKey" : authKey.value    // 입력한 인증 번호
   }
-
+  
   // JSON.stringify(객체) : 객체 -> JSON 변환(문자열화)
 
   fetch("/email/checkAuthKey", {
@@ -559,7 +556,7 @@ checkAuthKeyBtn.addEventListener("click",()=>{
     console.log("인증결과 : ", result);
 
     // 3) 일치하지 않는 경우
-    if (result==false) {
+    if (result === "false" || result === false) {
       alert("인증번호가 일치하지 않습니다.");
       checkObj.authKey=false;
       return;
