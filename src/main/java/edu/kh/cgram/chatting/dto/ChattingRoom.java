@@ -13,6 +13,7 @@ public class ChattingRoom {
   private String lastMessage;
   private String sendTime;
   private int partnerNo;
+  private String partnerName;
   private String partnerNickname;
   private String partnerProfile;
   private int notReadCount;

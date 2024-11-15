@@ -12,10 +12,13 @@ public class RedisUtil {
 	private StringRedisTemplate redisTemplate;
 	public String getValue(String key) {
 		return redisTemplate.opsForValue().get(key);
+		
 	}
 	public void setValue(String key, String value, long exprireDuration) {
-		Duration duration = Duration.ofSeconds(exprireDuration);
-		redisTemplate.opsForValue().set(key, value, exprireDuration);
+//		Duration duration = Duration.ofSeconds(exprireDuration);.
+		System.out.println(value);
+		System.out.println(value.trim());
+		redisTemplate.opsForValue().set(key, value.trim(), exprireDuration);
 	}
 	public void deleteValue(String key) {
 		redisTemplate.delete(key);
@@ -23,4 +26,5 @@ public class RedisUtil {
 	public boolean hasKey(String key) {
 		return redisTemplate.hasKey(key);
 	}
+	
 }
