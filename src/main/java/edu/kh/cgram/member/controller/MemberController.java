@@ -65,11 +65,11 @@ public class MemberController {
 	}
 	
 	
-	@GetMapping("logout")
-	public String logout(SessionStatus status) {
-		status.setComplete();
-		return "redirect:/login";
-	}
+//	@GetMapping("logout")
+//	public String logout(SessionStatus status) {
+//		status.setComplete();
+//		return "redirect:/login";
+//	}
 	//----------------------------------------------------
 	
   // 약관 동의 페이지로 이동하는 메서드
@@ -78,33 +78,46 @@ public class MemberController {
       return "member/terms"; // 약관 동의 페이지로 이동
   }
 
-  // 약관 동의 후 회원가입 페이지로 이동
-  @GetMapping("signUp")
-  public String signUpPage() {
-      return "member/signUp";
-  }
+	//약관 동의 후 회원가입 페이지로 이동
+	@PostMapping("terms")
+	public String agreeTerms(
+	       @RequestParam(name = "agree", required = false) Boolean agree,
+	       RedirectAttributes ra) {
+	
+	   if (Boolean.TRUE.equals(agree)) {
+	       return "redirect:member/signUp"; // 약관에 동의한 경우 회원가입 페이지로 이동
+	   } else {
+	       ra.addFlashAttribute("message", "약관에 동의해야 회원가입이 가능합니다.");
+	       return "redirect:/terms"; // 동의하지 않은 경우 약관 동의 페이지로 다시 이동
+	   }
+	}
 
-  // 회원가입 처리
-  @PostMapping("signUp")
-  public String signUp(
-          @ModelAttribute Member inputMember,
-          @RequestParam(name = "agree", required = false) Boolean agree,
-          RedirectAttributes ra) {
-
-      // 회원가입 서비스 호출
-      int result = service.signUp(inputMember);
-
-      // 서비스 결과에 따라 응답 제어
-      String path;
-      if (result > 0) {
-          path = "/";
-          ra.addFlashAttribute("message", inputMember.getMemberNickname() + "님의 가입을 환영합니다");
-      } else {
-          path = "signUp";
-          ra.addFlashAttribute("message", "회원 가입 실패...");
-      }
-      return "redirect:" + path;
-  }
+	//회원가입 페이지 이동
+	@GetMapping("signUp")
+	public String signUpPage() {
+	   return "member/signUp"; // 회원가입 페이지로 이동
+	}
+	
+	//회원가입 처리
+	@PostMapping("signUp")
+	public String signUp(
+	       @ModelAttribute Member inputMember,
+	       RedirectAttributes ra) {
+	
+	   // 회원가입 서비스 호출
+	   int result = service.signUp(inputMember);
+	
+	   // 서비스 결과에 따라 응답 제어
+	   String path;
+	   if (result > 0) {
+	       path = "/";
+	       ra.addFlashAttribute("message", inputMember.getMemberNickname() + "님의 가입을 환영합니다");
+	   } else {
+	       path = "signUp";
+	       ra.addFlashAttribute("message", "회원 가입 실패...");
+	   }
+	   return "redirect:" + path;
+	}
 
   @ResponseBody
   @GetMapping("emailCheck")
