@@ -13,23 +13,24 @@
 <body>
 
   <!-- 헤더 조각 포함 -->
-  <th:block class="header-container" th:replace="fragments/header :: header"></th:block>
+  <!-- <th:block class="header-container" th:replace="fragments/header :: header"></th:block> -->
 
 
   <div class="chatting-area">
     <ul class="chatting-list">
 
+      <h2 class="memberId" th:text="${session.loginMember.memberId}">내 아이디
+      </h2>
+      <button class="sendMessage2"><img src="/images/writeBtn.png"></button>
+
+      <br>
+
+      <h3 class="MessageTitle">메시지</h3>
+
+      
       <th:block th:each="chatRoom : ${chatRoomList}">
 
       
-        <h2 class="memberId" th:text="${session.loginMember.memberId}">내 아이디
-          <button class="sendMessage"><img src="/images/writeBtn.png"></button>
-        </h2>
-
-
-        <br>
-
-        <h3 class="MessageTitle">메시지</h3>
 
         <li class="chatting-item" th:chat-no="${chatRoom.chattingRoomNo}" th:partner-no="${chatRoom.partnerNo}">
           <div class="item-header">
@@ -41,7 +42,7 @@
           </div>
           <div class="item-body">
             <p>
-              <span class="partner-name" th:text="${chatRoom.partnerNickname}">상대방 이름</span>
+              <span class="partner-name" th:text="${chatRoom.partnerName}">상대방 이름</span>
               <span class="recent-send-time" th:text="${chatRoom.sendTime}">메세지 보낸 시간</span>
             </p>
             <div>

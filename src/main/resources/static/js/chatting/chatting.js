@@ -3,15 +3,15 @@ let selectChattingNo; // 선택한 채팅방 번호
 
 
 const sendMessage = document.querySelector(".sendMessage");
-// const sendMessage2 = document.querySelector(".sendMessage2");
+const sendMessage2 = document.querySelector(".sendMessage2");
 
 sendMessage.addEventListener("click", () => {
   chattingSearchMember.style.display = "flex";
 });
 
-// sendMessage2.addEventListener("click", () => {
-//   chattingSearchMember.style.display = "flex";
-// });
+sendMessage2.addEventListener("click", () => {
+  chattingSearchMember.style.display = "flex";
+});
 
 
 /* -------------------채팅 보내기 js ------------------- */
@@ -283,6 +283,7 @@ const chattingEnter = (e) => {
         }
 
       }, 300);
+      document.querySelector('.modal-overlay').style.display = 'none';
 
     })
     .catch(err => console.error(err));
@@ -301,6 +302,13 @@ const selectRoomList = () => {
       // 채팅방 목록 출력 영역 선택
       const chattingList = document.querySelector(".chatting-list");
 
+
+      const h2 = document.createElement("h2");
+      h2.classList.add("memberId");
+
+
+
+
       // 채팅방 목록 지우기
       chattingList.innerHTML = "";
 
@@ -309,7 +317,7 @@ const selectRoomList = () => {
         const li = document.createElement("li");
         li.classList.add("chatting-item");
         li.setAttribute("chat-no", chatRoom.chattingRoomNo);
-        li.setAttribute("target-no", chatRoom.partnerNo);
+        li.setAttribute("partner-no", chatRoom.partnerNo);
 
         if (chatRoom.chattingRoomNo == selectChattingNo) {
           li.classList.add("select");
@@ -322,10 +330,10 @@ const selectRoomList = () => {
         const listProfile = document.createElement("img");
         listProfile.classList.add("list-profile");
 
-        if (chatRoom.targetProfile == undefined)
+        if (chatRoom.partnerProfile == undefined)
           listProfile.setAttribute("src", userDefaultImage);
         else
-          listProfile.setAttribute("src", chatRoom.targetProfile);
+          listProfile.setAttribute("src", chatRoom.partnerProfile);
 
         itemHeader.append(listProfile);
 
@@ -335,16 +343,16 @@ const selectRoomList = () => {
 
         const p = document.createElement("p");
 
-        const targetName = document.createElement("span");
-        targetName.classList.add("target-name");
-        targetName.innerText = chatRoom.targetNickname;
+        const partnerName = document.createElement("span");
+        partnerName.classList.add("partner-name");
+        partnerName.innerText = chatRoom.partnerName;
 
         const recentSendTime = document.createElement("span");
         recentSendTime.classList.add("recent-send-time");
         recentSendTime.innerText = chatRoom.sendTime;
 
 
-        p.append(targetName, recentSendTime);
+        p.append(partnerName, recentSendTime);
 
 
         const div = document.createElement("div");
@@ -495,12 +503,14 @@ const selectChattingFn = () => {
 
 
 // ----------------------------------------------------------------------
-
+const sidebar = document.querySelector(".sidebar");
 // 문서 로딩이 완료된 후
 document.addEventListener("DOMContentLoaded", () => {
 
   // 채팅방 목록에 클릭 이벤트 추가하는 함수 호출
   chatRoomListAddEvent();
+
+  sidebar.classList.add("narrow");
 
 
   // 보내기 버튼 클릭 시 메시지 보내기
