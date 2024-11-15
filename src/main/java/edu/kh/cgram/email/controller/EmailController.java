@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.kh.cgram.common.util.RedisUtil;
 import edu.kh.cgram.email.service.EmailService;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("email")
+@Slf4j
 public class EmailController {
+	
 	
 	@Autowired
 	public RedisUtil redisUtil;
@@ -25,14 +29,18 @@ public class EmailController {
 	@Autowired
 	public EmailService service;
 	
-	@ResponseBody
-	@GetMapping("redis")
-	public int redisTest(
-			@RequestParam("key") String key,
-			@RequestParam("value") String value) {
-		redisUtil.setValue(key, value, 60);
-		return 1;
-	}
+  
+//	@ResponseBody
+//	@GetMapping("redisTest")
+//	public int redisTest(
+//			@RequestParam("key") String key,
+//			@RequestParam("value") String value
+//			
+//			) {
+//		// 전달 받은 key, value를 redis에 set 하기
+//		redisUtil.setValue(key, value, 60); // 60초 후에 만료
+//		return 1;
+//	}
 	@ResponseBody
 	@PostMapping("sendAuthKey")
 	public int sendAuthKey(
@@ -47,4 +55,5 @@ public class EmailController {
 		
 		return service.checkAuthKey(map);
 	}
+	
 }
