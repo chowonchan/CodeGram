@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.cgram.chatting.dto.ChattingRoom;
+import edu.kh.cgram.chatting.dto.Message;
+import edu.kh.cgram.chatting.mapper.ChattingMapper;
 import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class ChattingServiceImpl implements ChattingService {
 	
-	private final edu.kh.cgram.chatting.mapper.ChattingMapper mapper;
+	private final ChattingMapper mapper;
 
 	@Override
 	public List<ChattingRoom> chatRoomList(int memberNo) {
@@ -53,5 +55,21 @@ public class ChattingServiceImpl implements ChattingService {
 		return chattingNo;
 	}
 	
+	
+	// 메시지 조회
+	@Override
+	public List<Message> selectMessage(int chattingNo, int memberNo) {
+		
+		List<Message> messageList = mapper.selectMessage(chattingNo);
+		
+		
+		// 조회된 메시지 목록이 있을 경우
+		if(messageList.isEmpty() == false) {
+
+			int result = mapper.updateReadFlag(chattingNo, memberNo);
+		}
+		
+		return messageList;
+	}
 
 }

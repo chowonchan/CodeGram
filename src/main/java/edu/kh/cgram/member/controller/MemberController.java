@@ -1,10 +1,15 @@
 package edu.kh.cgram.member.controller;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.annotation.ApplicationScope;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.member.dto.Member;
@@ -132,5 +139,23 @@ public class MemberController {
   @GetMapping("nicknameCheck")
   public int nicknameCheck(@RequestParam("nickname") String nickname) {
       return service.nicknameCheck(nickname);
+  }
+  
+  @ResponseBody
+  @GetMapping("/search")
+  public ResponseEntity<List<Member>> searchMembers(
+  	@RequestParam("query") String keyword,
+  	@RequestParam("type") String type) {
+  	
+  	List<Member> members;
+  	
+  	if("name".equals(type)) {
+  		// 한글 이름 검색
+  		members = service.searchMembersByName(keyword);
+  	} else {
+  		// 닉네임 검색
+  		members = service.searchMembersByNickname(keyword);
+  	}
+  	return new ResponseEntity<>(members, HttpStatus.OK);
   }
 }
