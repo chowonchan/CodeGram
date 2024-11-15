@@ -454,7 +454,6 @@ const selectChattingFn = () => {
       const ul = document.querySelector(".chat-messages");
 
 
-      const profileBtn = document.querySelector(".profile-btn");
 
       ul.innerHTML = ""; // 이전 내용 지우기
 
