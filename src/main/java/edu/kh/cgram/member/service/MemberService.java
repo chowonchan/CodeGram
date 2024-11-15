@@ -1,5 +1,7 @@
 package edu.kh.cgram.member.service;
 
+import java.util.List;
+
 import edu.kh.cgram.member.dto.Member;
 
 public interface MemberService {
@@ -13,5 +15,9 @@ public interface MemberService {
 	int nicknameCheck(String nickname);
 
 	int idCheck(String id);
+	
+	List<Member> searchMembersByName(String keyword);
+	
+	List<Member> searchMembersByNickname(String keyword);
 
 }
