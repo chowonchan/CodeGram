@@ -30,7 +30,7 @@ let chattingSock;
 
 
 /* 채팅 메시지를 보내는 함수 */
-const sendMessageTarget = () => {
+const sendMessagePartner = () => {
 
   if (selectChattingNo === undefined) {
     alert("대화방을 선택해주세요");
@@ -305,6 +305,7 @@ const selectRoomList = () => {
 
       const h2 = document.createElement("h2");
       h2.classList.add("memberId");
+      memberIdh2.innerText = session.loginMember.memberId;
 
 
 
@@ -422,6 +423,11 @@ const chatRoomListAddEvent = () => {
         item.children[1].children[1].children[1].remove();
       }
 
+      const logoContainer = document.querySelector(".DMLogo-container");
+      if (logoContainer) {
+          logoContainer.remove(); // 해당 div를 DOM에서 제거
+      }
+
       // 모든 채팅방에서 select 클래스를 제거
       for (let it of chattingItemList) it.classList.remove("select")
 
@@ -447,6 +453,9 @@ const selectChattingFn = () => {
       // <ul class="chat-messages">
       const ul = document.querySelector(".chat-messages");
 
+
+      const profileBtn = document.querySelector(".profile-btn");
+
       ul.innerHTML = ""; // 이전 내용 지우기
 
       // 메세지 만들어서 출력하기
@@ -471,7 +480,7 @@ const selectChattingFn = () => {
           li.append(span, p);
 
         } else { // 상대가 작성한 메세지인 경우
-          li.classList.add("target-chat");
+          li.classList.add("partner-chat");
 
           // 상대 프로필
           const img = document.createElement("img");
@@ -510,11 +519,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // 채팅방 목록에 클릭 이벤트 추가하는 함수 호출
   chatRoomListAddEvent();
 
-  sidebar.classList.add("narrow");
+  // sidebar.classList.add("narrow");
 
 
   // 보내기 버튼 클릭 시 메시지 보내기
-  document.querySelector("#sendButton").addEventListener("click", sendMessageTarget);
+  document.querySelector("#sendButton").addEventListener("click", sendMessagePartner);
 
   // 채팅 입력 후 엔터 입력 시 메시지 보내기
   document.querySelector("#inputChatting").addEventListener("keyup", e => {
@@ -522,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key == "Enter") {
       if (!e.shiftKey) { /// shift가 눌러지지 않은 경우
         // == shift + enter 입력 시 제출 X
-        sendMessageTarget();
+        sendMessagePartner();
       }
     }
   });

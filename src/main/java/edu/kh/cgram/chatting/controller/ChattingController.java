@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.cgram.chatting.dto.ChattingRoom;
+import edu.kh.cgram.chatting.dto.Message;
 import edu.kh.cgram.chatting.service.ChattingService;
 import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
@@ -72,8 +73,16 @@ public class ChattingController {
     return service.chatRoomList(loginMember.getMemberNo());
   }
 	
-	
-	
+	// 메시지 조회
+	@GetMapping("selectMessage")
+	@ResponseBody
+	public List<Message> selectMessage(
+	    @RequestParam("chattingNo") int chattingNo,
+	    @SessionAttribute("loginMember") Member loginMember
+			){
+		
+    return service.selectMessage(chattingNo, loginMember.getMemberNo());
+	}
 	
 	
 	

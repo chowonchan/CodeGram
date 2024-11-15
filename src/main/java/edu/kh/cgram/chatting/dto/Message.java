@@ -13,7 +13,7 @@ public class Message {
   private String messageContent;
   private String readFl;
   private int memberNo;
-  private int targetNo;
+  private int partnerNo;
   private int chatRoomNo;
   private String sendTime;
   
