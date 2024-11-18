@@ -18,15 +18,15 @@
 
 <body>
 
-  <h1>드래그 앤 드롭을 이용한 객체의 이동</h1>
-
-  <p>모나리자 그림을 드래그해서 옆의 사각형으로 옮겨보세요!</p>
 
   <div ondrop="drop(event)" ondragover="dragEnter(event)">
     <img id="monalisa" width="180" height="280" src="https://tcpschool.com/examples/images/img_monalisa.png" draggable="true" ondragstart="drag(event)">
-    <h1>aa</h1>
   </div>
-  <div ondrop="drop(event)" ondragover="dragEnter(event)"><h1>bb</h1></div>
+  <div ondrop="drop(event)" ondragover="dragEnter(event)"></div>
+
+
+
+
 
   <script>
     function dragEnter(ev) {
@@ -45,6 +45,14 @@
 
     //요소 제거가 없는데 복/붙이 아니라 이동이 되는데
     //기본적으로 되는부분인지?
+    // ==> 요소에 ID는 단 한개만 존재하기 때문에 요소 이동을 하면 DOM 에서 기존 요소를 삭제함!
+
+    /*
+      요소 제거 코드가 없는데, 이동이 되는 것은 왜 그런가요?
+      설명: appendChild() 메서드는 기존 부모 노드에서 요소를 제거하고 새로운 부모 노드에 추가합니다.
+      즉, document.getElementById(data)로 얻은 이미지 요소를 appendChild()로 새 위치에 추가하면, 자동으로 원래 위치에서 제거되고 새로운 위치로 이동됩니다.
+      HTML DOM의 특징으로, 동일한 요소가 여러 위치에 동시에 존재할 수 없기 때문에 기존 위치에서 제거된 것입니다.
+    */
 
   </script>
 
