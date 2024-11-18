@@ -71,5 +71,17 @@ public class ChattingServiceImpl implements ChattingService {
 		
 		return messageList;
 	}
+	
+	
+	@Override
+	public int updateReadFlag(int chattingNo, int memberNo) {
+
+		return mapper.updateReadFlag(chattingNo, memberNo);
+	}
+	
+	@Override
+	public int insertMessage(Message msg) {
+		return mapper.insertMessage(msg);
+	}
 
 }
