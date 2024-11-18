@@ -118,11 +118,17 @@ public class MemberServiceImpl implements MemberService{
       return mapper.findMemberByNameEmailBirthAndId(name, email, birthDate, memberId);
   }
 
+//  @Override
+//  public int changePassword(String memberId, String newPassword) {
+//    String encodedPassword = encoder.encode(newPassword);
+//      return mapper.updatePassword(memberId, encodedPassword);
+//  }
+
   @Override
   public int changePassword(String memberId, String newPassword) {
-    String encodedPassword = encoder.encode(newPassword);
+      log.debug("MemberService - 비밀번호 변경 요청: memberId={}, newPassword={}", memberId, newPassword);
+      String encodedPassword = encoder.encode(newPassword);
       return mapper.updatePassword(memberId, encodedPassword);
   }
 
-  
 }
