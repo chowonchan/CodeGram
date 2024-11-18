@@ -173,6 +173,12 @@
         border-radius: 0 0 10px 0;
       }
 
+      .modal-deep {
+        border-top: solid 1px #D9D9D9;
+        flex-grow: 1;
+        cursor: pointer;
+      }
+
 
       .hide {
         display: none !important;
@@ -262,34 +268,72 @@
               <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
             </div>
 
+            <!-- 이미지 출력부분 -->
             <div id="modalContentLeftImg" class="modal-content-left-img hide">
               <div id="modalContentLeftImgView" class="modal-content-left-img-view"></div>
               <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
             </div>
           </div>
 
-          <div id="modalContentRight" class="modal-content-right hide"></div>
+          <!-- 모달 글쓰기 -->
+          <div id="modalContentRight" class="modal-content-right hide">
+            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; background-color: #eaff758c; display: flex; flex-direction: column;" >
+
+              <!-- 글 작성자 출력 -->
+              <div>
+                <div>profileImg</div>
+                <div>memberNickName</div>
+              </div>
+
+              <!-- 글 작성부분 -->
+              <div></div>
+
+              <!-- 이모지 버튼과 글자수 출력부분 -->
+              <div></div>
+
+
+              <div>맨아래 24px 높이 여백</div>
+
+            </div>
+          </div>
 
         </div>
       </div>
     </div>
+    
 
-    <div id="test1" style="top:0; left:0; right:0; bottom: 0; background-color: #000000a6; width: 100%; height: 100%; position: absolute; z-index: 5; align-items: center; justify-content: center;" class="hide"> 
-      <!-- 이렇게 주면 고장난다... 그럼 어띃게 하냐... 1. visibility 를 이용하고 포인터 이벤트를 모조리 막아버린다 ==> 이벤트 재선언 해야하는지 테스트 -->
-       <!-- 2. 함수를 조금 더 꼬아본다 ==> 처음은 display none 이었다가... 클릭하면 none 을 없에고... 다시 누르면... ==> 이게 더 나아보임 -->
-      <div id="test2" onclick="document.getElementById('test1').classList.add('hide')" style="top:0; left:0; right:0; bottom: 0; background-color: #00ff00a6; width: 100%; height: 100%; position: absolute; z-index: 5;"></div>
+    <!-- 2nd 모달 -->
+    <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
+      <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
       <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
-        <div style="width: 100%; height: 106px; display: flex; flex-direction: column;"></div>
-        <div></div>
-        <div></div>
+        <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
+          <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
+          <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
+        </div>
+        <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
+        <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
       </div>
-      <!-- Z index 가 5 초과인 삭제창 모달을 등록하고, 배경 클릭시 사라질 것임. 만약 모달창 아무데나 눌러서 사라지면 하나를 더 만들어볼것 -->
-       <!-- 모달 창 전체 어디를 눌러도 사라지므로, 뒷배경에 해당하는 동일 우선순위의 배경창을 하나 더 만들어야함 -->
     </div>
 
   </div>
 
   <script>
+
+    const modalOverlay = document.getElementById("modalOverlay");
+
+    const modalContent = document.getElementById("modalContent");
+    const modalContentDeep = document.getElementById("modalContentDeep");
+
+    const modalTop = document.getElementById("modalContentTop");
+    const modalTopPrev = document.getElementById("modalContentTopPrev");
+    const modalTopText = document.getElementById("modalContentTopText");
+    const modalTopNext = document.getElementById("modalContentTopNext");
+
+    const modalLeft = document.getElementById("modalContentLeft");
+    const modalRight = document.getElementById("modalContentRight");
+
+    let filename = "등록 시도한 파일의 이름.확장자"
+    let flag = 0;
     // 이벤트 경우의 수가 너무 많다.......................................................................
     // 아아아아아악.......................................................................................
 
@@ -306,22 +350,10 @@
       modalCloseAlert();
 
     });
-
-    function modalCloseAlert() {
-      if(modalProgress > 1) {
-        // 삭제하시겠습니까? 모달
-        // 진행중인 내용이 모두 사라집니다
-        // 확인 취소
-        // 취소를 누르면 삭제? 모달 제거 + break;
-
-        if(!confirm('얍')) {
-          test1.classList.add('hide');
-          return;
-        }
-      }
-      console.log("최외곽 모달창 닫기");
-      document.getElementById("modalOverlay").classList.add("hide");
-    }
+    
+    document.getElementById("modalContentDeepBackground").addEventListener("click", () => {
+      modalContentDeep.classList.add('hide');
+    })
 
     // 모달 반투명 배경 클릭
     document.getElementById("modalOverlayBackground").addEventListener("click", () => {
@@ -332,10 +364,9 @@
 
     // 사진 추가 버튼 클릭  ==================================================================================================================================
     document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
-      let a = confirm("이미지 삽입은 테스트중");
 
-      if(a === true) modalWithImg();
-      if(a === false) modalError();
+      if(confirm("이미지 삽입은 테스트중")) modalWithImg();
+      else modalError();
     });
 
     let modalProgress = 1;
@@ -344,22 +375,6 @@
     // 2. 순서변경
     // 3. 이미지 편집
     // 4. 글 등록
-
-
-
-    const modalContent = document.getElementById("modalContent");
-
-    const modalTop = document.getElementById("modalContentTop");
-    const modalTopPrev = document.getElementById("modalContentTopPrev");
-    const modalTopText = document.getElementById("modalContentTopText");
-    const modalTopNext = document.getElementById("modalContentTopNext");
-
-    const modalLeft = document.getElementById("modalContentLeft");
-    const modalRight = document.getElementById("modalContentRight");
-
-    const filename = "등록 시도한 파일의 이름.확장자"
-
-
 
     // 이벤트 넣을때는 매우 신중하게!
     
@@ -371,19 +386,20 @@
       modalTop.style.width = "734px";
       modalRight.classList.add("hide");
 
-      document.getElementById('modalOverlay').classList.remove("hide");
+      modalOverlay.classList.remove("hide");
       document.getElementById("modalContentLeftInner").classList.remove("hide");
       document.getElementById("modalPostNew").classList.remove("hide");
       document.getElementById("modalPostErr").classList.add("hide");
 
-      document.getElementById("modalContentTopNext").classList.add("hide");
-      document.getElementById("modalContentTopPrev").classList.add("hide");
+      modalTopNext.classList.add("hide");
+      modalTopPrev.classList.add("hide");
 
       modalTopText.innerText = "새 게시물 만들기";
       document.getElementById("modalContentLeftInnerText").innerText = "사진을 여기에 끌어다 놓으세요."
       document.getElementById("modalContentLeftInnerButton").innerText = "컴퓨터에서 선택"
 
       modalProgress = 1;
+      disableScroll();
     }
 
     function modalError() {
@@ -393,8 +409,8 @@
       document.getElementById("modalPostNew").classList.add("hide");
       document.getElementById("modalPostErr").classList.remove("hide");
 
-      document.getElementById("modalContentTopNext").classList.add("hide");
-      document.getElementById("modalContentTopPrev").classList.add("hide");
+      modalTopNext.classList.add("hide");
+      modalTopPrev.classList.add("hide");
       
       modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
       document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
@@ -410,9 +426,12 @@
       document.getElementById("modalContentLeftInner").classList.add("hide");
       document.getElementById("modalContentLeftImg").classList.remove("hide");
 
-      document.getElementById("modalContentTopPrev").classList.remove("hide");
-                              // 해결 방법: 이벤트 리스너는 한 번만 등록하고, 필요 시 removeEventListener를 사용하거나 한 번만 실행되도록 합니다.
-      document.getElementById("modalContentTopNext").classList.remove("hide");
+      modalTopNext.classList.remove("hide");
+      modalTopPrev.classList.remove("hide");
+
+      modalContent.style.width = "734px";
+      modalTop.style.width = "734px";
+      modalRight.classList.add("hide");
       
 
       modalTopText.innerText = "이미지 순서 변경";
@@ -433,6 +452,7 @@
       modalTop.style.width = "1074px";
       modalLeft.style.borderRadius = "0 0 0 10px";
       modalRight.classList.remove("hide");
+      modalTopText.innerText = "게시글 등록";
 
       modalProgress = 4;
     }
@@ -444,7 +464,7 @@
         // case 3 : modalWithImg(); break;
         // case 4 : modalImgEdit(); break;
         case 4 : modalWithImg(); break;
-        default : break;
+        default : console.log("뒤로가기 버튼 클릭"); break;
       }
     });
 
@@ -456,15 +476,64 @@
 
         case 4 : // 게시글 등록...
         
-        default : break;
+        default : console.log("다음 버튼 클릭"); break;
       }
     });
 
+    function modalCloseAlert() {
+      if(modalProgress > 1) {
+        modalContentDeep.classList.remove("hide");
+        return;
+      }
+      modalOverlay.classList.add("hide");
+      enableScroll();
+    }
+
+    document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
+      modalContentDeep.classList.add("hide");
+      modalOverlay.classList.add("hide");
+      enableScroll();
+    });
+
+    document.getElementById("modalContentDeepCancel").addEventListener("click", () => {
+      modalContentDeep.classList.add("hide");
+    });
+
+
+
+
+    // 스크롤을 방지하는 함수
+    function preventScroll(event) {
+      event.preventDefault();
+    }
+
+    // 스크롤 비활성화
+    function disableScroll() {
+        document.addEventListener('wheel', preventScroll, { passive: false });
+    }
+
+    // 스크롤 활성화
+    function enableScroll() {
+        document.removeEventListener('wheel', preventScroll);
+    }
+
+    function enableElementScroll(element) {
+      element.addEventListener('wheel', function(event) {
+        // 모달창이 열리면, 전체 페이지에서 스크롤을 할 수 없도록 하고
+        // 글쓰기 모달창 우측부분에서만 스크롤 가능하도록 수정
+        if (element.scrollHeight > element.clientHeight) {
+          event.stopPropagation();
+        }
+      }, { passive: false });
+    }
+  enableElementScroll(document.getElementById('modalContentScrollable'));
 
   </script>
 </body>
 </html>
 
+<!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록, 
+     게시글 등록글 글자수 카운트 이벤트 , 게시글 등록 백엔드 마무리 + 이모지 버튼 이벤트 수정 및 적용 -->
 
 
-    <!-- // <form enctype="multipart/form-data" method="POST" role="presentation"><input accept="image/jpeg,image/png,image/heic,image/heif" multiple="" type="file"></form> -->
+<!-- // <form enctype="multipart/form-data" method="POST" role="presentation"><input accept="image/jpeg,image/png,image/heic,image/heif" multiple="" type="file"></form> -->
