@@ -17,144 +17,123 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailServiceImpl implements EmailService {
 
-	// 상수형 필드 선언
-	private final JavaMailSender mailSender;
-	// EmailConfig 내용이 적용된 이메일 발송이 가능한 객체(Bean)
-	private final RedisUtil redisUtil;
-	// Redis(InMemory DB) CRUD 할 수 있는 기능을 제공하는 객체(Bean)
-	private final SpringTemplateEngine templateEngine;
-	// 자바에서 타임리프를 사용할 수 있게하는 객체(Bean)
-	// html코드를 Java로 읽어올 수 있음
+    private final JavaMailSender mailSender; // 메일 발송 도구
+    private final RedisUtil redisUtil; // Redis 유틸리티
+    private final SpringTemplateEngine templateEngine; // 타임리프 템플릿 엔진
 
-	@Override
-	public int sendEmail(String htmlName, String email) {
-		try {
-			String emailTitle = null; // 발송되는 이메일 제목
-			String authKey = createAuthKey(); // 생성된 인증 번호
+    @Override
+    public int sendEmail(String htmlName, String email) {
+        try {
+            String emailTitle = getEmailTitle(htmlName); // 이메일 제목 결정
+            if (emailTitle == null) {
+                log.error("지원하지 않는 이메일 유형: {}", htmlName);
+                return 0; // 지원하지 않는 유형일 경우 실패
+            }
 
-			// 이메일 발송 시 사용할 html 파일의 이름에 따라
-			// 이메일 제목, 내용을 다르게 설정
-			switch (htmlName) {
-			case "signUp":
-				emailTitle = " 회원가입 인증번호 입니다";
-				break;
+            String authKey = createAuthKey(); // 인증번호 생성
+            String emailContent = loadHtml(authKey, htmlName); // HTML 내용 로드
 
-			case "findPw":
-				emailTitle = " 비밀번호 찾기 인증번호 입니다.";
-				break;
-			}
+            // 메일 발송 준비
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject(emailTitle);
+            helper.setText(emailContent, true);
 
-			/*----- 메일 발송 -----*/
+            // CID를 통해 이메일에 이미지 첨부
+            helper.addInline("logo", new ClassPathResource("static/images/DMLOGO.png"));
 
-			// MimeMessage : 메일 발송 객체
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
+            // 메일 발송
+            mailSender.send(mimeMessage);
 
-			// MimeMessageHelper :
-			// Spring에서 제공하는 메일 발송 도우미
+            // Redis에 인증번호 저장 (유효 기간: 5분)
+            redisUtil.setValue(email, authKey, 60 * 5);
+            log.info("인증번호 [{}]가 이메일 [{}]로 발송되었습니다.", authKey, email);
 
-			// 매개변수 1 : MimeMessage
-			// 매개변수 2 : 이메일에 파일 첨부 여부
-			// 매개변수 3 : 발송되는 이메일의 문자 인코딩
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            return 1; // 성공
+        } catch (Exception e) {
+            log.error("이메일 발송 중 오류 발생: {}", e.getMessage(), e);
+            return 0; // 실패
+        }
+    }
 
-			helper.setTo(email); // 받는사람 이메일 세팅
-			helper.setSubject(emailTitle); // 이메일 제목 세팅
-			helper.setText(loadHtml(authKey, htmlName), true); // 이메일 내용 세팅
-			// 매개 변수 1 : 이메일 내용
-			// 매개 변수 2 : HTML 코드 해석 여부 지정(true == 해석 O)
+    /**
+     * 이메일 유형에 따른 제목 반환
+     * 
+     * @param htmlName 이메일 유형
+     * @return 이메일 제목
+     */
+    private String getEmailTitle(String htmlName) {
+        switch (htmlName) {
+            case "signUp":
+                return "CodeGram 인증번호입니다.";
+//            case "login":
+//                return "CodeGram 비밀번호 찾기 인증번호입니다.";
+            default:
+                return null; // 지원하지 않는 유형
+        }
+    }
 
-			// 지정된 HTML 파일에 authKey가 첨부된 후
-			// HTML 코드 전체가 하나의 String으로 변환되서 반환 받은 후
-			// 변환된 String을 메일 내용으로 세팅
+    /**
+     * 인증번호 생성 (영어 대문자 + 소문자 + 숫자 6자리)
+     * 
+     * @return 생성된 인증번호
+     */
+    private String createAuthKey() {
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int type = (int) (Math.random() * 3); // 0: 숫자, 1: 대문자, 2: 소문자
+            if (type == 0) {
+                key.append((int) (Math.random() * 10)); // 숫자
+            } else {
+                char base = (type == 1) ? 'A' : 'a'; // 대문자 또는 소문자
+                key.append((char) (base + (Math.random() * 26)));
+            }
+        }
+        return key.toString();
+    }
 
-			// CID(Content-ID)를 이용해 메일에 이미지 첨부
-			helper.addInline("logo", new ClassPathResource("static/images/DMLOGO.png"));
+    /**
+     * HTML 템플릿 로드 및 인증번호 삽입
+     * 
+     * @param authKey 인증번호
+     * @param htmlName HTML 파일 이름
+     * @return HTML 문자열
+     * @throws FileNotFoundException 파일을 찾을 수 없을 경우 예외 발생
+     */
+    private String loadHtml(String authKey, String htmlName) throws FileNotFoundException {
+        // HTML 파일 확인
+        if (!new ClassPathResource("templates/email/" + htmlName + ".html").exists()) {
+            throw new FileNotFoundException("HTML 템플릿 파일을 찾을 수 없습니다: " + htmlName);
+        }
 
-			// 메일 발송하기
-			mailSender.send(mimeMessage);
+        // 타임리프 Context 생성 및 인증번호 삽입
+        Context context = new Context();
+        context.setVariable("authKey", authKey);
 
-			// Redis에 이메일, 인증번호 저장(5분 후 만료)
-			redisUtil.setValue(email, authKey, 60 * 5);
+        // HTML 템플릿 처리
+        return templateEngine.process("email/" + htmlName, context);
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0; // 예외 발생 == 실패 == 0 반환
-		}
+    @Override
+    public boolean checkAuthKey(Map<String, String> map) {
+        String email = map.get("email");
+        String authKey = map.get("authKey");
 
-		return 1; // 예외 발생 X == 성공 == 1 반환
-	}
+        // Redis에서 인증번호 조회
+        if (!redisUtil.hasKey(email)) {
+            log.warn("Redis에 이메일 [{}]가 존재하지 않습니다.", email);
+            return false;
+        }
 
-	/**
-	 * 인증번호 생성 (영어 대문자 + 소문자 + 숫자 6자리)
-	 * 
-	 * @return authKey
-	 */
-	public String createAuthKey() {
-		String key = "";
-		for (int i = 0; i < 6; i++) {
+        String storedAuthKey = redisUtil.getValue(email).trim();
+        boolean isMatch = authKey.equals(storedAuthKey);
 
-			int sel1 = (int) (Math.random() * 3); // 0:숫자 / 1,2:영어
+        log.info("입력된 인증번호 [{}], 저장된 인증번호 [{}], 결과 [{}]", authKey, storedAuthKey, isMatch);
 
-			if (sel1 == 0) {
-
-				int num = (int) (Math.random() * 10); // 0~9
-				key += num;
-
-			} else {
-
-				char ch = (char) (Math.random() * 26 + 65); // A~Z
-
-				int sel2 = (int) (Math.random() * 2); // 0:소문자 / 1:대문자
-
-				if (sel2 == 0) {
-					ch = (char) (ch + ('a' - 'A')); // 대문자로 변경
-				}
-
-				key += ch;
-			}
-		}
-		return key;
-	}
-
-// HTML 파일을 읽어와 String(Java코드)으로 변환 (타임리프 적용)
-	public String loadHtml(String authKey, String htmlName) throws FileNotFoundException {
-		// HTML 템플릿 파일 존재 여부 확인
-		if (!new ClassPathResource("templates/email/" + htmlName + ".html").exists()) {
-			throw new FileNotFoundException("HTML 템플릿 파일을 찾을 수 없습니다: " + htmlName);
-		}
-
-		// org.tyhmeleaf.Context 선택!!
-		Context context = new Context();
-
-		// 타임리프가 적용된 HTML에서 사용할 값 추가
-		context.setVariable("authKey", authKey);
-
-		// templates/email 폴더에서 htmlName과 같은
-		// .html 파일 내용을 읽어와 String으로 변환
-		return templateEngine.process("email/" + htmlName, context);
-
-	}
-
-	@Override
-	public boolean checkAuthKey(Map<String, String> map) {
-		String email = map.get("email");
-		String authKey = map.get("authKey");
-
-		// 1) Redis에 key가 입력된 email과 같은 데이터가 있는지 확인
-		if (redisUtil.hasKey(email) == false) { // 없을 경우
-			return false;
-		}
-		
-		System.out.println(redisUtil.getValue(email).trim());
-		System.out.println(authKey);
-		System.out.println(authKey.equals(redisUtil.getValue(email).trim()));
-		
-		// 2) Redis에 같은 key가 있다면 value를 얻어와
-		// 입력 받은 인증 번호와 비교
-		return redisUtil.getValue(email).trim().equals(authKey);
-
-	}
-
+        return isMatch;
+    }
 }

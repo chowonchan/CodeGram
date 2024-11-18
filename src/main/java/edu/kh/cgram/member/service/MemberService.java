@@ -16,8 +16,15 @@ public interface MemberService {
 
 	int idCheck(String id);
 	
+	int changePassword(String memberId, String newPassword); // 추가
+	
 	List<Member> searchMembersByName(String keyword);
 	
 	List<Member> searchMembersByNickname(String keyword);
 
+	Member findMemberByNameEmailAndBirth(String name, String email, String birthDate);
+
+	boolean sendUserIdToEmail(String email, String userId);
+	
+  Member findMemberByNameEmailBirthAndId(String name, String email, String birthDate, String memberId); // 추가
 }

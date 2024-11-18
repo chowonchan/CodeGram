@@ -8,64 +8,51 @@
 </head>
 <body>
 
-    <!-- 왼쪽 로그인 이미지 -->
-    <div class="login-image"></div>
+  <!-- 왼쪽 로그인 이미지 -->
+  <div class="login-image"></div>
 
-    <!-- 오른쪽 로그인 폼과 가입하기 섹션 -->
-    <section class="login-content">
-      <!-- 로그인 폼 -->
-      <div action="login" method="POST" name = "loginForm" id="loginFor" class="loginForm" >
-        
-        <!-- 로고 이미지 -->
-        <h2>CodeGram</h2>
-        <input type="text" name="memberId" placeholder="아이디">
-        <input type="password" name="memberPw" placeholder="비밀번호">
-        <button >로그인</button>
+  <!-- 오른쪽 로그인 폼과 가입하기 섹션 -->
+  <section class="login-content">
+    <!-- 로그인 폼 -->
+    <form id="loginForm" class="loginForm" method="POST" action="login">
+      <h2>CodeGram</h2>
+      <input type="text" name="memberId" placeholder="아이디" />
+      <input type="password" name="memberPw" placeholder="비밀번호" />
+      <button type="submit">로그인</button>
+      <div id="loginMessage"></div>
+      <div class="signup-find-area">
+        <a href="#" id="findIdLink">ID 찾기</a>
+        <div>/</div>
+        <a href="#" id="findPwLink">PW 찾기</a>
+      </div>
+      
+    </form>
 
-        <div class="signup-find-area">
-          <a href="#" onclick="openModal('idModal')">ID 찾기</a>
-          <div>/</div>
-          <a href="#" onclick="openModal('pwModal')">PW 찾기</a>
+    <!-- 모달 -->
+    <div id="findModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">×</span>
+        <h3 id="modalTitle">모달 제목</h3>
+        <p id="modalDescription">모달 설명</p>
+        <input type="text" id="nameInput" placeholder="이름 입력" />
+        <input type="email" id="emailInput" placeholder="이메일 입력" />
+        <input type="text" id="idInput" placeholder="아이디 입력" style="display: none;" />
+        <div class="signUp-input-area">
+          <select id="birthYear"></select>
+          <select id="birthMonth"></select>
+          <select id="birthDay"></select>
         </div>
+        <button id="findButton" type="button">찾기</button>
       </div>
-      <!-- ID 찾기 모달 -->
-      <div id="idModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal('idModal')">&times;</span>
-          <h3>ID 찾기</h3>
-          <p>가입한 이름과, 이메일, 생년원일을 입력하세요.</p>
-          <p> 
-            <input type="name" placeholder="이름 입력">
-            <input type="email" placeholder="이메일 입력">
-            <div class="signUp-input-area" style="display: flex; gap: 10px; justify-content: center;">
-              <select name="birthYear" id="birthYear"></select>
-              <select name="birthMonth" id="birthMonth"></select>
-              <select name="birthDay" id="birthDay"></select>
-            </div>
-          </p>
-          <button type="button">ID 찾기</button>
-        </div>
-      </div>
+    </div>
 
-      <!-- PW 찾기 모달 -->
-      <div id="pwModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal('pwModal')">&times;</span>
-          <h3>PW 찾기</h3>
-          <p>비밀번호 찾기 관련 정보를 입력하세요.</p>
-          <input type="email" placeholder="이메일 입력">
-          <button type="button">PW 찾기</button>
-        </div>
-      </div>
+    <!-- 가입하기 섹션 -->
+    <div class="signup-section">
+      계정이 없으신가요? <a href="terms">가입하기</a>
+    </div>
+  </section>
 
-      <!-- 가입하기 섹션 (로그인 폼 아래) -->
-      <div class="signup-section">
-        계정이 없으신가요? <a href="terms">가입하기</a>
-      </div>
-    </section>
-
-  <!-- 푸터 추가 -->
-  <!-- <th:block th:replace="푸터 좌표"></th:block> -->
 <script src="/js/member/login.js"></script>
 </body>
 </html>
+ 

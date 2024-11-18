@@ -20,26 +20,31 @@
           <div class="activity-list-title">
             <h3>내 활동</h3>
           </div>
-          <ul class="activity-list">
-              <li>
+          <div class="activity-list">
+              <a href="/myActivity/interactions">
                   <span>
                     <div class="fa-solid fa-comment"></div>
                     <p><strong>반응</strong><br><small style="color: #666666">좋아요, 댓글 및 회원님의 기타 반응을 검토하고 삭제합니다.</small></p>
                   </span>
-              </li>
-              <li>
+              </a>
+              <a href="/myActivity/posts">
                   <span>
                     <div class="fa-solid fa-folder"></div>
                     <p><strong>게시물</strong><br><small style="color: #666666">내가 올린 게시물을 보거나 보관하거나 삭제합니다.</small></p>
                   </span>
-              </li>
-          </ul>
+              </a>
+          </div>
       </div>
 
       <div class="activity-area">
         <div class="activity-area-title">
           <a href="#" class="fa-regular fa-heart"> 좋아요</a>
           <a href="#" class="fa-regular fa-comment"> 댓글</a>
+        </div>
+        <div class="post-sort">
+          <h4>최신순</h4>
+          <button class="sorted">정렬</button>
+          <button class="selected">선택</button>
         </div>
         <div class="posts-grid">
             <!-- 게시물 예제 -->

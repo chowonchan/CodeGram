@@ -29,7 +29,10 @@ public interface ChattingMapper {
 	List<Message> selectMessage(int chattingNo);
 
 	// 읽음 처리
-	int updateReadFlag(int chattingNo, int memberNo);
+	int updateReadFlag(@Param("chattingNo") int chattingNo, @Param("memberNo") int memberNo);
+
+	// 메시지 삽입
+	int insertMessage(Message msg);
 	
 	
 
