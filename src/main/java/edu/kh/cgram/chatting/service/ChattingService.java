@@ -16,4 +16,8 @@ public interface ChattingService {
 
 	List<Message> selectMessage(int chattingNo, int memberNo);
 
+	int insertMessage(Message msg);
+
+	int updateReadFlag(int chattingNo, int memberNo);
+
 }

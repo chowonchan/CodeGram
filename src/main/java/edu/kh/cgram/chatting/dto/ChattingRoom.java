@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class ChattingRoom {
 	
-  private int chattingRoomNo;
+  private int chatRoomNo;
   private String lastMessage;
   private String sendTime;
   private int partnerNo;

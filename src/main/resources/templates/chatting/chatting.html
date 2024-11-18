@@ -17,50 +17,59 @@
 
 
   <div class="chatting-area">
-    <ul class="chatting-list">
 
-      <h2 class="memberId" th:text="${session.loginMember.memberId}">내 아이디
-      </h2>
-      <button class="sendMessage2"><img src="/images/writeBtn.png"></button>
+    <div class="chatting-container">
 
-      <br>
-      <br>
-      <br>
-      <br>
+      <div class="chatting-header">
+        <h2 class="memberId" th:text="${session.loginMember.memberId}">내 아이디
+        </h2>
+        <button class="sendMessage2"><img src="/images/writeBtn.png"></button>
 
-      <h3 class="MessageTitle">메시지</h3>
+        <br>
+        <br>
+        <br>
+        <br>
 
-      
-      <th:block th:each="chatRoom : ${chatRoomList}">
+        <h3 class="MessageTitle">메시지</h3>
 
-      
+      </div>
 
-        <li class="chatting-item" th:chat-no="${chatRoom.chattingRoomNo}" th:partner-no="${chatRoom.partnerNo}">
-          <div class="item-header">
+      <ul class="chatting-list">
 
-            <div style="border-radius: 50%; object-fit: cover; border: 1px solid gray; overflow: hidden; display: flex;">
 
-              <img th:if="${chatRoom.partnerProfile}" class="list-profile" th:src="${chatRoom.partnerProfile}">
-  
-              <img th:unless="${chatRoom.partnerProfile}" class="list-profile" th:src="@{/images/defaultImg.png}" > 
-              
+
+        <th:block th:each="chatRoom : ${chatRoomList}">
+
+
+
+          <li class="chatting-item" th:chat-no="${chatRoom.chatRoomNo}" th:partner-no="${chatRoom.partnerNo}">
+            <div class="item-header">
+
+              <div
+                style="border-radius: 50%; object-fit: cover; border: 1px solid gray; overflow: hidden; display: flex;">
+
+                <img th:if="${chatRoom.partnerProfile}" class="list-profile" th:src="${chatRoom.partnerProfile}">
+
+                <img th:unless="${chatRoom.partnerProfile}" class="list-profile" th:src="@{/images/defaultImg.png}">
+
+              </div>
+
             </div>
-
-          </div>
-          <div class="item-body">
-            <p>
-              <span class="partner-name" th:text="${chatRoom.partnerName}">상대방 이름</span>
-              <span class="recent-send-time" th:text="${chatRoom.sendTime}">메세지 보낸 시간</span>
-            </p>
-            <div style="width: 50px;">
-              <p class="recent-message" th:text="${chatRoom.lastMessage}">메세지 내용</p>
-              <p th:if="${chatRoom.notReadCount > 0}" class="not-read-count" th:text="${chatRoom.notReadCount}"></p>
+            <div class="item-body">
+              <p>
+                <span class="partner-name" th:text="${chatRoom.partnerName}">상대방 이름</span>
+                <span class="recent-send-time" th:text="${chatRoom.sendTime}">메세지 보낸 시간</span>
+              </p>
+              <div style="width: 50px;">
+                <p class="recent-message" th:text="${chatRoom.lastMessage}">메세지 내용</p>
+                <p th:if="${chatRoom.notReadCount > 0}" class="not-read-count" th:text="${chatRoom.notReadCount}"></p>
+              </div>
             </div>
-          </div>
-        </li>
+          </li>
 
-      </th:block>
-    </ul>
+        </th:block>
+      </ul>
+    </div>
 
 
     <div class="chat-container">
@@ -79,14 +88,16 @@
 
 
       <!-- 메시지들이 여기에 추가됩니다 -->
-      <ul class="chat-messages" id="chatMessages">
-
-      </ul>
+        <ul class="chat-messages" id="chatMessages">
 
 
+        </ul>
 
 
-      
+
+
+
+
       <div class="chat-input">
         <label class="upload-label" for="imageUpload">📷</label>
         <input type="file" id="imageUpload" class="image-upload" accept="image/*">
@@ -123,12 +134,17 @@
     </div>
   </div>
 
-	<script th:inline="javascript">
-		const userDefaultImage = /*[[@{/images/defaultImg.png}]]*/ '기본 이미지';
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+  <script th:inline="javascript">
+    const userDefaultImage = /*[[@{/images/defaultImg.png}]]*/ '기본 이미지';
+    const notificationLoginCheck
+      = /*[[${session.loginMember} ? true : false]]*/ false;
 
     const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ '로그인 회원 번호';
-    const loginMemberNickname = /*[[${session.loginMember?.memberNickname}]]*/ '로그인 회원 닉네임';
-	</script>
+    const loginMemberName = /*[[${session.loginMember?.memberName}]]*/ '로그인 회원 닉네임';
+  </script>
 
   <script src="/js/chatting/chatting.js"></script>
 
