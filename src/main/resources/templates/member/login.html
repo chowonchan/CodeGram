@@ -23,40 +23,40 @@
         <button >로그인</button>
 
         <div class="signup-find-area">
-          <a href="#" onclick="openModal('idModal')">ID 찾기</a>
+          <!-- ID 찾기 -->
+          <a href="#" onclick="openModal('id')">ID 찾기</a>
           <div>/</div>
-          <a href="#" onclick="openModal('pwModal')">PW 찾기</a>
+          <!-- PW 찾기 -->
+          <a href="#" onclick="openModal('pw')">PW 찾기</a>
         </div>
+        
       </div>
-      <!-- ID 찾기 모달 -->
-      <div id="idModal" class="modal">
+      <!-- 통합 모달 -->
+      <div id="findModal" class="modal">
         <div class="modal-content">
-          <span class="close" onclick="closeModal('idModal')">&times;</span>
-          <h3>ID 찾기</h3>
-          <p>가입한 이름과, 이메일, 생년원일을 입력하세요.</p>
-          <p> 
-            <input type="name" placeholder="이름 입력">
-            <input type="email" placeholder="이메일 입력">
+          <!-- 닫기 버튼 -->
+          <span class="close" onclick="closeModal()">×</span>
+          <h3 id="modalTitle">ID 찾기</h3>
+          <p id="modalDescription">가입한 이름, 이메일, 생년월일을 입력하세요.</p>
+          <div>
+            <!-- 이름 입력 -->
+            <input type="text" id="nameInput" placeholder="이름 입력">
+            <!-- 이메일 입력 -->
+            <input type="email" id="emailInput" placeholder="이메일 입력">
+            <!-- 생년월일 선택 -->
             <div class="signUp-input-area" style="display: flex; gap: 10px; justify-content: center;">
-              <select name="birthYear" id="birthYear"></select>
-              <select name="birthMonth" id="birthMonth"></select>
-              <select name="birthDay" id="birthDay"></select>
+              <select id="birthYear"></select>
+              <select id="birthMonth"></select>
+              <select id="birthDay"></select>
             </div>
-          </p>
-          <button type="button">ID 찾기</button>
+            <!-- 비밀번호 찾기 모드에서 표시되는 필드 -->
+            <input type="text" id="idInput" placeholder="아이디 입력" style="display: none;">
+          </div>
+          <!-- 찾기 버튼 -->
+          <button id="findButton" type="button">ID 찾기</button>
         </div>
       </div>
 
-      <!-- PW 찾기 모달 -->
-      <div id="pwModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal('pwModal')">&times;</span>
-          <h3>PW 찾기</h3>
-          <p>비밀번호 찾기 관련 정보를 입력하세요.</p>
-          <input type="email" placeholder="이메일 입력">
-          <button type="button">PW 찾기</button>
-        </div>
-      </div>
 
       <!-- 가입하기 섹션 (로그인 폼 아래) -->
       <div class="signup-section">

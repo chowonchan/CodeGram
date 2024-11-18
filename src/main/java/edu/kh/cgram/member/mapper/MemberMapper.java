@@ -22,4 +22,15 @@ public interface MemberMapper {
 	List<Member> searchMembersByName(@Param("chosungPattern") String chosungPattern);
 	
   List<Member> searchMembersByNickname(String keyword);
+
+  Member findMemberByNameEmailAndBirth(
+  		@Param("name") String name,
+      @Param("email") String email,
+      @Param("birthDate") String birthDate);
+  
+  Member findMemberByNameEmailBirthAndId(@Param("name") String name, @Param("email") String email,
+      @Param("birthDate") String birthDate, @Param("memberId") String memberId);
+
+int updatePassword(@Param("memberId") String memberId, @Param("newPassword") String newPassword);
+
 }

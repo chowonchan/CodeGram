@@ -50,6 +50,31 @@
 	    )
 	</insert>
 	
+	<select id="findMemberByNameEmailAndBirth" parameterType="map" resultType="Member">
+    SELECT MEMBER_ID, MEMBER_NAME, MEMBER_EMAIL, MEMBER_BIRTH
+    FROM MEMBER
+    WHERE MEMBER_NAME = #{name}
+      AND MEMBER_EMAIL = #{email}
+      AND MEMBER_BIRTH = #{birthDate}
+      AND MEMBER_DEL_BAN_FL = '1'
+	</select>
+	
+	<select id="findMemberByNameEmailBirthAndId" parameterType="map" resultType="Member">
+    SELECT *
+    FROM MEMBER
+    WHERE MEMBER_NAME = #{name}
+      AND MEMBER_EMAIL = #{email}
+      AND MEMBER_BIRTH = #{birthDate}
+      AND MEMBER_ID = #{memberId}
+	</select>
+
+<update id="updatePassword" parameterType="map">
+    UPDATE MEMBER
+    SET MEMBER_PW = #{newPassword}
+    WHERE MEMBER_ID = #{memberId}
+</update>
+		
+	
 	
 	<!-- 이메일 중복 검사 -->
 	<select id="emailCheck" resultType="_int">
