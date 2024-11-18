@@ -1,147 +1,287 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // HTML 요소 가져오기
+  /* ------------------------------- 로그인 기능 ------------------------------- */
   const loginForm = document.getElementById("loginFor");
   const memberIdInput = document.querySelector("input[name='memberId']");
   const memberPwInput = document.querySelector("input[name='memberPw']");
   const loginButton = loginForm.querySelector("button");
-  const signupFindArea = document.querySelector(".signup-find-area");
   const loginMessageDiv = document.createElement("div");
   loginMessageDiv.id = "loginMessage";
-  loginForm.insertBefore(loginMessageDiv, signupFindArea);
+  loginForm.insertBefore(loginMessageDiv, loginForm.lastElementChild);
 
-  // 유효성 검사 및 메시지 표시 함수
-  function showMessage(message, type = "error") {
-    loginMessageDiv.innerText = message;
-    loginMessageDiv.className = type; // "error" 또는 "success"
-  }
-
-  // 로그인 버튼 클릭 시 유효성 검사 및 로그인 요청
+  // 로그인 버튼 클릭 이벤트
   loginButton.addEventListener("click", (event) => {
     event.preventDefault();
 
     const memberId = memberIdInput.value.trim();
     const memberPw = memberPwInput.value.trim();
 
-    // 기본 유효성 검사
+    // 유효성 검사
     if (memberId === "") {
-      showMessage("아이디를 입력해 주세요.");
+      showMessage("아이디를 입력해 주세요.", "error");
       memberIdInput.focus();
       return;
     }
 
     if (memberPw === "") {
-      showMessage("비밀번호를 입력해 주세요.");
+      showMessage("비밀번호를 입력해 주세요.", "error");
       memberPwInput.focus();
       return;
     }
 
-    // 서버로 로그인 요청 보내기
-    fetch("/member/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({ memberId, memberPw }),
+  // 서버로 로그인 요청
+  fetch("/member/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ memberId, memberPw }),
+  })
+    .then((response) => {
+      if (response.redirected) {
+        showMessage("로그인 성공!", "success");
+        setTimeout(() => {
+          window.location.href = response.url; // 메인 페이지로 리다이렉트
+        }, 1000);
+        return;
+      } 
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("로그인 요청 실패");
     })
-      .then((response) => {
-        console.log("응답 상태 코드:", response.status);
-        if (response.redirected) {
-          window.location.href = response.url; // 성공 시 리다이렉트
-        } else if (response.ok) {
-          return response.json(); // JSON 응답을 파싱
-        }
-        throw new Error("로그인 요청 실패");
-      })
-      .then((data) => {
-        if (data && data.message) {
-          showMessage(data.message, "error"); // 서버에서 받은 실패 메시지 표시
-        }
-      })
-      .catch((error) => {
-        console.error("오류:", error);
-        showMessage("서버와의 통신에 문제가 발생했습니다.", "error");
-      });
+    .then((data) => {
+      if (data && data.message) {
+        showMessage(data.message, "error");
+        setTimeout(() => {
+          window.location.href = "/member/login"; // 로그인 페이지로 리다이렉트
+        }, 1000);
+      }
+    })
+    .catch((error) => {
+      console.error("오류:", error);
+      showMessage("서버와의 통신에 문제가 발생했습니다.", "error");
+    });
   });
-});
 
+  // 로그인 메시지 표시 함수
+  function showMessage(message, type = "error") {
+    loginMessageDiv.innerText = message;
+    loginMessageDiv.className = type;
+  }
 
-function openModal(modalId) {
-  document.getElementById(modalId).style.display = 'flex';
+  /* ----------------------------- 모달 표시 기능 ----------------------------- */
+  const modal = document.getElementById("findModal");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDescription = document.getElementById("modalDescription");
+  const idInput = document.getElementById("idInput");
+
+  // 모달 열기 함수
+  window.openModal = function (mode) {
+    if (mode === "id") {
+      modalTitle.innerText = "ID 찾기";
+      modalDescription.innerText = "가입한 이름, 이메일, 생년월일을 입력하세요.";
+      idInput.style.display = "none";
+      document.getElementById("findButton").innerText = "ID 찾기";
+    } else if (mode === "pw") {
+      modalTitle.innerText = "PW 찾기";
+      modalDescription.innerText = "가입한 이름, 이메일, 생년월일, 그리고 아이디를 입력하세요.";
+      idInput.style.display = "block";
+      document.getElementById("findButton").innerText = "비밀번호 변경";
+    }
+    modal.style.display = "flex"; // 모달 표시
+  };
+
+  // 모달 닫기 함수
+  window.closeModal = function () {
+    modal.style.display = "none";
+
+    // 입력 필드 초기화 (존재 여부 확인)
+    const nameInput = document.getElementById("nameInput");
+    const emailInput = document.getElementById("emailInput");
+    const birthYear = document.getElementById("birthYear");
+    const birthMonth = document.getElementById("birthMonth");
+    const birthDay = document.getElementById("birthDay");
+    const idInput = document.getElementById("idInput");
+
+    if (nameInput) nameInput.value = "";
+    if (emailInput) emailInput.value = "";
+    if (birthYear) birthYear.value = "";
+    if (birthMonth) birthMonth.value = "";
+    if (birthDay) birthDay.value = "";
+    if (idInput) idInput.value = "";
+};
+
+  /* ----------------------------- ID/PW 찾기 기능 ----------------------------- */
+  document.getElementById("findButton").addEventListener("click", () => {
+    const mode = modalTitle.innerText.includes("PW") ? "pw" : "id";
+    const name = document.getElementById("nameInput").value.trim();
+    const email = document.getElementById("emailInput").value.trim();
+    const birthYear = document.getElementById("birthYear").value;
+    const birthMonth = document.getElementById("birthMonth").value;
+    const birthDay = document.getElementById("birthDay").value;
+    const id = document.getElementById("idInput").value.trim();
+    const birthDate = `${birthYear}-${birthMonth.padStart(2, "0")}-${birthDay.padStart(2, "0")}`;
+
+    if (!name || !email || !birthYear || !birthMonth || !birthDay || (mode === "pw" && !id)) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      alert("유효한 이메일을 입력해주세요.");
+      return;
+    }
+
+    if (mode === "id") {
+      fetch("/member/findId", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, birthDate }),
+      })
+        .then((response) => {
+          if (response.ok) return response.json();
+          throw new Error("아이디 찾기 요청 실패");
+        })
+        .then((data) => {
+          if (data.success) {
+            alert("아이디가 이메일로 전송되었습니다.");
+            closeModal();
+          } else {
+            alert(data.message || "일치하는 유저 정보를 찾을 수 없습니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("오류:", error);
+          alert("서버와 통신하는 중 오류가 발생했습니다.");
+        });
+    } else if (mode === "pw") {
+      fetch("/member/verifyUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, birthDate, id }),
+      })
+        .then((response) => {
+          if (response.ok) return response.json();
+          throw new Error("유저 확인 실패");
+        })
+        .then((data) => {
+          if (data.success) {
+            openChangePasswordModal(id); // 유효한 memberId 전달
+          } else {
+            alert(data.message || "일치하는 유저를 찾을 수 없습니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("오류:", error);
+          alert("서버와의 통신 중 오류가 발생했습니다.");
+        });
+    }
+    
+  });
+// 비밀번호 변경 모달 열기
+function openChangePasswordModal(memberId) {
+  const modal = document.getElementById("findModal"); // 기존 모달을 재활용
+  modal.classList.add("change-password-modal"); // 비밀번호 변경 모달 스타일 추가
+
+  // 동적 HTML 생성
+  const modalContent = `
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">×</span>
+      <h3>비밀번호 변경</h3>
+      <p>새 비밀번호를 입력하고 확인해주세요.</p>
+      <input type="password" id="newPassword" placeholder="새 비밀번호 입력" />
+      <input type="password" id="confirmPassword" placeholder="비밀번호 확인" />
+      <button id="changePasswordButton">비밀번호 변경</button>
+    </div>
+  `;
+
+  modal.innerHTML = modalContent;
+  modal.style.display = "flex";
+
+  // 비밀번호 변경 버튼 클릭 이벤트에 memberId 전달
+  document
+    .getElementById("changePasswordButton")
+    .addEventListener("click", () => changePassword(memberId));
 }
 
-function closeModal(modalId) {
-  document.getElementById(modalId).style.display = 'none';
+// 비밀번호 변경 요청
+function changePassword(memberId) {
+  const newPassword = document.getElementById("newPassword").value.trim();
+  const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+  if (!newPassword || !confirmPassword) {
+    alert("모든 필드를 입력해주세요.");
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
+  fetch("/member/changePassword", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ memberId, newPassword }),
+  })
+    .then((response) => {
+      if (response.ok) return response.json();
+      throw new Error("비밀번호 변경 실패");
+    })
+    .then((data) => {
+      if (data.success) {
+        alert("비밀번호가 성공적으로 변경되었습니다.");
+        closeModal();
+      } else {
+        alert(data.message || "비밀번호 변경 중 문제가 발생했습니다.");
+      }
+    })
+    .catch((error) => {
+      console.error("오류:", error);
+      alert("서버와의 통신 중 오류가 발생했습니다.");
+    });
 }
 
-// 모달 창 외부 클릭 시 닫기
-window.onclick = function(event) {
-  const modals = document.getElementsByClassName("modal");
-  for (let modal of modals) {
-    if (event.target === modal) {
-      modal.style.display = "none";
+  /* ----------------------------- 생년월일 초기화 ----------------------------- */
+  function initializeBirthDate() {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+
+    const birthYear = document.getElementById("birthYear");
+    const birthMonth = document.getElementById("birthMonth");
+    const birthDay = document.getElementById("birthDay");
+
+    // 기본 옵션 추가
+    birthYear.innerHTML = '<option value="" disabled selected>연도 선택</option>';
+    birthMonth.innerHTML = '<option value="" disabled selected>월 선택</option>';
+    birthDay.innerHTML = '<option value="" disabled selected>일 선택</option>';
+
+    // 연도 추가
+    for (let year = currentYear; year >= 1900; year--) {
+      birthYear.innerHTML += `<option value="${year}">${year}년</option>`;
+    }
+
+    // 월 추가
+    for (let month = 1; month <= 12; month++) {
+      birthMonth.innerHTML += `<option value="${month.toString().padStart(2, "0")}">${month}월</option>`;
+    }
+
+    // 연도 및 월 변경 시 일수 업데이트
+    birthYear.addEventListener("change", updateDays);
+    birthMonth.addEventListener("change", updateDays);
+
+    function updateDays() {
+      const year = birthYear.value;
+      const month = birthMonth.value;
+
+      birthDay.innerHTML = '<option value="" disabled selected>일 선택</option>';
+      if (year && month) {
+        const daysInMonth = new Date(year, month, 0).getDate();
+        for (let day = 1; day <= daysInMonth; day++) {
+          birthDay.innerHTML += `<option value="${day.toString().padStart(2, "0")}">${day}일</option>`;
+        }
+      }
     }
   }
-}
 
-// 현재 날짜로 기본값 설정
-window.onload = function() {
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1; // 월은 0부터 시작하므로 +1
-  const currentDate = today.getDate();
-  
-  // 연도 옵션 생성 (1900년부터 현재 연도까지)
-  const birthYear = document.getElementById("birthYear");
-  for (let year = currentYear; year >= 1900; year--) {
-  const option = document.createElement("option");
-  option.value = year;
-  option.text = year + "년";
-  birthYear.appendChild(option);
-  }
-  birthYear.value = currentYear;
-  
-  // 월 옵션 생성 (1월부터 12월까지)
-  const birthMonth = document.getElementById("birthMonth");
-  for (let month = 1; month <= 12; month++) {
-  const option = document.createElement("option");
-  option.value = month;
-  option.text = month + "월";
-  birthMonth.appendChild(option);
-  }
-  birthMonth.value = currentMonth;
-  
-  // 일 옵션 생성 (1일부터 31일까지)
-  const birthDay = document.getElementById("birthDay");
-  for (let day = 1; day <= 31; day++) {
-  const option = document.createElement("option");
-  option.value = day;
-  option.text = day + "일";
-  birthDay.appendChild(option);
-  }
-  birthDay.value = currentDate;
-  
-  // 월과 연도에 따라 날짜 조정
-  birthYear.addEventListener("change", updateDays);
-  birthMonth.addEventListener("change", updateDays);
-  
-  function updateDays() {
-  const selectedYear = birthYear.value;
-  const selectedMonth = birthMonth.value;
-  const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
-  
-  birthDay.innerHTML = "";
-  for (let day = 1; day <= daysInMonth; day++) {
-  const option = document.createElement("option");
-  option.value = day;
-  option.text = day + "일";
-  birthDay.appendChild(option);
-  }
-  
-  // 기본 선택값 설정
-  if (currentYear == selectedYear && currentMonth == selectedMonth) {
-  birthDay.value = currentDate;
-  } else {
-  birthDay.value = 1;
-  }
-  }
-}
+  initializeBirthDate(); // 생년월일 초기화 호출
+});

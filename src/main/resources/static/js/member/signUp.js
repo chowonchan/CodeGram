@@ -78,7 +78,7 @@ window.onload = function() {
   birthMessage.classList.remove("error");
   checkObj.memberBirth = true; // 유효한 생년월일로 기록
   } else {
-  birthMessage.innerText = "생년월일은 현재 날짜 기준으로 5,113일 이상 차이나야 합니다.";
+  birthMessage.innerText = "14살이 넘고나서 와라 애송이";
   birthMessage.classList.add("error");
   birthMessage.classList.remove("confirm");
   checkObj.memberBirth = false; // 유효하지 않은 생년월일로 기록

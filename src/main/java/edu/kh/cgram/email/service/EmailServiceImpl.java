@@ -38,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
 			// 이메일 제목, 내용을 다르게 설정
 			switch (htmlName) {
 			case "signUp":
-				emailTitle = " 회원가입 인증번호 입니다";
+				emailTitle = " CodeGram 회원가입 인증번호 입니다";
 				break;
 
 			case "findPw":
