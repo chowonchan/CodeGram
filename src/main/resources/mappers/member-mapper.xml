@@ -77,7 +77,7 @@
 	
 	<!-- 한글 이름 검색 쿼리 -->
     <select id="searchMembersByName" resultType="Member">
-        SELECT MEMBER_NAME, MEMBER_NICKNAME, PROFILE_IMG
+        SELECT MEMBER_NO, MEMBER_NAME, MEMBER_NICKNAME, PROFILE_IMG
         FROM MEMBER
         WHERE REGEXP_LIKE(
         	MEMBER_NAME,
@@ -87,7 +87,7 @@
 
     <!-- 영어 닉네임 검색 쿼리 -->
     <select id="searchMembersByNickname" resultType="Member">
-        SELECT MEMBER_NAME, MEMBER_NICKNAME, PROFILE_IMG
+        SELECT MEMBER_NO, MEMBER_NAME, MEMBER_NICKNAME, PROFILE_IMG
         FROM MEMBER
         WHERE MEMBER_NICKNAME LIKE '%' || #{keyword} || '%'
     </select>
