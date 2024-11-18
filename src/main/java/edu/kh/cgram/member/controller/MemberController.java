@@ -1,9 +1,5 @@
 package edu.kh.cgram.member.controller;
 
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.context.annotation.ApplicationScope;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.member.service.MemberService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
@@ -45,23 +39,25 @@ public class MemberController {
 	@PostMapping("login")
 	@ResponseBody
 	public ResponseEntity<?> login(
-	    @RequestParam("memberId") String memberId,
-	    @RequestParam("memberPw") String memberPw,
+	    @RequestBody Map<String, String> loginRequest,
 	    Model model
 	) {
-	    // 로그인 서비스 호출
+	    String memberId = loginRequest.get("memberId");
+	    String memberPw = loginRequest.get("memberPw");
+
+	    log.debug("Received memberId: {}, memberPw: {}", memberId, memberPw);
+
+	    // DB에서 회원 정보 조회 및 비밀번호 검증
 	    Member loginMember = service.login(memberId, memberPw);
 
-	    if (loginMember == null) { // 로그인 실패
-	        return ResponseEntity.ok(Map.of("message", "아이디 또는 비밀번호가 맞지 않습니다."));
-	    } else { // 로그인 성공
-	        model.addAttribute("loginMember", loginMember);
-	        return ResponseEntity.status(HttpStatus.FOUND)
-	                .header("Location", "/") // 메인 페이지로 리다이렉트
-	                .build();
+	    if (loginMember == null) {
+	        return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 맞지 않습니다."));
 	    }
+
+	    model.addAttribute("loginMember", loginMember);
+	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/"));
 	}
-	
+
 	
 //	@GetMapping("logout")
 //	public String logout(SessionStatus status) {
@@ -184,16 +180,17 @@ public class MemberController {
 	    String newPassword = request.get("newPassword");
 	    String memberId = request.get("memberId");
 
+	    log.debug("수신된 데이터 - memberId: {}, newPassword: {}", memberId, newPassword);
+
 	    try {
-	    	log.debug("memberId: " + memberId);
-	    	log.debug("newPassword: " + newPassword);
 	        if (newPassword == null || memberId == null) {
 	            return ResponseEntity.badRequest().body("필수 필드가 누락되었습니다.");
 	        }
 
 	        int result = service.changePassword(memberId, newPassword);
-	        log.debug("비밀번호 변경 결과: " + result);
-	        
+
+	        log.debug("비밀번호 변경 결과: {}", result);
+
 	        if (result > 0) {
 	            return ResponseEntity.ok(Map.of("success", true, "message", "비밀번호가 성공적으로 변경되었습니다."));
 	        } else {
@@ -202,12 +199,13 @@ public class MemberController {
 	            ));
 	        }
 	    } catch (Exception e) {
-
 	        log.error("비밀번호 변경 중 오류 발생", e);
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
 	    }
-
 	}
+
+
+
 
 
   @ResponseBody
