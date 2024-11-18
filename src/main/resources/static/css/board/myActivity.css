@@ -12,7 +12,6 @@ body {
   margin-left: 635px; /* 사이드바 너비만큼 여백 */
   margin-top: 20px;
   height: auto;
-  overflow-y: auto;
 }
 .activity-container {
   display: flex;
@@ -30,26 +29,43 @@ body {
 }
 .activity-list {
   list-style: none;
-  padding: 10px;
   margin: 0;
+  padding: 0;
 }
-.activity-list li {
+.activity-list a {
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  color: black;
+  text-decoration: none;
   transition: background-color 0.3s;
 }
-.activity-list li:hover {
+.activity-list a:hover {
   background-color: #f0f0f0;
   
 }
-.activity-list li span {
+.fa-solid {
+  font-size: 23px;
+}
+.activity-list a span {
   display: flex;
   flex-direction: row;
 }
-.activity-list li span div {
+.activity-list a span div {
   margin-top: 20px;
+  margin-left: 10px;
   margin-right: 30px;
+}
+
+.activity-list a span p {
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.activity-area {
+  width: 650px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .activity-area-title {
   display: flex;
@@ -63,18 +79,12 @@ body {
   padding-bottom: 23px;
   color: black;
 }
-.activity-area {
-  width: 650px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
 .posts-grid {
   display: grid;
-  padding: 10px;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 2px;
   overflow-y: auto;
-  max-height: 697px;
+  max-height: 653px;
 }
 .post-item {
   background-color: #f8f8f8;
@@ -91,4 +101,33 @@ footer {
   padding: 10px;
   margin-left: 300px;
   text-align: center;
+}
+
+.post-sort {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.post-sort h4 {
+  margin-right: 10px;
+}
+
+.sorted {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-right: 500px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.selected {
+  background: none;
+  border: none;
+  color: #007bff; /* 파란색 글씨 */
+  cursor: pointer;
+  font-size: 14px;
 }
