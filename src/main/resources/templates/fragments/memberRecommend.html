@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 추천 기능 영역</title>
+
+  <link rel="stylesheet" href="@{/css/peed/memberRecommend.css}">
+
+</head>
+
+<body th:fragment="memberRecommend">
+
+  <!-- 회원 추천 영역 -->
+  <div class="right-div">
+    <!-- 내 프로필 -->
+    <div class="my-profile">
+      <div class="profile-img">
+        <img src="https://via.placeholder.com/56" alt="내 프로필">
+      </div>
+      <div class="profile-info">
+        <div class="profile-nickname pointer">naseo_o</div>
+        <div class="profile-name">이나서</div>
+      </div>
+    </div>
+
+    <!-- 추천 헤더 -->
+    <div class="recommend-header">
+      <span class="recommend-text">회원님을 위한 추천</span>
+      <span class="recommend-all pointer">모두 보기</span>
+    </div>
+
+    <!-- 추천 목록 -->
+    <div class="recommend-list">
+      <!-- 추천 회원 1 -->
+      <div class="recommend-user">
+        <div class="recommend-user-img">
+          <img src="https://via.placeholder.com/32" alt="추천 유저">
+        </div>
+        <div class="recommend-user-info">
+          <div class="recommend-user-nickname pointer">xaha_sohong</div>
+          <div class="recommend-user-subtitle">do513yun님이 팔로우합니다</div>
+        </div>
+        <div class="recommend-follow pointer">팔로우</div>
+      </div>
+      <!-- 나머지 추천 회원들도 동일한 구조로 반복 -->
+    </div>
+  </div>
+
+  <!-- 타임리프로 데이터를 조회해올 수 있게 수정해야함 -->
+
+  <script src="/js/peed/memberRecommend.js"></script>
+</body>
+
+</html>

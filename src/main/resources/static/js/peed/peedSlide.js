@@ -1,110 +1,145 @@
-// 이미지 슬라이더 기능
-document.addEventListener('DOMContentLoaded', function() {
-  const sliders = document.querySelectorAll('.image-slider');
-  
-  sliders.forEach(slider => {
-    const track = slider.querySelector('.image-track');
-    const images = track.querySelectorAll('.post-image');
-    const prevButton = slider.querySelector('.prev-button');
-    const nextButton = slider.querySelector('.next-button');
-    const dots = slider.querySelectorAll('.dot');
-    let currentIndex = 0;
+document.addEventListener('DOMContentLoaded', function () {
+  function initializeSliders() {
+    const sliders = document.querySelectorAll('.image-slider');
 
-    // 이미지가 1개 이하면 슬라이더 기능 비활성화
-    if (images.length <= 1) return;
+    sliders.forEach(slider => {
+      const track = slider.querySelector('.image-track');
+      const images = track.querySelectorAll('.post-image');
+      const prevButton = slider.querySelector('.prev-button');
+      const nextButton = slider.querySelector('.next-button');
+      const dotsContainer = slider.querySelector('.slider-dots');
 
-    // 슬라이더 위치 업데이트 함수
-    function updateSlider() {
-      // 이미지 트랙 이동
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-      
-      // 닷츠 업데이트
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-      });
-      
-      // 버튼 상태 업데이트
-      prevButton.style.display = currentIndex === 0 ? 'none' : 'flex';
-      nextButton.style.display = currentIndex === images.length - 1 ? 'none' : 'flex';
-    }
+      let currentIndex = 0;
+      let startX = 0;
+      let isDragging = false;
+      let touchStartTime = 0;
+      let removeListeners;
 
-    // 이전 버튼 클릭 이벤트
-    if (prevButton) {
-      prevButton.addEventListener('click', () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateSlider();
+      // 이미지 개수에 맞춰 동적으로 닷츠 생성
+      if (images.length > 1) {
+        dotsContainer.innerHTML = Array.from(images)
+          .map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`)
+          .join('');
+      }
+
+      const dots = slider.querySelectorAll('.dot');
+
+      function updateSlider(animate = true) {
+        track.style.transition = animate ? 'transform 0.3s ease-in-out' : 'none';
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        // 닷의 활성 상태 업데이트
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+
+        // 버튼의 표시 여부 업데이트
+        if (prevButton) prevButton.style.display = currentIndex === 0 ? 'none' : 'flex';
+        if (nextButton) nextButton.style.display = currentIndex === images.length - 1 ? 'none' : 'flex';
+      }
+
+
+      function handleDragStart(e) {
+        isDragging = true;
+        startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
+        touchStartTime = Date.now();
+        updateSlider(false);
+      }
+
+      function handleDragMove(e) {
+        if (!isDragging) return;
+
+        const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
+        const walk = x - startX;
+        const minSwipeDistance = 50;
+        const maxSwipeTime = 300;
+
+        if (Math.abs(walk) > minSwipeDistance &&
+          Date.now() - touchStartTime < maxSwipeTime) {
+          isDragging = false;
+
+          if (walk > 0 && currentIndex > 0) {
+            currentIndex--;
+          } else if (walk < 0 && currentIndex < images.length - 1) {
+            currentIndex++;
+          }
+
+          updateSlider(true);
         }
-      });
-    }
+      }
 
-    // 다음 버튼 클릭 이벤트
-    if (nextButton) {
-      nextButton.addEventListener('click', () => {
-        if (currentIndex < images.length - 1) {
-          currentIndex++;
-          updateSlider();
+      function handleDragEnd() {
+        isDragging = false;
+        updateSlider(true);
+      }
+
+      // 이벤트 리스너 설정
+      function setupListeners() {
+        if (prevButton) {
+          prevButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentIndex > 0) {
+              currentIndex--;
+              updateSlider();
+            }
+          });
         }
-      });
-    }
 
-    // 닷츠 클릭 이벤트
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        currentIndex = index;
-        updateSlider();
-      });
+        if (nextButton) {
+          nextButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentIndex < images.length - 1) {
+              currentIndex++;
+              updateSlider();
+            }
+          });
+        }
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => {
+            currentIndex = index;
+            updateSlider();
+          });
+        });
+
+        // 터치/드래그 이벤트
+        track.addEventListener('touchstart', handleDragStart);
+        track.addEventListener('mousedown', handleDragStart);
+        track.addEventListener('touchmove', handleDragMove);
+        track.addEventListener('mousemove', handleDragMove);
+        track.addEventListener('touchend', handleDragEnd);
+        track.addEventListener('mouseup', handleDragEnd);
+        track.addEventListener('mouseleave', handleDragEnd);
+      }
+
+      // 이벤트 리스너 제거 함수
+      removeListeners = () => {
+        track.removeEventListener('touchstart', handleDragStart);
+        track.removeEventListener('mousedown', handleDragStart);
+        track.removeEventListener('touchmove', handleDragMove);
+        track.removeEventListener('mousemove', handleDragMove);
+        track.removeEventListener('touchend', handleDragEnd);
+        track.removeEventListener('mouseup', handleDragEnd);
+        track.removeEventListener('mouseleave', handleDragEnd);
+      };
+
+      // 이미지가 1개 이하면 슬라이더 컨트롤 숨김
+      if (images.length <= 1) {
+        if (prevButton) prevButton.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'none';
+        if (dotsContainer) dotsContainer.style.display = 'none';
+        return;
+      }
+
+      // 초기 설정
+      setupListeners();
+      updateSlider();
+
+      // 메모리 누수 방지를 위한 클린업
+      slider.cleanup = removeListeners;
     });
+  }
 
-    /** 터치/스와이프 기능 추가 */
-
-    // let touchStartX = 0;
-    // let touchEndX = 0;
-
-    // track.addEventListener('touchstart', e => {
-    //   touchStartX = e.touches[0].clientX;
-    // }, false);
-
-    // track.addEventListener('touchmove', e => {
-    //   e.preventDefault(); // 스크롤 방지
-    // }, false);
-
-    // track.addEventListener('touchend', e => {
-    //   touchEndX = e.changedTouches[0].clientX;
-    //   handleSwipe();
-    // }, false);
-
-    // function handleSwipe() {
-    //   const swipeThreshold = 50; // 스와이프 감지 임계값
-    //   const swipeDistance = touchEndX - touchStartX;
-
-    //   if (Math.abs(swipeDistance) > swipeThreshold) {
-    //     if (swipeDistance > 0 && currentIndex > 0) {
-    //       // 오른쪽으로 스와이프 - 이전 이미지
-    //       currentIndex--;
-    //       updateSlider();
-    //     } else if (swipeDistance < 0 && currentIndex < images.length - 1) {
-    //       // 왼쪽으로 스와이프 - 다음 이미지
-    //       currentIndex++;
-    //       updateSlider();
-    //     }
-    //   }
-    // }
-
-    /**  키보드 방향키 지원 */
-    // slider.setAttribute('tabindex', '0'); // 키보드 포커스 가능하도록 설정
-    // slider.addEventListener('keydown', e => {
-    //   if (e.key === 'ArrowLeft' && currentIndex > 0) {
-    //     currentIndex--;
-    //     updateSlider();
-    //   } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
-    //     currentIndex++;
-    //     updateSlider();
-    //   }
-    // });
-
-    
-    // 초기 상태 설정
-    updateSlider();
-  });
-}); // 이미지 슬라이더 기능 end
+  // 슬라이더 초기화 실행
+  initializeSliders();
+});
