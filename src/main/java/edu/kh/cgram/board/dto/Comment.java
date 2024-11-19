@@ -19,8 +19,8 @@ public class Comment {
     private String modifiedAt;
     
     private String commentDelFl;
-    private int    memberNo;
     private int    boardNo;
+    private int    memberNo;
     private int    parentCommentNo;
     
     /* 댓글에 포함될 작성자명, 작성자 프로필 */

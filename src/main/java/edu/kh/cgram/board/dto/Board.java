@@ -13,18 +13,20 @@ import java.util.List;
 @Builder
 public class Board {
     
-    // 행 번호 ==>  ????????????????
+    // 행 번호 ==>  
+		// 게시판 종류가 다를때 게시물의 번호를 
+		// 순차적으로 지정해주는 number 입니다.
     private int	   rnum;
     
     // BOARD 테이블 컬럼과 매핑되는 필드
     private int    boardNo;
     private String boardContent;
+    private int    readCount;
     
     // 작성일 수정일
     private String createdAt;
     private String modifiedAt;
     
-    private int    readCount;
     private String boardDelFl;
     private int    memberNo;
     
