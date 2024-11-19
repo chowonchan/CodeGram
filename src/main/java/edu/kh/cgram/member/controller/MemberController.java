@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.member.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @SessionAttributes({"loginMember"})
@@ -40,7 +41,7 @@ public class MemberController {
 	@ResponseBody
 	public ResponseEntity<?> login(
 	    @RequestBody Map<String, String> loginRequest,
-	    Model model
+	    HttpSession session
 	) {
 	    String memberId = loginRequest.get("memberId");
 	    String memberPw = loginRequest.get("memberPw");
@@ -54,7 +55,7 @@ public class MemberController {
 	        return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 맞지 않습니다."));
 	    }
 
-	    model.addAttribute("loginMember", loginMember);
+	    session.setAttribute("loginMember", loginMember);
 	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/"));
 	}
 
