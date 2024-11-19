@@ -71,15 +71,15 @@ public class MemberServiceImpl implements MemberService{
   }
   
   @Override
-  public List<Member> searchMembersByName(String keyword) {
+  public List<Member> searchMembersByName(String keyword, int memberNo) {
   	// 초성 검색 패턴 생성
   	String chosungPattern = HangulUtils.getChosungPattern(keyword);
-  	return mapper.searchMembersByName(chosungPattern);
+  	return mapper.searchMembersByName(chosungPattern, memberNo);
   }
   
   @Override
-  public List<Member> searchMembersByNickname(String keyword) {
-  	return mapper.searchMembersByNickname(keyword);
+  public List<Member> searchMembersByNickname(String keyword, int memberNo) {
+  	return mapper.searchMembersByNickname(keyword, memberNo);
   }
   
   @Override
