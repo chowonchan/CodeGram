@@ -16,19 +16,19 @@ import lombok.ToString;
 @ToString
 @Builder // 빌더 패턴 : 객체 생성 + 초기화를 쉽게하는 패턴
 public class Member {
-  private int 		memberNo;
-  private String 	memberId;
-  private String 	memberPw;
-  private String 	memberPwConfirm;
-  private String 	memberEmail;
-  private String 	memberNickname;
-  private String 	memberName;
-  private String 	profileImg;
-  private String 	createdAt;
-  private String 	memberDelBanFl;
-  private String 	memberBirth;
-  private String 	selfIntroduction;
-  private String 	memberDisclosureScope;
-  private String 	reportCount;
-  private int 		authority; 
+	
+	private int 	 memberNo;
+	private String memberEmail;
+	private String memberId;
+	private String memberPw;
+	private String memberNickname;
+	private String memberName;
+	private String memberProfile;
+	private int		 createdAt;
+	private String memberDelBanFl;
+	private String memberBirth;
+	private String selfIntroduction;
+	private int		 memberDisclosureScope;
+	private String admin;
+	private int 	 reportCount;
 }
