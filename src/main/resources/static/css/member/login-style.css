@@ -175,6 +175,14 @@ button:hover {
   color: #333;
 }
 
+#timerDisplay {
+  font-size: 18px;
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .modal-content .close:hover {
   color: #007bff;
 }

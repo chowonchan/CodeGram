@@ -8,4 +8,7 @@ public interface EmailService {
 
 	boolean checkAuthKey(Map<String, String> map);
 
+//	boolean sendAuthKeyForPasswordReset(String email);
+	
+
 }
