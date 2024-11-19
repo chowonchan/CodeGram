@@ -147,7 +147,11 @@ document.querySelector('.close-button').addEventListener('click', () => {
 });
 
 
-
+function isKorean(text) {
+  // 정규식을 사용하여 한글인지 확인합니다.
+  const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  return koreanRegex.test(text);
+}
 
 const searchInput = document.querySelector('.search-input');
 const sendButton = document.querySelector('.send-button');
@@ -167,8 +171,16 @@ searchInput.addEventListener("input", () => {
     return;
   }
 
+  let searchUrl;
+
+  if (isKorean(query)) {
+    searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
+  } else {
+    searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
+  }
+
   // 입력된 값이 있을 경우
-  fetch("/chatting/selectSearch?query=" + query)
+  fetch(searchUrl)
     .then(response => {
       if (response.ok) return response.json();
       throw new Error("검색 실패");
