@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -230,17 +231,20 @@ public class MemberController {
   @ResponseBody
   @GetMapping("/search")
   public ResponseEntity<List<Member>> searchMembers(
+  	@SessionAttribute("loginMember") Member loginMember,
   	@RequestParam("query") String keyword,
   	@RequestParam("type") String type) {
+  	
+  	int memberNo = loginMember.getMemberNo();
   	
   	List<Member> members;
   	
   	if("name".equals(type)) {
   		// 한글 이름 검색
-  		members = service.searchMembersByName(keyword);
+  		members = service.searchMembersByName(keyword, memberNo);
   	} else {
   		// 닉네임 검색
-  		members = service.searchMembersByNickname(keyword);
+  		members = service.searchMembersByNickname(keyword, memberNo);
   	}
   	return new ResponseEntity<>(members, HttpStatus.OK);
   }
