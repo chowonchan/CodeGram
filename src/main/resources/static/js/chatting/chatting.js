@@ -14,13 +14,44 @@ sendMessage2.addEventListener("click", () => {
 });
 
 
+
+
+
+const imageUpload = document.getElementById('imageUpload');
+const imagePreview = document.getElementById('imagePreview');
+
+
+
+// 이미지 선택 시 미리보기
+imageUpload.addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  
+  if (file) {
+    // FileReader로 이미지를 미리 보기
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      imagePreview.src = e.target.result;
+      imagePreview.style.display = 'block'; // 이미지 미리보기 표시
+    };
+    reader.readAsDataURL(file); // 이미지 읽기
+  } else {
+    imagePreview.style.display = 'none'; // 이미지가 없으면 숨기기
+  }
+});
+
+
+
+
+
+
+
 /* -------------------채팅 보내기 js ------------------- */
 
 // 채팅에 사용될 SockJS 객체를 저장할 변수
 let chattingSock;
 
 // 로그인이 되어있을 경우 ********
-if(notificationLoginCheck){ // common.html에 선언된 전역 변수
+if (notificationLoginCheck) { // common.html에 선언된 전역 변수
 
   // 서버로 ws://chattingSock 요청
   // -> 요청으로 처리하는 WebSockHandler와 연결
@@ -42,9 +73,9 @@ const sendMessagePartner = () => {
   const msg = inputChatting.value.trim(); // 입력된 채팅 메시지
 
   // 로그인이 되어있지 않으면 함수 종료 ****************
-  if(!notificationLoginCheck) return;
+  if (!notificationLoginCheck) return;
 
-  if(msg.length === 0){ // 채팅 미입력
+  if (msg.length === 0) { // 채팅 미입력
     alert("채팅을 입력해 주세요");
     return;
   }
@@ -52,8 +83,8 @@ const sendMessagePartner = () => {
   // 웹소켓 핸들러로 전달할 채팅 관련 데이터를 담은 객체 생성
   const chattingObj = {
     "partnerNo": selectPartnerNo,
-    "messageContent": msg,         
-    "chatRoomNo": selectChattingNo 
+    "messageContent": msg,
+    "chatRoomNo": selectChattingNo
   }
 
   // JSON으로 변환하여 웹소켓 핸들러로 전달
@@ -85,21 +116,6 @@ if (chattingSock != undefined) {
 
     // 현재 채팅방을 보고있는 경우
     if (selectChattingNo == msg.chatRoomNo) {
-
-
-      const profilediv= document.querySelector(".chat-header");
-
-
-        const img2 = document.createElement("img");
-        img2.setAttribute("src", selectPartnerProfile);
-
-
-
-      const selectPartnerName = profilediv.querySelector(".partner-name").innerText;
-
-      profilediv.append(img2,selectPartnerName);
-      
-
 
       const ul = document.querySelector(".chat-messages");
 
@@ -158,7 +174,7 @@ if (chattingSock != undefined) {
 
 /* ---------------------- 메시지 보내기 버튼 js ------------------ */
 document.querySelector('.close-button').addEventListener('click', () => {
-  
+
   document.querySelector('.modal-overlay').style.display = 'none';
 });
 
@@ -202,7 +218,7 @@ searchInput.addEventListener("input", () => {
       throw new Error("검색 실패");
     })
     .then(list => {
-      
+
       console.log(list);
 
       searchResults.innerHTML = ""; // 이전 검색 결과 비우기
@@ -339,6 +355,7 @@ const selectRoomList = () => {
 
       // 조회한 채팅방 목록을 화면에 추가
       for (let chatRoom of chatRoomList) {
+
         const li = document.createElement("li");
         li.classList.add("chatting-item");
         li.setAttribute("chat-no", chatRoom.chatRoomNo);
@@ -430,42 +447,113 @@ const selectRoomList = () => {
 // ----------------------------------------------------
 
 // 채팅방 목록에 이벤트를 추가하는 함수 
+let lastClickedItem = null; // 마지막으로 클릭된 채팅방을 추적하는 변수
+
 const chatRoomListAddEvent = () => {
   const chattingItemList = document.getElementsByClassName("chatting-item");
 
   for (let item of chattingItemList) {
-    item.addEventListener("click", e => {
+    // 클릭 이벤트 핸들러를 미리 분리
+    const clickHandler = (e) => {
+      // 이전에 클릭한 채팅방의 정보가 있으면 처리
+      if (lastClickedItem) {
+        // 이전 채팅방의 클릭 이벤트를 복원
+        lastClickedItem.addEventListener("click", lastClickedItem.clickHandler);
+
+        // 이전 채팅방의 chat-header 제거
+        const prevProfileUl = document.querySelector(".chat-header");
+        if (prevProfileUl) {
+          prevProfileUl.innerHTML = ''; // 프로필을 지웁니다.
+        }
+      }
 
       // 전역변수에 채팅방 번호, 상대 번호, 상태 프로필, 상대 이름 저장
       selectChattingNo = item.getAttribute("chat-no");
       selectPartnerNo = item.getAttribute("partner-no");
-
-      selectPartnerProfile = item.children[0].children[0].getAttribute("src");
+  
+      selectPartnerProfile = item.children[0].children[0].getAttribute("src") || userDefaultImage;
       selectPartnerName = item.children[1].children[0].children[0].innerText;
-
+  
       if (item.children[1].children[1].children[1] != undefined) {
         item.children[1].children[1].children[1].remove();
       }
-
+  
       const logoContainer = document.querySelector(".DMLogo-container");
       const chatMessages = document.querySelector("#chatMessages");
       if (logoContainer) {
-          logoContainer.remove(); // 해당 div를 DOM에서 제거
-          // chatMessages.add();
+        logoContainer.remove(); // 해당 div를 DOM에서 제거
+        // chatMessages.add();
       }
-
-
+  
       // 모든 채팅방에서 select 클래스를 제거
-      for (let it of chattingItemList) it.classList.remove("select")
-
+      for (let it of chattingItemList) it.classList.remove("select");
+  
       // 현재 클릭한 채팅방에 select 클래스 추가
       item.classList.add("select");
 
+
+  
+      // ----------------채팅방 상대 프로필 --------------------
+      const profileUl = document.querySelector(".chat-header");
+  
+      // 프로필 이미지를 감싸는 span 생성
+      const span2 = document.createElement("span");
+  
+      // 프로필 이미지 생성
+      const img = document.createElement("img");
+      img.setAttribute("src", selectPartnerProfile);
+  
+      // 이름을 감싸는 span 생성
+      const span3 = document.createElement("span");
+      span3.innerText = selectPartnerName;
+  
+      // 요소들 조립
+      span2.append(img);
+      profileUl.append(span2, span3);
+  
+      profileUl.style.borderBottom = "1px solid #ccc";
+      span3.style.marginLeft = "10px";
+      span3.style.fontWeight = "bold";
+  
+      // ----------------채팅방 상대 프로필 --------------------
+
+      
+  
+      // 클릭 후 해당 item의 클릭 이벤트를 제거
+      item.removeEventListener("click", clickHandler);
+  
+      // 이전에 클릭한 채팅방 업데이트
+      lastClickedItem = item;
+      lastClickedItem.clickHandler = clickHandler;
+
       // 비동기로 메세지 목록을 조회하는 함수 호출
       selectChattingFn();
-    });
+
+
+
+      span2.addEventListener("click", (e) => {
+        e.stopPropagation(); // 부모 클릭 이벤트로 전파되지 않도록 방지
+
+        // 프로필 페이지로 이동 (예: profile.html?userId=partnerNo)
+        window.location.href = `profile.html?userId=${selectPartnerNo}`;
+      });
+
+      span3.addEventListener("click", (e) => {
+        e.stopPropagation(); // 부모 클릭 이벤트로 전파되지 않도록 방지
+
+        // 프로필 페이지로 이동 (예: profile.html?userId=partnerNo)
+        window.location.href = `profile.html?userId=${selectPartnerNo}`;
+      });
+    };
+  
+    
+    // 각 채팅 아이템에 클릭 이벤트 핸들러 등록
+    item.addEventListener("click", clickHandler);
   }
-}
+};
+
+
+
 
 // ----------------------------------------------------
 
@@ -556,8 +644,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 입력한 키가 Enter인 경우
     if (e.key == "Enter") {
-      if (!e.shiftKey) { 
-        
+      if (!e.shiftKey) {
+
         sendMessagePartner();
       }
     }

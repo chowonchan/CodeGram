@@ -66,10 +66,10 @@ body {
 }
 
 .chatting-item {
-  height: 80px;
+  height: 90px;
   display: flex;
   padding: 5px 0;
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
   cursor: pointer;
 }
 
@@ -83,7 +83,7 @@ body {
 }
 
 .item-header {
-  width: 90px;
+  width: 100px;
 
   justify-content: center;
   align-items: center;
@@ -99,6 +99,7 @@ body {
 
 .item-body>p {
   display: flex;
+  bottom: 10px;
   justify-content: space-between;
 }
 
@@ -127,8 +128,13 @@ body {
   justify-content: space-between;
 }
 
+.item-body> div > .not-read-count{
+  border-radius: 50%;
+  background-color: red;
+}
+
 .recent-message {
-  width: 180px;
+  width: 200px;
 
   /* 여러 줄 말줄임 처리 */
   white-space: normal;
@@ -139,11 +145,6 @@ body {
 
   /*  줄바꿈 처리 */
   word-break: break-all;
-}
-
-.chat-header{
-  height: 80px;
-  width: 100%;
 }
 
 
@@ -218,11 +219,40 @@ body {
 }
 
 .chat-header {
-  padding: 16px;
-  border-bottom: 1px solid #dbdbdb;
+  height: 80px;
+  width: 100%;
+  padding: 10px;
+  /* border-bottom: 1px solid #dbdbdb; */
   display: flex;
   align-items: center;
 }
+
+.chat-header>span:first-child {
+  margin-left: 10px;
+  width: 50px;
+  height: 50px;
+
+  cursor: pointer;
+}
+.chat-header>span:last-child {
+  margin-left: 15px;
+  max-width: 50%;
+  min-width: 70px;
+  height: 50px;
+  font-weight: bold;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.chat-header > span > img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+
+
+
 
 .profile-image {
   width: 32px;
@@ -248,43 +278,49 @@ body {
 }
 
 
-.chat-messages > li{
-	margin: 10px 0;
+.chat-messages>li {
+  margin: 10px 0;
   list-style-type: none;
 }
 
-.partner-chat{
-	display: flex;
-	align-items: flex-start;
+.chat-messages> li > p {
+  border-radius: 30px;
+  padding: 10px;
 }
-.partner-chat > img{
-	width: 50px;
-	margin-right: 5px;
+
+.partner-chat {
+  display: flex;
+  align-items: flex-start;
+}
+
+.partner-chat>img {
+  width: 50px;
+  margin-right: 5px;
 }
 
 .chat {
-	display: inline-block;
-	border-radius: 5px;
-	padding: 5px;
-	background-color: #eee;
-	text-align: left;
-	max-width: 500px;
-	word-break: break-all;
-	white-space: pre-wrap;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #eee;
+  text-align: left;
+  max-width: 500px;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 
 
 .my-chat {
-	text-align: right;
+  text-align: right;
 }
 
 .my-chat>p {
-	background-color: skyblue;
+  background-color: skyblue;
 }
 
 .chatDate {
-	font-size: 9px;
+  font-size: 9px;
 }
 
 
