@@ -5,7 +5,7 @@
 	
 	<!-- 로그인 -->
 	<!-- 여기의 Member는 별칭이다 (DBConfig 참고) -->
-	<select id="login" parameterType="Member">
+	<select id="login" >
 	 SELECT 
 		 MEMBER_NO,
 	     MEMBER_ID, 
