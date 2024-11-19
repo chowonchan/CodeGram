@@ -69,9 +69,9 @@ public class EmailServiceImpl implements EmailService {
     private String getEmailTitle(String htmlName) {
         switch (htmlName) {
             case "signUp":
-                return "CodeGram 인증번호입니다.";
-//            case "login":
-//                return "CodeGram 비밀번호 찾기 인증번호입니다.";
+                return "CodeGram 회원가입 인증번호입니다.";
+            case "pwReset":
+                return "CodeGram 비밀번호 찾기 인증번호입니다.";
             default:
                 return null; // 지원하지 않는 유형
         }
@@ -136,4 +136,5 @@ public class EmailServiceImpl implements EmailService {
 
         return isMatch;
     }
+
 }

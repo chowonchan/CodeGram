@@ -46,8 +46,6 @@ public class MemberController {
 	    String memberId = loginRequest.get("memberId");
 	    String memberPw = loginRequest.get("memberPw");
 
-	    log.debug("Received memberId: {}, memberPw: {}", memberId, memberPw);
-
 	    // DB에서 회원 정보 조회 및 비밀번호 검증
 	    Member loginMember = service.login(memberId, memberPw);
 
@@ -164,6 +162,7 @@ public class MemberController {
 	        Member member = service.findMemberByNameEmailBirthAndId(name, email, birthDate, memberId);
 	        if (member != null) {
 	            return ResponseEntity.ok(Map.of("success", true, "message", "유저가 확인되었습니다."));
+	            
 	        } else {
 	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
 	                "success", false, "message", "일치하는 유저 정보를 찾을 수 없습니다."
