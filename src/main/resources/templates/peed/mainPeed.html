@@ -51,7 +51,7 @@
               <div class="post-header post-header-padding">
                 <div class="board-profile">
                   <div class="user-profile inline-block">
-                    <a th:href="/myPage/${memberNickname}">
+                    <a th:href="/myPage/*{memberNickname}">
                       <div class="user-profile-img pointer radius">
                         <!-- profile 이미지가 없을 경우 -->
                         <th:block th:unless="*{profileImg}">
