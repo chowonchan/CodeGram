@@ -116,7 +116,7 @@
 	<!-- 특정 채팅방 메시지 조회 -->
 	<select id="selectMessage" resultType="Message">
 		SELECT MESSAGE_NO, MESSAGE_CONTENT, READ_FL, MEMBER_NO, CHATROOM_NO,
-				TO_CHAR(SEND_TIME, 'YYYY.MM.DD HH24:MI') SEND_TIME 
+				TO_CHAR(SEND_TIME, '(DY) PM HH:MI') SEND_TIME 
 		FROM MESSAGE
 		WHERE CHATROOM_NO  = #{chattingNo}
 		ORDER BY MESSAGE_NO
@@ -143,7 +143,7 @@
 			DEFAULT,
 			DEFAULT,
 			#{memberNo},
-			#{chattingRoomNo}
+			#{chatRoomNo}
 		)
 		
 	</insert>

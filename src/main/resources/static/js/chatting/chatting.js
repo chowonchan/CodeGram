@@ -87,16 +87,32 @@ if (chattingSock != undefined) {
     if (selectChattingNo == msg.chatRoomNo) {
 
 
+      const profilediv= document.querySelector(".chat-header");
+
+
+        const img2 = document.createElement("img");
+        img2.setAttribute("src", selectPartnerProfile);
+
+
+
+      const selectPartnerName = profilediv.querySelector(".partner-name").innerText;
+
+      profilediv.append(img2,selectPartnerName);
+      
+
+
       const ul = document.querySelector(".chat-messages");
+
+      const span = document.createElement("span");
+      span.classList.add("chatDate");
+      span.innerText = msg.sendTime;
+
 
       // 메세지 만들어서 출력하기
       //<li>,  <li class="my-chat">
       const li = document.createElement("li");
 
       // 보낸 시간
-      const span = document.createElement("span");
-      span.classList.add("chatDate");
-      span.innerText = msg.sendTime;
 
       // 메세지 내용
       const p = document.createElement("p");
@@ -104,7 +120,7 @@ if (chattingSock != undefined) {
       p.innerHTML = msg.messageContent; // br태그 해석을 위해 innerHTML
 
       // 내가 작성한 메세지인 경우
-      if (loginMemberNo == msg.senderNo) {
+      if (loginMemberNo == msg.memberNo) {
         li.classList.add("my-chat");
 
         li.append(span, p);
@@ -472,7 +488,7 @@ const selectChattingFn = () => {
         p.innerHTML = msg.messageContent; // br태그 해석을 위해 innerHTML
 
         // 내가 작성한 메세지인 경우
-        if (loginMemberNo == msg.senderNo) {
+        if (loginMemberNo == msg.memberNo) {
           li.classList.add("my-chat");
 
           li.append(span, p);
@@ -525,10 +541,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 채팅 입력 후 엔터 입력 시 메시지 보내기
   document.querySelector("#inputChatting").addEventListener("keyup", e => {
+
     // 입력한 키가 Enter인 경우
     if (e.key == "Enter") {
-      if (!e.shiftKey) { /// shift가 눌러지지 않은 경우
-        // == shift + enter 입력 시 제출 X
+      if (!e.shiftKey) { 
+        
         sendMessagePartner();
       }
     }
