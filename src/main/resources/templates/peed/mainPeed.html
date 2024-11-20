@@ -16,144 +16,84 @@
 </head>
 
 <body>
-  <!-- 스토리 영역 (수정중) -->
-  <header>
-    <div class="stories-container">
-      <div class="story-item" data-story-id="${story.storyNo}">
-        <div class="story-wrapper">
+
+  <!-- Story Section Header -->
+  <header class="stories-section">
+    <div class="stories-container" th:if="${not #lists.isEmpty(stories)}">
+      <!-- Story Items -->
+      <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
+        <div class="story-wrapper" th:classappend="${story.viewed} ? 'viewed' : ''"> 
+          <!-- 윗 부분 th:classappend="${story.viewed} ? 'viewed' : '' 에서 story.viewed 고쳐야됨. 
+                읽었는지 확인하는건데 확인할 필요가 없어보이긴함. -->
           <div class="story-border">
-            <img th:src="${profileImg}" class="story-profile-image">
+            <img th:src="${member.profileImg != null} ? 
+                         ${member.profileImg} : '/images/default-profile.png'" 
+                 class="story-profile-image">
           </div>
         </div>
-        <span th:text="${memberNickname}" class="story-username">Nname</span>
+        <span th:text="${member.memberNickname}" class="story-username">닉네임</span>
       </div>
     </div>
 
-    <!-- 6~8개 이상일경우 페이지네이션 적용해서 왼,오 이동가능하게 해야함 -->
+    <!-- Empty State -->
+    <div th:if="${#lists.isEmpty(stories)}" class="empty-stories">
+      <p>새로운 스토리가 없습니다</p>
+    </div>
 
+    <!-- Navigation Buttons (6개 이상일 경우) -->
+    <button class="nav-button prev" th:if="${#lists.size(stories) > 6}" onclick="navigateStories('prev')"
+      aria-label="이전 스토리">
+      <span class="nav-icon">←</span>
+    </button>
+    <button class="nav-button next" th:if="${#lists.size(stories) > 6}" onclick="navigateStories('next')"
+      aria-label="다음 스토리">
+      <span class="nav-icon">→</span>
+    </button>
   </header>
 
-  <!-- 사이드바 조각 포함 -->
+  
+  <!-- 사이드바 조각 -->
   <div class="header-container" th:replace="~{fragments/header :: header}"></div>
 
   <main>
-
-    <!-- 피드 영역과 회원 추천 영역을 감싸는 div -->
     <div class="main-container">
-      <!-- 피드 영역 -->
-      <div class="feed-margin" th:object="${board}">
-        <div class="feed">
-          <!-- article마다 게시물 1개임 -->
-          <article class="board-article">
-            <div class="post">
-
-              <!-- 게시물 헤더 -->
-              <div class="post-header post-header-padding">
-                <div class="board-profile">
-                  <div class="user-profile inline-block">
-                    <a th:href="/myPage/*{memberNickname}">
-                      <div class="user-profile-img pointer radius">
-                        <!-- profile 이미지가 없을 경우 -->
-                        <th:block th:unless="*{profileImg}">
-                          <img th:src="#{https://via.placeholder.com/50}">
-                        </th:block>
-                        <!-- profile 이미지가 있는 경우 -->
-                        <th:block th:if="*{profileImg}">
-                          <img th:src="*{profileImg}">
-                        </th:block>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                <a th:href="/myPage/${memberNickname}">
-                  <div class="board-n-a pointer inline-block">
-                    <span th:text="*{memberNickname}">Nickname</span>
-                  </div>
-                  <div>
-                    <!-- 작성일로부터 몇 초, 몇 분, 몇 시간, 며칠이 지났는지 떠야해 -->
-                    <span th:text="*{createAt}">작성일</span>
-                  </div>
-                </a>
-                <div class="more-options pointer">
-                  ...
-                </div>
+      <!-- 피드 영역 - 무한 스크롤을 위한 container class 추가 -->
+      <div class="feed-margin infinite-scroll-container">
+        <!-- 게시물들이 추가될 wrapper -->
+        <div class="feed infinite-scroll-wrapper">
+          <!-- 개별 게시물 템플릿 -->
+          <template id="post-template">
+            <article class="board-article">
+              <div class="post">
+                <!-- 기존 게시물 구조 유지 -->
+                <div class="post-header post-header-padding">...</div>
+                <div class="post-images-container">...</div>
+                <div class="important-box">...</div>
               </div>
+            </article>
+          </template>
 
-              <!-- peed 이미지 영역(조각) -->
-              <section th:replace="~{fragments/peedSlide :: peedSlide}"></section>
-
-              <div class="important-box"> <!-- 게시물 정보 -->
-                <section>
-                  <section class="section-1">
-                    <div class="box-1">
-                      <button class="action-button like-button pointer" aria-label="좋아요">
-                        <svg aria-label="좋아요" class="like-icon"
-                          th:classappend="*{likeCheck == 1} ? 'fa-solid' : 'fa-regular'" height="24" width="24"
-                          viewBox="0 0 24 24">
-                          <path
-                            d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z" />
-                        </svg>
-                      </button>
-                      <a th:href="/p/*{boardNo}">
-                        <button class="action-button comment-button pointer" aria-label="댓글">
-                          <svg aria-label="댓글 달기" class="comment-icon" height="24" width="24" viewBox="0 0 24 24">
-                            <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none"
-                              stroke="currentColor" stroke-linejoin="round" stroke-width="2" />
-                          </svg>
-                        </button>
-                      </a>
-                    </div>
-                    <div class="box-2">
-                      <button class="action-button mark-button pointer" aria-label="저장">
-                        <svg aria-label="저장" class="mark-icon"
-                          th:classappend="*{markCheck == 1} ? 'fa-solid' : 'fa-regular'" height="24" width="24"
-                          viewBox="0 0 24 24">
-                          <path
-                            d="M20 22a.999.999 0 0 1-.687-.273L12 14.815l-7.313 6.912A1 1 0 0 1 3 21V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1Z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </section>
-                  <div>
-                    좋아요 <span th:text="*{likeCount}">0</span>개
-                  </div>
-                  <div class="post-caption">
-                    <span th:text="*{memberNickname}">Nickname</span>
-                    <th:block>
-                      <span th:text="*{boardContent}">내용</span>
-                    </th:block>
-
-                    <span class="detailBtn pointer">더보기...</span>
-                  </div>
-                  <th:block th:if="${commentCount} > 0" class="pointer">
-                    <a th:href="/p/*{boardNo}">
-                      댓글 <sapn th:text="|[*{commentCount}]|">0</sapn>개 보기...
-                    </a>
-                  </th:block>
-                  <div class="comment-box pointer">
-                    <span>댓글 달기...</span>
-                  </div>
-                </section>
-              </div>
-            </div>
-          </article>
+          <!-- 로딩 인디케이터 -->
+          <div class="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>게시물을 불러오는 중...</p>
+          </div>
         </div>
       </div>
 
+      <!-- 회원 추천 섹션 -->
       <section th:replace="~{fragments/peed/memberRecommend :: memberRecommend}"></section>
     </div>
-    <!-- feed와 추천영역 감싸는 div end -->
   </main>
-
-
-  <script src="/js/peed/eedStory.js"></script>
-  <script src="/js/peed/peedSlide.js"></script>
-  <script src="/js/InfiniteScroll.js"></script>
-  <script src="/js/peed/mainPeed.js"></script>
 
   <!-- 푸터 -->
   <div th:replace="~{fragments/footer :: footer}"></div>
 
+  <!-- 스크립트 -->
+  <script src="/js/peed/peedStory.js"></script>
+  <script src="/js/peed/peedSlide.js"></script>
+  <script src="/js/peed/mainPeedInfiniteScroll.js"></script>
+  <script src="/js/peed/mainPeed.js"></script>
 </body>
 
 </html>

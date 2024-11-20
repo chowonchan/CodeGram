@@ -70,20 +70,51 @@
   background: #dbdbdb;
 }
 
-/* 모바일 대응 */
-@media (max-width: 768px) {
-  .stories-container {
-      padding: 10px;
-      gap: 12px;
-  }
 
-  .story-wrapper {
-      width: 65px;
-      height: 65px;
-  }
+/* 스토리 섹션 컨테이너 */
+.stories-section {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
 
-  .story-username {
-      font-size: 11px;
-      max-width: 65px;
-  }
+
+/* 네비게이션 버튼 */
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.nav-button.prev {
+  left: 10px;
+}
+
+.nav-button.next {
+  right: 10px;
+}
+
+.nav-button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Empty State */
+.empty-stories {
+  padding: 40px;
+  text-align: center;
+  color: #8e8e8e;
 }
