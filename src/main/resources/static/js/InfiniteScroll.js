@@ -66,6 +66,7 @@ class InfiniteScroll {
     }
   }
 
+
   /**
    * 새로운 아이템 로드
    * loadMore 콜백을 실행하고 결과를 처리
@@ -139,6 +140,7 @@ class InfiniteScroll {
     };
   }
 
+  
   /**
    * 인스턴스 정리
    * 이벤트 리스너 제거 및 리소스 정리

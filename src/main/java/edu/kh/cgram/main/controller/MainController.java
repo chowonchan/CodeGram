@@ -16,6 +16,7 @@ public class MainController {
 		
 		return "/board/randomPeed";
 		// return "/peed/mainPeed";
+
 	}
 
 }

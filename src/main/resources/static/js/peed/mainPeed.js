@@ -15,17 +15,6 @@ document.querySelectorAll('.mark-button').forEach(button => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
 // 로그인 true, 비회원 false
 const loginCheck = /*[[${session.loginMember != null}]]*/ false;
 // 로그인한 회원 닉네임
