@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로필 편집</title>
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/myPage/profile-edit.css"> <!-- CSS 분리 -->
+</head>
+<body>
+
+  <main>
+    <!-- 헤더 유지 -->
+    <th:block class="header-container" th:replace="~{fragments/header :: header}"></th:block>
+
+    <!-- 프로필 편집 컨테이너 -->
+    <section class="profile-edit-container">
+      <div class="profile-edit-header">
+        <img src="/images/defaultImg.png" alt="프로필 이미지" class="profile-image">
+        <div class="profile-info">
+          <h2>프로필 사진</h2>
+          <input type="text" value="사용자 닉네임" disabled>
+        </div>
+        <button class="change-photo-button">사진 변경</button>
+      </div>
+
+      <div class="profile-edit-section">
+        <h3>소개</h3>
+        <textarea id="selfIntroduction" placeholder="소개글을 입력해 주세요" maxlength="1000"></textarea>
+        <p><span id="charCount">0</span>/1000</p>
+      </div>
+
+      <div class="toggle-container">
+        <label for="recommendToggle">프로필에 계정 추천 표시</label>
+        <input type="checkbox" id="recommendToggle">
+      </div>
+
+      <div class="private-settings">
+        <h3>비공개 계정</h3>
+        <p>계정을 비공개 상태로 설정하면 승인된 팔로워만 귀하의 게시물을 볼 수 있습니다.</p>
+        <input type="checkbox" id="privateToggle">
+      </div>
+
+      <button class="save-button">저장</button>
+    </section>
+
+    <!-- 푸터 유지 -->
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block> 
+  </main>
+
+  <script src="/js/myPage/profile-edit.js"></script> <!-- JS 분리 -->
+</body>
+</html>

@@ -1,0 +1,113 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.profile-edit-container {
+  position: absolute; /* 화면에 고정 */
+  top: 50%; /* 수직 가운데 정렬 */
+  left: 50%; /* 수평 가운데 정렬 */
+  transform: translate(-50%, -50%); /* 실제 가운데로 이동 */
+  background-color: #ffffff; /* 배경색 */
+  width: 400px; /* 적절한 너비 설정 */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  z-index: 10; /* 다른 요소 위로 올림 */
+  text-align: center;
+}
+
+.profile-edit-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-info h2 {
+  margin: 0 0 5px 0;
+}
+
+.profile-info input {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.profile-edit-section {
+  margin: 20px 0;
+}
+
+.profile-edit-section textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  resize: none;
+  height: 80px;
+}
+
+.profile-edit-section p {
+  margin-top: 5px;
+  color: #888;
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.toggle-container label {
+  font-size: 14px;
+  color: #333;
+}
+
+.toggle-container input[type="checkbox"] {
+  transform: scale(1.5);
+}
+
+.private-settings {
+  background-color: #f0f5ff;
+  color: #333;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.save-button, .change-photo-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-button:hover, .change-photo-button:hover {
+  background-color: #0056b3;
+}
+
+textarea {
+  width: 100%; /* 너비를 컨테이너에 맞춤 */
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  resize: none;
+}
