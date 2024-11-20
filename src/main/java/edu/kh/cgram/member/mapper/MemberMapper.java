@@ -19,9 +19,9 @@ public interface MemberMapper {
 	
 	int idCheck(String id);
 	
-	List<Member> searchMembersByName(@Param("chosungPattern") String chosungPattern);
+	List<Member> searchMembersByName(@Param("chosungPattern") String chosungPattern, @Param("memberNo") int memberNo);
 	
-  List<Member> searchMembersByNickname(String keyword);
+  List<Member> searchMembersByNickname(@Param("keyword") String keyword, @Param("memberNo") int memberNo);
 
   Member findMemberByNameEmailAndBirth(
   		@Param("name") String name,

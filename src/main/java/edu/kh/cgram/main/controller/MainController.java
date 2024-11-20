@@ -14,8 +14,9 @@ public class MainController {
 	@RequestMapping("/")
 	public String mainPage() {
 		
-		return "/peed/mainPeed";
-		//return "/board/randomPeed";
+		return "/board/randomPeed";
+		// return "/peed/mainPeed";
+
 	}
 
 }

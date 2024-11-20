@@ -18,9 +18,9 @@ public interface MemberService {
 	
 	int changePassword(String memberId, String newPassword); // 추가
 	
-	List<Member> searchMembersByName(String keyword);
+	List<Member> searchMembersByName(String keyword, int memberNo);
 	
-	List<Member> searchMembersByNickname(String keyword);
+	List<Member> searchMembersByNickname(String keyword, int memberNo);
 
 	Member findMemberByNameEmailAndBirth(String name, String email, String birthDate);
 

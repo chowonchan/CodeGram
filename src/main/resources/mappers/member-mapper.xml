@@ -5,7 +5,7 @@
 	
 	<!-- 로그인 -->
 	<!-- 여기의 Member는 별칭이다 (DBConfig 참고) -->
-	<select id="login" parameterType="Member">
+	<select id="login" >
 	 SELECT 
 		 MEMBER_NO,
 	     MEMBER_ID, 
@@ -107,7 +107,8 @@
         WHERE REGEXP_LIKE(
         	MEMBER_NAME,
         	#{chosungPattern}
-        )	 
+        )
+        AND MEMBER_NO != #{memberNo} 
     </select>
 
     <!-- 영어 닉네임 검색 쿼리 -->
@@ -115,6 +116,7 @@
         SELECT MEMBER_NO, MEMBER_NAME, MEMBER_NICKNAME, PROFILE_IMG
         FROM MEMBER
         WHERE MEMBER_NICKNAME LIKE '%' || #{keyword} || '%'
+        AND MEMBER_NO != #{memberNo}
     </select>
 
 </mapper>

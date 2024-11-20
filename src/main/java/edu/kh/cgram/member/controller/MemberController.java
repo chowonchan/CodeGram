@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -45,8 +46,6 @@ public class MemberController {
 	) {
 	    String memberId = loginRequest.get("memberId");
 	    String memberPw = loginRequest.get("memberPw");
-
-	    log.debug("Received memberId: {}, memberPw: {}", memberId, memberPw);
 
 	    // DB에서 회원 정보 조회 및 비밀번호 검증
 	    Member loginMember = service.login(memberId, memberPw);
@@ -164,6 +163,7 @@ public class MemberController {
 	        Member member = service.findMemberByNameEmailBirthAndId(name, email, birthDate, memberId);
 	        if (member != null) {
 	            return ResponseEntity.ok(Map.of("success", true, "message", "유저가 확인되었습니다."));
+	            
 	        } else {
 	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
 	                "success", false, "message", "일치하는 유저 정보를 찾을 수 없습니다."
@@ -230,17 +230,20 @@ public class MemberController {
   @ResponseBody
   @GetMapping("/search")
   public ResponseEntity<List<Member>> searchMembers(
+  	@SessionAttribute("loginMember") Member loginMember,
   	@RequestParam("query") String keyword,
   	@RequestParam("type") String type) {
+  	
+  	int memberNo = loginMember.getMemberNo();
   	
   	List<Member> members;
   	
   	if("name".equals(type)) {
   		// 한글 이름 검색
-  		members = service.searchMembersByName(keyword);
+  		members = service.searchMembersByName(keyword, memberNo);
   	} else {
   		// 닉네임 검색
-  		members = service.searchMembersByNickname(keyword);
+  		members = service.searchMembersByNickname(keyword, memberNo);
   	}
   	return new ResponseEntity<>(members, HttpStatus.OK);
   }

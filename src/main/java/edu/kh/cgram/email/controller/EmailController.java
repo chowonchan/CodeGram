@@ -3,6 +3,7 @@ package edu.kh.cgram.email.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EmailController {
 
-    @Autowired
-    private RedisUtil redisUtil;
+//    @Autowired
+//    private RedisUtil redisUtil;
+//
+//    @Autowired
+//    private EmailService emailService;
+  private final EmailService emailService;
 
-    @Autowired
-    private EmailService emailService;
+  public EmailController(EmailService emailService) {
+      this.emailService = emailService;
+  }
 
     /**
      * 회원가입 인증번호 발송
@@ -65,31 +71,50 @@ public class EmailController {
      * @return 인증번호 발송 성공 여부
      */
     @PostMapping("/sendPwAuthKey")
-    public ResponseEntity<Map<String, String>> sendPwAuthKey(@RequestBody Map<String, String> requestBody) {
-        String email = requestBody.get("email");
+    public ResponseEntity<Map<String, Object>> sendPwAuthKey(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
 
-        if (email == null || email.isEmpty()) {
-            log.warn("이메일이 비어있습니다.");
-            return ResponseEntity.badRequest().body(Map.of("success", "false", "message", "이메일을 입력해주세요."));
-        }
-        
-    
-        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            log.warn("유효하지 않은 이메일 형식 요청: {}", email);
-            return ResponseEntity.badRequest().body(Map.of("success", "false", "message", "유효하지 않은 이메일 형식입니다."));
-        }
-
-        log.info("PW 찾기 인증번호 발송 요청: {}", email);
-
-        int result = emailService.sendEmail("signUp", email);
-
-        if (result == 1) {
-            return ResponseEntity.ok(Map.of("success", "true", "message", "인증번호가 이메일로 발송되었습니다."));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of("success", "false", "message", "이메일 발송에 실패했습니다."));
+        try {
+            int result = emailService.sendEmail("pwReset", email);
+            if (result == 1) {
+                return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "비밀번호 찾기 인증번호가 이메일로 발송되었습니다."
+                ));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "success", false,
+                    "message", "비밀번호 찾기 인증번호 발송 실패"
+                ));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "success", false,
+                "message", "서버 오류가 발생했습니다."
+            ));
         }
     }
-    
+
+    /**
+     * 비밀번호 찾기 인증번호 확인
+     * @param map 인증번호 확인을 위한 데이터 (이메일과 인증번호)
+     * @return 인증 성공 여부
+     */
+    @PostMapping("/checkPwAuthKey")
+    public ResponseEntity<Boolean> checkPwAuthKey(@RequestBody Map<String, String> map) {
+        String email = map.get("email");
+        String authKey = map.get("authKey");
+
+        log.info("비밀번호 찾기 인증번호 확인 요청: 이메일={}, 인증번호={}", email, authKey);
+
+        boolean isVerified = emailService.checkAuthKey(map); // 인증번호 검증
+
+        if (isVerified) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
     @PostMapping("/verifyPwAuthKey")
     public ResponseEntity<Boolean> verifyPwAuthKey(@RequestBody Map<String, String> requestData) {
         String email = requestData.get("email");
