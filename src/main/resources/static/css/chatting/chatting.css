@@ -279,8 +279,10 @@ body {
 
 
 .chat-messages>li {
-  margin: 10px 0;
+  margin-top: 15px; /* 기본 간격 */
+  margin: 1px;
   list-style-type: none;
+  margin-bottom: 10px;
 }
 
 .chat-messages> li > p {
@@ -288,9 +290,19 @@ body {
   padding: 10px;
 }
 
+/* 연속된 메시지는 간격을 많이 줄임 */
+.chat-messages .continuous-chat {
+  margin-top: -10px;  
+}
+
 .partner-chat {
   display: flex;
   align-items: flex-start;
+}
+
+/* 상대방 연속 메시지 왼쪽 마진 (프로필 이미지 공간) */
+.partner-chat.continuous-chat {
+  margin-left: 10px; 
 }
 
 .partner-chat>img {
@@ -320,7 +332,8 @@ body {
 }
 
 .chatDate {
-  font-size: 9px;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 
