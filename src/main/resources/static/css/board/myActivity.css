@@ -102,12 +102,19 @@ body {
 .post-item {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
-  height: 118px;
+  height: 125px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-size: 16px;
+}
+.comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 653px;
 }
 footer {
   padding: 10px;
@@ -154,4 +161,48 @@ footer {
   color: black;
   cursor: pointer;
   font-size: 14px;
+}
+.comment-item {
+  padding: 10px 0;
+}
+.post-info {
+  display: flex;
+  height: 80px;
+  padding-bottom: 20px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.comment-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-left: 40px;
+}
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.user-profile-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.member-nickname, .user-nickname {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.board-content, .comment-content {
+  font-size: 14px;
+  color: #333;
+}
+.truncate-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* 세 줄까지만 표시 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* 여러 줄 허용 */
 }

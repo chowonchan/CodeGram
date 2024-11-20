@@ -19,4 +19,46 @@
         AND MEMBER_NO = #{memberNo}
 	</delete>
 	
+	<select id="selectMemberPosts" resultType="BoardImg">
+		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH
+		FROM BOARD B
+		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
+		WHERE B.MEMBER_NO = #{memberNo}
+    	AND B.BOARD_DEL_FL = 'N'
+	</select>
+	
+	<delete id="deleteBoardImgs">
+    DELETE FROM BOARD_IMG 
+    WHERE BOARD_NO IN
+	    <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+	        #{postId}
+	    </foreach>
+	</delete>
+
+	<delete id="deleteBoards">
+	    DELETE FROM BOARD 
+	    WHERE BOARD_NO IN
+	    <foreach item="postId" collection="postIds" open="(" separator="," close=")">
+	        #{postId}
+	    </foreach>
+	    AND MEMBER_NO = #{memberNo}
+	</delete>
+	
+	<!-- 댓글 조회 쿼리 -->
+	<select id="selectComments" resultType="CommentDetails">
+		SELECT 
+			M.PROFILE_IMG AS profileImg,
+			M.MEMBER_NICKNAME AS memberNickname,
+			B.BOARD_CONTENT AS boardContent,
+			C.COMMENT_CONTENT AS commentContent,
+			U.PROFILE_IMG AS userProfileImg,
+			U.MEMBER_NICKNAME AS userNickname
+		FROM "COMMENT" C
+		JOIN BOARD B ON C.BOARD_NO = B.BOARD_NO
+		JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
+		JOIN MEMBER U ON C.MEMBER_NO = U.MEMBER_NO
+		WHERE C.MEMBER_NO = #{memberNo}
+		  AND B.BOARD_DEL_FL = 'N'
+		  AND C.COMMENT_DEL_FL = 'N'
+	</select>
 </mapper>

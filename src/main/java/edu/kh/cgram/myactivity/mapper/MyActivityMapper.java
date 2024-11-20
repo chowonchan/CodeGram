@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.myactivity.dto.CommentDetails;
 
 @Mapper
 public interface MyActivityMapper {
@@ -13,5 +14,13 @@ public interface MyActivityMapper {
 	List<BoardImg> selectLikedPosts(int memberNo);
 
 	int deleteLikes(@Param("memberNo") int memberNo, @Param("postIds") List<Integer> postIds);
+
+	List<BoardImg> selectMemberPosts(int memberNo);
+
+	int deleteBoardImgs(@Param("postIds") List<Integer> postIds);
+
+	int deleteBoards(@Param("memberNo") int memberNo, @Param("postIds") List<Integer> postIds);
+
+	List<CommentDetails> selectComments(int memberNo);
 
 }
