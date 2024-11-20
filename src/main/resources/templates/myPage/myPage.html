@@ -4,45 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>프로필 페이지</title>
-  <link rel="stylesheet" href="/CodeGram/src/main/resources/static/css/myPage/myPage-style.css"></link>
+  <link rel="stylesheet" href="/css/myPage/myPage-style.css"></link>
+  <link rel="stylesheet" href="/css/header.css"></link>
 </head>
 <body>
 
-  <!-- 사이드바 제외한 프로필 페이지 컨테이너 -->
-  <div class="profile-container">
-    <!-- 프로필 헤더 -->
-    <div class="profile-header">
-      <div class="profile-image">
-        <span>📷</span>
-      </div>
-      <div class="profile-info">
-        <h2>member_nickname</h2>
-        <p>게시물 0 &nbsp;&nbsp; 팔로워 0만 &nbsp;&nbsp; 팔로우 0</p>
-        <p>member_name</p>
-        <div class="profile-buttons">
-          <button>프로필 편집</button>
-          <button>완료된 스토리 보기</button>
+  <main>
+    <th:block class="header-container" th:replace="~{fragments/header :: header}"></th:block>
+
+    <!-- 사이드바 제외한 프로필 페이지 컨테이너 -->
+    <section class="profile-container">
+
+      <!-- 프로필 헤더 -->
+      <section class="profile-header">
+
+        <form action="/profile/upload" method="POST" enctype="multipart/form-data">
+          <div class="profile-image-area" id="profileImageArea">
+            <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
+                 id="profileImg"
+                 alt="프로필 이미지">
+          </div>
+        </form>
+        
+        <div class="profile-info">
+          <h2 th:text="${session.loginMember.memberNickname}">member_nickname</h2>
+          <p>게시물 0 &nbsp;&nbsp; 팔로워 0만 &nbsp;&nbsp; 팔로우 0</p>
+          <p th:text="${session.loginMember.memberName}">member_name</p>
+          <div class="profile-buttons">
+            <button>프로필 편집</button>
+            <button>완료된 스토리 보기</button>
+          </div>
         </div>
+      </section>
+
+      <!-- 프로필 소개 -->
+      <div class="profile-bio">(소개글)</div>
+
+      <!-- 탭 메뉴 -->
+      <div class="tabs">
+        <div class="tab">게시물</div>
+        <div class="tab">저장됨</div>
       </div>
-    </div>
 
-    <!-- 프로필 소개 -->
-    <div class="profile-bio">(소개글)</div>
+      <!-- 게시물 그리드 -->
+      <div class="post-grid">
+        <div class="post"><div class="post-inner"></div></div>
+        <div class="post"><div class="post-inner"></div></div>
+        <div class="post"><div class="post-inner"></div></div>
+      </div>
+    </section>
+  </main>
 
-    <!-- 탭 메뉴 -->
-    <div class="tabs">
-      <div class="tab">게시물</div>
-      <div class="tab">저장됨</div>
-    </div>
 
-    <!-- 게시물 그리드 -->
-    <div class="post-grid">
-      <div class="post"><div class="post-inner"></div></div>
-      <div class="post"><div class="post-inner"></div></div>
-      <div class="post"><div class="post-inner"></div></div>
-    </div>
 
     <!-- 푸터 추가 -->
-    <th:block th:replace="푸터 좌표"></th:block>
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+    <script src="/js/myPage/myPage.js"></script>
 </body>
 </html>

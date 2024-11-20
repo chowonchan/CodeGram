@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.member.dto.Member;
@@ -38,6 +38,7 @@ public class MemberController {
 	public String login() {
 		return "member/login";
 	}
+	
 	@PostMapping("login")
 	@ResponseBody
 	public ResponseEntity<?> login(
@@ -58,12 +59,12 @@ public class MemberController {
 	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/"));
 	}
 
-	
-//	@GetMapping("logout")
-//	public String logout(SessionStatus status) {
-//		status.setComplete();
-//		return "redirect:/login";
-//	}
+
+	@GetMapping("logout")
+	public String logout(SessionStatus status) {
+		status.setComplete();// 세션 종료
+		return "redirect:/member/login";// 로그인 페이지로 리다이렉트
+	}
 	//----------------------------------------------------
 	
   // 약관 동의 페이지로 이동하는 메서드
