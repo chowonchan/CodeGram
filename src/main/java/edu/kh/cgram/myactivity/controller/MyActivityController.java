@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myactivity.dto.CommentDetails;
 import edu.kh.cgram.myactivity.service.MyActivityService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +27,6 @@ public class MyActivityController {
 	@GetMapping("/interactions/likes")
 	@ResponseBody
 	public List<BoardImg> getLikedPosts(
-		Model model,
 		@SessionAttribute("loginMember") Member loginMember) {
 		// 로그인된 회원의 번호 가져오기
 		int memberNo = loginMember.getMemberNo();
@@ -40,7 +40,6 @@ public class MyActivityController {
 	@ResponseBody
 	public int deleteLikes(
 		@RequestBody List<Integer> postIds,
-		Model model,
 		@SessionAttribute("loginMember") Member loginMember) {
 		// 로그인된 회원의 번호 가져오기
 		int memberNo = loginMember.getMemberNo();
@@ -49,5 +48,43 @@ public class MyActivityController {
 		
 		return result;
 	}
+	
+	@GetMapping("/posts")
+	@ResponseBody
+	public List<BoardImg> getMemberPosts(
+		@SessionAttribute("loginMember") Member loginMember) {
+		// 로그인된 회원의 번호 가져오기
+		int memberNo = loginMember.getMemberNo();
+		
+		List<BoardImg> memberPosts = service.getMemberPosts(memberNo);
+		
+		return memberPosts;
+	}
+	
+	@PostMapping("/deletePosts")
+	@ResponseBody
+	public int deletePosts(
+		@RequestBody List<Integer> postIds,
+		@SessionAttribute("loginMember") Member loginMember) {
+		// 로그인된 회원의 번호 가져오기
+		int memberNo = loginMember.getMemberNo();
+		
+		int result = service.deletePosts(memberNo, postIds);
+		
+		return result;
+	}
+	
+	@GetMapping("/comments")
+	@ResponseBody
+	public List<CommentDetails> getComments(
+		@SessionAttribute("loginMember") Member loginMember) {
+		// 로그인된 회원의 번호 가져오기
+		int memberNo = loginMember.getMemberNo();
+		
+		List<CommentDetails> comments = service.getComments(memberNo);
+		
+		return comments;
+	}
+	
 	
 }

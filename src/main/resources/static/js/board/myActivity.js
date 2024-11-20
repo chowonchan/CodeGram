@@ -35,7 +35,7 @@ function renderLikedPosts(posts) {
 
   if (posts.length === 0) {
     const noPostsMessage = document.createElement("p");
-    noPostsMessage.textContent = "No liked posts found.";
+    noPostsMessage.textContent = "회원님이 좋아요를 누른 게시물이 존재하지 않습니다.";
     postsGrid.appendChild(noPostsMessage);
     return;
   }
@@ -86,6 +86,12 @@ function activateTab(activeLink) {
   commentLink.style.display = "block";
   postsContent.style.display = "grid";
   commentList.style.display = "none";
+
+  // 기본 설정: 좋아요한 게시물 로드
+  fetch("/myActivity/interactions/likes")
+    .then(response => response.json())
+    .then(data => renderLikedPosts(data))
+    .catch(error => console.error("Error fetching liked posts:", error));
 });
 
  // 게시물 탭 클릭 이벤트
@@ -98,7 +104,37 @@ function activateTab(activeLink) {
   commentLink.style.display = "none";
   postsContent.style.display = "grid";
   commentList.style.display = "none";
+
+  // 서버에서 회원의 게시물을 가져오기
+  fetch("/myActivity/posts")
+    .then(response => response.json())
+    .then(data => renderMemberPosts(data))
+    .catch(error => console.error("Error fetching member posts:", error));
 });
+
+function renderMemberPosts(posts) {
+  const postsGrid = document.getElementById("postsContent");
+  postsGrid.innerHTML = "";
+
+  if (posts.length === 0) {
+    const noPostsMessage = document.createElement("p");
+    noPostsMessage.textContent = "회원님이 작성한 게시물이 존재하지 않습니다.";
+    postsGrid.appendChild(noPostsMessage);
+    return;
+  }
+
+  posts.forEach(post => {
+    const postItem = document.createElement("div");
+    postItem.classList.add("post-item");
+    postItem.setAttribute("data-board-no", post.boardNo);
+    postItem.innerHTML = `
+      <a href="/board/${post.boardNo}">
+        <img src="${post.imgPath}" alt="Post Image" />
+      </a>
+    `;
+    postsGrid.appendChild(postItem);
+  });
+}
 
  // 좋아요 클릭 이벤트
  likeLink.addEventListener("click", (event) => {
@@ -110,6 +146,71 @@ function activateTab(activeLink) {
  commentLink.addEventListener("click", (event) => {
   event.preventDefault();
   activateTab(commentLink);
+  commentList.style.display = "block";
+
+  // 서버에서 댓글 데이터를 가져오기
+  fetch("/myActivity/comments")
+    .then(response => {
+      if (response.ok) return response.json();
+      else throw new Error("Failed to fetch comments");
+    })
+    .then(data => renderComments(data))
+    .catch(error => console.error("Error fetching comments:", error));
+});
+
+// 댓글 데이터를 렌더링하는 함수
+function renderComments(comments) {
+  commentList.innerHTML = ""; // 기존 댓글을 초기화
+
+  if (comments.length === 0) {
+    const noCommentsMessage = document.createElement("p");
+    noCommentsMessage.textContent = "회원님이 작성한 댓글이 존재하지 않습니다.";
+    commentList.appendChild(noCommentsMessage);
+    return;
+  }
+
+  comments.forEach(comment => {
+    const commentItem = document.createElement("div");
+    commentItem.classList.add("comment-item");
+    
+    // 게시물 정보 (작성자 프로필 이미지, 닉네임, 게시물 내용)
+    const postInfo = `
+      <li class="post-info">
+        <img src="${comment.profileImg}" alt="Profile Image" class="profile-img">
+        <span class="member-nickname">${comment.memberNickname}</span>
+        <p class="board-content truncate-text">${comment.boardContent}</p>
+      </li>
+    `;
+
+    // 댓글 정보 (로그인 회원의 프로필 이미지, 닉네임, 댓글 내용)
+    const commentInfo = `
+      <li class="comment-info">
+        <img src="${comment.userProfileImg}" alt="User Profile Image" class="user-profile-img">
+        <span class="user-nickname">${comment.userNickname}</span>
+        <p class="comment-content truncate-text">${comment.commentContent}</p>
+      </li>
+    `;
+
+    commentItem.innerHTML = `${postInfo}${commentInfo}`;
+    commentList.appendChild(commentItem);
+  });
+}
+
+function truncateText(element, maxLines) {
+  const lineHeight = parseInt(window.getComputedStyle(element).lineHeight, 10);
+  const maxHeight = lineHeight * maxLines;
+
+  if (element.scrollHeight > maxHeight) {
+    let text = element.textContent;
+    while (element.scrollHeight > maxHeight && text.length > 0) {
+      text = text.slice(0, -1);
+      element.textContent = text + "...";
+    }
+  }
+}
+
+document.querySelectorAll(".truncate-text").forEach(element => {
+  truncateText(element, 3); // 세 줄까지만 표시
 });
 
 // 게시물 클릭 이벤트
@@ -139,7 +240,11 @@ selectButton.addEventListener("click", () => {
   deleteButton = document.createElement("button");
   deleteButton.classList.add("delete");
   deleteButton.textContent = "삭제";
-  deleteButton.addEventListener("click", handleDelete);
+  if(postTab.classList.contains("active")) {
+    deleteButton.addEventListener("click", handlePostDelete);
+  } else {
+    deleteButton.addEventListener("click", handleDelete);
+  }
 
   cancelButton = document.createElement("button");
   cancelButton.classList.add("cancel");
@@ -181,7 +286,7 @@ function handleDelete() {
       .map(checkbox => checkbox.dataset.boardNo); // 게시물 번호 가져오기
 
   if (selectedPosts.length === 0) {
-      alert("삭제할 게시물을 선택해주세요.");
+      alert("좋아요를 취소할 게시물을 선택해주세요.");
       return;
   }
   console.log("선택된 게시물:", selectedPosts);
@@ -203,8 +308,49 @@ function handleDelete() {
               const postItem = document.querySelector(`.post-item[data-board-no='${boardNo}']`);
               if (postItem) postItem.remove();
           });
+          handleCancel();
       } else {
           alert("좋아요 삭제에 실패했습니다.");
+      }
+  })
+  .catch(error => {
+      console.error("Error:", error);
+      alert("서버 요청에 실패했습니다.");
+  });
+}
+
+// 새로운 게시물 삭제 함수
+function handlePostDelete() {
+  // 선택된 게시물 번호 가져오기
+  const selectedPosts = Array.from(document.querySelectorAll(".post-item input[type='checkbox']:checked"))
+      .map(checkbox => checkbox.dataset.boardNo); // 게시물 번호 가져오기
+
+  if (selectedPosts.length === 0) {
+      alert("삭제할 게시물을 선택해주세요.");
+      return;
+  }
+  console.log("선택된 게시물:", selectedPosts);
+
+  // 서버에 게시물 삭제 요청 보내기
+  fetch("/myActivity/deletePosts", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(selectedPosts)
+  })
+  .then(response => response.json())
+  .then(result => {
+      if (result !== 0) {
+          alert("게시물이 성공적으로 삭제되었습니다.");
+          // 삭제된 게시물을 화면에서 제거하는 로직 추가
+          selectedPosts.forEach(boardNo => {
+              const postItem = document.querySelector(`.post-item[data-board-no='${boardNo}']`);
+              if (postItem) postItem.remove();
+          });
+          handleCancel();
+      } else {
+          alert("게시물 삭제에 실패했습니다.");
       }
   })
   .catch(error => {
