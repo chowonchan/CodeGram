@@ -6,6 +6,7 @@
   <title>프로필 페이지</title>
   <link rel="stylesheet" href="/css/myPage/myPage-style.css"></link>
   <link rel="stylesheet" href="/css/header.css"></link>
+  <link rel="stylesheet" href="/css/footer.css"></link>
 </head>
 <body>
 
@@ -18,12 +19,13 @@
       <!-- 프로필 헤더 -->
       <section class="profile-header">
 
-        <form action="/profile/upload" method="POST" enctype="multipart/form-data">
+        <form id="profileUploadForm" action="/myPage/profile" method="POST" enctype="multipart/form-data">
           <div class="profile-image-area" id="profileImageArea">
             <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
                  id="profileImg"
                  alt="프로필 이미지">
           </div>
+          <input type="file" name="profileImg" id="imageInput" accept="image/*" style="display: none;">
         </form>
         
         <div class="profile-info">
@@ -31,14 +33,14 @@
           <p>게시물 0 &nbsp;&nbsp; 팔로워 0만 &nbsp;&nbsp; 팔로우 0</p>
           <p th:text="${session.loginMember.memberName}">member_name</p>
           <div class="profile-buttons">
-            <button>프로필 편집</button>
+            <button class="profile-edit-button">프로필 편집</button>
             <button>완료된 스토리 보기</button>
           </div>
         </div>
       </section>
 
       <!-- 프로필 소개 -->
-      <div class="profile-bio">(소개글)</div>
+      <div class="profile-bio">(소개글을 입력해 주세요)</div>
 
       <!-- 탭 메뉴 -->
       <div class="tabs">
@@ -53,12 +55,12 @@
         <div class="post"><div class="post-inner"></div></div>
       </div>
     </section>
+    
+    <!-- 푸터 추가 -->
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block> 
   </main>
 
 
-
-    <!-- 푸터 추가 -->
-    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
     <script src="/js/myPage/myPage.js"></script>
 </body>

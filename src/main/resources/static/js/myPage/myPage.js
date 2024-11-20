@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const profileImageArea = document.getElementById("profileImageArea");
   const imageInput = document.getElementById("imageInput");
   const profileImg = document.getElementById("profileImg");
+  const profileUploadForm = document.getElementById("profileUploadForm");
 
   tabButtons.forEach(button => {
       button.addEventListener("click", () => {
@@ -18,22 +19,43 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // 이미지 영역 클릭 시 숨겨진 파일 입력 클릭
-  profileImageArea.addEventListener("click", () => {
-    imageInput.click();
-  });
-        // 파일 선택 후 미리보기 업데이트
-        imageInput.addEventListener("change", (event) => {
-          const file = event.target.files[0];
-          if (file) {
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                  const profileImg = document.getElementById("profileImg");
-                  if (profileImg) {
-                      profileImg.src = e.target.result; // 이미지 미리보기
-                  }
-              };
-              reader.readAsDataURL(file);
-          }
-      });  
-  });
+    // 프로필 이미지 클릭 시 파일 입력 창 열기
+    profileImageArea.addEventListener("click", () => {
+        imageInput.click();
+    });
+
+    // 파일 선택 시 바로 서버로 업로드
+    imageInput.addEventListener("change", async (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const formData = new FormData(profileUploadForm);
+
+            try {
+                const response = await fetch(profileUploadForm.action, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const result = await response.json(); // 서버에서 반환된 JSON 데이터
+                    profileImg.src = result.imageUrl; // 새 이미지로 미리보기 업데이트
+                    alert("프로필 이미지가 성공적으로 변경되었습니다.");
+                } else {
+                    alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+                }
+            } catch (error) {
+                console.error("업로드 중 오류:", error);
+                alert("업로드 중 문제가 발생했습니다.");
+            }
+        }
+    });
+
+    const profileEditButton = document.querySelector(".profile-edit-button");
+
+    profileEditButton.addEventListener("click", () => {
+        window.location.href = "/myPage/editProfile"; // 프로필 편집 페이지 URL
+    });
+
+
+});
