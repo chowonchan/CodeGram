@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Create New Post Modal</title>
@@ -264,13 +264,16 @@
               </div>
 
               <div id="modalContentLeftInnerText" class="modal-content-left-inner-text" style="font-size: 20px; padding: 14px;"></div>
-              <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px;"></div>
+              <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px; color: #737373"></div>
               <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
+              <input type="file" name="images" id="modalContentLeftInnerImg" class="modal-content-left-inner-button hide" accept="image/*">
             </div>
 
             <!-- 이미지 출력부분 -->
-            <div id="modalContentLeftImg" class="modal-content-left-img hide">
-              <div id="modalContentLeftImgView" class="modal-content-left-img-view"></div>
+            <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%; background-color: #00000010;">
+              <div id="modalContentLeftImgView" class="modal-content-left-img-view">
+                <img class="preview" src="">
+              </div>
               <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
             </div>
           </div>
@@ -281,8 +284,15 @@
 
               <!-- 글 작성자 출력 -->
               <div>
-                <div>profileImg</div>
-                <div>memberNickName</div>
+                <!-- 세션에서 받아오는 방법으로 -->
+
+                <!-- 프로필 이미지 -->
+                <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
+                <!-- <img th:unless="${board.profileImg}" th:src="#{user.default.image}"> -->
+                
+                <!-- 프로필 이미지가 있을 경우 출력 -->
+                <!-- <img th:if="${board.profileImg}" th:src="${board.profileImg}"> -->
+                <!-- <span th:text="${board.memberNickname}">작성자 닉네임</span> -->
               </div>
 
               <!-- 글 작성부분 -->
@@ -316,7 +326,7 @@
     </div>
 
   </div>
-
+<!-- ======================================================================================================================================================================================================== -->
   <script>
 
     const modalOverlay = document.getElementById("modalOverlay");
@@ -336,6 +346,8 @@
     let flag = 0;
     // 이벤트 경우의 수가 너무 많다.......................................................................
     // 아아아아아악.......................................................................................
+
+
 
     
 
@@ -362,13 +374,6 @@
 
     });
 
-    // 사진 추가 버튼 클릭  ==================================================================================================================================
-    document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
-
-      if(confirm("이미지 삽입은 테스트중")) modalWithImg();
-      else modalError();
-    });
-
     let modalProgress = 1;
     // 0. 에러
     // 1. 초기
@@ -390,6 +395,9 @@
       document.getElementById("modalContentLeftInner").classList.remove("hide");
       document.getElementById("modalPostNew").classList.remove("hide");
       document.getElementById("modalPostErr").classList.add("hide");
+      document.getElementById("modalContentLeftInnerErr").classList.add("hidden");
+      document.getElementById("modalContentLeftImg").classList.add("hide");
+
 
       modalTopNext.classList.add("hide");
       modalTopPrev.classList.add("hide");
@@ -408,13 +416,16 @@
       modalTop.style.width = "734px";
       document.getElementById("modalPostNew").classList.add("hide");
       document.getElementById("modalPostErr").classList.remove("hide");
+      document.getElementById("modalContentLeftImg").classList.add("hide");
 
       modalTopNext.classList.add("hide");
       modalTopPrev.classList.add("hide");
       
       modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
       document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
-      document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."   /* 파일 이름을 반환받는 const 함수 내용 추후 수정 */
+      document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."
+      document.getElementById("modalContentLeftInnerErr").classList.remove("hidden");
+
       document.getElementById("modalContentLeftInnerButton").innerText = "다른 파일 선택"
 
       modalProgress = 0;
@@ -527,6 +538,98 @@
       }, { passive: false });
     }
   enableElementScroll(document.getElementById('modalContentScrollable'));
+
+// ====================================================================================================
+// ====================================================================================================
+
+/*
+            //이미지 출력부분
+            <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%;">
+              <div id="modalContentLeftImgView" class="modal-content-left-img-view"></div>
+              <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
+            </div>
+*/
+            
+
+
+    // 이미지 삽입 관련 script
+    function isSupportedFile(file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+      return allowedTypes.includes(file.type);
+    }
+
+    const maxSize = 1024 * 1024 * 10;  // 10MB를 byte 단위로 작성
+    // 이미지는 최대 10장까지
+    const lastValidFiles = [null, null, null, null, null, null, null, null, null, null];
+
+    // 사진 추가 버튼 클릭
+    document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
+      document.getElementById("modalContentLeftInnerImg").click();
+    });
+
+    document.getElementById("modalContentLeftInnerImg").addEventListener("change", (e) => {
+      const file = event.target.files[0];
+      if (file && isSupportedFile(file)) {
+          // 파일 업로드 성공
+          console.log("File uploaded:", file.name);
+          console.log("File:", file);
+          modalWithImg();
+      } else if(file && !isSupportedFile(file)) {
+          filename = file.name;
+          modalError();
+      }
+    });
+
+    const inputImageList = document.getElementById("modalContentLeftImg");
+    const previewList = document.getElementsByClassName("preview");
+    /**
+     * 미리보기 함수
+     * @param file  : <input type="file"> 에서 선택된 파일
+     * @param order : 이미지 순서 
+     */
+    const updatePreview = (file, order) => {  // 이미지 순서까지 얻어와야
+
+      // 선택된 파일이 지정된 크기를 초과한 경우선택 막기
+      const maxSize = 1024 * 1024 * 10;  // 10MB를 byte 단위로 작성
+
+      if(file.size > maxSize) {   // 파일 크기 초과 시
+        alert("10MB 이하의 이미지만 선택해 주세요");
+
+        /* 미리보기는 막았는데, 업로드 파일에는 크기가 초과된 파일이 선택되어져 있음!! */
+        // 이전  선택된 파일이 없는데, 크기 초과 파일을 선택한 경우
+        if(lastValidFiles[order] === null) {
+          inputImageList[order].value = ""; // 선택 파일 삭제
+          return;
+        }
+
+        // 이전 선택된 파일이 있을 때
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(lastValidFiles[order]);
+        inputImageList[order].files = dataTransfer.files;
+
+        return;
+      }
+
+
+      // 선택된 이미지 백업
+      lastValidFiles[order] = file;
+
+      // JS 에서 제공하는 파일을 읽어오는 객체
+      const reader = new FileReader();
+
+      // 파일을 읽어 오는데
+      // DataURL 형식으로 읽어옴
+      // DataURL : 파일 전체 데이터가 브라우저가 해석할 수 있는 긴 주소형태 문자열로 반환
+      reader.readAsDataURL(file);
+
+      reader.addEventListener("load", e => {
+        previewList[order].src = e.target.result;
+        // e.target.result == 파일이 변환된 주소 형태 문자열
+      });
+    }  
+
+
+
 
   </script>
 </body>
