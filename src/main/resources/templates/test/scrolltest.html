@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <h1>1A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
+  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
+  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
+  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
+  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
+  <button id="disable-scroll-btn">스크롤 위치 고정</button>
+<button id="enable-scroll-btn">스크롤 위치 해제</button>
+
+<script>
+
+    const disableScrollBtn = document.getElementById("disable-scroll-btn");
+    const enableScrollBtn = document.getElementById("enable-scroll-btn");
+
+
+    function disableScroll() {
+        window.addEventListener('wheel', (event) => event.preventDefault(), { passive: false });
+    }
+    
+
+    function enableScroll() {
+        window.removeEventListener('wheel', preventScroll);
+    }
+
+
+
+
+    disableScrollBtn.addEventListener('click', disableScroll);
+    enableScrollBtn.addEventListener('click', enableScroll);
+</script>
+
+</body>
+</html>

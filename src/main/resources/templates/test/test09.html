@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Post Modal</title>
+
+    <style>
+
+      /** <  모달창 뒷배경 > **/
+      .modal-overlay {
+        user-select: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        /* 투명도 65%의 검정배경 */
+        background-color: #000000a6;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .modal-overlay-background {
+        width: 100%;
+        height: 100%;
+
+        position: absolute;
+        z-index: 0;
+      }
+
+      .modal-overlay-middle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      /** </ 모달창 뒷배경 > **/
+
+      
+      /** <  modal-close-button Css > **/
+      /* 전체 버튼 스타일 */
+
+      .modal-close-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          width: 34px;
+          height: 34px;
+          padding: 10px;
+
+          position: absolute;
+          z-index: 3;
+
+          margin: 10px;
+          top: 0;
+          right: 0;
+      }
+
+      /* SVG 기본 스타일 */
+      .modal-close-button svg {
+          width: 18px;
+          height: 18px;
+          fill: none; /* 내부 채우기 없음 */
+          stroke: currentColor;
+          transition: transform 0.2s, color 0.2s;
+      }
+
+      /* 선 스타일 */
+      .modal-close-button-line-diagonal {
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-width: 3;
+      }
+
+      /* 아이콘의 기본 색상 */
+      .modal-close-button {
+          color: #ffffff;
+      }
+
+      /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
+      .modal-close-button:hover {
+          color: #ff9999;
+          transform: scale(1.2);
+      }
+      /** </ modal-close-button Css > **/
+
+      .modal-content {
+        width: 734px;
+        height: 777px;
+        padding: 20px;
+
+        z-index: 3;
+      }
+
+      .modal-content-top {
+        width: 734px;
+        height: 42px;
+        background-color: #fff;
+        border-bottom: solid 1px #DBDBDB;
+        border-radius: 10px 10px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .mtbtn {
+        width: 50px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+      }
+
+      .modal-content-top-next {
+        font-weight: bold;
+        font-size: 15px;
+        color: #0095F6;
+        &:hover {
+          color: #0060F6;
+        }
+      }
+
+
+      .modal-content-left {
+        width: 734px;
+        height: 734px;
+        background-color: #fff;
+        border-radius: 0 0 10px 10px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .modal-content-left-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .modal-content-left-inner-button {
+        width: 133px;
+        height: 32px;
+        background-color: #0095F6;
+        color: #ffffff;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        border-radius: 8px;
+
+        &:hover {
+          background-color: #0050F6;
+        }
+
+      }
+
+      
+      .modal-content-right {
+        width: 339px;
+        height: 734px;
+        background-color: #fff;
+        border-left: solid 1px #DBDBDB;
+        border-radius: 0 0 10px 0;
+      }
+
+      .modal-deep {
+        border-top: solid 1px #D9D9D9;
+        flex-grow: 1;
+        cursor: pointer;
+      }
+
+
+      .hide {
+        display: none !important;
+      }
+
+      .hidden {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .modal-expand {
+        width: 1074px;
+      }
+
+      .fcenter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    </style>
+</head>
+<body>
+
+  <span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px;">
+    누르면 모달</span>
+  <h1 style="color: red;">작동하면 냅둬라...</h1>
+  <h2>못고치겠다....</h2>
+  <h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
+  <h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
+
+  <!-- 사진 업로드 모달 -->
+  <div id="modalOverlay" class="modal-overlay hide">
+
+    <div id="modalOverlayBackground" class="modal-overlay-background"></div>
+    <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
+    <div id="modalCloseButton" class="modal-close-button">
+        <svg aria-label="닫기 버튼 아이콘" role="img" viewBox="0 0 24 24">
+            <title>Close</title>
+            <polyline class="modal-close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
+            <line class="modal-close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
+        </svg>
+    </div>
+
+    <div id="modalOverlayMiddle" class="modal-overlay-middle">
+      <div id="modalContent" class="modal-content">
+
+        <div id="modalContentTop" class="modal-content-top">
+
+          <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn hide" >
+            <!-- 뒤로가기 버튼 -->
+            <svg aria-label="뒤로가기 아이콘" height="24" role="img" viewBox="0 0 24 24" width="24">
+                <title>Back</title>
+                <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="2.909" x2="22.001" y1="12.004" y2="12.004"></line>
+                <polyline fill="none" points="9.276 4.726 2.001 12.004 9.276 19.274" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+            </svg>
+          </div>
+
+          <div id="modalContentTopText" class="modal-content-top-text" style="text-align: center; flex-grow: 1;"></div>
+          <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
+        </div>
+
+
+        <div style="display: flex;">
+          <div id="modalContentLeft" class="modal-content-left">
+            <div id="modalContentLeftInner" class="modal-content-left-inner">
+              <div id="modalPostNew" class="hide">
+                <svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="96" viewBox="0 0 96 77" fill="none">
+                  <rect x="4" y="7.72168" width="52" height="52" rx="10" transform="rotate(-3 4 7.72168)" fill="white" stroke="black"/>
+                  <path d="M7.21627 53.7294C7.21627 53.7294 13.5611 45.8327 17.6266 40.7728L28.8275 48.3253L38.3724 36.9502" stroke="black"/>
+                  <circle cx="15.2431" cy="20.7012" r="4.5" transform="rotate(-3 15.2431 20.7012)" stroke="black"/>
+                  <rect x="40.0117" y="17.2847" width="52" height="52" rx="10" transform="rotate(3 40.0117 17.2847)" fill="white" stroke="black"/>
+                  <path d="M74.9668 36.4402C74.6995 41.5422 70.3467 45.4614 65.2448 45.194C60.1428 44.9266 56.2236 40.5739 56.491 35.4719C56.7583 30.3699 61.1111 26.4507 66.213 26.7181C71.315 26.9855 75.2342 31.3382 74.9668 36.4402Z" fill="black" stroke="black"/>
+                  <path d="M56.3 48.7287L73.7783 49.6447C79.0179 49.9193 83.0427 54.3894 82.7681 59.6289L82.6111 62.6256L46.1587 60.7153L46.3158 57.7185C46.5904 52.479 51.0605 48.4541 56.3 48.7287Z" fill="black" stroke="black"/>
+                </svg>
+              </div>
+              <div id="modalPostErr" class="hide">  <!-- js로 stroke, fill 값 변경 가능한지 이후 확인 -->
+                <svg aria-label="파일 업로드 오류 아이콘"  width="96" height="96" viewBox="0 0 98 98" fill="none">
+                  <circle cx="49" cy="49" r="48" stroke="black"/>
+                  <circle cx="49" cy="67" r="6" stroke="black"/>
+                  <path d="M51.9823 25.2558L52.7792 25.7871C53.3251 26.151 53.7665 26.651 54.0599 27.2377C54.3453 27.8087 54.4811 28.4427 54.4545 29.0805L53.5298 51.2749C53.5123 51.6954 53.4358 52.1113 53.3028 52.5106L53.0682 53.2144C52.7517 54.1637 52.1279 54.9805 51.2952 55.5356L50.5547 56.0293C50.0943 56.3362 49.5533 56.5 49 56.5C48.4467 56.5 47.9057 56.3362 47.4453 56.0293L46.7048 55.5356C45.8721 54.9805 45.2483 54.1637 44.9318 53.2144L44.6972 52.5106C44.5642 52.1113 44.4877 51.6954 44.4702 51.2749L43.5455 29.0805C43.5189 28.4427 43.6547 27.8087 43.9401 27.2377C44.2335 26.651 44.6749 26.151 45.2208 25.7871L46.0177 25.2558C46.7569 24.763 47.6255 24.5 48.5139 24.5H49.4861C50.3745 24.5 51.2431 24.763 51.9823 25.2558Z" stroke="black"/>
+                </svg>
+              </div>
+
+              <div id="modalContentLeftInnerText" class="modal-content-left-inner-text" style="font-size: 20px; padding: 14px;"></div>
+              <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px;"></div>
+              <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
+            </div>
+
+            <!-- 이미지 출력부분 -->
+            <div id="modalContentLeftImg" class="modal-content-left-img hide">
+              <div id="modalContentLeftImgView" class="modal-content-left-img-view"></div>
+              <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
+            </div>
+          </div>
+
+          <!-- 모달 글쓰기 -->
+          <div id="modalContentRight" class="modal-content-right hide">
+            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; background-color: #eaff758c; display: flex; flex-direction: column;" >
+
+              <!-- 글 작성자 출력 -->
+              <div>
+                <div>profileImg</div>
+                <div>memberNickName</div>
+              </div>
+
+              <!-- 글 작성부분 -->
+              <div></div>
+
+              <!-- 이모지 버튼과 글자수 출력부분 -->
+              <div></div>
+
+
+              <div>맨아래 24px 높이 여백</div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- 2nd 모달 -->
+    <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
+      <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
+      <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
+        <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
+          <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
+          <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
+        </div>
+        <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
+        <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+    const modalOverlay = document.getElementById("modalOverlay");
+
+    const modalContent = document.getElementById("modalContent");
+    const modalContentDeep = document.getElementById("modalContentDeep");
+
+    const modalTop = document.getElementById("modalContentTop");
+    const modalTopPrev = document.getElementById("modalContentTopPrev");
+    const modalTopText = document.getElementById("modalContentTopText");
+    const modalTopNext = document.getElementById("modalContentTopNext");
+
+    const modalLeft = document.getElementById("modalContentLeft");
+    const modalRight = document.getElementById("modalContentRight");
+
+    let filename = "등록 시도한 파일의 이름.확장자"
+    let flag = 0;
+    // 이벤트 경우의 수가 너무 많다.......................................................................
+    // 아아아아아악.......................................................................................
+
+    
+
+    // 발생 문제 ==> X버튼이나 배경 클릭으로 껐다가 다시켜면 작성중이던 화면이 나옴
+    // ==> 지우거나 변경한 값들을 모조리 초기화 시켜줄 수 있어야 함 ==> 파일 선택부분을 제외한 나머지 호출부분은 수정하였음
+
+    // ==> modal top 값을 아래 left + right value로 변경하는 방식으로 바꾸고
+
+    // 모달 X 버튼 클릭
+    document.getElementById("modalCloseButton").addEventListener("click", () => {
+
+      modalCloseAlert();
+
+    });
+    
+    document.getElementById("modalContentDeepBackground").addEventListener("click", () => {
+      modalContentDeep.classList.add('hide');
+    })
+
+    // 모달 반투명 배경 클릭
+    document.getElementById("modalOverlayBackground").addEventListener("click", () => {
+
+      modalCloseAlert();
+
+    });
+
+    // 사진 추가 버튼 클릭  ==================================================================================================================================
+    document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
+
+      if(confirm("이미지 삽입은 테스트중")) modalWithImg();
+      else modalError();
+    });
+
+    let modalProgress = 1;
+    // 0. 에러
+    // 1. 초기
+    // 2. 순서변경
+    // 3. 이미지 편집
+    // 4. 글 등록
+
+    // 이벤트 넣을때는 매우 신중하게!
+    
+    function modalNew() {
+      // 모달 초기값 지정
+      // top 가로, content 가로, right display: none;
+      // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
+      modalContent.style.width = "734px";
+      modalTop.style.width = "734px";
+      modalRight.classList.add("hide");
+
+      modalOverlay.classList.remove("hide");
+      document.getElementById("modalContentLeftInner").classList.remove("hide");
+      document.getElementById("modalPostNew").classList.remove("hide");
+      document.getElementById("modalPostErr").classList.add("hide");
+
+      modalTopNext.classList.add("hide");
+      modalTopPrev.classList.add("hide");
+
+      modalTopText.innerText = "새 게시물 만들기";
+      document.getElementById("modalContentLeftInnerText").innerText = "사진을 여기에 끌어다 놓으세요."
+      document.getElementById("modalContentLeftInnerButton").innerText = "컴퓨터에서 선택"
+
+      modalProgress = 1;
+      disableScroll();
+    }
+
+    function modalError() {
+      // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
+      modalContent.style.width = "734px";
+      modalTop.style.width = "734px";
+      document.getElementById("modalPostNew").classList.add("hide");
+      document.getElementById("modalPostErr").classList.remove("hide");
+
+      modalTopNext.classList.add("hide");
+      modalTopPrev.classList.add("hide");
+      
+      modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
+      document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
+      document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."   /* 파일 이름을 반환받는 const 함수 내용 추후 수정 */
+      document.getElementById("modalContentLeftInnerButton").innerText = "다른 파일 선택"
+
+      modalProgress = 0;
+    }
+
+    function modalWithImg() {
+      // 상단 텍스트 변경 및 버튼 좌, 우 생성
+      // 내부 이미지, 내부 텍스트, 버튼 글자 제거
+      document.getElementById("modalContentLeftInner").classList.add("hide");
+      document.getElementById("modalContentLeftImg").classList.remove("hide");
+
+      modalTopNext.classList.remove("hide");
+      modalTopPrev.classList.remove("hide");
+
+      modalContent.style.width = "734px";
+      modalTop.style.width = "734px";
+      modalRight.classList.add("hide");
+      
+
+      modalTopText.innerText = "이미지 순서 변경";
+      document.getElementById("modalContentTopNext").innerText = "다음"
+
+      modalProgress = 2;
+    }
+
+    /*   function modalImgEdit() {
+      // top 가로, content 가로, right display:none classLisr Remove
+      // right에 게시글 작성이 가
+    } */
+
+    function modalWrite() {
+      // right 에 게시글 작성내용
+      //새 게시물 만들기
+      modalContent.style.width = "1074px";
+      modalTop.style.width = "1074px";
+      modalLeft.style.borderRadius = "0 0 0 10px";
+      modalRight.classList.remove("hide");
+      modalTopText.innerText = "게시글 등록";
+
+      modalProgress = 4;
+    }
+
+    document.getElementById("modalContentTopPrev").addEventListener("click", () => {
+      console.log("뒤로가기 버튼 클릭 : ", modalProgress);
+      switch(modalProgress) {
+        case 2 : modalCloseAlert(); break;
+        // case 3 : modalWithImg(); break;
+        // case 4 : modalImgEdit(); break;
+        case 4 : modalWithImg(); break;
+        default : console.log("뒤로가기 버튼 클릭"); break;
+      }
+    });
+
+    document.getElementById("modalContentTopNext").addEventListener("click", () => {
+      switch(modalProgress) {
+        case 2 : modalWrite(); break;
+        // case 2 : modalImgEdit(); break;
+        // case 3 : modalWrite(); break;
+
+        case 4 : // 게시글 등록...
+        
+        default : console.log("다음 버튼 클릭"); break;
+      }
+    });
+
+    function modalCloseAlert() {
+      if(modalProgress > 1) {
+        modalContentDeep.classList.remove("hide");
+        return;
+      }
+      modalOverlay.classList.add("hide");
+      enableScroll();
+    }
+
+    document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
+      modalContentDeep.classList.add("hide");
+      modalOverlay.classList.add("hide");
+      enableScroll();
+    });
+
+    document.getElementById("modalContentDeepCancel").addEventListener("click", () => {
+      modalContentDeep.classList.add("hide");
+    });
+
+
+
+
+    // 스크롤을 방지하는 함수
+    function preventScroll(event) {
+      event.preventDefault();
+    }
+
+    // 스크롤 비활성화
+    function disableScroll() {
+        document.addEventListener('wheel', preventScroll, { passive: false });
+    }
+
+    // 스크롤 활성화
+    function enableScroll() {
+        document.removeEventListener('wheel', preventScroll);
+    }
+
+    function enableElementScroll(element) {
+      element.addEventListener('wheel', function(event) {
+        // 모달창이 열리면, 전체 페이지에서 스크롤을 할 수 없도록 하고
+        // 글쓰기 모달창 우측부분에서만 스크롤 가능하도록 수정
+        if (element.scrollHeight > element.clientHeight) {
+          event.stopPropagation();
+        }
+      }, { passive: false });
+    }
+  enableElementScroll(document.getElementById('modalContentScrollable'));
+
+  </script>
+</body>
+</html>
+
+<!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록, 
+     게시글 등록글 글자수 카운트 이벤트 , 게시글 등록 백엔드 마무리 + 이모지 버튼 이벤트 수정 및 적용 -->
+
+
+<!-- // <form enctype="multipart/form-data" method="POST" role="presentation"><input accept="image/jpeg,image/png,image/heic,image/heif" multiple="" type="file"></form> -->
