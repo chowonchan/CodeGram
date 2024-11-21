@@ -3,11 +3,12 @@
 <mapper namespace="edu.kh.cgram.myactivity.mapper.MyActivityMapper">
 
 	<select id="selectLikedPosts" resultType="BoardImg">
-		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH
+		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH, BI.IMG_RENAME
 		FROM BOARD B
 		JOIN BOARD_LIKE BL ON B.BOARD_NO = BL.BOARD_NO
 		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
 		WHERE BL.MEMBER_NO = #{memberNo}
+		AND BI.IMG_ORDER = 1
 	</select>
 	
 	<delete id="deleteLikes">
@@ -20,29 +21,22 @@
 	</delete>
 	
 	<select id="selectMemberPosts" resultType="BoardImg">
-		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH
+		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH, BI.IMG_RENAME
 		FROM BOARD B
 		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
 		WHERE B.MEMBER_NO = #{memberNo}
     	AND B.BOARD_DEL_FL = 'N'
 	</select>
-	
-	<delete id="deleteBoardImgs">
-    DELETE FROM BOARD_IMG 
-    WHERE BOARD_NO IN
-	    <foreach item="postId" collection="postIds" open="(" separator="," close=")">
-	        #{postId}
-	    </foreach>
-	</delete>
 
-	<delete id="deleteBoards">
-	    DELETE FROM BOARD 
+	<update id="deleteBoards">
+	    UPDATE BOARD
+	    SET BOARD_DEL_FL = 'Y'
 	    WHERE BOARD_NO IN
 	    <foreach item="postId" collection="postIds" open="(" separator="," close=")">
 	        #{postId}
 	    </foreach>
 	    AND MEMBER_NO = #{memberNo}
-	</delete>
+	</update>
 	
 	<!-- 댓글 조회 쿼리 -->
 	<select id="selectComments" resultType="CommentDetails">
@@ -52,7 +46,9 @@
 			B.BOARD_CONTENT AS boardContent,
 			C.COMMENT_CONTENT AS commentContent,
 			U.PROFILE_IMG AS userProfileImg,
-			U.MEMBER_NICKNAME AS userNickname
+			U.MEMBER_NO AS userMemberNo,
+			U.MEMBER_NICKNAME AS userNickname,
+			C.COMMENT_NO AS commentNo
 		FROM "COMMENT" C
 		JOIN BOARD B ON C.BOARD_NO = B.BOARD_NO
 		JOIN MEMBER M ON B.MEMBER_NO = M.MEMBER_NO
@@ -61,4 +57,14 @@
 		  AND B.BOARD_DEL_FL = 'N'
 		  AND C.COMMENT_DEL_FL = 'N'
 	</select>
+	
+	<update id="deleteComments">
+	    UPDATE "COMMENT"
+	    SET COMMENT_DEL_FL = 'Y'
+	    WHERE COMMENT_NO IN
+	    <foreach item="commentId" collection="commentIds" open="(" separator="," close=")">
+	        #{commentId}
+	    </foreach>
+	    AND MEMBER_NO = #{memberNo}
+	</update>
 </mapper>

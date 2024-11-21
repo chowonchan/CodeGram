@@ -86,5 +86,16 @@ public class MyActivityController {
 		return comments;
 	}
 	
-	
+	@PostMapping("/deleteComments")
+	@ResponseBody
+	public int deleteComments(
+		@RequestBody List<Integer> commentIds,
+		@SessionAttribute("loginMember") Member loginMember) {
+		// 로그인된 회원의 번호 가져오기
+		int memberNo = loginMember.getMemberNo();
+		
+		int result = service.deleteComments(memberNo, commentIds);
+		
+		return result;
+	}
 }

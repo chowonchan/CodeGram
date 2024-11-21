@@ -1,8 +1,8 @@
 /**
- * MainPeed용 InfiniteScroll 클래스
+ * MainFeed용 InfiniteScroll 클래스
  * 피드 게시물을 무한 스크롤로 로드하는 기능 구현
  */
-class MainPeedInfiniteScroll {
+class MainFeedInfiniteScroll {
   /**
    * @param {number} [threshold=100] - 하단에서 몇 px 전에 로드를 시작할지 설정
    * @param {number} [debounceTime=200] - 스크롤 이벤트 디바운스 시간 (ms)
@@ -69,26 +69,26 @@ class MainPeedInfiniteScroll {
       this.isLoading = true;
       this.showLoading();
 
-      // API 호출하여 새로운 게시물 데이터 가져오기
+      // 서버에서 게시물 데이터를 가져오기
       const response = await fetch(`/api/boards?page=${this.page}&lastBoardNo=${this.lastBoardNo}`);
       const data = await response.json();
 
       if (data.boards && data.boards.length > 0) {
-        // 새로운 게시물 추가
+        // 새 게시물 추가
         data.boards.forEach(board => {
           const boardElement = this.createBoardElement(board);
           this.feedContainer.appendChild(boardElement);
         });
 
-        // 상태 업데이트
+        // 마지막 게시물 번호 업데이트
         this.lastBoardNo = data.boards[data.boards.length - 1].boardNo;
-        this.hasMore = data.hasMore;
+        this.hasMore = data.hasMore; // 더 이상 게시물이 없는지 여부
         this.page++;
       } else {
-        this.hasMore = false;
+        this.hasMore = false;  // 게시물이 더 이상 없을 경우
       }
     } catch (error) {
-      console.error('Failed to load more posts:', error);
+      console.error('게시물을 불러오는데 실패하였습니다:', error);
     } finally {
       this.isLoading = false;
       this.hideLoading();
@@ -103,7 +103,7 @@ class MainPeedInfiniteScroll {
   createBoardElement(board) {
     const article = document.createElement('article');
     article.className = 'board-article';
-    article.setAttribute('id', `board-${board.boardNo}`);
+    article.setAttribute(`board-${board.boardNo}`);
 
     article.innerHTML = `
       <div class="post">
@@ -301,7 +301,7 @@ class MainPeedInfiniteScroll {
 
 
 // 인스턴스 생성
-const infiniteScroll = new InfiniteScroll({
+const infiniteScroll = new MainFeedInfiniteScroll({
   container: '.infinite-scroll-container',
   wrapper: '.infinite-scroll-wrapper',
   threshold: 100,

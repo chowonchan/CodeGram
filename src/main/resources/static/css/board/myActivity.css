@@ -96,12 +96,13 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 2px;
+  min-height: 653px;
   overflow-y: auto;
   max-height: 653px;
 }
 .post-item {
   background-color: #f8f8f8;
-  border: 1px solid #ddd;
+  position: relative;
   height: 125px;
   display: flex;
   justify-content: center;
@@ -164,6 +165,7 @@ footer {
 }
 .comment-item {
   padding: 10px 0;
+  position: relative;
 }
 .post-info {
   display: flex;
@@ -205,4 +207,23 @@ footer {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal; /* 여러 줄 허용 */
+}
+.post-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 127px;
+  height: 127px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.post-checkbox {
+  position: absolute;
+  bottom: 5px; /* 아래에서 5px 떨어짐 */
+  right: 5px; /* 오른쪽에서 5px 떨어짐 */
+  z-index: 2; /* 이미지 위에 체크박스가 표시되도록 설정 */
+  width: 20px; /* 체크박스 크기 설정 */
+  height: 20px; /* 체크박스 크기 설정 */
+  cursor: pointer; /* 클릭 가능한 상태를 표시 */
 }

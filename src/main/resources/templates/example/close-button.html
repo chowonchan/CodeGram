@@ -1,0 +1,86 @@
+<style>
+  /** <  close-button Css > **/
+  /* 전체 버튼 스타일 */
+  .close-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+  }
+
+  /* SVG 기본 스타일 */
+  .close-button svg {
+      width: 18px;
+      height: 18px;
+      fill: none; /* 내부 채우기 없음 */
+      stroke: currentColor;
+      transition: transform 0.2s, color 0.2s;
+  }
+
+  /* 선 스타일 */
+  .close-button-line-diagonal {
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3;
+  }
+
+  /* 아이콘의 기본 색상 */
+  .close-button {
+      color: #ffffff;
+  }
+
+  /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
+  .close-button:hover {
+      color: #ff9999;
+      transform: scale(1.2);
+  }
+  /** </ close-button Css > **/
+</style>
+
+<!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
+<div class="close-button">
+  <svg aria-label="Close" role="img" viewBox="0 0 24 24">
+      <title>Close</title>
+      <polyline class="close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
+      <line class="close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
+  </svg>
+</div>
+
+
+
+
+
+
+<!-- 뒤로가기 버튼 -->
+<button class="back-button">
+    <svg aria-label="Back" height="24" role="img" viewBox="0 0 24 24" width="24">
+        <title>Back</title>
+        <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="2.909" x2="22.001" y1="12.004" y2="12.004"></line>
+        <polyline fill="none" points="9.276 4.726 2.001 12.004 9.276 19.274" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+    </svg>
+</button>
+
+
+<!-- 사진 등록 직전 안내페이지에서 사용할 벡터이미지 -->
+<svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="77" viewBox="0 0 96 77" fill="none">
+    <rect x="4" y="7.72168" width="52" height="52" rx="10" transform="rotate(-3 4 7.72168)" fill="white" stroke="black"/>
+    <path d="M7.21627 53.7294C7.21627 53.7294 13.5611 45.8327 17.6266 40.7728L28.8275 48.3253L38.3724 36.9502" stroke="black"/>
+    <circle cx="15.2431" cy="20.7012" r="4.5" transform="rotate(-3 15.2431 20.7012)" stroke="black"/>
+    <rect x="40.0117" y="17.2847" width="52" height="52" rx="10" transform="rotate(3 40.0117 17.2847)" fill="white" stroke="black"/>
+    <path d="M74.9668 36.4402C74.6995 41.5422 70.3467 45.4614 65.2448 45.194C60.1428 44.9266 56.2236 40.5739 56.491 35.4719C56.7583 30.3699 61.1111 26.4507 66.213 26.7181C71.315 26.9855 75.2342 31.3382 74.9668 36.4402Z" fill="black" stroke="black"/>
+    <path d="M56.3 48.7287L73.7783 49.6447C79.0179 49.9193 83.0427 54.3894 82.7681 59.6289L82.6111 62.6256L46.1587 60.7153L46.3158 57.7185C46.5904 52.479 51.0605 48.4541 56.3 48.7287Z" fill="black" stroke="black"/>
+</svg>
+    
+<!-- 인스타그램이 현재 사용중인 벡터이미지 -->
+<svg aria-label="이미지나 동영상과 같은 미디어를 나타내는 아이콘" height="77"
+     role="img" viewBox="0 0 97.6 77.3" width="96"><title>이미지나 동영상과 같은 미디어를 나타내는 아이콘</title>
+    <path d="M16.3 24h.3c2.8-.2 4.9-2.6 4.8-5.4-.2-2.8-2.6-4.9-5.4-4.8s-4.9 2.6-4.8 5.4c.1 2.7 2.4 4.8 5.1 4.8zm-2.4-7.2c.5-.6 1.3-1 2.1-1h.2c1.7 0 3.1 1.4 3.1 3.1 0 1.7-1.4 3.1-3.1 3.1-1.7 0-3.1-1.4-3.1-3.1 0-.8.3-1.5.8-2.1z"
+          fill="currentColor"></path>
+    <path d="M84.7 18.4 58 16.9l-.2-3c-.3-5.7-5.2-10.1-11-9.8L12.9 6c-5.7.3-10.1 5.3-9.8 11L5 51v.8c.7 5.2 5.1 9.1 10.3 9.1h.6l21.7-1.2v.6c-.3 5.7 4 10.7 9.8 11l34 2h.6c5.5 0 10.1-4.3 10.4-9.8l2-34c.4-5.8-4-10.7-9.7-11.1zM7.2 10.8C8.7 9.1 10.8 8.1 13 8l34-1.9c4.6-.3 8.6 3.3 8.9 7.9l.2 2.8-5.3-.3c-5.7-.3-10.7 4-11 9.8l-.6 9.5-9.5 10.7c-.2.3-.6.4-1 .5-.4 0-.7-.1-1-.4l-7.8-7c-1.4-1.3-3.5-1.1-4.8.3L7 49 5.2 17c-.2-2.3.6-4.5 2-6.2zm8.7 48c-4.3.2-8.1-2.8-8.8-7.1l9.4-10.5c.2-.3.6-.4 1-.5.4 0 .7.1 1 .4l7.8 7c.7.6 1.6.9 2.5.9.9 0 1.7-.5 2.3-1.1l7.8-8.8-1.1 18.6-21.9 1.1zm76.5-29.5-2 34c-.3 4.6-4.3 8.2-8.9 7.9l-34-2c-4.6-.3-8.2-4.3-7.9-8.9l2-34c.3-4.4 3.9-7.9 8.4-7.9h.5l34 2c4.7.3 8.2 4.3 7.9 8.9z"
+          fill="currentColor"></path>
+          
+    <path d="M78.2 41.6 61.3 30.5c-2.1-1.4-4.9-.8-6.2 1.3-.4.7-.7 1.4-.7 2.2l-1.2 20.1c-.1 2.5 1.7 4.6 4.2 4.8h.3c.7 0 1.4-.2 2-.5l18-9c2.2-1.1 3.1-3.8 2-6-.4-.7-.9-1.3-1.5-1.8zm-1.4 6-18 9c-.4.2-.8.3-1.3.3-.4 0-.9-.2-1.2-.4-.7-.5-1.2-1.3-1.1-2.2l1.2-20.1c.1-.9.6-1.7 1.4-2.1.8-.4 1.7-.3 2.5.1L77 43.3c1.2.8 1.5 2.3.7 3.4-.2.4-.5.7-.9.9z"
+          fill="currentColor"></path>
+</svg>

@@ -101,37 +101,47 @@ body {
   display: flex;
   bottom: 10px;
   justify-content: space-between;
-}
+}  
+
+.item-body>div {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}  
+
+
+.item-body>div>.not-read-count {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: red;
+}  
+
 
 .chatting-item.select {
   background-color: #ddd;
-}
+}  
 
 
 .list-profile {
   max-width: 65px;
   max-height: 65px;
-}
+}  
 
 .partner-name {
   font-size: 1.2em;
   font-weight: bold;
-}
+}  
 
 .recent-send-time {
   margin-right: 5px;
-}
+}  
 
 
-.item-body>div {
-  display: flex;
-  justify-content: space-between;
-}
 
-.item-body> div > .not-read-count{
-  border-radius: 50%;
-  background-color: red;
-}
 
 .recent-message {
   width: 200px;
@@ -234,6 +244,7 @@ body {
 
   cursor: pointer;
 }
+
 .chat-header>span:last-child {
   margin-left: 15px;
   max-width: 50%;
@@ -244,7 +255,7 @@ body {
   cursor: pointer;
 }
 
-.chat-header > span > img {
+.chat-header>span>img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -279,20 +290,21 @@ body {
 
 
 .chat-messages>li {
-  margin-top: 15px; /* 기본 간격 */
+  margin-top: 15px;
+  /* 기본 간격 */
   margin: 1px;
   list-style-type: none;
   margin-bottom: 10px;
 }
 
-.chat-messages> li > p {
+.chat-messages>li>p {
   border-radius: 30px;
   padding: 10px;
 }
 
 /* 연속된 메시지는 간격을 많이 줄임 */
 .chat-messages .continuous-chat {
-  margin-top: -10px;  
+  margin-top: -10px;
 }
 
 .partner-chat {
@@ -300,10 +312,34 @@ body {
   align-items: flex-start;
 }
 
+.partner-chat > .profile-image{
+  width: 40px;
+  height: 40px;
+}
+
 /* 상대방 연속 메시지 왼쪽 마진 (프로필 이미지 공간) */
 .partner-chat.continuous-chat {
-  margin-left: 10px; 
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
+
+.partner-chat>div>p {
+  display: inline-block;
+  overflow: hidden;
+  /* 이미지가 p태그를 넘지 않도록 설정 */
+  text-align: center;
+
+}
+
+.partner-chat>div>p>img {
+  width: 100%;
+  /* p 태그 크기에 맞게 이미지 크기 자동 조정 */
+  height: auto;
+  /* 비율에 맞게 높이 자동 조정 */
+  object-fit: contain;
+}
+
+
 
 .partner-chat>img {
   width: 50px;
@@ -314,7 +350,7 @@ body {
   display: inline-block;
   border-radius: 5px;
   padding: 5px;
-  background-color: #eee;
+  background-color: #cfcfcf;
   text-align: left;
   max-width: 500px;
   word-break: break-all;
@@ -329,6 +365,18 @@ body {
 
 .my-chat>p {
   background-color: skyblue;
+  display: inline-block;
+  overflow: hidden;
+  /* 이미지가 p태그를 넘지 않도록 설정 */
+  text-align: center;
+}
+
+.my-chat>p>img {
+  width: 100%;
+  /* p 태그 크기에 맞게 이미지 크기 자동 조정 */
+  height: auto;
+  /* 비율에 맞게 높이 자동 조정 */
+  object-fit: contain;
 }
 
 .chatDate {
