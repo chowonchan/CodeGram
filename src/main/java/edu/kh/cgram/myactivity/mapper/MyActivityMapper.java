@@ -17,10 +17,10 @@ public interface MyActivityMapper {
 
 	List<BoardImg> selectMemberPosts(int memberNo);
 
-	int deleteBoardImgs(@Param("postIds") List<Integer> postIds);
-
 	int deleteBoards(@Param("memberNo") int memberNo, @Param("postIds") List<Integer> postIds);
 
 	List<CommentDetails> selectComments(int memberNo);
+
+	int deleteComments(@Param("memberNo") int memberNo, @Param("commentIds") List<Integer> commentIds);
 
 }
