@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Controller
 @RequestMapping("board")
 @RequiredArgsConstructor

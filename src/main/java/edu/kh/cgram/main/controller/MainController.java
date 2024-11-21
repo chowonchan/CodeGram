@@ -13,10 +13,22 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("loginMember")
 public class MainController {
 	
+
+	
 	@RequestMapping("/")
+	public String mainPage() {
+		
+	 // return "/feed/test";
+		 return "/board/randomPeed";
+		// return "/feed/mainPeed";
+	}
+	
+}
+
 	public String loginPage() {
 			return "/member/login";
 	}
 	
 
 }
+

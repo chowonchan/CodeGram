@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.kh.cgram.board.mapper.BoardMapper">
+
+
+<!-- 	<collection
+		property="imageList"
+		select="selectImageList"
+		column="BOARD_NO"
+		javaType="java.util.ArrayList"
+		ofType="BoardImg"
+	/> 
+-->
+
+<!-- 	<select id="selectImageList" resultType="BoardImg">
+		SELECT *
+		FROM BOARD_IMG
+		WHERE BOARD_NO = #{boardNo}
+		ORDER BY IMG_ORDER ASC
+	</select> 
+-->
+
+
+
+	<!-- 최신 게시물 가져오기 -->
+	<select id="findLatestBoards" resultType="Board">
+		SELECT *
+		FROM BOARD
+		ORDER BY CREATED_AT DESC
+		LIMIT #{pageSize} OFFSET #{pageSize} * (#{page} - 1)
+	</select>
+
+	<!-- lastBoardNo 이후 게시물 가져오기 -->
+	<select id="findBoardsAfter" resultType="Board">
+		SELECT *
+		FROM  BOARD
+		WHERE BOARD_NO > #{lastBoardNo}
+		ORDER BY CREATED_AT DESC
+		LIMIT #{pageSize} OFFSET #{pageSize} * (#{page} - 1)
+	</select>
+
+
+
+
+
+
+
+
+
+</mapper>

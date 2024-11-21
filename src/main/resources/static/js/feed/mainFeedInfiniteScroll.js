@@ -1,8 +1,8 @@
 /**
- * MainPeed용 InfiniteScroll 클래스
+ * MainFeed용 InfiniteScroll 클래스
  * 피드 게시물을 무한 스크롤로 로드하는 기능 구현
  */
-class MainPeedInfiniteScroll {
+class MainFeedInfiniteScroll {
   /**
    * @param {number} [threshold=100] - 하단에서 몇 px 전에 로드를 시작할지 설정
    * @param {number} [debounceTime=200] - 스크롤 이벤트 디바운스 시간 (ms)
@@ -301,7 +301,7 @@ class MainPeedInfiniteScroll {
 
 
 // 인스턴스 생성
-const infiniteScroll = new InfiniteScroll({
+const infiniteScroll = new MainFeedInfiniteScroll({
   container: '.infinite-scroll-container',
   wrapper: '.infinite-scroll-wrapper',
   threshold: 100,
