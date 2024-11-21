@@ -1,11 +1,13 @@
 package edu.kh.cgram.chatting.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -30,8 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/chatting")
 @RequiredArgsConstructor
 public class ChattingController {
-	
-//  private final SimpMessageSendingOperations messagingTemplate;
 
 	private final ChattingService service;
 
@@ -104,38 +104,34 @@ public class ChattingController {
   }
   
 
-  
-  
 //  @PostMapping("/uploadImage")
-//  public ResponseEntity<?> handleImageUpload(@RequestParam("image") MultipartFile image) {
-//      try {
-//          // 이미지를 Base64로 인코딩
-//          String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-//          String imageUrl = "data:" + image.getContentType() + ";base64," + base64Image;
+//  public Map<String, String> uploadImage(
+//          @RequestParam("image") MultipartFile image // 이미지 파일
 //
-//          // 응답 데이터 생성
-//          Map<String, String> response = new HashMap<>();
-//          response.put("imageUrl", imageUrl);
+//  ) {
+//      // 이미지 업로드 처리
+//      String imageUrl = service.uploadChatImage(image);
 //
-//          // WebSocket을 통해 채팅 참가자들에게 이미지 전송
-//          // ChatMessage 객체는 실제 프로젝트의 메시지 형식에 맞게 수정 필요
-//          /*
-//          ChatMessage chatMessage = ChatMessage.builder()
-//              .type(MessageType.IMAGE)
-//              .sender(sender)
-//              .roomId(roomId)
-//              .content(imageUrl)
-//              .build();
-//          
-//          messagingTemplate.convertAndSend("/topic/chat/room/" + roomId, chatMessage);
-//          */
+//      // URL을 반환
+//      Map<String, String> response = new HashMap<>();
+//      response.put("imageUrl", imageUrl);
 //
-//          return ResponseEntity.ok(response);
-//
-//      } catch (Exception e) {
-//          return ResponseEntity.internalServerError()
-//              .body("이미지 처리 실패: " + e.getMessage());
-//      }
+//      return response; // 클라이언트에 이미지 URL 반환
 //  }
+  
+  @PostMapping("/uploadImage")
+  public ResponseEntity<Map<String, String>> uploadImage(
+      @RequestParam("image") MultipartFile image
+  ) {
+      String imageUrl = service.uploadChatImage(image);
+
+      // URL을 반환
+      Map<String, String> response = new HashMap<>();
+      response.put("imageUrl", imageUrl);
+
+      return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
+  
+  
 
 }

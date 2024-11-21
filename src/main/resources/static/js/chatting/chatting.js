@@ -20,12 +20,12 @@ const imageUpload = document.getElementById('imageUpload');
 const imagePreview = document.getElementById('imagePreview');
 
 // 이미지 미리보기
-imageUpload.addEventListener('change', function(event) {
+imageUpload.addEventListener('change', function (event) {
   const file = event.target.files[0];
-  
+
   if (file) {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       imagePreview.src = e.target.result;
       imagePreview.style.display = 'block'; // 이미지 미리보기 표시
     };
@@ -58,21 +58,29 @@ if (notificationLoginCheck) { // common.html에 선언된 전역 변수
 /* 채팅 메시지를 보내는 함수 */
 const sendMessagePartner = async (imagePath) => {
 
+  console.log("imagePath", imagePath);
+
   if (selectChattingNo === undefined) {
     alert("대화방을 선택해주세요");
     return;
   }
 
   // 이미지 전송
-  if(imagePath !== undefined){
+  if (imagePath !== null) {
     const chattingObj = {
       "partnerNo": selectPartnerNo,
-      "messageContent": imagePath,
-      "chatRoomNo": selectChattingNo
+      "imageUrl": imagePath,
+      "chatRoomNo": selectChattingNo,
+      "messageContent": `<img src=${imagePath} alt='이미지'>`
     }
-  
+
     // JSON으로 변환하여 웹소켓 핸들러로 전달
     chattingSock.send(JSON.stringify(chattingObj));
+
+    // 저장된 이미지 삭제
+    const img = document.querySelector("#imageUpload");
+    const dataTransfer = new DataTransfer();
+    img.files = dataTransfer.files;
 
     return;
   }
@@ -113,104 +121,108 @@ const sendMessagePartner = async (imagePath) => {
   inputChatting.value = ""; // 보낸 채팅 내용 삭제
 }
 
-
 if (chattingSock != undefined) {
-
   let lastDisplayedTime = null; // 마지막으로 표시된 시간을 저장할 변수
+  let lastPartnerTime = null; // 마지막으로 상대방 메시지가 표시된 시간을 저장할 변수
 
   chattingSock.addEventListener("message", e => {
-      console.log(e.data);
-  
-      const msg = JSON.parse(e.data);
-      console.log(msg);
-  
-      // 현재 채팅방을 보고있는 경우에만 메시지 표시
-      if (selectChattingNo == msg.chatRoomNo) {
-        const ul = document.querySelector(".chat-messages");
-        const currentTime = msg.sendTime;
-        
-        // 이전 메시지와 시간을 비교하여 표시 여부 결정
-        const shouldDisplayTime = lastDisplayedTime !== currentTime;
-        
-        // 시간 표시 요소
-        const span = document.createElement("span");
-        span.classList.add("chatDate");
-        if (shouldDisplayTime) {
-            span.innerText = currentTime;
-            lastDisplayedTime = currentTime;
-        } else {
-            span.style.display = 'none';
-        }
-    
-        const li = document.createElement("li");
-        const p = document.createElement("p");
-        p.classList.add("chat");
-        
-        // 이미지 메시지 처리
-        if (msg.imageFile) {
-            const chatImage = document.createElement("img");
-            chatImage.classList.add("chat-image");
-            chatImage.src = msg.imageFile;
-            // 이미지 클릭 시 원본 크기로 보기
-            chatImage.addEventListener('click', () => {
-                window.open(chatImage.src, '_blank');
-            });
-            p.appendChild(chatImage);
-        }
-        
-        // 텍스트 메시지가 있는 경우
-        if (msg.messageContent) {
-            const textDiv = document.createElement("div");
-            textDiv.innerHTML = msg.messageContent;
-            p.appendChild(textDiv);
-        }
-    
-        // 내가 작성한 메세지인 경우
-        if (loginMemberNo == msg.memberNo) {
-            li.classList.add("my-chat");
-            
-            if (!shouldDisplayTime) {
-                li.classList.add("continuous-chat");
-            }
-            
-            li.append(span, p);
-    
-        } else { // 상대가 작성한 메세지인 경우
-            li.classList.add("partner-chat");
-    
-            const img = document.createElement("img");
-            img.setAttribute("src", selectPartnerProfile);
-            img.classList.add("profile-image");
-    
-            const div = document.createElement("div");
-    
-            if (shouldDisplayTime) {
-                const b = document.createElement("b");
-                b.innerText = selectPartnerName;
-                const br = document.createElement("br");
-                div.append(b, br);
-            } else {
-                li.classList.add("continuous-chat");
-            }
-    
-            div.append(p, span);
-            li.append(img, div);
-        }
-    
-        ul.append(li);
-        ul.scrollTop = ul.scrollHeight;
-    }
-  
-      selectRoomList();
-  });
-  
-  // 채팅방 전환 시 호출할 함수
-  function resetChat() {
-      lastDisplayedTime = null;
+    console.log(e.data);
+
+    const msg = JSON.parse(e.data);
+    console.log(msg);
+
+    // 현재 채팅방을 보고있는 경우에만 메시지 표시
+    if (selectChattingNo == msg.chatRoomNo) {
       const ul = document.querySelector(".chat-messages");
-      ul.innerHTML = '';
-  }
-  
+      const currentTime = msg.sendTime;
+
+      // 이전 메시지와 시간을 비교하여 표시 여부 결정
+      const shouldDisplayTime = lastDisplayedTime !== currentTime;
+
+      // 시간 표시 요소
+      const span = document.createElement("span");
+      span.classList.add("chatDate");
+      if (shouldDisplayTime) {
+        span.innerText = currentTime;
+        lastDisplayedTime = currentTime;
+      } else {
+        span.style.display = 'none';
+      }
+
+      const li = document.createElement("li");
+      const p = document.createElement("p");
+      p.classList.add("chat");
+
+      // 이미지 메시지 처리
+      if (msg.imageUrl) {
+        const chatImage = document.createElement("img");
+        chatImage.classList.add("chat-image");
+        chatImage.src = msg.imageUrl;
+
+        // 이미지 클릭 시 원본 크기로 보기
+        chatImage.addEventListener('click', () => {
+          window.open(chatImage.src, '_blank');
+        });
+        p.appendChild(chatImage);
+      }
+
+      // 텍스트 메시지가 있는 경우
+      else if (msg.messageContent) {
+        const textDiv = document.createElement("div");
+        textDiv.innerHTML = msg.messageContent;
+        p.appendChild(textDiv);
+      }
+
+      // 내가 작성한 메세지인 경우
+      if (loginMemberNo == msg.memberNo) {
+        li.classList.add("my-chat");
+
+        if (!shouldDisplayTime) {
+          li.classList.add("continuous-chat");
+        }
+
+        li.append(span, p);
+
+      } else { // 상대가 작성한 메세지인 경우
+        li.classList.add("partner-chat");
+
+        const div = document.createElement("div");
+
+        // 이전 시간과 분 단위로 비교하여 프로필 표시 여부 결정
+        const [lastHour, lastMinute] = lastPartnerTime ? lastPartnerTime.split(':') : [null, null];
+        const [currentHour, currentMinute] = currentTime.split(':');
+        const isSameMinute =
+          lastHour === currentHour && lastMinute === currentMinute;
+
+        if (!isSameMinute) {
+          lastPartnerTime = currentTime;
+
+          // 프로필 이미지는 시간 단위로 한 번만 표시
+          const img = document.createElement("img");
+          img.setAttribute("src", selectPartnerProfile);
+          img.classList.add("profile-image");
+
+          const b = document.createElement("b");
+          b.innerText = selectPartnerName;
+
+          const br = document.createElement("br");
+          div.append(b, br);
+          li.append(img, div);
+        } else {
+          li.classList.add("continuous-chat");
+        }
+
+        div.append(p, span);
+        li.append(div);
+      }
+
+      ul.append(li);
+      ul.scrollTop = ul.scrollHeight;
+    }
+
+    imagePreview.style.display = 'none';
+    selectRoomList();
+  });
 }
 
 
@@ -445,9 +457,18 @@ const selectRoomList = () => {
         const recentMessage = document.createElement("p");
         recentMessage.classList.add("recent-message");
 
-        if (chatRoom.lastMessage != undefined) {
-          recentMessage.innerHTML = chatRoom.lastMessage;
+
+        if (chatRoom.lastMessage !== undefined) {
+          // 이미지 메시지가 있는지 확인
+          if (chatRoom.lastMessage.startsWith("<img")) {
+            // 이미지가 전송되었을 경우
+            recentMessage.innerHTML = "이미지가 전송되었습니다.";  // 대체 텍스트 대신 "이미지가 전송되었습니다." 메시지
+          } else {
+            // 텍스트 메시지인 경우
+            recentMessage.innerHTML = chatRoom.lastMessage;  // HTML 태그를 그대로 처리하려면 innerHTML 사용
+          }
         }
+
 
         div.append(recentMessage);
 
@@ -513,58 +534,58 @@ const chatRoomListAddEvent = () => {
       // 전역변수에 채팅방 번호, 상대 번호, 상태 프로필, 상대 이름 저장
       selectChattingNo = item.getAttribute("chat-no");
       selectPartnerNo = item.getAttribute("partner-no");
-  
+
       selectPartnerProfile = item.children[0].children[0].getAttribute("src") || userDefaultImage;
       selectPartnerName = item.children[1].children[0].children[0].innerText;
-  
+
       if (item.children[1].children[1].children[1] != undefined) {
         item.children[1].children[1].children[1].remove();
       }
-  
+
       const logoContainer = document.querySelector(".DMLogo-container");
       const chatMessages = document.querySelector("#chatMessages");
       if (logoContainer) {
         logoContainer.remove(); // 해당 div를 DOM에서 제거
         // chatMessages.add();
       }
-  
+
       // 모든 채팅방에서 select 클래스를 제거
       for (let it of chattingItemList) it.classList.remove("select");
-  
+
       // 현재 클릭한 채팅방에 select 클래스 추가
       item.classList.add("select");
 
 
-  
+
       // ----------------채팅방 상대 프로필 --------------------
       const profileUl = document.querySelector(".chat-header");
-  
+
       // 프로필 이미지를 감싸는 span 생성
       const span2 = document.createElement("span");
-  
+
       // 프로필 이미지 생성
       const img = document.createElement("img");
       img.setAttribute("src", selectPartnerProfile);
-  
+
       // 이름을 감싸는 span 생성
       const span3 = document.createElement("span");
       span3.innerText = selectPartnerName;
-  
+
       // 요소들 조립
       span2.append(img);
       profileUl.append(span2, span3);
-  
+
       profileUl.style.borderBottom = "1px solid #ccc";
       span3.style.marginLeft = "10px";
       span3.style.fontWeight = "bold";
-  
+
       // ----------------채팅방 상대 프로필 --------------------
 
-      
-  
+
+
       // 클릭 후 해당 item의 클릭 이벤트를 제거
       item.removeEventListener("click", clickHandler);
-  
+
       // 이전에 클릭한 채팅방 업데이트
       lastClickedItem = item;
       lastClickedItem.clickHandler = clickHandler;
@@ -588,8 +609,8 @@ const chatRoomListAddEvent = () => {
         window.location.href = `profile.html?userId=${selectPartnerNo}`;
       });
     };
-  
-    
+
+
     // 각 채팅 아이템에 클릭 이벤트 핸들러 등록
     item.addEventListener("click", clickHandler);
   }
@@ -611,96 +632,77 @@ const selectChattingFn = () => {
       // <ul class="chat-messages">
       const ul = document.querySelector(".chat-messages");
       ul.innerHTML = ""; // 이전 내용 지우기
-      
+
       let lastDisplayedTime = null; // 마지막으로 표시된 시간을 저장할 변수
       let lastSender = null; // 마지막 메시지 발신자 저장 변수
-      
+
       // 메세지 만들어서 출력하기
       for (let msg of messageList) {
-          const currentTime = msg.sendTime;
-          
-          // 이전 메시지와 시간을 비교하여 표시 여부 결정
-          const shouldDisplayTime = lastDisplayedTime !== currentTime;
-          const isSameSender = lastSender === msg.memberNo;
-          
-          // 시간 표시 요소
-          const span = document.createElement("span");
-          span.classList.add("chatDate");
-          if (shouldDisplayTime) {
-              span.innerText = currentTime;
-              lastDisplayedTime = currentTime;
-          } else {
-              span.style.display = 'none'; // 같은 시간대의 메시지는 시간 숨김
-          }
-      
-          const li = document.createElement("li");
-          const p = document.createElement("p");
-          p.classList.add("chat");
-          p.innerHTML = msg.messageContent;
-      
-          // 내가 작성한 메세지인 경우
-          if (loginMemberNo == msg.memberNo) {
-              li.classList.add("my-chat");
-              
-              // 이전 메시지와 같은 시간대이고 같은 발신자인 경우
-              if (!shouldDisplayTime && isSameSender) {
-                  li.classList.add("continuous-chat");
-              }
-              
-              li.append(span, p);
-      
-          } else { // 상대가 작성한 메세지인 경우
-              li.classList.add("partner-chat");
-      
-              const img = document.createElement("img");
-              img.setAttribute("src", selectPartnerProfile);
-              
-              // 연속된 메시지인 경우 프로필 이미지 숨김
-              if (!shouldDisplayTime && isSameSender) {
-                  img.style.visibility = 'hidden';
-              }
-      
-              const div = document.createElement("div");
-      
-              // 상대 이름은 첫 메시지나 시간이 다른 경우에만 표시
-              if (shouldDisplayTime || !isSameSender) {
-                  const b = document.createElement("b");
-                  b.innerText = selectPartnerName;
-                  const br = document.createElement("br");
-                  div.append(b, br);
-              } else {
-                  li.classList.add("continuous-chat");
-              }
-      
-              div.append(p, span);
-              li.append(img, div);
-          }
-      
-          ul.append(li);
-          lastSender = msg.memberNo;
-      }
-      
-      ul.scrollTop = ul.scrollHeight; // 스크롤 제일 밑으로
-      
-      // CSS 스타일 추가 (이전에 추가하지 않았다면)
-      if (!document.querySelector('#chat-styles')) {
-          const style = document.createElement('style');
-          style.id = 'chat-styles';
-          style.textContent = `
-              
-              .chat-messages .continuous-chat .chat {
-                  margin-top: 0;
-              }
-              
+        const currentTime = msg.sendTime;
 
-              
-              .partner-chat.continuous-chat img {
-                  width: 35px; /* 프로필 이미지 크기 */
-                  margin-right: 10px;
-              }
-          `;
-          document.head.appendChild(style);
+        // 이전 메시지와 시간을 비교하여 표시 여부 결정
+        const shouldDisplayTime = lastDisplayedTime !== currentTime;
+        const isSameSender = lastSender === msg.memberNo;
+
+        // 시간 표시 요소
+        const span = document.createElement("span");
+        span.classList.add("chatDate");
+        if (shouldDisplayTime) {
+          span.innerText = currentTime;
+          lastDisplayedTime = currentTime;
+        } else {
+          span.style.display = 'none'; // 같은 시간대의 메시지는 시간 숨김
+        }
+
+        const li = document.createElement("li");
+        const p = document.createElement("p");
+        p.classList.add("chat");
+        p.innerHTML = msg.messageContent;
+
+        // 내가 작성한 메세지인 경우
+        if (loginMemberNo == msg.memberNo) {
+          li.classList.add("my-chat");
+
+          // 이전 메시지와 같은 시간대이고 같은 발신자인 경우
+          if (!shouldDisplayTime && isSameSender) {
+            li.classList.add("continuous-chat");
+          }
+
+          li.append(span, p);
+
+        } else { // 상대가 작성한 메세지인 경우
+          li.classList.add("partner-chat");
+
+          const img = document.createElement("img");
+          img.setAttribute("src", selectPartnerProfile);
+
+          // 연속된 메시지인 경우 프로필 이미지 숨김
+          if (!shouldDisplayTime && isSameSender) {
+            img.style.visibility = 'hidden';
+          }
+
+          const div = document.createElement("div");
+
+          // 상대 이름은 첫 메시지나 시간이 다른 경우에만 표시
+          if (shouldDisplayTime || !isSameSender) {
+            const b = document.createElement("b");
+            b.innerText = selectPartnerName;
+            const br = document.createElement("br");
+            div.append(b, br);
+          } else {
+            li.classList.add("continuous-chat");
+          }
+
+          div.append(p, span);
+          li.append(img, div);
+        }
+
+        ul.append(li);
+        lastSender = msg.memberNo;
       }
+
+      ul.scrollTop = ul.scrollHeight; // 스크롤 제일 밑으로
+
 
     })
     .catch(err => console.log(err));
@@ -720,10 +722,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // sidebar.classList.add("narrow");
 
-
-  // 보내기 버튼 클릭 시 메시지 보내기
-  // document.querySelector("#sendButton").addEventListener("click", sendMessagePartner);
-
   // 채팅 입력 후 엔터 입력 시 메시지 보내기
   document.querySelector("#inputChatting").addEventListener("keyup", async e => {
 
@@ -731,58 +729,57 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key == "Enter") {
       if (!e.shiftKey) {
 
+
         const img = document.querySelector("#imageUpload").files[0];
+
+        // 메시지 입력 X, 이미지 전송 X === 진짜 아무것도 없을 때
+        if (e.target.value.trim() === '' && img === undefined) return;
+
+
         let imagePath = null;
-        if(img) {
+        if (img) {
           // uploadImage(uploadImage);
-          
           imagePath = await asyncImageUpload(img);
         }
-//********************
-        // await sendMessagePartner(imagePath);
-        await sendMessagePartner();
+        //********************
+        // await sendMessagePartner();
+        await sendMessagePartner(imagePath);
       }
     }
   });
 
-  // const asyncImageUpload = async (img) => {
-  //   console.log('비동기로 이미지 서버 저장 함수 호출');
-  //   console.log(img);
 
-  //   // return 비동기로 서버에 저장한 이미지 경로
-  // }
+  // *********************
+  const asyncImageUpload = async (img) => {
+    console.log('비동기로 이미지 서버 저장 함수 호출');
+    console.log(img);
 
-// *********************
-  // const asyncImageUpload = async (img) => {
-  //   console.log('비동기로 이미지 서버 저장 함수 호출');
-  //   console.log(img);
-  
-  //   // 이미지 파일을 FormData에 담아 서버로 전송하기
-  //   const formData = new FormData();
-  //   formData.append('image', img); // 'image'는 서버에서 받는 파일 필드명
-  
-  //   try {
-  //     // 서버에 이미지 업로드 요청 보내기 (예: POST 요청)
-  //     const response = await fetch('/chatting/uploadImage', {
-  //       method: 'POST',
-  //       body: formData
-  //     });
-  
-  //     // 서버가 응답을 정상적으로 보냈는지 확인
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log('서버에서 받은 데이터:', data);
-  
-  //       // 서버에서 받은 이미지 URL 반환
-  //       return data.imageUrl; // 예: 서버가 반환한 경로
-  //     } else {
-  //       throw new Error('이미지 업로드 실패');
-  //     }
-  //   } catch (error) {
-  //     console.error('이미지 업로드 중 오류 발생:', error);
-  //     return null; // 오류 발생 시 null 반환
-  //   }
-  // };
+    // 이미지 파일을 FormData에 담아 서버로 전송하기
+    const formData = new FormData();
+    formData.append('image', img); // 'image'는 서버에서 받는 파일 필드명
+
+    try {
+      // 서버에 이미지 업로드 요청 보내기 (예: POST 요청)
+      const response = await fetch('/chatting/uploadImage', {
+        method: 'POST',
+        body: formData
+      });
+
+      // 서버가 응답을 정상적으로 보냈는지 확인
+      if (response.ok) {
+        const data = await response.json();
+        console.log('서버에서 받은 데이터:', data);
+
+        // 서버에서 받은 이미지 URL 반환
+        return data.imageUrl; // 예: 서버가 반환한 경로
+      } else {
+        throw new Error('이미지 업로드 실패');
+      }
+    } catch (error) {
+      console.error('이미지 업로드 중 오류 발생:', error);
+      return null; // 오류 발생 시 null 반환
+    }
+  };
 
 
   /* 채팅 알림을 클릭해서 채팅 페이지로 이동한 경우 */
