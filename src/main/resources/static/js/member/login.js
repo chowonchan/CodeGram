@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           showMessage(data.message || "로그인 성공!", "success");
           setTimeout(() => {
-            window.location.href = data.url || "/";
+            window.location.href = data.url || "/board/randomPeed";
           }, 1000);
         } else {
           showMessage(data.message || "로그인 실패", "error");

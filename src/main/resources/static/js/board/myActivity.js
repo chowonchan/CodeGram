@@ -86,6 +86,7 @@ function activateTab(activeLink) {
   commentLink.style.display = "block";
   postsContent.style.display = "grid";
   commentList.style.display = "none";
+  handleCancel();
 
   // 기본 설정: 좋아요한 게시물 로드
   fetch("/myActivity/interactions/likes")
@@ -104,6 +105,7 @@ function activateTab(activeLink) {
   commentLink.style.display = "none";
   postsContent.style.display = "grid";
   commentList.style.display = "none";
+  handleCancel();
 
   // 서버에서 회원의 게시물을 가져오기
   fetch("/myActivity/posts")
@@ -140,12 +142,14 @@ function renderMemberPosts(posts) {
  likeLink.addEventListener("click", (event) => {
   event.preventDefault();
   activateTab(likeLink);
+  handleCancel();
 });
 
  // 댓글 클릭 이벤트
  commentLink.addEventListener("click", (event) => {
   event.preventDefault();
   activateTab(commentLink);
+  handleCancel();
   commentList.style.display = "block";
 
   // 서버에서 댓글 데이터를 가져오기
@@ -172,6 +176,7 @@ function renderComments(comments) {
   comments.forEach(comment => {
     const commentItem = document.createElement("div");
     commentItem.classList.add("comment-item");
+    commentItem.setAttribute("data-comment-no", comment.commentNo);
     
     // 게시물 정보 (작성자 프로필 이미지, 닉네임, 게시물 내용)
     const postInfo = `
@@ -240,12 +245,39 @@ selectButton.addEventListener("click", () => {
   deleteButton = document.createElement("button");
   deleteButton.classList.add("delete");
   deleteButton.textContent = "삭제";
-  if(postTab.classList.contains("active")) {
+  if(postLink.classList.contains("active")) {
     deleteButton.addEventListener("click", handlePostDelete);
-  } else {
+    const postItems = document.querySelectorAll(".post-item");
+    postItems.forEach((item) => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.dataset.boardNo = item.dataset.boardNo;
+      checkbox.classList.add("post-checkbox");
+      item.prepend(checkbox); // 게시물 앞에 체크박스 추가
+    });
+  } else if(likeLink.classList.contains("active")) {
     deleteButton.addEventListener("click", handleDelete);
+    const postItems = document.querySelectorAll(".post-item");
+    postItems.forEach((item) => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.dataset.boardNo = item.dataset.boardNo;
+      checkbox.classList.add("post-checkbox");
+      item.prepend(checkbox); // 게시물 앞에 체크박스 추가
+    });
+  } else if(commentLink.classList.contains("active")) {
+    deleteButton.addEventListener("click", handleCommentDelete);
+    const commentItems = document.querySelectorAll(".comment-item");
+    commentItems.forEach((item) => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.dataset.commentNo = item.dataset.commentNo;
+      checkbox.classList.add("post-checkbox");
+      item.prepend(checkbox); // 게시물 앞에 체크박스 추가
+    });
+  } else {
+    return;
   }
-
   cancelButton = document.createElement("button");
   cancelButton.classList.add("cancel");
   cancelButton.textContent = "취소";
@@ -254,30 +286,21 @@ selectButton.addEventListener("click", () => {
   // 버튼 추가
   postSort.appendChild(deleteButton);
   postSort.appendChild(cancelButton);
-
-  // 각 게시물에 체크박스 추가
-  const postItems = document.querySelectorAll(".post-item");
-  postItems.forEach((item) => {
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.dataset.boardNo = item.dataset.boardNo;
-    checkbox.classList.add("post-checkbox");
-    item.prepend(checkbox); // 게시물 앞에 체크박스 추가
-  });
 });
 
 // 취소 버튼 클릭 이벤트
 function handleCancel() {
   // 삭제 및 취소 버튼 제거
-  deleteButton.remove();
-  cancelButton.remove();
+  if(postSort.contains(deleteButton)) {
+    deleteButton.remove();
+    cancelButton.remove();
+    // 체크박스 제거
+    const checkboxes = document.querySelectorAll(".post-checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.remove();
+    });
+  }
   selectButton.style.display = "block";
-
-  // 체크박스 제거
-  const checkboxes = document.querySelectorAll(".post-checkbox");
-  checkboxes.forEach((checkbox) => {
-    checkbox.remove();
-  });
 }
 
 // 선택한 게시물의 좋아요 삭제
@@ -351,6 +374,45 @@ function handlePostDelete() {
           handleCancel();
       } else {
           alert("게시물 삭제에 실패했습니다.");
+      }
+  })
+  .catch(error => {
+      console.error("Error:", error);
+      alert("서버 요청에 실패했습니다.");
+  });
+}
+
+function handleCommentDelete() {
+  // 선택된 댓글 번호 가져오기
+  const selectedComments = Array.from(document.querySelectorAll(".comment-item input[type='checkbox']:checked"))
+      .map(checkbox => checkbox.dataset.commentNo); // 댓글 번호 가져오기
+
+  if (selectedComments.length === 0) {
+      alert("삭제할 댓글을 선택해주세요.");
+      return;
+  }
+  console.log("선택된 댓글:", selectedComments);
+
+  // 서버에 댓글 삭제 요청 보내기
+  fetch("/myActivity/deleteComments", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(selectedComments)
+  })
+  .then(response => response.json())
+  .then(result => {
+      if (result !== 0) {
+          alert("댓글이 성공적으로 삭제되었습니다.");
+          // 삭제된 댓글을 화면에서 제거하는 로직 추가
+          selectedComments.forEach(commentNo => {
+              const commentItem = document.querySelector(`.comment-item[data-comment-no='${commentNo}']`);
+              if (commentItem) commentItem.remove();
+          });
+          handleCancel();
+      } else {
+          alert("댓글 삭제에 실패했습니다.");
       }
   })
   .catch(error => {
