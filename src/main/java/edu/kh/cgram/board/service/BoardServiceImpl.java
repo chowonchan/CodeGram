@@ -3,16 +3,19 @@ package edu.kh.cgram.board.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-	private final BoardMapper boardMapper;
+	private final BoardMapper mapper;
 
 	@Override
 	public List<Board> getBoards(int page, Long lastBoardNo) {
@@ -20,11 +23,15 @@ public class BoardServiceImpl implements BoardService {
 
 		if (lastBoardNo == null) {
 			// 처음 로드 시 최신 게시물 조회
-			return boardMapper.findLatestBoards(page, pageSize);
+			return mapper.findLatestBoards(page, pageSize);
 		} else {
 			// 마지막 게시물 번호 이후로 게시물 조회
-			return boardMapper.findBoardsAfter(lastBoardNo, page, pageSize);
+			return mapper.findBoardsAfter(lastBoardNo, page, pageSize);
 		}
-
+	}
+	
+	@Override
+	public List<BoardImg> getRandomPosts(int memberNo) {
+		return mapper.selectRandomPosts(memberNo);
 	}
 }

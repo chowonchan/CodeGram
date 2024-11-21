@@ -39,13 +39,25 @@
 		ORDER BY CREATED_AT DESC
 		LIMIT #{pageSize} OFFSET #{pageSize} * (#{page} - 1)
 	</select>
-
-
-
-
-
-
-
-
+	
+	<!-- 팔로우하지 않은 회원들의 게시물을 최신순으로 랜덤 조회 -->
+	<select id="selectRandomPosts" resultType="BoardImg">
+        SELECT 
+            BI.BOARD_NO,
+            BI.IMG_NO, 
+            BI.IMG_PATH,
+            BI.IMG_RENAME
+        FROM BOARD B
+        JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
+        WHERE B.MEMBER_NO NOT IN (
+            SELECT FOLLOWING_MEMBER 
+            FROM FOLLOW
+            WHERE FOLLOWER_MEMBER = #{memberNo}
+        )
+        AND B.MEMBER_NO NOT IN #{memberNo}
+        AND BI.IMG_ORDER = 1
+        AND B.BOARD_DEL_FL = 'N'
+        ORDER BY B.CREATED_AT DESC
+    </select>
 
 </mapper>

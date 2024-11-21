@@ -46,7 +46,7 @@ function renderLikedPosts(posts) {
     postItem.setAttribute("data-board-no", post.boardNo);
     postItem.innerHTML = `
       <a href="/board/${post.boardNo}">
-        <img src="${post.imgPath}" alt="Post Image" />
+        <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
       </a>
     `;
     postsGrid.appendChild(postItem);
@@ -131,7 +131,7 @@ function renderMemberPosts(posts) {
     postItem.setAttribute("data-board-no", post.boardNo);
     postItem.innerHTML = `
       <a href="/board/${post.boardNo}">
-        <img src="${post.imgPath}" alt="Post Image" />
+        <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
       </a>
     `;
     postsGrid.appendChild(postItem);
@@ -254,6 +254,10 @@ selectButton.addEventListener("click", () => {
       checkbox.dataset.boardNo = item.dataset.boardNo;
       checkbox.classList.add("post-checkbox");
       item.prepend(checkbox); // 게시물 앞에 체크박스 추가
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        checkbox.checked = !checkbox.checked; // 체크 상태를 반전
+      });
     });
   } else if(likeLink.classList.contains("active")) {
     deleteButton.addEventListener("click", handleDelete);
@@ -264,6 +268,10 @@ selectButton.addEventListener("click", () => {
       checkbox.dataset.boardNo = item.dataset.boardNo;
       checkbox.classList.add("post-checkbox");
       item.prepend(checkbox); // 게시물 앞에 체크박스 추가
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        checkbox.checked = !checkbox.checked; // 체크 상태를 반전
+      });
     });
   } else if(commentLink.classList.contains("active")) {
     deleteButton.addEventListener("click", handleCommentDelete);
