@@ -2,6 +2,8 @@ package edu.kh.cgram.chatting.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import edu.kh.cgram.chatting.dto.ChattingRoom;
 import edu.kh.cgram.chatting.dto.Message;
 import edu.kh.cgram.member.dto.Member;
@@ -19,5 +21,9 @@ public interface ChattingService {
 	int insertMessage(Message msg);
 
 	int updateReadFlag(int chattingNo, int memberNo);
+
+	String uploadChatImage(MultipartFile image);
+
+
 
 }
