@@ -53,7 +53,7 @@ public class MemberController {
 
 	    if (loginMember == null) {
 	        return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 맞지 않습니다."));
-	    }
+	    } //응답 데이터
 
 	    session.setAttribute("loginMember", loginMember);
 	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/"));

@@ -3,6 +3,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const charCount = document.getElementById("charCount");
   const saveButton = document.querySelector(".save-button");
 
+      // 프로필 이미지 클릭 시 파일 입력 창 열기
+      profileImageArea.addEventListener("click", () => {
+        imageInput.click();
+        
+    });
+
+    // 파일 선택 시 바로 서버로 업로드
+    imageInput.addEventListener("change", async (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const formData = new FormData(profileUploadForm);
+
+            try {
+                const response = await fetch(profileUploadForm.action, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const result = await response.json(); // 서버에서 반환된 JSON 데이터
+                    profileImg.src = result.imageUrl; // 새 이미지로 미리보기 업데이트
+                    alert("프로필 이미지가 성공적으로 변경되었습니다.");
+                } else {
+                    alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+                }
+            } catch (error) {
+                console.error("업로드 중 오류:", error);
+                alert("업로드 중 문제가 발생했습니다.");
+            }
+        }
+    });
+
   // 소개글 글자 수 업데이트
   introductionField.addEventListener("input", () => {
       charCount.textContent = introductionField.value.length;

@@ -478,7 +478,8 @@ function sendRequest(url, data) {
 
   return fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" }, 
+    // 요청방법에 대한 정의 
     body: JSON.stringify(data),
   })
     .then((response) => {
@@ -488,7 +489,7 @@ function sendRequest(url, data) {
           throw new Error(err.message || "요청 실패");
         });
       }
-      return response.json();
+      return response.json();// JSON형태의 응답 데이터를 JS 객체로 변경
     })
     .catch((error) => {
       console.error("서버와 통신 중 오류:", error.message);
