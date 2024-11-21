@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CODEGRAM</title>
 
-  <link rel="stylesheet" th:href="@{/css/mainPeed.css}">
+  <link rel="stylesheet" th:href="@{/css/mainfeed.css}">
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/footer.css}">
-  <link rel="stylesheet" th:href="@{/css/peed/peedSlide.css}">
-  <link rel="stylesheet" th:href="@{/css/peed/memberRecommend.css}">
-  <link rel="stylesheet" th:href="@{/css/peed/peedStory.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/feedSlide.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/memberRecommend.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/feedStory.css}">
 
 </head>
 
@@ -52,6 +52,8 @@
   </header>
 
   
+
+  
   <!-- 사이드바 조각 -->
   <div class="header-container" th:replace="~{fragments/header :: header}"></div>
 
@@ -82,7 +84,7 @@
       </div>
 
       <!-- 회원 추천 섹션 -->
-      <section th:replace="~{fragments/peed/memberRecommend :: memberRecommend}"></section>
+      <section th:replace="~{fragments/feed/memberRecommend :: memberRecommend}"></section>
     </div>
   </main>
 
@@ -90,10 +92,10 @@
   <div th:replace="~{fragments/footer :: footer}"></div>
 
   <!-- 스크립트 -->
-  <script src="/js/peed/peedStory.js"></script>
-  <script src="/js/peed/peedSlide.js"></script>
-  <script src="/js/peed/mainPeedInfiniteScroll.js"></script>
-  <script src="/js/peed/mainPeed.js"></script>
+  <script src="/js/feed/feedStory.js"></script>
+  <script src="/js/feed/feedSlide.js"></script>
+  <script src="/js/feed/mainfeedInfiniteScroll.js"></script>
+  <script src="/js/feed/mainfeed.js"></script>
 </body>
 
 </html>
