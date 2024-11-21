@@ -4,24 +4,6 @@
 <mapper namespace="edu.kh.cgram.board.mapper.BoardMapper">
 
 
-<!-- 	<collection
-		property="imageList"
-		select="selectImageList"
-		column="BOARD_NO"
-		javaType="java.util.ArrayList"
-		ofType="BoardImg"
-	/> 
--->
-
-<!-- 	<select id="selectImageList" resultType="BoardImg">
-		SELECT *
-		FROM BOARD_IMG
-		WHERE BOARD_NO = #{boardNo}
-		ORDER BY IMG_ORDER ASC
-	</select> 
--->
-
-
 
 	<!-- 최신 게시물 가져오기 -->
 	<select id="findLatestBoards" resultType="Board">
