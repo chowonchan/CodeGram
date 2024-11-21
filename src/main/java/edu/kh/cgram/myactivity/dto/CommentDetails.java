@@ -15,6 +15,9 @@ import lombok.ToString;
 @ToString
 public class CommentDetails {
 
+		private int commentNo;
+		private int boardNo;
+		private int memberNo;
 		private String profileImg;
 		private String memberNickname;
 		private String boardContent;

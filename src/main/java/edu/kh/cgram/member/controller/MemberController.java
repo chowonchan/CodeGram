@@ -33,11 +33,6 @@ public class MemberController {
 
 	@Autowired
 	private MemberService service;
-
-	@GetMapping("login")
-	public String login() {
-		return "member/login";
-	}
 	
 	@PostMapping("login")
 	@ResponseBody
@@ -56,7 +51,7 @@ public class MemberController {
 	    }
 
 	    session.setAttribute("loginMember", loginMember);
-	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/"));
+	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
 	}
 
 

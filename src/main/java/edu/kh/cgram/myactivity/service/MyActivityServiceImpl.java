@@ -34,17 +34,16 @@ public class MyActivityServiceImpl implements MyActivityService {
 	
 	@Override
 	public int deletePosts(int memberNo, List<Integer> postIds) {
-		 // 1. 자식 레코드(이미지) 먼저 삭제
-    int imgDeleteResult = mapper.deleteBoardImgs(postIds);
-    
-    // 2. 부모 레코드(게시글) 삭제
-    int boardDeleteResult = mapper.deleteBoards(memberNo, postIds);
-    
-    return boardDeleteResult;
+    return mapper.deleteBoards(memberNo, postIds);
 	}
 	
 	@Override
 	public List<CommentDetails> getComments(int memberNo) {
 		return mapper.selectComments(memberNo);
+	}
+	
+	@Override
+	public int deleteComments(int memberNo, List<Integer> commentIds) {
+		return mapper.deleteComments(memberNo, commentIds);
 	}
 }
