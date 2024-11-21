@@ -8,5 +8,17 @@
     WHERE MEMBER_NO = #{memberNo}
 </update>
 
+<update id="deleteProfileImg">
+    UPDATE MEMBER
+    SET PROFILE_IMG = NULL
+    WHERE MEMBER_NO = #{memberNo}
+</update>
 
+    <!-- 프로필 이미지 경로를 NULL로 설정 -->
+    <update id="deleteProfileImg">
+        UPDATE MEMBER
+        SET PROFILE_IMG = NULL
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+    
 </mapper>
