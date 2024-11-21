@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.dto.BoardImg;
 import io.lettuce.core.dynamic.annotation.Param;
+
 
 @Mapper
 public interface BoardMapper {
@@ -20,5 +22,8 @@ public interface BoardMapper {
 			@Param("lastBoardNo") Long lastBoardNo, 
 			@Param("page") int page,
 			@Param("pageSize") int pageSize);
+
+	// 팔로우 하지 않은 회원들의 피드 랜덤 조회
+	List<BoardImg> selectRandomPosts(int memberNo);
 
 }

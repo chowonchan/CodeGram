@@ -3,7 +3,7 @@
 <mapper namespace="edu.kh.cgram.myactivity.mapper.MyActivityMapper">
 
 	<select id="selectLikedPosts" resultType="BoardImg">
-		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH
+		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH, BI.IMG_RENAME
 		FROM BOARD B
 		JOIN BOARD_LIKE BL ON B.BOARD_NO = BL.BOARD_NO
 		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
@@ -21,7 +21,7 @@
 	</delete>
 	
 	<select id="selectMemberPosts" resultType="BoardImg">
-		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH
+		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH, BI.IMG_RENAME
 		FROM BOARD B
 		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
 		WHERE B.MEMBER_NO = #{memberNo}
