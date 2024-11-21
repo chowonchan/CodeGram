@@ -1,0 +1,28 @@
+/* src/App.css */
+.App {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+}
+
+div {
+  margin-bottom: 20px;
+}
+
+h3 {
+  color: #333;
+}
+
+p {
+  color: #555;
+}
+
+p.loading {
+  text-align: center;
+  font-style: italic;
+}

@@ -6,7 +6,7 @@
   <title>프로필 편집</title>
   <link rel="stylesheet" href="/css/header.css">
   <link rel="stylesheet" href="/css/footer.css">
-  <link rel="stylesheet" href="/css/myPage/profile-edit.css"> <!-- CSS 분리 -->
+  <link rel="stylesheet" href="/css/myPage/profile-edit.css">
 </head>
 <body>
 
@@ -17,11 +17,17 @@
     <!-- 프로필 편집 컨테이너 -->
     <section class="profile-edit-container">
       <div class="profile-edit-header">
-        <img src="/images/defaultImg.png" alt="프로필 이미지" class="profile-image">
-        <div class="profile-info">
-          <h2>프로필 사진</h2>
-          <input type="text" value="사용자 닉네임" disabled>
-        </div>
+        <form id="profileUploadForm" action="/myPage/profile" method="POST" enctype="multipart/form-data">
+          <div class="profile-image-area" id="profileImageArea">
+            <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
+                 id="profileImg"
+                 alt="프로필 이미지">
+          </div>
+          <input type="file" name="profileImg" id="imageInput" accept="image/*" style="display: none;">
+        </form>
+          <div class="nickname-display">
+            <span th:text="${session.loginMember.memberNickname}">사용자 닉네임</span>
+          </div>
         <button class="change-photo-button">사진 변경</button>
       </div>
 
@@ -45,10 +51,11 @@
       <button class="save-button">저장</button>
     </section>
 
-    <!-- 푸터 유지 -->
-    <th:block th:replace="~{fragments/footer :: footer}"></th:block> 
   </main>
+    <div class="footer-container">
+      <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    </div>
 
-  <script src="/js/myPage/profile-edit.js"></script> <!-- JS 분리 -->
+  <script src="/js/myPage/profile-edit.js"></script>
 </body>
 </html>

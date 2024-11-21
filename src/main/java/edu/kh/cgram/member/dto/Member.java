@@ -24,7 +24,7 @@ public class Member {
 	private String memberNickname;
 	private String memberName;
 	private String profileImg;
-	private String		 createdAt;
+	private String createdAt;
 	private String memberDelBanFl;
 	private String memberBirth;
 	private String selfIntroduction;

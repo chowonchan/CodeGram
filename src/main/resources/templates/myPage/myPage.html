@@ -13,12 +13,12 @@
   <main>
     <th:block class="header-container" th:replace="~{fragments/header :: header}"></th:block>
 
-    <!-- 사이드바 제외한 프로필 페이지 컨테이너 -->
+    <!--프로필 페이지 컨테이너 -->
     <section class="profile-container">
 
       <!-- 프로필 헤더 -->
       <section class="profile-header">
-
+        <!-- 프로필 이미지 영역 -->
         <form id="profileUploadForm" action="/myPage/profile" method="POST" enctype="multipart/form-data">
           <div class="profile-image-area" id="profileImageArea">
             <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
@@ -58,8 +58,20 @@
     
     <!-- 푸터 추가 -->
     <th:block th:replace="~{fragments/footer :: footer}"></th:block> 
+    
   </main>
 
+<!-- 프로필 사진 바꾸기 모달 -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <h3>프로필 사진 바꾸기</h3>
+    <ul class="modal-options">
+      <li id="uploadPhoto" class="option">사진 업로드</li>
+      <li id="deletePhoto" class="option delete">현재 사진 삭제</li>
+      <li id="cancelModal" class="option cancel">취소</li>
+    </ul>
+  </div>
+</div>
 
 
     <script src="/js/myPage/myPage.js"></script>
