@@ -17,4 +17,6 @@ public interface MyActivityService {
 
 	List<CommentDetails> getComments(int memberNo);
 
+	int deleteComments(int memberNo, List<Integer> commentIds);
+
 }

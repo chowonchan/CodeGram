@@ -1,0 +1,55 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+.container {
+  max-width: 600px;
+  height: 500px;
+  margin: 0 auto;
+  background-color: white;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+.item {
+  background-color: #e9ecef;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 5px;
+}
+.infinite-scroll-loader {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+
+/* 기본 스타일 */
+#container {
+width: 80%;
+height: 500px;
+overflow-y: scroll;
+margin: 0 auto;
+border: 1px solid #ccc;
+padding: 10px;
+box-sizing: border-box;
+}
+#itemsWrapper {
+display: flex;
+flex-direction: column;
+}
+.item {
+padding: 10px;
+margin: 5px 0;
+border: 1px solid #ccc;
+background-color: #f9f9f9;
+}
+.infinite-scroll-loader {
+text-align: center;
+padding: 10px;
+background-color: #f1f1f1;
+display: none;
+}

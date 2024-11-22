@@ -1,30 +1,34 @@
 /* 전체 기본 스타일 */
-body {
+ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f5f5f5;
-}
+  position: relative;
+} 
 
-main {
+ main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-}
+  position: relative;
+  z-index: auto;
+ } 
 
 /* 헤더 컨테이너 */
-.header-container {
+/* .header-container {
   margin-bottom: 20px;
-}
+} */
 
 /* 프로필 페이지 컨테이너 */
 .profile-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: relative; /* 모달과의 간섭 방지 */
 }
 
 /* 프로필 헤더 */
@@ -34,6 +38,7 @@ main {
   gap: 20px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 20px;
+  position: relative;
 }
 
 /* 프로필 이미지 */
@@ -153,3 +158,94 @@ main {
   bottom: 0;
   background-color: #ccc;
 }
+
+/* 모달 배경 */
+.modal {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  justify-content: center;
+  align-items: center;
+}
+
+/* 모달 콘텐츠 */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease; /* 부드러운 등장 효과 */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 모달 헤더 */
+.modal-content h3 {
+  margin: 0 0 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+/* 모달 옵션 목록 */
+.modal-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-options .option {
+  padding: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  color: #007bff; /* 기본 옵션 색상 */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 마지막 옵션은 경계선 없음 */
+.modal-options .option:last-child {
+  border-bottom: none;
+}
+
+/* 옵션 호버 효과 */
+.modal-options .option:hover {
+  background-color: #f1f1f1;
+}
+
+/* 삭제 옵션 스타일 */
+.modal-options .delete {
+  color: #d9534f; /* 삭제 옵션 색상 */
+}
+
+.modal-options .delete:hover {
+  background-color: #f8d7da; /* 삭제 옵션 호버 배경색 */
+  color: #a94442;
+}
+
+/* 취소 옵션 스타일 */
+.modal-options .cancel {
+  color: #6c757d; /* 취소 옵션 색상 */
+}
+
+.modal-options .cancel:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+

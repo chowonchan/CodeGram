@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CODEGRAM</title>
 
-  <link rel="stylesheet" th:href="@{/css/mainPeed.css}">
+  <link rel="stylesheet" th:href="@{/css/mainfeed.css}">
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/footer.css}">
-  <link rel="stylesheet" th:href="@{/css/peed/peedSlide.css}">
-  <link rel="stylesheet" th:href="@{/css/peed/memberRecommend.css}">
-  <link rel="stylesheet" th:href="@{/css/peed/peedStory.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/feedSlide.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/memberRecommend.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/feedStory.css}">
 
 </head>
 
@@ -79,7 +79,7 @@
                 </div>
               </div>
 
-              <!-- peed 이미지 영역 -->
+              <!-- feed 이미지 영역 -->
               <div class="post-images-container">
                 <div class="image-slider">
                   <button class="slider-button prev-button">
@@ -163,16 +163,16 @@
         </div>
       </div>
 
-      <section th:replace="~{fragments/peed/memberRecommend :: memberRecommend}"></section>
+      <section th:replace="~{fragments/feed/memberRecommend :: memberRecommend}"></section>
     </div>
     <!-- feed와 추천영역 감싸는 div end -->
   </main>
 
 
-  <script src="/js/peed/eedStory.js"></script>
-  <script src="/js/peed/peedSlide.js"></script>
-  <script src="/js/peed/mainPeedInfiniteScroll.js"></script>
-  <script src="/js/peed/mainPeed.js"></script>
+  <script src="/js/feed/eedStory.js"></script>
+  <script src="/js/feed/feedSlide.js"></script>
+  <script src="/js/feed/mainfeedInfiniteScroll.js"></script>
+  <script src="/js/feed/mainfeed.js"></script>
 
   <!-- 푸터 -->
   <div th:replace="~{fragments/footer :: footer}"></div>

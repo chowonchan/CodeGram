@@ -45,8 +45,7 @@
           <li class="chatting-item" th:chat-no="${chatRoom.chatRoomNo}" th:partner-no="${chatRoom.partnerNo}">
             <div class="item-header">
 
-              <div
-                style="border-radius: 50%; object-fit: cover; overflow: hidden; display: flex;">
+              <div style="border-radius: 50%; object-fit: cover; overflow: hidden; display: flex;">
 
                 <img th:if="${chatRoom.partnerProfile}" class="list-profile" th:src="${chatRoom.partnerProfile}">
 
@@ -60,7 +59,7 @@
                 <span class="partner-name" th:text="${chatRoom.partnerName}">상대방 이름</span>
                 <span class="recent-send-time" th:text="${chatRoom.sendTime}">메세지 보낸 시간</span>
               </p>
-              <div style="width: 50px;">
+              <div>
                 <p class="recent-message" th:text="${chatRoom.lastMessage}">메세지 내용</p>
                 <p th:if="${chatRoom.notReadCount > 0}" class="not-read-count" th:text="${chatRoom.notReadCount}"></p>
               </div>
@@ -99,15 +98,28 @@
 
 
 
-
-
+      
+      
+      <!-- 이모지 선택창 -->
+      <div id="emojiPicker" class="emoji-picker" style="display: none;">
+        <button class="emoji" data-emoji="😊">😊</button>
+        <button class="emoji" data-emoji="😂">😂</button>
+        <button class="emoji" data-emoji="❤️">❤️</button>
+        <button class="emoji" data-emoji="👍">👍</button>
+        <button class="emoji" data-emoji="😎">😎</button>
+        <!-- 더 많은 이모지 추가 가능 -->
+      </div>
 
       <div class="chat-input">
         <label class="upload-label" for="imageUpload">📷</label>
         <input type="file" id="imageUpload" class="image-upload" accept="image/*">
         <img id="imagePreview" class="image-preview">
+        
         <input type="text" class="message-input" id="inputChatting" placeholder="메시지 보내기...">
+        <!-- 이모지 버튼 추가 -->
+        <button type="button" class="emoji-button" id="emojiButton">😊</button>
       </div>
+
     </div>
   </div>
 

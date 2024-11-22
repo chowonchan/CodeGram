@@ -1,4 +1,4 @@
-class PeedDetail {
+class FeedDetail {
   constructor() {
     this.init();
   }
@@ -74,7 +74,7 @@ class PeedDetail {
       const data = await response.json();
 
       // 모달 HTML 가져오기
-      const modalResponse = await fetch(`/modals/peed-detail/${postId}`);
+      const modalResponse = await fetch(`/modals/Feed-detail/${postId}`);
       const modalHtml = await modalResponse.text();
 
       // 모달 표시
@@ -153,5 +153,5 @@ class PeedDetail {
 
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {
-  new PeedDetail();
+  new FeedDetail();
 });

@@ -17,4 +17,7 @@ public class Message {
   private int chatRoomNo;
   private String sendTime;
   
+  
+  private String imageUrl; // 이미지 경로
+  
 }
