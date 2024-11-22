@@ -248,14 +248,19 @@ profileModal.style.display = "none";
 
 introductionField.addEventListener("input", () => {
     charCount.textContent = introductionField.value.length;
+
+    // 입력 이벤트 리스너
+    selfIntroduction.addEventListener('input', () => {
+        charCount.textContent = selfIntroduction.value.length;
+  });
 });
 
 saveButton.addEventListener("click", async () => {
     const introduction = introductionField.value.trim();
     const privateToggle = document.getElementById("privateToggle").checked ? 2 : 1; // 선택 시 2, 비선택 시 1
 
-    if (introduction.length > 1000) {
-        alert("소개글은 최대 1000자까지 입력 가능합니다.");
+    if (introduction.length > 300) {
+        alert("소개글은 최대 300자 까지 입력 가능합니다.");
         return;
     }
 

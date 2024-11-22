@@ -18,7 +18,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
-  margin-left: 300px;
+  margin-left: 400px;
 }
 /* 메인 콘텐츠 영역 */
 main {
@@ -37,6 +37,84 @@ main {
   font-size: 30px;
   color: black;
 }
+
+/* 부모 컨테이너 스타일 */
+.private-settings {
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: space-between; /* 내용물 양 끝으로 정렬 */
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd; /* 외곽선 */
+  border-radius: 10px; /* 둥근 모서리 */
+  background-color: #f9f9f9; /* 배경색 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+}
+
+/* 섹션 제목과 설명 텍스트 */
+.private-settings h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.private-settings p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 스위치 스타일 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+/* 숨겨진 체크박스 */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* 슬라이더 */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc; /* 기본 배경색 */
+  transition: 0.4s; /* 전환 효과 */
+  border-radius: 25px; /* 둥근 모서리 */
+}
+
+/* 슬라이더 내부 원 */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 19px;
+  width: 19px;
+  left: 3px; /* 기본 상태에서 왼쪽 위치 */
+  top: 50%; /* 슬라이더의 중간 높이에 위치 */
+  transform: translateY(-50%); /* 중앙 정렬 */
+  background-color: white; /* 원 색상 */
+  transition: 0.4s;
+  border-radius: 50%; /* 원 모양 */
+}
+
+/* 체크 상태 */
+input:checked + .slider {
+  background-color: #2196F3; /* 체크 시 배경색 */
+}
+
+input:checked + .slider:before {
+  transform: translateX(25px) translateY(-50%); /* 오른쪽 끝으로 이동 */
+}
+
+
 
 .profile-edit-container {
   position: absolute; /* 화면에 고정 */
@@ -104,6 +182,14 @@ main {
   margin: 20px 0;
 }
 
+.profile-edit-section h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0; /* 아래 여백 추가, 좌우 여백 제거 */
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  width: 100%; /* 부모 컨테이너 너비를 채움 */
+}
+
 .profile-edit-section textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -116,6 +202,14 @@ main {
 .profile-edit-section p {
   margin-top: 5px;
   color: #888;
+}
+
+.private-settings h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0; /* 아래 여백 추가, 좌우 여백 제거 */
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  width: 100%; /* 부모 컨테이너 너비를 채움 */
 }
 
 .toggle-container {
