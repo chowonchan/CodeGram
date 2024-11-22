@@ -2,12 +2,13 @@ package edu.kh.cgram.main.controller;
 
 import java.util.List;
 
+import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.service.BoardService;
+import edu.kh.cgram.board.service.EditBoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.main.service.MainService;
@@ -20,6 +21,10 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("loginMember")
 @RequestMapping("/")
 public class MainController {
+	
+	private final EditBoardService service;
+	
+	private final BoardService boardService;
 	
 	@RequestMapping("/")
 	public String loginPage() {
@@ -46,5 +51,25 @@ public class MainController {
 //    model.addAttribute("stories", stories);
 //    return "feedStory";
 //	}
+	
+	@GetMapping("board/insert")
+	public String insertBoard() {
+		return "modal/modal-new-post";
+	}
+	
+	@ResponseBody
+	@PostMapping("submitFeed")
+	public int submitFeed(
+			@ModelAttribute Board inputBoard,
+			@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("images") List<MultipartFile> images
+	) {
+		inputBoard.setMemberNo(loginMember.getMemberNo());
+		
+		int result = service.boardInsert(inputBoard, images);
+	
+		return result;
+	}
+	
 
 }
