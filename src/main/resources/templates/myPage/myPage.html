@@ -50,7 +50,8 @@
           <!-- 프로필 관련 버튼 -->
           <div class="profile-buttons">
             <button class="profile-edit-button">프로필 편집</button>
-            <button>완료된 스토리 보기</button>
+            <button>보관된 스토리 보기</button>
+            <button class="profile-setting-button">설정</button>
           </div>
         </div>
       </section>
@@ -75,10 +76,10 @@
       </div>
     </section>
     
-    <!-- 공통 푸터를 가져옵니다 (Thymeleaf 템플릿을 사용). -->
-    <th:block th:replace="~{fragments/footer :: footer}"></th:block> 
     
   </main>
+  <!-- 공통 푸터를 가져옵니다 (Thymeleaf 템플릿을 사용). -->
+  <th:block th:replace="~{fragments/footer :: footer}"></th:block> 
 
   <!-- 프로필 사진 바꾸기 모달 -->
   <div id="profileModal" class="modal">
@@ -90,6 +91,21 @@
       <ul class="modal-options">
         <li id="uploadPhoto" class="option">사진 업로드</li>
         <li id="deletePhoto" class="option delete">현재 사진 삭제</li>
+        <li id="cancelModal" class="option cancel">취소</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 프로필 설정 모달 -->
+  <div id="profileSettingModal" class="modal">
+    <!-- 모달 내부 콘텐츠 -->
+    <div class="modal-content">
+      <!-- 모달 옵션 목록 -->
+      <ul class="modal-options">
+        <li id="notificationSetting" class="option notification">알림설정</li>
+        <li id="followList" class="option follow">팔로우 목록</li>
+        <li id="blockList" class="option block ">차단 목록</li>
+        <li id="logout" class="option logout">로그아웃</li>
         <li id="cancelModal" class="option cancel">취소</li>
       </ul>
     </div>

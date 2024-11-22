@@ -99,7 +99,7 @@ public class MemberController {
 
 	    if (result > 0) {
 	        ra.addFlashAttribute("message", inputMember.getMemberNickname() + "님의 가입을 환영합니다");
-	        return "redirect:/";
+	        return "redirect:/member/login";
 	    } else {
 	        ra.addFlashAttribute("message", "회원 가입 실패...");
 	        return "redirect:/member/signUp";

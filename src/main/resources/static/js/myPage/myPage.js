@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 모달 요소
     const profileModal = document.getElementById("profileModal");
+    const profileSettingModal = document.getElementById("profileSettingModal");
     const cancelModal = document.getElementById("cancelModal");
     const uploadPhoto = document.getElementById("uploadPhoto");
     const deletePhoto = document.getElementById("deletePhoto");
@@ -13,10 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // 프로필 편집 버튼
     const profileEditButton = document.querySelector(".profile-edit-button");
+    const profileSettingButton = document.querySelector(".profile-setting-button");
   
     // 모달 열기
     profileImageArea.addEventListener("click", () => {
     profileModal.style.display = "flex";
+    });
+
+    profileSettingButton.addEventListener("click", () => {
+      profileSettingModal.style.display = "flex";
     });
   
   // 사진 업로드 옵션
@@ -137,6 +143,18 @@ deletePhoto.addEventListener("click", async () => {
   window.addEventListener("click", (event) => {
     if (event.target === profileModal) {
       profileModal.style.display = "none";
+    }
+  });
+
+  // 취소 옵션
+  cancelModal.addEventListener("click", () => {
+    profileSettingModal.style.display = "none";
+  });
+  
+  // 모달 외부 클릭 시 닫기
+  window.addEventListener("click", (event) => {
+    if (event.target === profileSettingModal) {
+      profileSettingModal.style.display = "none";
     }
   });
   
