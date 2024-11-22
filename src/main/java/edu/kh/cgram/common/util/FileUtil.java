@@ -3,7 +3,7 @@ package edu.kh.cgram.common.util;
 import java.text.SimpleDateFormat;
 
 public class FileUtil {
-	
+  
 	public static int seqNum = 1;
 	
 

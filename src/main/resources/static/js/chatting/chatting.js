@@ -108,14 +108,13 @@ const sendMessagePartner = async (imagePath) => {
   // JSON으로 변환하여 웹소켓 핸들러로 전달
   chattingSock.send(JSON.stringify(chattingObj));
 
-  //  
-  // type, url, pkNo, content
-  // const content =
-  //   `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>`
-  //   + `<span class="chat-preview">${msg}</span>`;
+  //******** / type, url, pkNo, content
+  const content =
+    `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>`
+    + `<span class="chat-preview">${msg}</span>`;
 
-  // const url = location.pathname + "?chat-no=" + selectChattingNo;
-  // sendNotification("chatting", url, selectPartnerNo, content);
+  const url = location.pathname + "?chat-no=" + selectChattingNo;
+  sendNotification("chatting", url, selectPartnerNo, content);
 
 
   inputChatting.value = ""; // 보낸 채팅 내용 삭제
@@ -221,6 +220,7 @@ if (chattingSock != undefined) {
     }
 
     imagePreview.style.display = 'none';
+    inputChatting.value = ""; // 보낸 채팅 내용 삭제
     selectRoomList();
   });
 }
@@ -240,21 +240,21 @@ function isKorean(text) {
   return koreanRegex.test(text);
 }
 
-const searchInput = document.querySelector('.search-input');
+const inputSearch = document.querySelector('.search-input');
 const sendButton = document.querySelector('.send-button');
-const searchResults = document.querySelector('.search-results');
+const searchMemberResults = document.querySelector('.search-results');
 const noResultsMessage = document.querySelector('.no-results');
 const modalOverlay = document.querySelector('#modal-overlay');
 
 // --------------------------- 사용자 검색 ---------------------------
-searchInput.addEventListener("input", () => {
+inputSearch.addEventListener("input", () => {
 
   // 입력된 값
-  const query = searchInput.value.trim();
+  const query = inputSearch.value.trim();
 
   // 입력된 값이 없을 경우
   if (query.length === 0) {
-    searchResults.innerHTML = ""; // 검색 결과 목록 삭제
+    searchMemberResults.innerHTML = ""; // 검색 결과 목록 삭제
     return;
   }
 
@@ -276,14 +276,14 @@ searchInput.addEventListener("input", () => {
 
       console.log(list);
 
-      searchResults.innerHTML = ""; // 이전 검색 결과 비우기
+      searchMemberResults.innerHTML = ""; // 이전 검색 결과 비우기
 
       if (list.length == 0) {
         noResultsMessage.style.display = 'none';
         const li = document.createElement("li");
         li.classList.add("result-row");
         li.innerText = "일치하는 회원이 없습니다";
-        searchResults.append(li);
+        searchMemberResults.append(li);
         return;
       }
 
@@ -310,7 +310,7 @@ searchInput.addEventListener("input", () => {
 
         // 요소 조립(화면에 추가)
         li.append(img, span);
-        searchResults.append(li);
+        searchMemberResults.append(li);
 
         // 클릭 시 채팅방 입장 함수 호출
         li.addEventListener("click", chattingEnter);
@@ -353,7 +353,6 @@ const chattingEnter = (e) => {
 
       selectRoomList(); // 비동기로 채팅방 목록 조회
 
-      // 200ms 후에 실행
       setTimeout(() => {
 
         // 입장하려던 채팅방이 
@@ -374,8 +373,8 @@ const chattingEnter = (e) => {
             // modalOverlay.classList.add("chattingSearchMember");
 
             // 검색창 내용 비우기
-            searchInput.value = "";
-            searchResults.innerHTML = "";
+            inputSearch.value = "";
+            searchMemberResults.innerHTML = "";
             return;
           }
         }
@@ -391,7 +390,6 @@ const chattingEnter = (e) => {
 
 // 비동기로 채팅방 목록 조회
 const selectRoomList = () => {
-
   fetch("/chatting/chatRoomList")
     .then(resp => resp.json())
     .then(chatRoomList => {
@@ -404,13 +402,11 @@ const selectRoomList = () => {
 
       // DMLogo.style.display = "none";
 
-
       // 채팅방 목록 지우기
       ul.innerHTML = "";
 
       // 조회한 채팅방 목록을 화면에 추가
       for (let chatRoom of chatRoomList) {
-
         const li = document.createElement("li");
         li.classList.add("chatting-item");
         li.setAttribute("chat-no", chatRoom.chatRoomNo);
@@ -427,10 +423,11 @@ const selectRoomList = () => {
         const listProfile = document.createElement("img");
         listProfile.classList.add("list-profile");
 
-        if (chatRoom.partnerProfile == undefined)
+        if (chatRoom.partnerProfile == undefined) {
           listProfile.setAttribute("src", userDefaultImage);
-        else
+        } else {
           listProfile.setAttribute("src", chatRoom.partnerProfile);
+        }
 
         itemHeader.append(listProfile);
 
@@ -448,9 +445,7 @@ const selectRoomList = () => {
         recentSendTime.classList.add("recent-send-time");
         recentSendTime.innerText = chatRoom.sendTime;
 
-
         p.append(partnerName, recentSendTime);
-
 
         const div = document.createElement("div");
 
@@ -458,45 +453,47 @@ const selectRoomList = () => {
         recentMessage.classList.add("recent-message");
 
 
-        if (chatRoom.lastMessage !== undefined) {
+
+        if (chatRoom.lastMessage !== undefined && chatRoom.lastMessage !== null) {
           // 이미지 메시지가 있는지 확인
           if (chatRoom.lastMessage.startsWith("<img")) {
             // 이미지가 전송되었을 경우
-            recentMessage.innerHTML = "이미지가 전송되었습니다.";  // 대체 텍스트 대신 "이미지가 전송되었습니다." 메시지
+            recentMessage.innerHTML = "이미지가 전송되었습니다."; // 대체 텍스트
           } else {
             // 텍스트 메시지인 경우
-            recentMessage.innerHTML = chatRoom.lastMessage;  // HTML 태그를 그대로 처리하려면 innerHTML 사용
+            recentMessage.innerHTML = chatRoom.lastMessage; // 일반 메시지
           }
+        } else {
+          recentMessage.textContent = ""; // 메시지가 없을 경우 빈 문자열
         }
+
 
 
         div.append(recentMessage);
 
         itemBody.append(p, div);
 
-        // 현재 채팅방을 보고있는게 아니고 읽지 않은 개수가 0개 이상인 경우 -> 읽지 않은 메세지 개수 출력
+        // 현재 채팅방을 보고있지 않고 읽지 않은 개수가 0개 이상인 경우
         if (chatRoom.notReadCount > 0 && chatRoom.chatRoomNo != selectChattingNo) {
           const notReadCount = document.createElement("p");
           notReadCount.classList.add("not-read-count");
           notReadCount.innerText = chatRoom.notReadCount;
           div.append(notReadCount);
-
-        } else if (selectChattingNo !== undefined
-          && chatRoom.chatRoomNo == selectChattingNo) {
-
+        } else if (
+          selectChattingNo !== undefined &&
+          chatRoom.chatRoomNo == selectChattingNo
+        ) {
           // 현재 채팅방을 보고있는 경우
           // 비동기로 해당 채팅방 글을 읽음으로 표시
           fetch("/chatting/updateReadFlag", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: selectChattingNo
+            body: selectChattingNo,
           })
-            .then(resp => resp.text())
-            .then(result => console.log(result))
-            .catch(err => console.log(err));
-
+            .then((resp) => resp.text())
+            .then((result) => console.log(result))
+            .catch((err) => console.log(err));
         }
-
 
         li.append(itemHeader, itemBody);
         ul.append(li);
@@ -504,8 +501,8 @@ const selectRoomList = () => {
 
       chatRoomListAddEvent();
     })
-    .catch(err => console.log(err));
-}
+    .catch((err) => console.log(err));
+};
 
 
 // ----------------------------------------------------
@@ -713,14 +710,18 @@ const selectChattingFn = () => {
 
 
 // ----------------------------------------------------------------------
-const sidebar = document.querySelector(".sidebar");
+const chatSidebar = document.querySelector(".sidebar");
 // 문서 로딩이 완료된 후
 document.addEventListener("DOMContentLoaded", () => {
 
   // 채팅방 목록에 클릭 이벤트 추가하는 함수 호출
   chatRoomListAddEvent();
 
-  // sidebar.classList.add("narrow");
+  if (chatSidebar) {
+    chatSidebar.classList.add("narrow");
+  } else {
+    console.error("chatSidebar 요소를 찾을 수 없습니다.");
+  }
 
   // 채팅 입력 후 엔터 입력 시 메시지 보내기
   document.querySelector("#inputChatting").addEventListener("keyup", async e => {
@@ -738,11 +739,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let imagePath = null;
         if (img) {
-          // uploadImage(uploadImage);
+
           imagePath = await asyncImageUpload(img);
         }
-        //********************
-        // await sendMessagePartner();
+        // 상대방에게 메시지 채팅 시 이미지도
         await sendMessagePartner(imagePath);
       }
     }
