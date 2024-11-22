@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
 }
@@ -37,14 +37,14 @@ body {
 
   margin-left: 75px;
   display: flex;
-  ;
+  
 }
 
 .chatting-container {
   background: white;
   border: 1px solid #dbdbdb;
   border-radius: 8px;
-  width: 500px;
+  width: 505px;
 }
 
 .chatting-header {
@@ -59,11 +59,11 @@ body {
   /* width: 500px; */
   /* min-width: 27.5%; */
 
-  height: 80%;
+  height: 76%;
   display: block;
   
   list-style: none;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .chatting-item {
@@ -160,7 +160,7 @@ body {
 
 
 .chat-messages {
-  width: 100%;
+  width: 95%;
   height: 70%;
 }
 
@@ -231,7 +231,7 @@ body {
 
 .chat-header {
   height: 80px;
-  width: 100%;
+  width: 97%;
   padding: 10px;
   /* border-bottom: 1px solid #dbdbdb; */
   display: flex;
@@ -418,11 +418,12 @@ body {
 
 .chat-input {
   padding: 16px;
-  width: 100%;
+  width: 95%;
   border-top: 1px solid #dbdbdb;
   display: flex;
   align-items: center;
   gap: 12px;
+
 }
 
 .message-input {

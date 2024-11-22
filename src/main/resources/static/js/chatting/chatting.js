@@ -108,14 +108,13 @@ const sendMessagePartner = async (imagePath) => {
   // JSON으로 변환하여 웹소켓 핸들러로 전달
   chattingSock.send(JSON.stringify(chattingObj));
 
-  //  
-  // type, url, pkNo, content
-  // const content =
-  //   `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>`
-  //   + `<span class="chat-preview">${msg}</span>`;
+  //******** / type, url, pkNo, content
+  const content =
+    `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>`
+    + `<span class="chat-preview">${msg}</span>`;
 
-  // const url = location.pathname + "?chat-no=" + selectChattingNo;
-  // sendNotification("chatting", url, selectPartnerNo, content);
+  const url = location.pathname + "?chat-no=" + selectChattingNo;
+  sendNotification("chatting", url, selectPartnerNo, content);
 
 
   inputChatting.value = ""; // 보낸 채팅 내용 삭제
@@ -221,6 +220,7 @@ if (chattingSock != undefined) {
     }
 
     imagePreview.style.display = 'none';
+    inputChatting.value = ""; // 보낸 채팅 내용 삭제
     selectRoomList();
   });
 }

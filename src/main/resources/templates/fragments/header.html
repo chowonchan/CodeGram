@@ -1,115 +1,125 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codegram Sidebar</title>
-    <link rel="stylesheet" href="/css/header.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codegram Sidebar</title>
+  <link rel="stylesheet" href="/css/header.css">
 </head>
+
 <body th:fragment="header">
-    <div class="sidebar">
-        <div>
-            <a class="logo" href="/">
-                <span>Codegram</span>
-            </a>
-            <a class="nav-item" href="/">
-                <span class="fa-solid fa-house"></span>
-                <span>홈</span>
-            </a>
-            <div class="nav-item" id="searchTab">
-                <span class="fa-solid fa-magnifying-glass"></span>
-                <span>검색</span>
-            </div>
-            <a class="nav-item" href="/board/randomPeed">
-                <span class="fa-solid fa-compass"></span>
-                <span>탐색 탭</span>
-            </a>
-            <a class="nav-item" href="/chatting">
-                <span class="fa-solid fa-envelope"></span>
-                <span>메시지</span>
-            </a>
-            <div class="nav-item" id="notificationTab">
-                <span class="fa-solid fa-heart"></span>
-                <span>알림</span>
-            </div>
-            <a class="nav-item" href="#">
-                <span class="fa-regular fa-square-plus"></span>
-                <span>게시물 작성</span>
-            </a>
-            <a class="nav-item" href="#">
-                <span class="fa-regular fa-square-plus"></span>
-                <span>스토리 작성</span>
-            </a>
-            <a class="nav-item" href="/myPage">
-                <span class="fa-solid fa-user"></span>
-                <span>프로필</span>
-            </a>
-        </div>
-        <div class="more">
-            <span class="fa-solid fa-bars"></span>
-            <span>더보기</span>
-            <div class="more-menu">
-                <a id="moreTab" href="#">
-                    <span class="fa-solid fa-gear"></span>
-                    <div>설정</div>
-                </a>
-                <a id="moreTab" href="/board/myActivity">
-                    <span class="fa-solid fa-history"></span>
-                    <div>내 활동</div>
-                </a>
-                <a id="moreTab" href="#">
-                    <span class="fa-solid fa-flag"></span>
-                    <div>저장됨</div>
-                </a>
-                <a id="moreTab" href="#">
-                    <span class="fa-solid fa-sun"></span>
-                    <div>모드 전환</div>
-                </a>
-                <a id="moreTab" href="/member/logout">
-                    <span ></span>
-                    <div>로그아웃</div>
-                </a>
-            </div>
-        </div>
-        <!-- 검색 창과 알림 목록 -->
-        <div class="side-panel hidden" id="sidePanel">
-            <div class="panel-content" id="searchPanel">
-                <div style="padding-left: 20px;"><h2>검색</h2></div>
-                <div class="search-input-container" style="margin-bottom: 30px;">
-                    <input id="searchInput" type="text" placeholder="검색"/>
-                    <button class="clear-button" id="clearButton" style="display: none;">&times;</button>
-                </div>
-                <div class="recent-search" id="recentSearch">
-                    <div class="recent-search-title">
-                        <h4>최근 검색 항목</h4>
-                        <button class="deleteBtn">모두 지우기</button> <!-- 모두 지우기 버튼 추가 -->
-                    </div>
-                </div>
-                <div class="search-results" id="searchResults" style="display: none;"></div>
-            </div>
-            <div class="panel-content hidden" id="notificationPanel">
-                <h3>알림</h3>
-                <ul>
-                    <li>알림 1</li>
-                    <li>알림 2</li>
-                    <li>알림 3</li>
-                </ul>
-            </div>
-        </div>
-        <!-- 모달 창 -->
-        <div class="modal hidden" id="clearAllModal">
-            <div class="modal-content">
-                <h3>검색 내역을 지우시겠어요?</h3>
-                <p>이 작업을 취소할 수 없습니다. 검색 내역을 지워도 검색한 계정이 추천 결과로 계속 표시될 수 있습니다.</p>
-                <div class="modal-buttons">
-                    <button class="clear-all-confirm">Clear all</button>
-                    <button class="clear-all-cancel">나중에 하기</button>
-                </div>
-            </div>
-        </div>
+  <div class="sidebar">
+    <div>
+      <a class="logo" href="/">
+        <span>Codegram</span>
+      </a>
+      <a class="nav-item" href="/">
+        <span class="fa-solid fa-house"></span>
+        <span>홈</span>
+      </a>
+      <div class="nav-item" id="searchTab">
+        <span class="fa-solid fa-magnifying-glass"></span>
+        <span>검색</span>
+      </div>
+      <a class="nav-item" href="/board/randomPeed">
+        <span class="fa-solid fa-compass"></span>
+        <span>탐색 탭</span>
+      </a>
+      <a class="nav-item" href="/chatting">
+        <span class="fa-solid fa-envelope"></span>
+        <span>메시지</span>
+      </a>
+      <div class="nav-item" id="notificationTab">
+        <span class="fa-solid fa-heart"></span>
+        <span>알림</span>
+      </div>
+      <a class="nav-item" href="#">
+        <span class="fa-regular fa-square-plus"></span>
+        <span>게시물 작성</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="fa-regular fa-square-plus"></span>
+        <span>스토리 작성</span>
+      </a>
+      <a class="nav-item" href="/myPage">
+        <span class="fa-solid fa-user"></span>
+        <span>프로필</span>
+      </a>
     </div>
-    <script src="/js/header.js"></script>
-    <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
+    <div class="more">
+      <span class="fa-solid fa-bars"></span>
+      <span>더보기</span>
+      <div class="more-menu">
+        <a id="moreTab" href="#">
+          <span class="fa-solid fa-gear"></span>
+          <div>설정</div>
+        </a>
+        <a id="moreTab" href="/board/myActivity">
+          <span class="fa-solid fa-history"></span>
+          <div>내 활동</div>
+        </a>
+        <a id="moreTab" href="#">
+          <span class="fa-solid fa-flag"></span>
+          <div>저장됨</div>
+        </a>
+        <a id="moreTab" href="#">
+          <span class="fa-solid fa-sun"></span>
+          <div>모드 전환</div>
+        </a>
+        <a id="moreTab" href="/member/logout">
+          <span></span>
+          <div>로그아웃</div>
+        </a>
+      </div>
+    </div>
+    <!-- 검색 창과 알림 목록 -->
+    <div class="side-panel hidden" id="sidePanel">
+      <div class="panel-content" id="searchPanel">
+        <div style="padding-left: 20px;">
+          <h2>검색</h2>
+        </div>
+        <div class="search-input-container" style="margin-bottom: 30px;">
+          <input id="searchInput" type="text" placeholder="검색" />
+          <button class="clear-button" id="clearButton" style="display: none;">&times;</button>
+        </div>
+        <div class="recent-search" id="recentSearch">
+          <div class="recent-search-title">
+            <h4>최근 검색 항목</h4>
+            <button class="deleteBtn">모두 지우기</button> <!-- 모두 지우기 버튼 추가 -->
+          </div>
+        </div>
+        <div class="search-results" id="searchResults" style="display: none;"></div>
+      </div>
+
+      <!-- 알림 목록 패널 -->
+      <div class="panel-content hidden" id="notificationPanel">
+        <h3 class="notification-title">알림</h3>
+
+        <div class="notification-container"  th:if="${session.loginMember}">
+          <!-- 알림 목록 -->
+          <ul class="notification-list">
+
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <!-- 모달 창 -->
+    <div class="modal hidden" id="clearAllModal">
+      <div class="modal-content">
+        <h3>검색 내역을 지우시겠어요?</h3>
+        <p>이 작업을 취소할 수 없습니다. 검색 내역을 지워도 검색한 계정이 추천 결과로 계속 표시될 수 있습니다.</p>
+        <div class="modal-buttons">
+          <button class="clear-all-confirm">Clear all</button>
+          <button class="clear-all-cancel">나중에 하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/header.js"></script>
+  <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
 </body>
+
 </html>
