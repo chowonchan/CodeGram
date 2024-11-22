@@ -16,45 +16,113 @@
 
     <!-- 프로필 편집 컨테이너 -->
     <section class="profile-edit-container">
+      <!-- 프로필 수정 헤더 -->
       <div class="profile-edit-header">
+        <!-- 프로필 이미지 업로드 폼 -->
         <form id="profileUploadForm" action="/myPage/profile" method="POST" enctype="multipart/form-data">
+          <!-- 프로필 이미지 영역 -->
           <div class="profile-image-area" id="profileImageArea">
-            <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
-                 id="profileImg"
-                 alt="프로필 이미지">
+            <!-- 프로필 이미지 -->
+            <img
+              th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
+              id="profileImg"
+              alt="프로필 이미지">
+            <!-- 
+            th:src는 Thymeleaf 템플릿 엔진의 속성입니다.
+            - session.loginMember.profileImg가 null이 아니면 해당 경로를 사용
+            - null이면 기본 이미지 '/images/defaultImg.png'를 사용
+            -->
           </div>
+          <!-- 파일 입력 (숨겨져 있음) -->
           <input type="file" name="profileImg" id="imageInput" accept="image/*" style="display: none;">
+          <!-- 
+          파일 업로드 입력 요소
+          - 사용자가 이미지를 업로드하면 이 요소를 통해 파일을 전송
+          - style="display: none;"로 숨겨져 있으며, 버튼을 통해 활성화됨
+          -->
         </form>
-          <div class="nickname-display">
-            <span th:text="${session.loginMember.memberNickname}">사용자 닉네임</span>
-          </div>
+    
+        <!-- 닉네임 표시 -->
+        <div class="nickname-display">
+          <span th:text="${session.loginMember.memberNickname}">사용자 닉네임</span>
+          <!-- 
+          th:text는 Thymeleaf 템플릿 엔진의 속성입니다.
+          - session.loginMember.memberNickname 값을 표시
+          -->
+        </div>
+    
+        <!-- 사진 변경 버튼 -->
         <button class="change-photo-button">사진 변경</button>
+        <!-- 
+        클릭 시 파일 입력(input[type="file"]) 창을 열어 사용자가 새로운 이미지를 업로드할 수 있도록 함
+        -->
       </div>
-
+    
+      <!-- 프로필 소개 섹션 -->
       <div class="profile-edit-section">
         <h3>소개</h3>
+        <!-- 소개글 입력 -->
         <textarea id="selfIntroduction" placeholder="소개글을 입력해 주세요" maxlength="1000"></textarea>
+        <!-- 
+        - 소개글을 입력받는 텍스트 영역
+        - 최대 글자 수는 1000자
+        -->
         <p><span id="charCount">0</span>/1000</p>
+        <!-- 
+        현재 입력된 글자 수를 표시하는 요소
+        - charCount는 JavaScript를 사용해 업데이트 가능
+        -->
       </div>
-
+    
+      <!-- 추천 설정 토글 -->
       <div class="toggle-container">
         <label for="recommendToggle">프로필에 계정 추천 표시</label>
         <input type="checkbox" id="recommendToggle">
+        <!-- 
+        추천 토글
+        - 체크박스 형태로 추천 기능 활성화 여부를 설정
+        -->
       </div>
-
+    
+      <!-- 비공개 계정 설정 -->
       <div class="private-settings">
         <h3>비공개 계정</h3>
         <p>계정을 비공개 상태로 설정하면 승인된 팔로워만 귀하의 게시물을 볼 수 있습니다.</p>
+        <!-- 비공개 계정 토글 -->
         <input type="checkbox" id="privateToggle">
+        <!-- 
+        체크박스를 사용해 계정을 비공개 상태로 설정
+        -->
       </div>
-
+    
+      <!-- 저장 버튼 -->
       <button class="save-button">저장</button>
+      <!-- 
+      - 변경 사항을 저장하는 버튼
+      - 클릭 시 서버로 변경된 데이터를 전송
+      -->
     </section>
+    
 
   </main>
     <div class="footer-container">
       <th:block th:replace="~{fragments/footer :: footer}"></th:block>
     </div>
+
+    <!-- 프로필 사진 바꾸기 모달 -->
+  <div id="profileModal" class="modal">
+    <!-- 모달 내부 콘텐츠 -->
+    <div class="modal-content">
+      <!-- 모달 제목 -->
+      <h3>프로필 사진 바꾸기</h3>
+      <!-- 모달 옵션 목록 -->
+      <ul class="modal-options">
+        <li id="uploadPhoto" class="option">사진 업로드</li>
+        <li id="deletePhoto" class="option delete">현재 사진 삭제</li>
+        <li id="cancelModal" class="option cancel">취소</li>
+      </ul>
+    </div>
+  </div>
 
   <script src="/js/myPage/profile-edit.js"></script>
 </body>
