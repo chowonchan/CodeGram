@@ -23,4 +23,19 @@ public interface MyPageMapper {
             @Param("memberNo") int memberNo, // 회원 번호 매핑 (SQL의 #{memberNo}와 연결)
             @Param("profileImg") String relativePath // 이미지 경로 매핑 (SQL의 #{profileImg}와 연결)
     );
+
+    /**
+     * 사용자의 프로필 정보를 업데이트하는 메서드
+     *
+     * @param memberNo 업데이트할 회원 번호
+     * @param selfIntroduction 새로운 소개글
+     * @param recommendToggle 계정 추천 여부
+     * @param privateToggle 계정 비공개 여부
+     * @return 업데이트된 행의 개수
+     */
+    int updateProfile(
+            @Param("memberNo") int memberNo,
+            @Param("selfIntroduction") String selfIntroduction,
+            @Param("memberDisclosureScope") int memberDisclosureScope
+    );
 }

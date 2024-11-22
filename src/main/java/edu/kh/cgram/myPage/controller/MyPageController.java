@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -148,5 +150,54 @@ public class MyPageController {
 
         // "myPage/editProfile.html" 템플릿을 렌더링
         return "myPage/editProfile";
+    }
+    
+    /**
+     * 프로필 업데이트 요청을 처리하는 메서드
+     *
+     * @param profileData 클라이언트에서 전달받은 JSON 데이터를 담을 DTO 객체
+     * @param session 현재 로그인한 사용자의 세션 정보
+     * @return 성공 또는 실패 메시지와 상태 코드
+     */
+    @PostMapping("/updateProfile")
+    @ResponseBody // 반환 데이터를 JSON 형식으로 변환
+    public ResponseEntity<?> updateProfile(
+            @RequestBody Member profileData, // 클라이언트에서 전달한 JSON 데이터를 Member DTO로 매핑
+            HttpSession session // 현재 세션 정보를 가져오기
+    ) {
+        try {
+            // 세션에서 로그인한 사용자 정보를 가져옴
+            Member loginMember = (Member) session.getAttribute("loginMember");
+
+            if (loginMember == null) {
+                // 세션에 로그인 정보가 없으면 에러 응답 반환
+                return ResponseEntity.status(401).body("로그인이 필요합니다.");
+            }
+
+            // 서비스 계층을 통해 업데이트 요청 처리
+            boolean isUpdated = service.updateProfile(
+                    loginMember.getMemberNo(), // 로그인된 회원 번호
+                    profileData.getSelfIntroduction(), // 클라이언트가 보낸 소개글
+                    profileData.getMemberDisclosureScope() // 계정 비공개 여부
+            );
+
+            if (isUpdated) {
+                // 세션 정보 업데이트
+                loginMember.setSelfIntroduction(profileData.getSelfIntroduction());
+                loginMember.setMemberDisclosureScope(profileData.getMemberDisclosureScope());
+                session.setAttribute("loginMember", loginMember);
+
+                // 성공 응답 반환
+                return ResponseEntity.ok().body("{\"status\": \"success\"}");
+            } else {
+                // 실패 응답 반환
+                return ResponseEntity.status(500).body("{\"status\": \"error\"}");
+            }
+
+        } catch (Exception e) {
+            // 예외 발생 시 에러 응답 반환
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("{\"status\": \"error\", \"message\": \"서버 오류 발생\"}");
+        }
     }
 }

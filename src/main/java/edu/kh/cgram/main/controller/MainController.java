@@ -23,11 +23,11 @@ public class MainController {
 		// return "/feed/mainPeed";
 	}
 	
-}
-
-	public String loginPage() {
-			return "/member/login";
+	@RequestMapping("member/login")	//남길부분!!!!
+	public String loginPage() {	//남길부분!!!!
+			return "/member/login";	//남길부분!!!!
 	}
+
 	
 
 }

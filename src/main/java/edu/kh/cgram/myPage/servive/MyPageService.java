@@ -34,4 +34,6 @@ public interface MyPageService {
      */
     boolean resetProfileImageToDefault(int memberNo);
 
+		boolean updateProfile(int memberNo, String selfIntroduction, int memberDisclosureScope);
+
 }

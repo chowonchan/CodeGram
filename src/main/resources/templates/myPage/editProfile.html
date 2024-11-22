@@ -44,7 +44,9 @@
     
         <!-- 닉네임 표시 -->
         <div class="nickname-display">
-          <span th:text="${session.loginMember.memberNickname}">사용자 닉네임</span>
+          <span class="pe-nick" th:text="${session.loginMember.memberNickname}">사용자 닉네임</span>
+          <div></div>
+          <span th:text="${session.loginMember.memberName}">사용자 이름</span>
           <!-- 
           th:text는 Thymeleaf 템플릿 엔진의 속성입니다.
           - session.loginMember.memberNickname 값을 표시

@@ -86,4 +86,11 @@ public class MyPageServiceImpl implements MyPageService {
         // 2. 업데이트 결과를 반환 (1 이상이면 성공)
         return result > 0;
     }
+    
+    @Override
+    public boolean updateProfile(int memberNo, String selfIntroduction, int memberDisclosureScope) {
+      int result = mapper.updateProfile(memberNo, selfIntroduction, memberDisclosureScope);
+      // 업데이트된 행의 개수가 1 이상이면 성공
+      return result > 0;
+  }
 }
