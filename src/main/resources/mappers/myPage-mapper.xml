@@ -2,23 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.kh.cgram.myPage.mapper.MyPageMapper">
 
-<update id="updateProfileImg">
-    UPDATE MEMBER
-    SET PROFILE_IMG = #{profileImg}
-    WHERE MEMBER_NO = #{memberNo}
-</update>
+	<update id="updateProfileImg">
+		UPDATE MEMBER
+		SET PROFILE_IMG = #{profileImg}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
 
-<update id="deleteProfileImg">
-    UPDATE MEMBER
-    SET PROFILE_IMG = NULL
-    WHERE MEMBER_NO = #{memberNo}
-</update>
-
-    <!-- 프로필 이미지 경로를 NULL로 설정 -->
-<!--     <update id="deleteProfileImg">
-        UPDATE MEMBER
-        SET PROFILE_IMG = NULL
-        WHERE MEMBER_NO = #{memberNo}
-    </update> -->
-    
+	<update id="updateProfile">
+		UPDATE MEMBER
+		SET SELF_INTRODUCTION = #{selfIntroduction},
+		MEMBER_DISCLOSURE_SCOPE = #{memberDisclosureScope}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
 </mapper>
+    
+

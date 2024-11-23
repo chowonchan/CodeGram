@@ -1,21 +1,35 @@
-/* 전체 기본 스타일 */
- body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f5f5f5;
-  position: relative;
-} 
 
- main {
-  max-width: 1200px;
-  margin: 0 auto;
+html,body{
+  height: 100%; /* 페이지 높이를 전체 화면에 맞춤 */
+  display: flex;
+  flex-direction: column; /* 헤더, 메인 콘텐츠, 푸터를 세로로 배치 */
+  margin: 0;
+}
+
+/* body {
+  font-family: Arial, sans-serif;
+} */
+/* 메인 콘텐츠 영역 */
+main {
+  flex: 1; /* 남은 공간을 차지 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+
+ .profile-container{
+  position: absolute; /* 화면에 고정 */
+  top: 50%; /* 수직 가운데 정렬 */
+  left: 50%; /* 수평 가운데 정렬 */
+  transform: translate(-50%, -50%); /* 실제 가운데로 이동 */
+  background-color: #ffffff; /* 배경색 */
+  width: 50%; /* 적절한 너비 설정 */
   padding: 20px;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  position: relative;
-  z-index: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  text-align: center;
  } 
 
 /* 헤더 컨테이너 */
@@ -28,8 +42,9 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  position: relative; /* 모달과의 간섭 방지 */
-}
+  /*position: relative;*/  /* 모달과의 간섭 방지 */
+  }
+
 
 /* 프로필 헤더 */
 .profile-header {
@@ -38,12 +53,12 @@
   gap: 20px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 20px;
-  position: relative;
+  /*position: relative;*/
 }
 
 /* 프로필 이미지 */
 .profile-image-area {
-  position: relative;
+  /*position: relative;*/
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -99,7 +114,7 @@
   background-color: #0056b3;
 }
 
-/* 프로필 소개 */
+/* 프로필 소개
 .profile-bio {
   font-size: 16px;
   color: #444;
@@ -107,7 +122,7 @@
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
-}
+} */
 
 /* 탭 메뉴 */
 .tabs {
@@ -183,6 +198,22 @@
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease; /* 부드러운 등장 효과 */
+
+  /* 유연한 크기 조정 */
+  width: 90%;
+  max-width: 500px; /* 최대 너비 제한 */
+  max-height: 80%; /* 최대 높이 제한 */
+  overflow-y: auto; /* 콘텐츠가 길 경우 스크롤 */
+}
+
+/* 긴 모달 콘텐츠 스크롤 */
+.modal-content::-webkit-scrollbar {
+ width: 8px; /* 스크롤바 너비 */
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+ background-color: #ccc;
+ border-radius: 4px;
 }
 
 @keyframes fadeIn {
@@ -234,7 +265,7 @@
   color: #d9534f; /* 삭제 옵션 색상 */
 }
 
-.modal-options .delete:hover {
+.modal-options .delete:hover , #logout:hover{
   background-color: #f8d7da; /* 삭제 옵션 호버 배경색 */
   color: #a94442;
 }
