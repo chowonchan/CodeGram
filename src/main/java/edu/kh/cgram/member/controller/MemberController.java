@@ -58,7 +58,7 @@ public class MemberController {
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
 		status.setComplete();// 세션 종료
-		return "redirect:/member/login";// 로그인 페이지로 리다이렉트
+		return "redirect:/";// 로그인 페이지로 리다이렉트
 	}
 	//----------------------------------------------------
 	
