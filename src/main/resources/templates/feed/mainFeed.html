@@ -23,20 +23,13 @@
       <!-- Story Items -->
       <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
         <div class="story-wrapper" th:classappend="${board.storyCheck ? 'viewed' : ''}"> 
-          <!-- 윗 부분 th:classappend="${story.viewed} ? 'viewed' : '' 에서 story.viewed 고쳐야됨. 
-                읽었는지 확인하는건데 확인할 필요가 없어보이긴함. 
-                왜냐하면 값이 들어가 있으면 이미 읽었다는 것. 그렇다면 값이 있는지 없는지 체크가 되야.
-                그렇다면? storyCheck를 만들어야 겠다. ㅇㅇㅇ
-                다른 check는 solid를 주면 check된거고 regular를 주면 check가 안된것.
-                스토리는 뒤에 불이 꺼져있으면 check된거고 불이 켜져있으면 check가 안된것.
-                -->
           <div class="story-border">
             <img th:src="${member.profileImg != null} ? 
                          ${member.profileImg} : '/images/default-profile.png'" 
                  class="story-profile-image">
           </div>
         </div>
-        <span th:text="${member.memberNickname}" class="story-username">닉네임</span>
+        <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
       </div>
     </div>
 

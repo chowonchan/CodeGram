@@ -26,13 +26,24 @@ public class MainController {
 	
 	private final BoardService boardService;
 	
-	@RequestMapping("/")
-	public String loginPage() {
-		return "/member/login";
-	}
+	private final MainService mainService;
 	
-	public String mainPage() {
+//	@RequestMapping("/")
+//	public String loginPage() {
+//		return "/member/login";
+//	}
+	
+	public String mainPage(
+			@SessionAttribute(value="loginMember", 
+											 required=false) Member loginMember,
+			Model model
+			
+		) {
 		
+		Model.addAttribute("story", story);
+
+		
+
 	 // return "/feed/test";
 		 return "/board/randomPeed";
 		// return "/feed/mainPeed";
