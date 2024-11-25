@@ -266,6 +266,7 @@ body {
 
 
 
+
 .profile-image {
   width: 32px;
   height: 32px;
@@ -373,7 +374,8 @@ body {
 }
 
 .my-chat>p>img {
-  width: 100%;
+  max-width: 100%;
+  min-width: 10%;
   /* p 태그 크기에 맞게 이미지 크기 자동 조정 */
   height: auto;
   /* 비율에 맞게 높이 자동 조정 */

@@ -38,6 +38,7 @@ public class MainController {
 		// return "/feed/mainPeed";
 	}
 	
+
 //	@RequestMapping("member/login")
 //	public String loginPage() {
 //			return "/member/login";
