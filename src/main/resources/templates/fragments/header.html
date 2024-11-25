@@ -43,9 +43,9 @@
         <span class="fa-regular fa-square-plus"></span>
         <span>스토리 작성</span>
       </a>
-      <a class="nav-item" href="/myPage">
+      <a class="nav-item" th:href="@{/member/{nickname} (nickname=${session.loginMember.memberNickname})}">
         <span class="fa-solid fa-user"></span>
-        <span>프로필</span>
+        <span>프로필</span> 
       </a>
     </div>
     <div class="more">

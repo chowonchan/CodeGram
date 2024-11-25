@@ -31,9 +31,10 @@
         <form id="profileUploadForm" action="/myPage/profile" method="POST" enctype="multipart/form-data">
           <!-- 프로필 이미지 표시 (사용자가 업로드한 이미지나 기본 이미지) -->
           <div class="profile-image-area" id="profileImageArea">
-            <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
+            <!-- <img th:src="${session.loginMember.profileImg != null ? session.loginMember.profileImg : '/images/defaultImg.png'}"
                  id="profileImg"
-                 alt="프로필 이미지">
+                 alt="프로필 이미지"> -->
+                 <img th:src="${member.profileImg != null ? member.profileImg : '/images/defaultImg.png'}" id="profileImg" alt="프로필 이미지">
           </div>
           <!-- 파일 입력 필드 (사용자가 이미지를 업로드할 때 사용, 화면에 보이지 않음) -->
           <input type="file" name="profileImg" id="imageInput" accept="image/*" style="display: none;">
@@ -42,14 +43,16 @@
         <!-- 사용자 정보를 표시하는 영역 -->
         <div class="profile-info">
           <!-- 사용자 닉네임 -->
-          <h2 th:text="${session.loginMember.memberNickname}">member_nickname</h2>
+          <!-- <h2 th:text="${session.loginMember.memberNickname}">member_nickname</h2> -->
+          <h2 th:text="${member.memberNickname}">member_nickname</h2>
           <!-- 게시물, 팔로워, 팔로우 수 -->
           <p>게시물 0 &nbsp;&nbsp; 팔로워 0만 &nbsp;&nbsp; 팔로우 0</p>
           <!-- 사용자 이름 -->
-          <p th:text="${session.loginMember.memberName}">member_name</p>
+          <!-- <p th:text="${session.loginMember.memberName}">member_name</p> -->
+          <p th:text="${member.memberName}">member_name</p>
           <!-- 프로필 관련 버튼 -->
-          <div class="profile-buttons">
-            <button class="profile-edit-button">프로필 편집</button>
+          <div class="profile-buttons" th:if= "${session.loginMember?.memberNickname == nickname}">
+            <button class="profile-edit-button">프로필 편집</button> 
             <button>보관된 스토리 보기</button>
             <button class="profile-setting-button">설정</button>
           </div>
@@ -58,7 +61,8 @@
 
       <!-- 프로필 소개글 영역 -->
       <div class="profile-bio">
-        <span th:text="${session.loginMember.selfIntroduction}"></span>
+        <!-- <span th:text="${session.loginMember.selfIntroduction}"></span> -->
+        <span th:text="${member.selfIntroduction}"></span>
       </div>
 
 
@@ -106,7 +110,7 @@
         <li id="followList" class="option follow">팔로우 목록</li>
         <li id="blockList" class="option block ">차단 목록</li>
         <li id="logout" class="option logout">로그아웃</li>
-        <li id="cancelModal" class="option cancel">취소</li>
+        <li id="cancleModal" class="option cancle">취소</li>
       </ul>
     </div>
   </div>
