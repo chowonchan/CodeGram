@@ -38,9 +38,10 @@ public class MainController {
 		// return "/feed/mainPeed";
 	}
 	
-//	@RequestMapping("member/login")	//남길부분!!!!
-//	public String loginPage() {	//남길부분!!!!
-//			return "/member/login";	//남길부분!!!!
+
+//	@RequestMapping("member/login")
+//	public String loginPage() {
+//			return "/member/login";
 //	}
 
 	
