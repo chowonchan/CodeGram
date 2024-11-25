@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.service.BoardService;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myactivity.service.MyActivityService;
 import lombok.RequiredArgsConstructor;
 
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 	
 	private final BoardService service;
+	private final MyActivityService myActivityService;
 	
 	@GetMapping("myActivity")
 	public String myActivityPage() {

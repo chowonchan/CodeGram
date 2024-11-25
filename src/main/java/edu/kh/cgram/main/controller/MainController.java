@@ -28,10 +28,10 @@ public class MainController {
 	
 	private final MainService mainService;
 	
-//	@RequestMapping("/")
-//	public String loginPage() {
-//		return "/member/login";
-//	}
+	@RequestMapping("/")
+	public String loginPage() {
+		return "/member/login";
+	}
 	
 	public String mainPage(
 			@SessionAttribute(value="loginMember", 
@@ -49,11 +49,6 @@ public class MainController {
 		// return "/feed/mainPeed";
 	}
 	
-
-//	@RequestMapping("member/login")
-//	public String loginPage() { 
-//			return "/member/login";
-//	}
 
 	
 //  public String mainPage 안에 넣어야되고 아직 업데이트중
