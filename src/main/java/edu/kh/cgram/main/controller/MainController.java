@@ -38,10 +38,10 @@ public class MainController {
 		// return "/feed/mainPeed";
 	}
 	
-	@RequestMapping("member/login")	//남길부분!!!!
-	public String loginPage() {	//남길부분!!!!
-			return "/member/login";	//남길부분!!!!
-	}
+//	@RequestMapping("member/login")	//남길부분!!!!
+//	public String loginPage() {	//남길부분!!!!
+//			return "/member/login";	//남길부분!!!!
+//	}
 
 	
 //  public String mainPage 안에 넣어야되고 아직 업데이트중
