@@ -15,6 +15,7 @@ import lombok.ToString;
 @Builder
 public class Story {
 
+
 	private int 		storyNo;
 	private String 	imgPath;
 	private String 	createdAt;
@@ -27,7 +28,7 @@ public class Story {
 	private String 	memberNickname;
 	
 	private int 		likeCount;
-	
+
 	private String 	storyCheck; // 'Y' or 'N'
 	private String 	storyLiked; // 'Y' or 'N'
 
