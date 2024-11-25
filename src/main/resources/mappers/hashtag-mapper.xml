@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.kh.cgram.hashtag.mapper.HashtagMapper">
+
+	<select id="searchHashtags" parameterType="string" resultType="HashTag">
+		SELECT TAG_NAME AS tagName, COUNT(*) AS postCount
+		FROM HASHTAG
+		WHERE TAG_NAME = #{query}
+		GROUP BY TAG_NAME
+	</select>
+</mapper>

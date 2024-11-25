@@ -348,6 +348,22 @@ body {
   justify-content: center;
 }
 
+.profile-img2 {
+  width: 30px; /* 프로필 이미지의 크기 */
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* 동그랗게 만들기 */
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+.profile-img2 img {
+  width: 100%; /* 이미지가 프로필 박스를 채우도록 */
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 박스에 맞추기 */
+}
+
 
 
 /* 알림 목록 스타일 */

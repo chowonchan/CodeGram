@@ -10,17 +10,37 @@
 
 </head>
 
-<body>
-  <div class="stories-container">
-    <div class="story-item" data-story-id="${story.storyNo}">
-      <div class="story-wrapper">
-        <div class="story-border">
-          <img th:src="${profileImg}" class="story-profile-image">
+  <!-- Story Section Header -->
+  <header class="stories-section">
+    <div class="stories-container" th:if="${not #lists.isEmpty(stories)}">
+      <!-- Story Items -->
+      <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
+        <div class="story-wrapper" th:classappend="${board.storyCheck ? 'viewed' : ''}"> 
+          <div class="story-border">
+            <img th:src="${member.profileImg != null} ? 
+                         ${member.profileImg} : '/images/default-profile.png'" 
+                 class="story-profile-image">
+          </div>
         </div>
+        <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
       </div>
-      <span th:text="${memberNickname}" class="story-username">Nname</span>
     </div>
-  </div>
+
+    <!-- Empty State -->
+    <div th:if="${#lists.isEmpty(stories)}" class="empty-stories">
+      <p>새로운 스토리가 없습니다</p>
+    </div>
+
+    <!-- Navigation Buttons (6개 이상일 경우) -->
+    <button class="nav-button prev" th:if="${#lists.size(stories) > 6}" onclick="navigateStories('prev')"
+      aria-label="이전 스토리">
+      <span class="nav-icon">←</span>
+    </button>
+    <button class="nav-button next" th:if="${#lists.size(stories) > 6}" onclick="navigateStories('next')"
+      aria-label="다음 스토리">
+      <span class="nav-icon">→</span>
+    </button>
+  </header>
 
   <script src="script.js"></script>
 

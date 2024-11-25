@@ -3,10 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileModal = document.getElementById("profileModal");
     const profileSettingModal = document.getElementById("profileSettingModal");
     const cancelModal = document.getElementById("cancelModal");
+    const cancleModal = document.getElementById("cancleModal");
     const uploadPhoto = document.getElementById("uploadPhoto");
     const deletePhoto = document.getElementById("deletePhoto");
     const profileImageArea = document.getElementById("profileImageArea");
     const profileImg = document.getElementById("profileImg");
+    const logout = document.getElementById("logout");
+
     const defaultImageUrl = "/images/defaultImg.png";
     // 탭 버튼 및 탭 콘텐츠
     const tabButtons = document.querySelectorAll(".tab-button");
@@ -147,7 +150,7 @@ deletePhoto.addEventListener("click", async () => {
   });
 
   // 취소 옵션
-  cancelModal.addEventListener("click", () => {
+  cancleModal.addEventListener("click", () => {
     profileSettingModal.style.display = "none";
   });
   
@@ -175,6 +178,10 @@ deletePhoto.addEventListener("click", async () => {
         const tab = document.getElementById(button.dataset.tab);
         if (tab) tab.classList.add("active");
       });
+    });
+
+    logout.addEventListener("click", () => {
+      window.location.href = "/member/logout";
     });
 
     

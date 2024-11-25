@@ -130,5 +130,11 @@ public class MemberServiceImpl implements MemberService{
       String encodedPassword = encoder.encode(newPassword);
       return mapper.updatePassword(memberId, encodedPassword);
   }
+  
+  @Override
+  public Member getMemberByNickname(String nickname) {
+      return mapper.selectMemberByNickname(nickname);
+  }
+
 
 }
