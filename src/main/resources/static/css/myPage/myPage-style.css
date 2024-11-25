@@ -279,4 +279,13 @@ main {
   background-color: #e9ecef;
   color: #495057;
 }
+/* 취소 옵션 스타일 */
+.modal-options .cancle {
+  color: #6c757d; /* 취소 옵션 색상 */
+}
+
+.modal-options .cancle:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
 

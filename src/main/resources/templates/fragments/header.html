@@ -12,10 +12,10 @@
 <body th:fragment="header">
   <div class="sidebar">
     <div>
-      <a class="logo" href="/">
+      <a class="logo" href="/board/randomPeed">
         <span>Codegram</span>
       </a>
-      <a class="nav-item" href="/">
+      <a class="nav-item" href="/board/randomPeed">
         <span class="fa-solid fa-house"></span>
         <span>홈</span>
       </a>
@@ -43,11 +43,10 @@
         <span class="fa-regular fa-square-plus"></span>
         <span>스토리 작성</span>
       </a>
-      <a class="nav-item" href="/myPage">
-        <span class="profile-img2">
-          <img th:src="${session.profileImg}" alt="프로필 이미지">
-        </span>
-        <span>프로필</span>
+
+      <a class="nav-item" th:href="@{/member/{nickname} (nickname=${session.loginMember.memberNickname})}">
+        <span class="fa-solid fa-user"></span>
+        <span>프로필</span> 
       </a>
     </div>
     <div class="more">

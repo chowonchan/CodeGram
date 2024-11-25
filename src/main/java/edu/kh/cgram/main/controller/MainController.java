@@ -26,22 +26,29 @@ public class MainController {
 	
 	private final BoardService boardService;
 	
+	private final MainService mainService;
+	
 	@RequestMapping("/")
 	public String loginPage() {
 		return "/member/login";
 	}
 	
-	public String mainPage() {
+	public String mainPage(
+			@SessionAttribute(value="loginMember", 
+											 required=false) Member loginMember,
+			Model model
+			
+		) {
 		
+		Model.addAttribute("story", story);
+
+		
+
 	 // return "/feed/test";
 		 return "/board/randomPeed";
 		// return "/feed/mainPeed";
 	}
 	
-//	@RequestMapping("member/login")	//남길부분!!!!
-//	public String loginPage() {	//남길부분!!!!
-//			return "/member/login";	//남길부분!!!!
-//	}
 
 	
 //  public String mainPage 안에 넣어야되고 아직 업데이트중
@@ -74,6 +81,8 @@ public class MainController {
 	
 		return result;
 	}
+	
+	
 	
 
 }
