@@ -40,7 +40,7 @@ public class MainController {
 	
 
 //	@RequestMapping("member/login")
-//	public String loginPage() {
+//	public String loginPage() { 
 //			return "/member/login";
 //	}
 
@@ -75,6 +75,8 @@ public class MainController {
 	
 		return result;
 	}
+	
+	
 	
 
 }

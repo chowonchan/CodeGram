@@ -27,4 +27,6 @@ public interface MemberService {
 	boolean sendUserIdToEmail(String email, String userId);
 	
   Member findMemberByNameEmailBirthAndId(String name, String email, String birthDate, String memberId); // 추가
+
+	Member getMemberByNickname(String nickname);
 }

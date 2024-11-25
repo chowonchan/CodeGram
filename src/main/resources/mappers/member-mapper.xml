@@ -73,6 +73,13 @@
     SET MEMBER_PW = #{newPassword}
     WHERE MEMBER_ID = #{memberId}
 </update>
+
+<select id="selectMemberByNickname" resultType="edu.kh.cgram.member.dto.Member">
+    SELECT *
+    FROM MEMBER
+    WHERE MEMBER_NICKNAME = #{nickname}
+</select>
+
 		
 	
 	

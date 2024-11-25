@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -200,6 +201,41 @@ public class MemberController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
 	    }
 	}
+	
+	/**************************************************/
+	
+	@GetMapping("/{nickname}")
+	public String showUserPage(
+	        @PathVariable(value = "nickname", required = false) String nickname, // URL에서 닉네임 추출 (옵션)
+	        @SessionAttribute("loginMember") Member loginMember, // 세션에서 로그인 사용자 정보
+	        Model model) {
+	    
+	    Member member = null;
+
+	    // 닉네임이 전달된 경우, 해당 닉네임의 사용자 정보 조회
+	    if (nickname != null && !nickname.isEmpty()) {
+	        member = service.getMemberByNickname(nickname);
+	    }
+
+	    // 닉네임으로 조회한 데이터가 없으면 세션의 loginMember 정보 사용
+	    if (member == null) {
+	        member = loginMember;
+	    }
+	    // member가 여전히 null인 경우 (로그인되지 않았거나 세션 만료)
+	    if (member == null) {
+	        model.addAttribute("message", "사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
+	        return "redirect:/member/login"; // 로그인 페이지로 리다이렉트
+	    }
+
+	    // 사용자 정보를 모델에 추가하여 뷰에 전달
+	    model.addAttribute("member", member);
+
+	    // "myPage/myPage.html" 템플릿을 렌더링
+	    return "myPage/myPage";
+	}
+
+
+	/**************************************************/
 
 
 

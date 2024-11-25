@@ -33,4 +33,6 @@ public interface MemberMapper {
 
 int updatePassword(@Param("memberId") String memberId, @Param("newPassword") String newPassword);
 
+Member selectMemberByNickname(String nickname);
+
 }
