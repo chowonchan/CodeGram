@@ -31,10 +31,7 @@ main {
   text-align: center;
  } 
 
-/* 헤더 컨테이너 */
-/* .header-container {
-  margin-bottom: 20px;
-} */
+
 
 /* 프로필 페이지 컨테이너 */
 .profile-container {
@@ -44,6 +41,19 @@ main {
   /*position: relative;*/  /* 모달과의 간섭 방지 */
   }
 
+  /* 닉네임과 버튼 배치 */
+.profile-header-row {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: space-between; /* 닉네임 왼쪽, 버튼 오른쪽 */
+  gap: 180px;
+}
+/* 닉네임 스타일 */
+#profileNickname {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0; /* 여백 제거 */
+}
 
 /* 프로필 헤더 */
 .profile-header {
@@ -84,7 +94,7 @@ main {
   gap: 10px; /* 텍스트 간 간격 */
 }
 
-.profile-buttons h2 {
+.profileNickname{
   margin: 0;
   font-size: 24px;
   font-weight: bold;

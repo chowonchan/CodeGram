@@ -142,52 +142,39 @@ deletePhoto.addEventListener("click", async () => {
   // "none"으로 설정하면 요소가 화면에서 숨겨집니다.
 });
 
-  // 취소 옵션
-  cancelModal.addEventListener("click", () => {
+  // 모달 외부 클릭 시 닫기 - 통합 이벤트
+window.addEventListener("click", (event) => {
+  if (event.target === profileModal) {
     profileModal.style.display = "none";
-  });
-  
-  // 모달 외부 클릭 시 닫기
-  window.addEventListener("click", (event) => {
-    if (event.target === profileModal) {
-      profileModal.style.display = "none";
-    }
-  });
+  } else if (event.target === profileSettingModal) {
+    profileSettingModal.style.display = "none";
+  }
+});
 
   // 취소 옵션
   cancleModal.addEventListener("click", () => {
     profileSettingModal.style.display = "none";
   });
-  
-  // 모달 외부 클릭 시 닫기
-  window.addEventListener("click", (event) => {
-    if (event.target === profileSettingModal) {
-      profileSettingModal.style.display = "none";
-    }
+  // 취소 옵션
+  cancelModal.addEventListener("click", () => {
+    profileModal.style.display = "none";
   });
   
+
     // 프로필 편집 버튼 클릭 시 페이지 이동
     profileEditButton.addEventListener("click", () => {
       window.location.href = "/myPage/editProfile"; // 프로필 편집 페이지 URL
     });
-  
-    // // 탭 버튼 클릭 시 탭 전환
-    // tabButtons.forEach(button => {
-    //   button.addEventListener("click", () => {
-    //     // 모든 탭 버튼과 콘텐츠에서 'active' 클래스 제거
-    //     tabButtons.forEach(btn => btn.classList.remove("active"));
-    //     tabContents.forEach(content => content.classList.remove("active"));
-  
-    //     // 클릭된 탭 버튼과 관련 콘텐츠에 'active' 클래스 추가
-    //     button.classList.add("active");
-    //     const tab = document.getElementById(button.dataset.tab);
-    //     if (tab) tab.classList.add("active");
-    //   });
-    // });
+
 
     logout.addEventListener("click", () => {
       window.location.href = "/member/logout";
     });
+
+
+
+
+
 
     // 기본 탭 활성화
 document.addEventListener("DOMContentLoaded", () => {
@@ -201,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => renderPosts(data, "uploads")) // uploads: 업로드한 게시물
     .catch(error => console.error("Error fetching uploaded posts:", error));
 });
-
+activateTab(myUploadsTab, "uploads");
 // 탭 클릭 이벤트
 myUploadsTab.addEventListener("click", () => {
   activateTab(myUploadsTab, "uploads");

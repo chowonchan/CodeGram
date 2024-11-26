@@ -131,10 +131,64 @@ public class MemberServiceImpl implements MemberService{
       return mapper.updatePassword(memberId, encodedPassword);
   }
   
+//  @Override
+//  public Member getMemberByNickname(String nickname) {
+//  	
+//      return mapper.selectMemberByNickname(nickname);
+//  }
+//  @Override
+//  public Member getMemberByNickname(String nickname) {
+//      Member member = mapper.selectMemberByNickname(nickname);
+//
+//      if (member == null) {
+//          log.warn("닉네임으로 조회된 회원이 없습니다: {}", nickname);
+//          return null;
+//      }
+//
+//      int memberNo = member.getMemberNo();
+//      log.info("조회된 회원 번호: {}", memberNo);
+//
+//      log.info("회원 데이터: {}", member);
+//      return member;
+//  }
   @Override
   public Member getMemberByNickname(String nickname) {
-      return mapper.selectMemberByNickname(nickname);
+      Member member = mapper.selectMemberByNickname(nickname);
+
+      if (member != null) {
+          int postCount = mapper.getPostCountByMemberNo(member.getMemberNo());
+          member.setPostCount(postCount);
+
+          int followerCount = mapper.getFollowerCount(member.getMemberNo());
+          member.setFollowerCount(followerCount);
+
+          int followCount = mapper.getFollowCount(member.getMemberNo());
+          member.setFollowCount(followCount);
+
+          log.info("회원 번호 {}의 게시물 수: {}", member.getMemberNo(), postCount);
+          log.info("회원 데이터 업데이트 완료: {}", member);
+      }
+      return member;
   }
 
-
+	@Override
+	public int getPostCountByMemberNo(int memberNo) {
+	  // 매퍼를 호출하여 게시물 수 조회
+	  int postCount = mapper.getPostCountByMemberNo(memberNo);
+	
+	  // 디버깅용 로그 추가
+	  log.info("회원 번호 {}의 게시물 수: {}", memberNo, postCount);
+	
+	  return postCount;
+	}
+	@Override
+	public int getFollowCount(int memberNo) {
+	  int followCount = mapper.getFollowCount(memberNo);
+		return followCount;
+		
+	}@Override
+	public int getFollowerCount(int memberNo) {
+	  int followerCount = mapper.getFollowerCount(memberNo);
+		return followerCount;
+}
 }

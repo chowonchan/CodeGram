@@ -35,4 +35,11 @@ int updatePassword(@Param("memberId") String memberId, @Param("newPassword") Str
 
 Member selectMemberByNickname(String nickname);
 
+int getPostCountByMemberNo(@Param("memberNo") int memberNo);
+
+int getFollowerCount(@Param("memberNo") int memberNo);
+
+int getFollowCount(@Param("memberNo") int memberNo);
+
+
 }
