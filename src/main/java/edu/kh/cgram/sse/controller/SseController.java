@@ -14,6 +14,7 @@ import edu.kh.cgram.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +27,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class SseController {
 
-	private final SseService service;
+	@Autowired
+	private SseService service;
 
-	//SseEmitter : 서버로 부터 메시지를 전달 받을
+	// SseEmitter : 서버로 부터 메시지를 전달 받을
 	// 클라이언트 정보를 저장한 객체 == 연결된 클라이언트
 
 	private final Map<String, SseEmitter> emitters 
@@ -36,7 +38,7 @@ public class SseController {
 
 	/* 클라이언트 연결요청 */
 	@GetMapping("sse/connect")
-	public SseEmitter getMethodName(
+	public SseEmitter SseConnect(
 			@SessionAttribute("loginMember") Member loginMember) {
 
 		String clientId = loginMember.getMemberNo() + "";
@@ -60,7 +62,7 @@ public class SseController {
 			) {
 		
 		
-		notification.setNotificationNo(loginMember.getMemberNo());
+		notification.setSendMemberNo(loginMember.getMemberNo());
 		
   	Map<String, Object> map = service.insertNotification(notification);
   	

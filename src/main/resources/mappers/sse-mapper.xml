@@ -1,7 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="lllpper">
-  
+<mapper namespace="edu.kh.cgram.sse.mapper.SseMapper">
+
+	<!-- parameterType : MyBatis가 SQL 문에 데이터를 바인딩할 때, 
+		전달된 객체의 타입을 알 수 있도록 하기 위해 사용 -->
+		
+	<!-- useGeneratedKeys : 데이터 삽입 후 데이터베이스에서 
+		생성된 키 값을 다시 사용하거나 클라이언트로 반환 -->
+	<insert id="insertNotification"
+			parameterType="Notification"
+			useGeneratedKeys="true">
+			
+		<selectKey order="BEFORE" resultType="_int"
+				   keyProperty="notificationNo">
+			SELECT SEQ_NOTI_NO.NEXTVAL FROM DUAL		
+		</selectKey>
+		
+		INSERT INTO "NOTIFICATION"(
+			NOTIFICATION_NO,
+			NOTIFICATION_CONTENT,
+			NOTIFICATION_URL,
+			SEND_MEMBER_NO,
+			RECEIVE_MEMBER_NO
+			)
+		
+		VALUES(
+			#{notificationNo},
+			#{notificationContent},
+			#{notificationUrl},
+			#{sendMemberNo},
+			
+			<choose>
+				<when test="notificationType == 'insertComment'
+							or notificationType == 'likeLink'">
+							
+					(SELECT MEMBER_NO
+					 FROM "BOARD"
+					 WHERE BOARD_NO = #{pkNo})							
+				</when>
+				
+				<!-- 알림 종류가 답글인 경우 -->
+				<when test="notificationType == 'insertChildComment'">
+					(SELECT MEMBER_NO 
+					 FROM "COMMENT"
+					 WHERE COMMENT_NO = #{pkNo})
+				</when>
+				
+				<when test="notificationType == 'chatting'">
+					#{pkNo}
+				</when>
+				
+				<when test="notificationType == 'follow'">
+					(SELECT FOLLOWING_MEMBER
+					 FROM "FOLLOW"
+					 WHERE FOLLOWING_MEMBER = #{pkNo})
+				</when>
+			
+			</choose>
+		)
+	</insert>
+	
+	
+		<!-- 알림을 받아야하는 회원의 번호 + 안읽은 알람 개수 조회 -->
+	<select id="selectReceiveMember" resultType="map">
+		SELECT 
+			RECEIVE_MEMBER_NO "receiveMemberNo",
+			(SELECT COUNT(*) 
+			FROM "NOTIFICATION" SUB
+			WHERE SUB.RECEIVE_MEMBER_NO = MAIN.RECEIVE_MEMBER_NO 
+			AND SUB.NOTIFICATION_CHECK = 'N')
+			"notiCount"
+		FROM (
+			SELECT RECEIVE_MEMBER_NO
+				FROM "NOTIFICATION"
+			WHERE NOTIFICATION_NO =  #{notificationNo}
+		) MAIN
+	</select>
+	
+	
+	<select id="selectNotificationList" resultType="Notification">
+		SELECT 
+			NOTIFICATION_NO, 
+			NOTIFICATION_CONTENT, 
+			NOTIFICATION_URL, 
+			PROFILE_IMG AS SEND_MEMBER_PROFILE_IMG, 
+			SEND_MEMBER_NO, 
+			RECEIVE_MEMBER_NO,
+			NOTIFICATION_CHECK,
+			CASE 
+				WHEN TRUNC("NOTIFICATION".CREATED_AT) = TRUNC(CURRENT_DATE) THEN TO_CHAR("NOTIFICATION".CREATED_AT, 'AM HH:MI')
+				ELSE TO_CHAR("NOTIFICATION".CREATED_AT, 'YYYY-MM-DD')
+			END AS CREATED_AT
+		FROM "NOTIFICATION"
+		JOIN "MEMBER" ON (SEND_MEMBER_NO = MEMBER_NO)
+		WHERE RECEIVE_MEMBER_NO = #{memberNo}
+		ORDER BY NOTIFICATION_NO DESC
+	
+	</select>
+	
+	
+	<delete id="deleteNotification">
+		DELETE 
+		FROM "NOTIFICATION"
+		WHERE NOTIFICATION_NO = #{notificationNo}
+	</delete>
+	
+		<!-- 알림 읽음 여부 변경(N->Y) -->
+	<update id="updateNotification">
+		UPDATE "NOTIFICATION"
+		SET
+			NOTIFICATION_CHECK = 'Y'
+		WHERE
+			NOTIFICATION_NO = #{notificationNo}
+	</update>
 	
 
 </mapper>
