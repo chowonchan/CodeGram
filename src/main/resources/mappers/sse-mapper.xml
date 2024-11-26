@@ -32,7 +32,7 @@
 			
 			<choose>
 				<when test="notificationType == 'insertComment'
-							or notificationType == 'likeLink'">
+							or notificationType == 'boardLike'">
 							
 					(SELECT MEMBER_NO
 					 FROM "BOARD"

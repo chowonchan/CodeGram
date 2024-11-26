@@ -417,10 +417,10 @@ const selectNotiList = () => {
             body: data.notificationNo
           })
             .then(response => {
-              if (!response.ok) { // 비동기 통신 실패
+              if (response.ok) { // 비동기 통신 실패
                 // 클릭된 x버튼이 포함된 알림 삭제
                 notiDelete.parentElement.remove();
-                notReadCheck();
+
                 return;
               }
               console.log("응답이 좋지 않습니다");

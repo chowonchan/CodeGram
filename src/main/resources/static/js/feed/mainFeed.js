@@ -42,7 +42,7 @@ boardLike.addEventListener("click", e => {
         boardLike.classList.remove("fa-regular");
 
         // type, url, pkNo, content
-        sendNotification(
+        sendNoti(
           "boardLike",  // type
           location.pathname,  // 게시글 상세 조회 페이지 주소
           board.boardNo,  // 게시글 번호
@@ -85,14 +85,6 @@ boardMark.addEventListener("click", e => {
       if (result.check === 1) {
         boardMark.classList.add("fa-solid");
         boardMark.classList.remove("fa-regular");
-
-        // type, url, pkNo, content
-        sendNotification(
-          "boardLike",  // type
-          location.pathname,  // 게시글 상세 조회 페이지 주소
-          board.boardNo,  // 게시글 번호
-          content
-        );
 
       } else {
         boardMark.classList.add("fa-regular");
