@@ -39,7 +39,7 @@ public class SseServiceImpl implements SseService{
 	
 	@Override
 	public List<Notification> selectNotificationList(int memberNo) {
-		return mapper.selectNotification(memberNo);
+		return mapper.selectNotificationList(memberNo);
 	}
 	
 	

@@ -546,7 +546,7 @@ body {
 }
 
 .search-input {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   border: 1px solid #dbdbdb;
   border-radius: 6px;
@@ -601,7 +601,7 @@ body {
 
 
 .result-row {
-  width: 100%;
+  width: 95%;
   height: 50px;
   padding: 5px;
   cursor: pointer;

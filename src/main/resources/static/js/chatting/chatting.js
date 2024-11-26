@@ -116,15 +116,17 @@ const sendMessagePartner = async (imagePath) => {
     img.files = dataTransfer.files;
   }
 
-  // 텍스트가 있는 경우 알림 보내기
-  if (msg.length > 0) {
+  // type , url , pkNo , content
+  // 텍스트또는 이미지가 있는 경우 알림 보내기
+  if  ( ( msg.length > 0 || imagePath.length > 0 ) || 
+        ( msg.length > 0 && imagePath.length > 0 ) ) {
     const content = 
       `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>
       <span class="chat-preview">${msg}</span>`;
 
     const url = location.pathname + "?chat-no=" + selectChattingNo;
     console.log("// 상대방에게 알림 보내기");
-    sendNotification("chatting", url, selectPartnerNo, content);
+    sendNoti("chatting", url, selectPartnerNo, content);
   }
 
   inputChatting.value = ""; // 보낸 채팅 내용 삭제

@@ -39,8 +39,6 @@ public class MainController {
 			Model model
 			
 		) {
-		
-		Model.addAttribute("story", story);
 
 		
 
