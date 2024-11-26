@@ -26,36 +26,24 @@ public class MainController {
 	
 	private final BoardService boardService;
 	
+	private final MainService mainService;
+	
 	@RequestMapping("/")
 	public String loginPage() {
 		return "/member/login";
 	}
 	
-	public String mainPage() {
+	public String mainPage(
+		) {
+
+
 		
+
 	 // return "/feed/test";
 		 return "/board/randomPeed";
 		// return "/feed/mainPeed";
 	}
-	
-	@RequestMapping("member/login")	//남길부분!!!!
-	public String loginPage() {	//남길부분!!!!
-			return "/member/login";	//남길부분!!!!
-	}
 
-	
-//  public String mainPage 안에 넣어야되고 아직 업데이트중
-//	@GetMapping
-//	public String getFeedStory(
-//		Model model,
-//		RedirectAttributes ra,
-//		@SessionAttribute(value="loginMember", 
-//										 required=false) Member loginMember) {
-//    List<Story> stories = mainService.getStories(member.getMemberNo());
-//    model.addAttribute("stories", stories);
-//    return "feedStory";
-//	}
-	
 	@GetMapping("board/insert")
 	public String insertBoard() {
 		return "modal/modal-new-post";
@@ -74,6 +62,8 @@ public class MainController {
 	
 		return result;
 	}
+	
+	
 	
 
 }

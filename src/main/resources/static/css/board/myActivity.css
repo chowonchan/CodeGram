@@ -227,3 +227,9 @@ footer {
   height: 20px; /* 체크박스 크기 설정 */
   cursor: pointer; /* 클릭 가능한 상태를 표시 */
 }
+.no-comments-message, .no-posts-message {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  justify-content: center;
+}

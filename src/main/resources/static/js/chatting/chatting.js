@@ -57,7 +57,6 @@ if (notificationLoginCheck) { // common.html에 선언된 전역 변수
 
 /* 채팅 메시지를 보내는 함수 */
 const sendMessagePartner = async (imagePath) => {
-
   console.log("imagePath", imagePath);
 
   if (selectChattingNo === undefined) {
@@ -65,57 +64,68 @@ const sendMessagePartner = async (imagePath) => {
     return;
   }
 
-  // 이미지 전송
-  if (imagePath !== null) {
-    const chattingObj = {
-      "partnerNo": selectPartnerNo,
-      "imageUrl": imagePath,
-      "chatRoomNo": selectChattingNo,
-      "messageContent": `<img src=${imagePath} alt='이미지'>`
-    }
-
-    // JSON으로 변환하여 웹소켓 핸들러로 전달
-    chattingSock.send(JSON.stringify(chattingObj));
-
-    // 저장된 이미지 삭제
-    const img = document.querySelector("#imageUpload");
-    const dataTransfer = new DataTransfer();
-    img.files = dataTransfer.files;
-
-    return;
-  }
-
-
   // 채팅 입력 textarea
   const inputChatting = document.querySelector("#inputChatting");
   const msg = inputChatting.value.trim(); // 입력된 채팅 메시지
 
-  // 로그인이 되어있지 않으면 함수 종료 ****************
+  // 로그인이 되어있지 않으면 함수 종료
   if (!notificationLoginCheck) return;
 
-  if (msg.length === 0) { // 채팅 미입력
+  // 이미지와 텍스트 모두 없는 경우
+  if (!imagePath && msg.length === 0) {
     alert("채팅을 입력해 주세요");
     return;
   }
 
-  // 웹소켓 핸들러로 전달할 채팅 관련 데이터를 담은 객체 생성
-  const chattingObj = {
-    "partnerNo": selectPartnerNo,
-    "messageContent": msg,
-    "chatRoomNo": selectChattingNo
+  let chattingObj;
+
+  // 이미지와 텍스트 모두 있는 경우
+  if (imagePath && msg.length > 0) {
+    chattingObj = {
+      "partnerNo": selectPartnerNo,
+      "imageUrl": imagePath,
+      "messageContent": `<img src="${imagePath}" alt="이미지"><div class="message-text">${msg}</div>`,
+      "chatRoomNo": selectChattingNo
+    }
+  }
+  // 이미지만 있는 경우
+  else if (imagePath) {
+    chattingObj = {
+      "partnerNo": selectPartnerNo,
+      "imageUrl": imagePath,
+      "messageContent": `<img src="${imagePath}" alt="이미지">`,
+      "chatRoomNo": selectChattingNo
+    }
+  }
+  // 텍스트만 있는 경우
+  else {
+    chattingObj = {
+      "partnerNo": selectPartnerNo,
+      "messageContent": msg,
+      "chatRoomNo": selectChattingNo
+    }
   }
 
   // JSON으로 변환하여 웹소켓 핸들러로 전달
   chattingSock.send(JSON.stringify(chattingObj));
 
-  //******** / type, url, pkNo, content
-  const content =
-    `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>`
-    + `<span class="chat-preview">${msg}</span>`;
+  // 이미지가 있는 경우 이미지 업로드 필드 초기화
+  if (imagePath) {
+    const img = document.querySelector("#imageUpload");
+    const dataTransfer = new DataTransfer();
+    img.files = dataTransfer.files;
+  }
 
-  const url = location.pathname + "?chat-no=" + selectChattingNo;
-  sendNotification("chatting", url, selectPartnerNo, content);
+  // 텍스트가 있는 경우 알림 보내기
+  if (msg.length > 0) {
+    const content = 
+      `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>
+      <span class="chat-preview">${msg}</span>`;
 
+    const url = location.pathname + "?chat-no=" + selectChattingNo;
+    console.log("// 상대방에게 알림 보내기");
+    sendNotification("chatting", url, selectPartnerNo, content);
+  }
 
   inputChatting.value = ""; // 보낸 채팅 내용 삭제
 }
@@ -152,24 +162,21 @@ if (chattingSock != undefined) {
       const p = document.createElement("p");
       p.classList.add("chat");
 
-      // 이미지 메시지 처리
-      if (msg.imageUrl) {
-        const chatImage = document.createElement("img");
-        chatImage.classList.add("chat-image");
-        chatImage.src = msg.imageUrl;
-
-        // 이미지 클릭 시 원본 크기로 보기
-        chatImage.addEventListener('click', () => {
-          window.open(chatImage.src, '_blank');
-        });
-        p.appendChild(chatImage);
-      }
-
-      // 텍스트 메시지가 있는 경우
-      else if (msg.messageContent) {
-        const textDiv = document.createElement("div");
-        textDiv.innerHTML = msg.messageContent;
-        p.appendChild(textDiv);
+      // 메시지 내용 처리 (이미지와 텍스트 모두 포함 가능)
+      if (msg.messageContent) {
+        const contentDiv = document.createElement("div");
+        contentDiv.innerHTML = msg.messageContent;
+        
+        // 이미지가 있는 경우 클릭 이벤트 추가
+        const chatImage = contentDiv.querySelector("img");
+        if (chatImage) {
+          chatImage.classList.add("chat-image");
+          chatImage.addEventListener('click', () => {
+            window.open(chatImage.src, '_blank');
+          });
+        }
+        
+        p.appendChild(contentDiv);
       }
 
       // 내가 작성한 메세지인 경우
@@ -190,7 +197,7 @@ if (chattingSock != undefined) {
         // 이전 시간과 분 단위로 비교하여 프로필 표시 여부 결정
         const [lastHour, lastMinute] = lastPartnerTime ? lastPartnerTime.split(':') : [null, null];
         const [currentHour, currentMinute] = currentTime.split(':');
-        const isSameMinute =
+        const isSameMinute = 
           lastHour === currentHour && lastMinute === currentMinute;
 
         if (!isSameMinute) {

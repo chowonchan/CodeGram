@@ -77,25 +77,46 @@ main {
   object-fit: cover;
 }
 
+
 /* 프로필 정보 */
 .profile-info {
-  flex: 1;
+  display: flex; /* 내부 요소를 가로로 배치 */
+  flex-direction: column; /* 정보를 세로로 배치 */
+  gap: 10px; /* 텍스트 간 간격 */
 }
 
-.profile-info h2 {
+.profile-buttons h2 {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
   color: #333;
 }
 
-.profile-info p {
-  margin: 5px 0;
-  color: #666;
+/* 프로필 정보 컨테이너 */
+.profile-info-container {
+  display: flex; /* Flexbox 활성화 */
+  flex-direction: column; /* 자식 요소들을 세로로 배치 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  gap: 20px; /* 각 요소 사이의 간격 */
 }
 
-.profile-buttons {
+.profile-info p {
+  align-items: flex-start; /* 왼쪽 정렬 (필요에 따라 center로 변경 가능) */
+  margin: 5px 0;
+  color: #666;
+  flex: 1;
+}
+
+/* .profile-buttons {
   margin-top: 10px;
+} */
+
+/* 프로필 관련 버튼 */
+.profile-buttons {
+  display: flex; /* 내부 요소를 가로로 배치 */
+  flex-wrap: wrap; /* 버튼이 화면 너비에 따라 줄바꿈 가능 */
+  gap: 10px; /* 버튼 간격 */
+  align-items: center; /* 버튼과 텍스트를 수직 정렬 */
 }
 
 .profile-buttons button {
@@ -276,6 +297,15 @@ main {
 }
 
 .modal-options .cancel:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+/* 취소 옵션 스타일 */
+.modal-options .cancle {
+  color: #6c757d; /* 취소 옵션 색상 */
+}
+
+.modal-options .cancle:hover {
   background-color: #e9ecef;
   color: #495057;
 }

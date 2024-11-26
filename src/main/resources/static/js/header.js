@@ -125,7 +125,10 @@ searchInput.addEventListener('input', () => {
 
     let searchUrl;
 
-    if (isKorean(query)) {
+    if (query.startsWith('#')) {
+      // 해시태그 검색인 경우
+      searchUrl = `/hashtag/search?query=${encodeURIComponent(query)}`;
+    } else if (isKorean(query)) {
       searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
     } else {
       searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
@@ -135,7 +138,7 @@ searchInput.addEventListener('input', () => {
     fetch(searchUrl)
       .then(response => response.json())
       .then(data => {
-        updateSearchResults(data); // 검색 결과 업데이트
+        updateSearchResults(data, query.startsWith('#')); // 해시태그 여부 전달
       })
       .catch(error => {
         console.error('Error fetching search results:', error);
@@ -149,7 +152,7 @@ searchInput.addEventListener('input', () => {
 });
 
 // 검색 결과 업데이트 함수
-function updateSearchResults(results) {
+function updateSearchResults(results, isHashtag = false) {
   searchResults.innerHTML = ''; // 이전 결과 지우기
   if (results.length === 0) {
     searchResults.innerHTML = '<div style="padding-right: 20px; text-align: center;"><p>검색 결과가 없습니다.</p></div>';
@@ -160,99 +163,110 @@ function updateSearchResults(results) {
   results.forEach(result => {
     const resultItem = document.createElement('div');
     resultItem.classList.add('result-item');
-    resultItem.innerHTML = `
-        <a href="/member/${result.memberNickname}" class="member-info">
-          <div class="profile-img">
-            <img src="${result.profileImg}">
-          </div>
-          <div class="member-text">
-            <div class="member-nickname">${result.memberNickname}</div>
-            <div class="member-name">${result.memberName}</div>
-          </div>
+    if(isHashtag) {
+      // 해시태그 결과 랜더링
+      resultItem.innerHTML = `
+        <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
+          <div class="hashtag-name">${result.tagName}</div>
+          <div class="hashtag-count">게시물 수: ${result.postCount}</div>
         </a>
-          `;
+      `;
+    } else {
+      resultItem.innerHTML = `
+          <a href="/member/${result.memberNickname}" class="member-info">
+            <div class="profile-img">
+              <img src="${result.profileImg}">
+            </div>
+            <div class="member-text">
+              <div class="member-nickname">${result.memberNickname}</div>
+              <div class="member-name">${result.memberName}</div>
+            </div>
+          </a>
+      `;
+    }
     searchResults.appendChild(resultItem);
   });
-
-  // "모두 지우기" 버튼 표시/숨기기 함수
-  function toggleDeleteBtn() {
-    const hasSearchItems = recentSearch.querySelectorAll('a').length > 0;
-    deleteBtn.style.display = hasSearchItems ? 'inline' : 'none'; // a 태그가 있으면 표시, 없으면 숨김
-  }
-
-  // 검색 결과 클릭 이벤트 리스너 (한 번만 등록)
-  if (!searchResults.hasListener) { // 이벤트 리스너가 이미 등록되었는지 확인
-    searchResults.addEventListener('click', (event) => {
-      if (event.target.tagName === 'A' || event.target.closest('a')) {
-        event.preventDefault(); // 기본 링크 이동 방지
-
-        const clickedLink = event.target.closest('a');
-        const href = clickedLink.getAttribute('href');
-        const memberNickname = clickedLink.querySelector('.member-nickname').textContent;
-        const memberName = clickedLink.querySelector('.member-name').textContent;
-        const profileImgSrc = clickedLink.querySelector('.profile-img img').src;
-
-        // 중복 여부 확인
-        const existingItems = Array.from(recentSearch.querySelectorAll('a'));
-        const isDuplicate = existingItems.some(item => item.href === href);
-
-        if (!isDuplicate) { // 중복이 아닐 때만 추가
-          const newSearchItem = document.createElement('a');
-          newSearchItem.href = href;
-          newSearchItem.classList.add('member-info');
-          newSearchItem.innerHTML = `
-                    <div class="profile-img">
-                        <img src="${profileImgSrc}">
-                    </div>
-                    <div class="member-text">
-                        <div class="member-nickname">${memberNickname}</div>
-                        <div class="member-name">${memberName}</div>
-                    </div>
-                    <button class="remove-button">&times;</button> <!-- X 버튼 추가 -->
-                    `;
-
-          // X 버튼 이벤트 리스너
-          newSearchItem.querySelector('.remove-button').addEventListener('click', (e) => {
-            e.preventDefault(); // 이벤트 전파 중지
-            e.stopPropagation(); // 이벤트 전파 중지
-            newSearchItem.remove(); // a 태그 삭제
-            if (recentSearch.querySelectorAll('a').length === 0) {
-              toggleDeleteBtn(); // 버튼 상태 업데이트
-            }
-          })
-
-          recentSearch.appendChild(newSearchItem); // 최근 검색 항목에 추가
-          toggleDeleteBtn(); // 버튼 상태 업데이트
-        }
-
-        // 링크 이동
-        window.location.href = href;
-      }
-    });
-
-    searchResults.hasListener = true; // 이벤트 리스너가 등록되었을을 표시
-  }
-
-  // 모두 지우기 버튼 클릭 이벤트
-  deleteBtn.addEventListener('click', () => {
-    clearAllModal.classList.remove('hidden');
-    clearAllModal.style.display = 'flex'; // 모달 창 표시
-  });
-
-  // "Clear all" 버튼 클릭 시 모든 검색 내역 삭제 및 모달 닫기
-  clearAllConfirm.addEventListener('click', () => {
-    recentSearch.querySelectorAll('a').forEach(item => item.remove()); // 모든 a 태그 삭제
-    toggleDeleteBtn(); // 버튼 상태 업데이트
-    clearAllModal.classList.add('hidden');
-    clearAllModal.style.display = 'none'; // 모달 창 숨김
-  });
-
-  // "나중에 하기" 버튼 클릭 시 모달 닫기
-  clearAllCancel.addEventListener('click', () => {
-    clearAllModal.classList.add('hidden');
-    clearAllModal.style.display = 'none'; // 모달 창 숨김
-  });
 }
+
+// "모두 지우기" 버튼 표시/숨기기 함수
+function toggleDeleteBtn() {
+  const hasSearchItems = recentSearch.querySelectorAll('a').length > 0;
+  deleteBtn.style.display = hasSearchItems ? 'inline' : 'none'; // a 태그가 있으면 표시, 없으면 숨김
+}
+
+// 검색 결과 클릭 이벤트 리스너 (한 번만 등록)
+if (!searchResults.hasListener) { // 이벤트 리스너가 이미 등록되었는지 확인
+  searchResults.addEventListener('click', (event) => {
+    if (event.target.tagName === 'A' || event.target.closest('a')) {
+      event.preventDefault(); // 기본 링크 이동 방지
+
+      const clickedLink = event.target.closest('a');
+      const href = clickedLink.getAttribute('href');
+      const memberNickname = clickedLink.querySelector('.member-nickname').textContent;
+      const memberName = clickedLink.querySelector('.member-name').textContent;
+      const profileImgSrc = clickedLink.querySelector('.profile-img img').src;
+
+      // 중복 여부 확인
+      const existingItems = Array.from(recentSearch.querySelectorAll('a'));
+      const isDuplicate = existingItems.some(item => item.href === href);
+
+      if (!isDuplicate) { // 중복이 아닐 때만 추가
+        const newSearchItem = document.createElement('a');
+        newSearchItem.href = href;
+        newSearchItem.classList.add('member-info');
+        newSearchItem.innerHTML = `
+                  <div class="profile-img">
+                      <img src="${profileImgSrc}">
+                  </div>
+                  <div class="member-text">
+                      <div class="member-nickname">${memberNickname}</div>
+                      <div class="member-name">${memberName}</div>
+                  </div>
+                  <button class="remove-button">&times;</button> <!-- X 버튼 추가 -->
+                  `;
+
+        // X 버튼 이벤트 리스너
+        newSearchItem.querySelector('.remove-button').addEventListener('click', (e) => {
+          e.preventDefault(); // 이벤트 전파 중지
+          e.stopPropagation(); // 이벤트 전파 중지
+          newSearchItem.remove(); // a 태그 삭제
+          if (recentSearch.querySelectorAll('a').length === 0) {
+            toggleDeleteBtn(); // 버튼 상태 업데이트
+          }
+        })
+
+        recentSearch.appendChild(newSearchItem); // 최근 검색 항목에 추가
+        toggleDeleteBtn(); // 버튼 상태 업데이트
+      }
+
+      // 링크 이동
+      window.location.href = href;
+    }
+  });
+
+  searchResults.hasListener = true; // 이벤트 리스너가 등록되었을을 표시
+}
+
+// 모두 지우기 버튼 클릭 이벤트
+deleteBtn.addEventListener('click', () => {
+  clearAllModal.classList.remove('hidden');
+  clearAllModal.style.display = 'flex'; // 모달 창 표시
+});
+
+// "Clear all" 버튼 클릭 시 모든 검색 내역 삭제 및 모달 닫기
+clearAllConfirm.addEventListener('click', () => {
+  recentSearch.querySelectorAll('a').forEach(item => item.remove()); // 모든 a 태그 삭제
+  toggleDeleteBtn(); // 버튼 상태 업데이트
+  clearAllModal.classList.add('hidden');
+  clearAllModal.style.display = 'none'; // 모달 창 숨김
+});
+
+// "나중에 하기" 버튼 클릭 시 모달 닫기
+clearAllCancel.addEventListener('click', () => {
+  clearAllModal.classList.add('hidden');
+  clearAllModal.style.display = 'none'; // 모달 창 숨김
+});
+
 
 
 
