@@ -206,7 +206,8 @@ class MainFeedInfiniteScroll {
           </button>
         </div>
         <div class="box-2">
-          <button class="action-button mark-button pointer" aria-label="저장">
+          <button class="action-button mark-button pointer" aria-label="저장"
+                          th:data-member-no="${board.boardNo}>
             <svg aria-label="저장" 
                       class="mark-icon" th:classappend="${board.markCheck == 1} ? 'fa-solid' : 'fa-regular'" 
                               height="24" 

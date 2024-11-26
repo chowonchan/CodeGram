@@ -4,6 +4,19 @@
 <mapper namespace="edu.kh.cgram.board.mapper.BoardMapper">
 
 
+  <resultMap type="Board" id="board_rm">
+  	<id property="boardNo" column="BOARD_NO"/>
+
+	<collection 
+		property="imageList"
+		select="selectImageList"
+		column="BOARD_NO"
+		javaType="java.util.ArrayList"
+		ofType="BoardImg"
+	/>
+  </resultMap>
+
+
 
 	<!-- 최신 게시물 가져오기 -->
 	<select id="findLatestBoards" resultType="Board">
@@ -29,17 +42,58 @@
             BI.IMG_NO, 
             BI.IMG_PATH,
             BI.IMG_RENAME
-        FROM BOARD B
+        FROM 
+        	BOARD B
         JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
-        WHERE B.MEMBER_NO NOT IN (
-            SELECT FOLLOWING_MEMBER 
-            FROM FOLLOW
-            WHERE FOLLOWER_MEMBER = #{memberNo}
+        WHERE 
+        	B.MEMBER_NO IN (
+	            SELECT FOLLOWING_MEMBER 
+	            FROM FOLLOW
+	            WHERE FOLLOWER_MEMBER = #{memberNo}
         )
-        AND B.MEMBER_NO NOT IN #{memberNo}
-        AND BI.IMG_ORDER = 1
         AND B.BOARD_DEL_FL = 'N'
         ORDER BY B.CREATED_AT DESC
     </select>
+    
+  <!-- 특정 게시글의 이미지를 order 순서로 조회 -->
+  <select id="selectImageList" resultType="BoardImg">
+  	SELECT * 
+  	FROM BOARD_IMG
+  	WHERE BOARD_NO = #{boardNo}
+  	ORDER BY IMG_ORDER ASC
+  </select>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 </mapper>

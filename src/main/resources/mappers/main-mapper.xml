@@ -1,15 +1,85 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="edu.kh.cgram.main.mapper.MainMapper">
 
 
+	<!-- 좋아요 눌렀는지 확인 -->
+	<select id="checkBoardLike" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM
+			"BOARD_LIKE"
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND
+			BOARD_NO = #{boardNo}
+	</select>
 
+	<!-- 좋아요 DB에 저장 -->
+	<insert id="insertBoardLike">
+		INSERT INTO "BOARD_LIKE" (MEMBER_NO, BOARD_NO)
+		VALUES(#{memberNo}, #{boardNo})
+	</insert>
 
+	<!-- 좋아요 DB에서 삭제 -->
+	<delete id="deleteBoardLike">
+		DELETE FROM "BOARD_LIKE"
+		WHERE MEMBER_NO = #{memberNo}
+		AND   MEMBER_NO = #{boardNo}
+	</delete>
 
+	 <!-- 좋아요 수 -->
+	<select id="getLikeCount">
+		SELECT COUNT(*)
+		FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	
+	<!-- Keep 눌렀는지 확인 -->
+	<select id="checkBoardMark" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM
+			"MARK"
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND
+			BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- Keep DB에 저장 -->
+	<insert id="insertBoardMark">
+		INSERT INTO "MARK" (MEMBER_NO, BOARD_NO)
+		VALUES(#{memberNo}, #{boardNo})
+	</insert>
 
+	<!-- Keep DB에서 삭제 -->
+	<delete id="deleteBoardMark">
+		DELETE FROM "MARK"
+		WHERE MEMBER_NO = #{memberNo}
+		AND   MEMBER_NO = #{boardNo}
+	</delete>
 
-
+	 <!-- Keep 개수 -->
+	<select id="getMarkCount">
+		SELECT COUNT(*)
+		FROM "MARK"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 

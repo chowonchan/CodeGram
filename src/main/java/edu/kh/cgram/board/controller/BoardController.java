@@ -46,4 +46,6 @@ public class BoardController {
 		return randomPosts;
 	}
 	
+	
+	
 }
