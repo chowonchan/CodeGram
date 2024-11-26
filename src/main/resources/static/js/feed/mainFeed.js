@@ -1,19 +1,19 @@
 
 
 
-// 좋아요 버튼
-document.querySelectorAll('.like-button').forEach(button => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('active');
-  });
-});
 
-// 저장하기 버튼
-document.querySelectorAll('.mark-button').forEach(button => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('active');
-  });
-});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -72,7 +72,7 @@ boardMark.addEventListener("click", e => {
     return;
   }
 
-  // 2. 비동기로 좋아요 요청 
+  // 2. 비동기로 mark 요청 
   fetch("/board/mark", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
