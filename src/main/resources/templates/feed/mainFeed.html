@@ -22,11 +22,10 @@
     <div class="stories-container" th:if="${not #lists.isEmpty(stories)}">
       <!-- Story Items -->
       <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
-        <div class="story-wrapper" th:classappend="${board.storyCheck ? 'viewed' : ''}"> 
+        <div class="story-wrapper" th:classappend="${board.storyCheck ? 'viewed' : ''}">
           <div class="story-border">
             <img th:src="${member.profileImg != null} ? 
-                         ${member.profileImg} : '/images/default-profile.png'" 
-                 class="story-profile-image">
+                         ${member.profileImg} : '/images/default-profile.png'" class="story-profile-image">
           </div>
         </div>
         <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
@@ -51,43 +50,53 @@
 
 
 
-  
+
   <!-- 사이드바 조각 -->
   <div class="header-container" th:replace="~{fragments/header :: header}"></div>
 
   <main>
     <div class="main-container">
       <!-- 피드 영역 - 무한 스크롤을 위한 container class 추가 -->
-      <div class="feed-margin infinite-scroll-container">
-        <!-- 게시물들이 추가될 wrapper -->
-        <div class="feed infinite-scroll-wrapper">
-          <!-- 개별 게시물 템플릿 -->
-          <template id="post-template">
-            <article class="board-article">
-              <div class="post">
-                <!-- 기존 게시물 구조 유지 -->
-                <div class="post-header post-header-padding">...</div>
-                <div class="post-images-container">...</div>
-                <div class="important-box">...</div>
-              </div>
-            </article>
-          </template>
+      <!-- 게시물이 존재하지 않을 때 -->
+      <th:block th:if="${#lists.isEmpty(boardList)}">
+        <p>게시글이 존재하지 않습니다.</p>
+      </th:block>
 
-          <!-- 로딩 인디케이터 -->
-          <div class="loading-indicator" style="display: none;">
-            <div class="spinner"></div>
-            <p>게시물을 불러오는 중...</p>
+      <!-- 게시물이 존재할 때 -->
+      <th:block th:unless="${#lists.isEmpty(boardList)}">
+        <!-- 무한스크롤 적용된 메인Feed가 나올 영역 -->
+        <div class="feed-margin infinite-scroll-container">
+          <!-- 게시물들이 추가될 wrapper -->
+          <div class="feed infinite-scroll-wrapper">
+
+            <!-- 로딩 인디케이터 -->
+            <div class="loading-indicator" style="display: none;">
+              <div class="spinner"></div>
+              <p>게시물을 불러오는 중...</p>
+              <!-- 코드그램 로고가 대체할 부분 -->
+            </div>
           </div>
         </div>
-      </div>
+      </th:block>
 
       <!-- 회원 추천 섹션 -->
       <section th:replace="~{fragments/feed/memberRecommend :: memberRecommend}"></section>
     </div>
+
   </main>
 
   <!-- 푸터 -->
   <div th:replace="~{fragments/footer :: footer}"></div>
+
+
+  <script th:inline="javascript">
+    // 로그인 true, 비회원 false
+    const loginCheck = /*[[${session.loginMember != null}]]*/ false;
+    // 로그인한 회원 닉네임
+    const memberNickname = /*[[${session.loginMember?.memberNickname}]]*/ null;
+    // 상세조회한 게시글 정보
+    const boardDetail = /*[[${board}]]*/ null;
+  </script>
 
   <!-- 스크립트 -->
   <script src="/js/feed/feedStory.js"></script>
