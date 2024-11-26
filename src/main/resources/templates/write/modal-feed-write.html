@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>Create New Post Modal</title>
 
-  <!-- <link rel="stylesheet" href="/css/write/feed-write.css"> -->
-  <link rel="stylesheet" href="../../static/css/write/feed-write.css">
+<!--  <link rel="stylesheet" href="/css/write/feed-write.css">-->
+   <link rel="stylesheet" href="../../static/css/write/feed-write.css">
 </head>
 <body>
 
@@ -79,7 +79,7 @@
 
             <!-- 이미지 출력부분 -->
             <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%;">
-              <div id="modalContentLeftImgView" class="modal-content-left-img-view"><!-- 여기서부터 꼬였음 ====================================================== JSJSJSJSJSJSJSJSJSJ -->
+              <div id="modalContentLeftImgView" class="modal-content-left-img-view">
                 <img class="preview" src="">
                 <input type="file" name="images" id="modalContentLeftInnerImg" class="modal-content-left-inner-button hide" accept="image/*" multiple>
               </div>
@@ -89,10 +89,10 @@
 
           <!-- 모달 글쓰기 -->
           <div id="modalContentRight" class="modal-content-right hide">
-            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; background-color: ivory; display: flex; flex-direction: column;" >
+            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column;" >
 
               <!-- 글 작성자 출력 -->
-              <div style="width: 290px; height: 60px; ">
+              <div style="width: 290px; height: 60px; display: flex; align-items: center;">
 
                 <!-- 프로필 이미지 -->
                 <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
@@ -107,10 +107,10 @@
                 <img th:if="${session.profileImg}" th:src="${session.profileImg}" class="profile">
                 <span th:text="${session.loginMember.memberNickname}">작성자 닉네임</span>
               </div>
-
+<!--               0 0 10 10 px-->
               <!-- 글 작성부분 -->
-              <div style="padding: 16px;">
-                <textarea style="width: 100%; height: 400px; resize: none;" id="emojiTextArea" placeholder="내용을 입력하세요..."></textarea>
+              <div style="padding: 0px 16px;">
+                <textarea style="width: 100%; height: 400px; padding: 0px; resize: none; border: none; outline: none;" id="emojiTextArea" spellcheck="false" placeholder="내용을 입력하세요..."></textarea>
               </div>
 
               <!-- 이모지 버튼과 글자수 출력부분 -->
@@ -119,7 +119,12 @@
                 <p><span id="byteCount">0</span>/2000</p>
               </div>
 
-              <div>맨아래 24px 높이 여백</div>
+              <!-- 해시태그 검색결과 출력할 창 -->
+              <div id="hashTagList">
+
+              </div>
+
+              <div style="height: 24px; width: 1px;"></div>
 
             </div>
           </div>
@@ -148,8 +153,8 @@
 <!-- ======================================================================================================================================================================================================== -->
 <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
 <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
-<!-- <script src="/js/write/feedWrite.js"></script> -->
-<script src="../../static/js/write/feedWrite.js"></script>
+<!--<script src="/js/write/feedWrite.js"></script>-->
+ <script src="../../static/js/write/feedWrite.js"></script>
 </body>
 </html>
 

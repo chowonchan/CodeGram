@@ -46,7 +46,7 @@ public class MainController {
 
 	@GetMapping("board/insert")
 	public String insertBoard() {
-		return "modal/modal-new-post";
+		return "write/modal-feed-write";
 	}
 	
 	@ResponseBody
