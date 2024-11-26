@@ -1,19 +1,19 @@
 
 
 
-// 좋아요 버튼
-document.querySelectorAll('.like-button').forEach(button => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('active');
-  });
-});
 
-// 저장하기 버튼
-document.querySelectorAll('.mark-button').forEach(button => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('active');
-  });
-});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -42,7 +42,7 @@ boardLike.addEventListener("click", e => {
         boardLike.classList.remove("fa-regular");
 
         // type, url, pkNo, content
-        sendNotification(
+        sendNoti(
           "boardLike",  // type
           location.pathname,  // 게시글 상세 조회 페이지 주소
           board.boardNo,  // 게시글 번호
@@ -72,7 +72,7 @@ boardMark.addEventListener("click", e => {
     return;
   }
 
-  // 2. 비동기로 좋아요 요청 
+  // 2. 비동기로 mark 요청 
   fetch("/board/mark", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -85,14 +85,6 @@ boardMark.addEventListener("click", e => {
       if (result.check === 1) {
         boardMark.classList.add("fa-solid");
         boardMark.classList.remove("fa-regular");
-
-        // type, url, pkNo, content
-        sendNotification(
-          "boardLike",  // type
-          location.pathname,  // 게시글 상세 조회 페이지 주소
-          board.boardNo,  // 게시글 번호
-          content
-        );
 
       } else {
         boardMark.classList.add("fa-regular");

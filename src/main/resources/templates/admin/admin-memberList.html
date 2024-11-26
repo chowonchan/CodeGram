@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <link rel="stylesheet" href="/css/admin/admin-memberList.css">
+</head>
+
+<body>
+    <div class="header-container" th:replace="~{admin/adminHeader}"></div>
+
+    <div class="main-content">
+      <section id="memberTable">
+        <h1>회원 목록</h1>
+
+        <!-- 검색 영역 -->
+        <form class="search-area" id="boardSearch">
+          <input type="text" class="search-input" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+          <button><div class="fa-solid fa-magnifying-glass"></div></button>
+        </form>
+
+        <!-- 테이블 영역 -->
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>아이디</th>
+                <th>닉네임</th>
+                <th>가입일</th>
+                <th>게시글 수</th>
+                <th>팔로우 수</th>
+                <th>팔로워 수</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="memberList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>  
+        </div>
+          <div id="memberPaginationBox" class="pagination"></div>
+      </section>
+
+      <!-- 피드 관리 섹션 -->
+      <section id="feedTable">
+        <h1>피드 관리</h1>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>작성자</th>
+                <th>피드 내용</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="feedList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>
+        </div>
+          <div id="feedPaginationBox" class="pagination"></div>
+      </section>
+
+      <!-- 피드 신고 관리 섹션 -->
+      <section id="feedReportTable">
+        <h1>피드 신고 관리</h1>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>신고자</th>
+                <th>피드 내용</th>
+                <th>신고 사유</th>
+                <th>신고 날짜</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="feedReportList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>
+            <div id="feedReportPaginationBox" class="pagination"></div>
+        </div>
+      </section>
+
+      <!-- 댓글 신고 관리 섹션 -->
+      <section id="commentReportTable">
+        <h1>댓글 신고 관리</h1>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>신고자</th>
+                <th>댓글 내용</th>
+                <th>신고 사유</th>
+                <th>신고 날짜</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="commentReportList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>
+        </div>
+          <div id="commentPaginationBox" class="pagination"></div>
+      </section>
+    </div>
+    <script src="/js/admin/admin-memberList.js"></script>
+    <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
+</body>
+</html>

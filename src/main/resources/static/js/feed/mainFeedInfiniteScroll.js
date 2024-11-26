@@ -185,7 +185,8 @@ class MainFeedInfiniteScroll {
     return `
       <section class="section-1">
         <div class="box-1">
-          <button class="action-button like-button pointer" aria-label="좋아요">
+          <button class="action-button like-button pointer" aria-label="좋아요" 
+                          data-board-no="${board.boardNo}">
             <svg aria-label="좋아요" 
                   class="like-icon" th:classappend="${board.likeCheck == 1} ? 'fa-solid' : 'fa-regular'" 
                         height="24" 
@@ -206,7 +207,8 @@ class MainFeedInfiniteScroll {
           </button>
         </div>
         <div class="box-2">
-          <button class="action-button mark-button pointer" aria-label="저장">
+          <button class="action-button mark-button pointer" aria-label="저장"
+                          th:data-member-no="${board.boardNo}>
             <svg aria-label="저장" 
                       class="mark-icon" th:classappend="${board.markCheck == 1} ? 'fa-solid' : 'fa-regular'" 
                               height="24" 

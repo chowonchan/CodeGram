@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+</head>
+
+<body>
+
+  <div contenteditable="true" id="tagSample"></div>
+
+
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script>
+<script>
+
+var input1 = document.querySelector('#tagSample')
+var tagify1 = new Tagify(input1);
+  
+// 태그가 추가되면 이벤트 발생
+tagify1.on('add', function() {
+  console.log(tagify1.value); // 입력된 태그 정보 객체
+})
+
+</script>
+</body>
+</html>

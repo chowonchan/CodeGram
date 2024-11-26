@@ -1,6 +1,7 @@
 package edu.kh.cgram.main.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.service.BoardService;
@@ -24,26 +25,41 @@ public class MainController {
 	
 	private final EditBoardService service;
 	
-	private final BoardService boardService;
-	
 	private final MainService mainService;
 	
 	@RequestMapping("/")
 	public String loginPage() {
 		return "/member/login";
 	}
+
 	
 	public String mainPage(
 		) {
 
 	 // return "/feed/test";
-		 return "/board/randomPeed";
-		// return "/feed/mainPeed";
+		  return "/board/randomPeed";
+		 // return "/feed/mainFeed";
+	}
+	
+	@GetMapping("main2")
+	public String selectFeedList(
+		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+		Model model,
+		@RequestParam Map<String, Object> paramMap
+		) {
+		
+		int cp2 = 1;
+		
+		// if(paramMap.get("key") == null) cp2 = service.selectFeedList(cp);
+		
+		// return "/feed/test";
+		// return "/board/randomPeed";
+		return "/feed/mainFeed";
 	}
 
 	@GetMapping("board/insert")
 	public String insertBoard() {
-		return "modal/modal-new-post";
+		return "write/modal-feed-write";
 	}
 	
 	@ResponseBody
@@ -59,6 +75,49 @@ public class MainController {
 	
 		return result;
 	}
+	
+	
+	// 좋아요
+	@ResponseBody
+	@PostMapping("/board/like")
+	public Map<String, Object> boardLike(
+			@RequestBody int boardNo,
+			@SessionAttribute("loginMember") Member loginMember){
+			
+			int memberNo = loginMember.getMemberNo();
+			
+			return mainService.boardLike(boardNo, memberNo);
+		}
+	
+	// Keep
+	@ResponseBody
+	@PostMapping("/board/mark")
+	public Map<String, Object> boardMark(
+		@RequestBody int boardNo,
+		@SessionAttribute("loginMember") Member loginMember){
+		
+		int memberNo = loginMember.getMemberNo();
+		
+		return mainService.boardMark(boardNo, memberNo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
