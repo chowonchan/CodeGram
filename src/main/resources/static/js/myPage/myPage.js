@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
   savedTab.classList.remove("active");
 
   // 기본 설정: 업로드한 게시물 로드
-  fetch("/myActivity/posts")
+  fetch("/myPage/posts")
     .then(response => response.json())
     .then(data => renderPosts(data, "uploads")) // uploads: 업로드한 게시물
     .catch(error => console.error("Error fetching uploaded posts:", error));

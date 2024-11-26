@@ -14,6 +14,14 @@
 		MEMBER_DISCLOSURE_SCOPE = #{memberDisclosureScope}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
+	
+	<select id="selectMemberPosts" resultType="BoardImg">
+		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH, BI.IMG_RENAME
+		FROM BOARD B
+		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
+		WHERE B.MEMBER_NO = #{memberNo}
+    	AND B.BOARD_DEL_FL = 'N'
+	</select>
 </mapper>
     
 

@@ -1,7 +1,11 @@
 package edu.kh.cgram.myPage.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import edu.kh.cgram.board.dto.BoardImg;
 
 /**
  * MyPageMapper
@@ -38,4 +42,8 @@ public interface MyPageMapper {
             @Param("selfIntroduction") String selfIntroduction,
             @Param("memberDisclosureScope") int memberDisclosureScope
     );
+
+		List<BoardImg> selectMemberPosts(int memberNo);
+    
+    
 }
