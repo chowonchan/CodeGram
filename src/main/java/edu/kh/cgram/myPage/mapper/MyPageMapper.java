@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.member.dto.Member;
 
 /**
  * MyPageMapper
@@ -44,6 +45,9 @@ public interface MyPageMapper {
     );
 
 		List<BoardImg> selectMemberPosts(int memberNo);
+
+		Member findMemberByNickname(@Param("nickname") String nickname);
+
     
     
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -248,7 +249,7 @@ public class MemberController {
 	    if (loginMember == null) {
 	        log.warn("세션에 로그인된 사용자가 없습니다.");
 	        model.addAttribute("message", "로그인이 필요합니다.");
-	        return "redirect:/member/login";
+	        return "redirect:/";
 	    }
 
 	    // 닉네임으로 사용자 조회
@@ -272,12 +273,16 @@ public class MemberController {
 	    int postCount = service.getPostCountByMemberNo(member.getMemberNo());
 	    int followerCount = service.getFollowerCount(member.getMemberNo());
 	    int followCount = service.getFollowCount(member.getMemberNo());
+	    
+	    // **게시물 데이터 조회**
+	    List<BoardImg> posts = service.getPostsByMemberNo(member.getMemberNo());
 
 	    // 모델에 데이터 추가
 	    model.addAttribute("member", member);
 	    model.addAttribute("postCount", postCount);
 	    model.addAttribute("followerCount", followerCount);
 	    model.addAttribute("followCount", followCount);
+	    model.addAttribute("posts", posts);
 
 	    log.info("프로필 조회 완료: {}", member);
 	    return "myPage/myPage";

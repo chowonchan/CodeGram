@@ -22,6 +22,16 @@
 		WHERE B.MEMBER_NO = #{memberNo}
     	AND B.BOARD_DEL_FL = 'N'
 	</select>
+
+	<select id="findMemberByNickname" resultType="Member">
+	    SELECT * 
+	    FROM MEMBER 
+	    WHERE NICKNAME = #{nickname}
+	</select>
+
+	
+	
+	
 </mapper>
     
 

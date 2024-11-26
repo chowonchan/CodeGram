@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
   savedTab.classList.remove("active");
 
   // 기본 설정: 업로드한 게시물 로드
-  fetch("/myPage/posts")
+fetch("/mtPage/posts")
     .then(response => response.json())
     .then(data => renderPosts(data, "uploads")) // uploads: 업로드한 게시물
     .catch(error => console.error("Error fetching uploaded posts:", error));
@@ -207,7 +207,7 @@ function activateTab(activeTab, type) {
   activeTab.classList.add("active");
 
   // 콘텐츠 로드
-  const url = type === "uploads" ? "/myActivity/posts" : "/myActivity/saved";
+  const url = type === "uploads" ? "/myPage/posts" : "/member/saved";
   fetch(url)
     .then(response => response.json())
     .then(data => renderPosts(data, type))

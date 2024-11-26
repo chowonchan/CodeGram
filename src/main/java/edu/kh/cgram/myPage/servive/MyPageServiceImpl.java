@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.mapper.MyPageMapper;
 
 /**
@@ -99,4 +100,10 @@ public class MyPageServiceImpl implements MyPageService {
   	public List<BoardImg> getMemberPosts(int memberNo) {
   		return mapper.selectMemberPosts(memberNo);
   	}
+  	
+  	@Override
+  	public Member getMemberByNickname(String nickname) {
+  	    return mapper.findMemberByNickname(nickname);
+  	}
+
 }
