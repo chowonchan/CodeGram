@@ -25,10 +25,13 @@ public class Member {
 	private String memberName;
 	private String profileImg;
 	private String createdAt;
-	private String memberDelBanFl;
+	private int    memberDelBanFl;
 	private String memberBirth;
 	private String selfIntroduction;
 	private int		 memberDisclosureScope;
-	private String admin;
+	private int    admin;
 	private int 	 reportCount;
+	private int    boardCount;
+  private int    followCount;
+  private int    followerCount;
 }

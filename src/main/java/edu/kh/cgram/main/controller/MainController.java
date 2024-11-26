@@ -33,24 +33,6 @@ public class MainController {
 		return "/member/login";
 	}
 	
-	public String mainPage(
-			@SessionAttribute(value="loginMember", 
-											 required=false) Member loginMember,
-			Model model
-			
-		) {
-		
-		Model.addAttribute("story", story);
-
-		
-
-	 // return "/feed/test";
-		 return "/board/randomPeed";
-		// return "/feed/mainPeed";
-	}
-	
-
-	
 //  public String mainPage 안에 넣어야되고 아직 업데이트중
 //	@GetMapping
 //	public String getFeedStory(
