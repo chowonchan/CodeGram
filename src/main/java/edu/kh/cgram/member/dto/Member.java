@@ -31,4 +31,9 @@ public class Member {
 	private int		 memberDisclosureScope;
 	private String admin;
 	private int 	 reportCount;
+	
+  // 추가 필드
+  private int postCount;                 // 게시물 수
+  private int followerCount;             // 팔로워 수
+  private int followCount;               // 팔로우 수
 }
