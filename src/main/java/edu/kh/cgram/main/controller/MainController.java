@@ -36,9 +36,6 @@ public class MainController {
 	public String mainPage(
 		) {
 
-
-		
-
 	 // return "/feed/test";
 		 return "/board/randomPeed";
 		// return "/feed/mainPeed";

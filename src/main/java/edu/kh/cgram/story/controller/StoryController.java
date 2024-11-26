@@ -46,19 +46,23 @@ public class StoryController {
   }
   
   
-  @PostMapping("/api/story/like/{storyNo}")
-  @ResponseBody
-  public Map<String, Boolean> likeStory(@PathVariable Long storyNo,
-                                      @AuthenticationPrincipal UserDetails userDetails) {
-      storyService.insertStoryLike(storyNo, userDetails.getUsername());
-      return Collections.singletonMap("success", true);
-  }
-
-  @DeleteMapping("/api/story/like/{storyNo}")
-  @ResponseBody
-  public Map<String, Boolean> unlikeStory(@PathVariable Long storyNo,
-                                        @AuthenticationPrincipal UserDetails userDetails) {
-      storyService.deleteStoryLike(storyNo, userDetails.getUsername());
-      return Collections.singletonMap("success", true);
-  }
+	/*
+	 * @PostMapping("/api/story/like/{storyNo}")
+	 * 
+	 * @ResponseBody public Map<String, Boolean> likeStory(@PathVariable Long
+	 * storyNo,
+	 * 
+	 * @AuthenticationPrincipal UserDetails userDetails) {
+	 * storyService.insertStoryLike(storyNo, userDetails.getUsername()); return
+	 * Collections.singletonMap("success", true); }
+	 * 
+	 * @DeleteMapping("/api/story/like/{storyNo}")
+	 * 
+	 * @ResponseBody public Map<String, Boolean> unlikeStory(@PathVariable Long
+	 * storyNo,
+	 * 
+	 * @AuthenticationPrincipal UserDetails userDetails) {
+	 * storyService.deleteStoryLike(storyNo, userDetails.getUsername()); return
+	 * Collections.singletonMap("success", true); }
+	 */
 }

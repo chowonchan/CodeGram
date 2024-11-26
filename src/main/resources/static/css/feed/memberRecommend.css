@@ -247,11 +247,6 @@ body {
   margin-bottom: 2px;
 }
 
-.recommend-user-subtitle {
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-
 .recommend-follow {
   color: var(--primary-color);
   font-weight: 600;
