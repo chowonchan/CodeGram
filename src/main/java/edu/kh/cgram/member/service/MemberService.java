@@ -2,6 +2,7 @@ package edu.kh.cgram.member.service;
 
 import java.util.List;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 
 public interface MemberService {
@@ -35,4 +36,6 @@ public interface MemberService {
 	int getFollowerCount(int memberNo);
 
 	int getFollowCount(int memberNo);
+
+	List<BoardImg> getPostsByMemberNo(int memberNo);
 }

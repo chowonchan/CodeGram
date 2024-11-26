@@ -1,8 +1,12 @@
 package edu.kh.cgram.myPage.servive;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.member.dto.Member;
 
 /**
  * MyPageService 인터페이스
@@ -35,5 +39,11 @@ public interface MyPageService {
     boolean resetProfileImageToDefault(int memberNo);
 
 		boolean updateProfile(int memberNo, String selfIntroduction, int memberDisclosureScope);
+
+		List<BoardImg> getMemberPosts(int memberNo);
+
+		Member getMemberByNickname(String nickname);
+
+
 
 }

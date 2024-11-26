@@ -1,7 +1,5 @@
 package edu.kh.cgram.member.dto;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,10 +9,10 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@Builder // 빌더 패턴 : 객체 생성 + 초기화를 쉽게하는 패턴
 public class Member {
 	
 	private int 	 memberNo;

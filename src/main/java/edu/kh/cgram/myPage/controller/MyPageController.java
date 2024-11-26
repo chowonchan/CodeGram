@@ -2,6 +2,7 @@ package edu.kh.cgram.myPage.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.servive.MyPageService;
 import jakarta.servlet.http.HttpSession;
@@ -151,6 +154,20 @@ public class MyPageController {
         // "myPage/editProfile.html" 템플릿을 렌더링
         return "myPage/editProfile";
     }
+    
+  	@GetMapping("/posts")
+  	@ResponseBody
+  	public List<BoardImg> getMemberPosts(
+  		@SessionAttribute("loginMember") Member loginMember) {
+  		// 로그인된 회원의 번호 가져오기
+  		int memberNo = loginMember.getMemberNo();
+  		
+  		List<BoardImg> memberPosts = service.getMemberPosts(memberNo);
+  		
+  		return memberPosts;
+  	}
+
+
     
     /**
      * 프로필 업데이트 요청을 처리하는 메서드
