@@ -63,20 +63,20 @@
 	    FROM MEMBER
 	    WHERE MEMBER_NICKNAME = #{memberNickname}
 	</select>
-	
-	<!-- 좋아요 추가 -->
+<!-- 	
+	좋아요 추가
 	<insert id="insertStoryLike">
 	    INSERT INTO STORY_LIKE (MEMBER_NO, STORY_NO)
 	    VALUES (#{memberNo}, #{storyNo})
 	</insert>
 	
-	<!-- 좋아요 취소 -->
+	좋아요 취소
 	<delete id="deleteStoryLike">
 	    DELETE FROM STORY_LIKE
 	    WHERE MEMBER_NO = #{memberNo}
 	    AND STORY_NO = #{storyNo}
 	</delete>
-	
+	 -->
     <!-- 팔로우한 사용자의 스토리 존재 여부 확인 -->
     <select id="hasNewStories" resultType="_int">
         SELECT CASE 
