@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // 프로필 편집 버튼
     const profileEditButton = document.querySelector(".profile-edit-button");
     const profileSettingButton = document.querySelector(".profile-setting-button");
+
+    // DOM 요소 가져오기
+    const myUploadsTab = document.getElementById("myUploads");
+    const savedTab = document.getElementById("saved");
+    const postsContent = document.getElementById("postsContent");
   
     // 모달 열기
     profileImageArea.addEventListener("click", () => {
@@ -166,25 +171,91 @@ deletePhoto.addEventListener("click", async () => {
       window.location.href = "/myPage/editProfile"; // 프로필 편집 페이지 URL
     });
   
-    // 탭 버튼 클릭 시 탭 전환
-    tabButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        // 모든 탭 버튼과 콘텐츠에서 'active' 클래스 제거
-        tabButtons.forEach(btn => btn.classList.remove("active"));
-        tabContents.forEach(content => content.classList.remove("active"));
+    // // 탭 버튼 클릭 시 탭 전환
+    // tabButtons.forEach(button => {
+    //   button.addEventListener("click", () => {
+    //     // 모든 탭 버튼과 콘텐츠에서 'active' 클래스 제거
+    //     tabButtons.forEach(btn => btn.classList.remove("active"));
+    //     tabContents.forEach(content => content.classList.remove("active"));
   
-        // 클릭된 탭 버튼과 관련 콘텐츠에 'active' 클래스 추가
-        button.classList.add("active");
-        const tab = document.getElementById(button.dataset.tab);
-        if (tab) tab.classList.add("active");
-      });
-    });
+    //     // 클릭된 탭 버튼과 관련 콘텐츠에 'active' 클래스 추가
+    //     button.classList.add("active");
+    //     const tab = document.getElementById(button.dataset.tab);
+    //     if (tab) tab.classList.add("active");
+    //   });
+    // });
 
     logout.addEventListener("click", () => {
       window.location.href = "/member/logout";
     });
 
-    
-  
+    // 기본 탭 활성화
+document.addEventListener("DOMContentLoaded", () => {
+  // 기본 설정: "게시물" 탭 활성화
+  myUploadsTab.classList.add("active");
+  savedTab.classList.remove("active");
+
+  // 기본 설정: 업로드한 게시물 로드
+  fetch("/myActivity/posts")
+    .then(response => response.json())
+    .then(data => renderPosts(data, "uploads")) // uploads: 업로드한 게시물
+    .catch(error => console.error("Error fetching uploaded posts:", error));
+});
+
+// 탭 클릭 이벤트
+myUploadsTab.addEventListener("click", () => {
+  activateTab(myUploadsTab, "uploads");
+});
+
+savedTab.addEventListener("click", () => {
+  activateTab(savedTab, "saved");
+});
+
+// 탭 활성화 함수
+function activateTab(activeTab, type) {
+  // 모든 탭에서 active 클래스 제거
+  [myUploadsTab, savedTab].forEach(tab => tab.classList.remove("active"));
+
+  // 선택된 탭에 active 클래스 추가
+  activeTab.classList.add("active");
+
+  // 콘텐츠 로드
+  const url = type === "uploads" ? "/myActivity/posts" : "/myActivity/saved";
+  fetch(url)
+    .then(response => response.json())
+    .then(data => renderPosts(data, type))
+    .catch(error => console.error(`Error fetching ${type} posts:`, error));
+}
+
+// 게시물 렌더링 함수
+function renderPosts(posts, type) {
+  postsContent.innerHTML = ""; // 기존 콘텐츠 초기화
+
+  if (posts.length === 0) {
+    // 게시물이 없을 때 메시지 표시
+    const noPostsMessage = document.createElement("p");
+    noPostsMessage.classList.add("no-posts-message");
+    noPostsMessage.textContent =
+      type === "uploads"
+        ? "회원님이 작성한 게시물이 존재하지 않습니다."
+        : "회원님이 저장한 게시물이 존재하지 않습니다.";
+    postsContent.appendChild(noPostsMessage);
+    return;
+  }
+
+  // 게시물 렌더링
+  posts.forEach(post => {
+    const postItem = document.createElement("div");
+    postItem.classList.add("post-item");
+    postItem.setAttribute("data-board-no", post.boardNo);
+    postItem.innerHTML = `
+      <a href="/board/${post.boardNo}">
+        <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
+      </a>
+    `;
+    postsContent.appendChild(postItem);
   });
+}
+  
+});
   

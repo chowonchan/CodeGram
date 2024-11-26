@@ -49,11 +49,10 @@
               <button>보관된 스토리 보기</button>
               <button class="profile-setting-button">설정</button>
           </div>
-      
+          <p th:text="${member.memberName}">member_name</p>
           <!-- 프로필 정보 -->
           <div class="profile-info">
               <p>게시물 0 &nbsp;&nbsp; 팔로워 0만 &nbsp;&nbsp; 팔로우 0</p>
-              <p th:text="${member.memberName}">member_name</p>
           </div>
       </div>
       
@@ -69,16 +68,13 @@
 
       <!-- 탭 메뉴: 게시물/저장됨 -->
       <div class="tabs">
-        <div class="tab">게시물</div>
-        <div class="tab">저장됨</div>
+        <div class="tab active" id="myUploads">게시물</div>
+        <div class="tab" id="saved">저장됨</div>
       </div>
 
       <!-- 게시물 그리드: 사용자가 업로드한 게시물 미리보기 -->
-      <div class="post-grid">
-        <div class="post"><div class="post-inner"></div></div>
-        <div class="post"><div class="post-inner"></div></div>
-        <div class="post"><div class="post-inner"></div></div>
-      </div>
+      <div id="postsContent" class="post-grid"></div>
+
     </section>
     
     
