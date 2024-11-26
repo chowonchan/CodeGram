@@ -1,361 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Create New Post Modal</title>
-
-  <style>
-
-    /** <  모달창 뒷배경 > **/
-    .modal-overlay {
-      user-select: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-
-      /* 투명도 65%의 검정배경 */
-      background-color: #000000a6;
-      width: 100%;
-      height: 100%;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .modal-overlay-background {
-      width: 100%;
-      height: 100%;
-
-      position: absolute;
-      z-index: 0;
-    }
-
-    .modal-overlay-middle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    /** </ 모달창 뒷배경 > **/
-
-
-    /** <  modal-close-button Css > **/
-    /* 전체 버튼 스타일 */
-
-    .modal-close-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      width: 34px;
-      height: 34px;
-      padding: 10px;
-
-      position: absolute;
-      z-index: 3;
-
-      top: 0;
-      right: 0;
-    }
-
-    /* SVG 기본 스타일 */
-    .modal-close-button svg {
-      width: 18px;
-      height: 18px;
-      fill: none; /* 내부 채우기 없음 */
-      stroke: currentColor;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    /* 선 스타일 */
-    .modal-close-button-line-diagonal {
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-width: 3;
-    }
-
-    /* 아이콘의 기본 색상 */
-    .modal-close-button {
-      color: #ffffff;
-    }
-
-    /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
-    .modal-close-button:hover {
-      color: #ff9999;
-      transform: scale(1.2);
-    }
-    /** </ modal-close-button Css > **/
-
-    .modal-container {
-      width: 734px;
-      height: 777px;
-      padding: 20px;
-
-      z-index: 3;
-    }
-
-    .modal-content-top {
-      width: 734px;
-      height: 42px;
-      background-color: #fff;
-      border-bottom: solid 1px #DBDBDB;
-      border-radius: 10px 10px 0 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
-
-    .mtbtn {
-      width: 50px;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      cursor: pointer;
-    }
-
-    .modal-content-top-next {
-      font-weight: bold;
-      font-size: 15px;
-      color: #0095F6;
-      &:hover {
-        color: #0060F6;
-      }
-    }
-
-
-    .modal-content-left {
-      width: 734px;
-      height: 734px;
-      background-color: #fff;
-      border-radius: 0 0 10px 10px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .modal-content-left-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .modal-content-left-inner-button {
-      width: 133px;
-      height: 32px;
-      background-color: #0095F6;
-      color: #ffffff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-
-      border-radius: 8px;
-
-      &:hover {
-        background-color: #0050F6;
-      }
-
-    }
-
-
-    .modal-content-right {
-      width: 339px;
-      height: 734px;
-      background-color: #fff;
-      border-left: solid 1px #DBDBDB;
-      border-radius: 0 0 10px 0;
-    }
-
-    .modal-deep {
-      border-top: solid 1px #D9D9D9;
-      flex-grow: 1;
-      cursor: pointer;
-    }
-
-
-    .hide {
-      display: none !important;
-    }
-
-    .hidden {
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .modal-expand {
-      width: 1074px;
-    }
-
-    .fcenter {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .preview {
-      width: 734px;
-      height: 734px;
-      max-width: 100%;     /* 부모 요소 너비를 넘지 않음 */
-      max-height: 100%;    /* 부모 요소 높이를 넘지 않음 */
-      object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
-    }
-
-    .profile {
-      width: 28px;
-      height: 28px;
-      object-fit: cover;
-    }
-
-  </style>
-</head>
-<body>
-
-<span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px; cursor: pointer;">
-    누르면 모달</span>
-<h1 style="color: red;">작동하면 냅둬라...</h1>
-<h2>고쳐짐 당했다....</h2>
-<h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
-<h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
-
-
-<form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data"> <!--th:object="${board}" -->
-  <!-- 사진 업로드 모달 -->
-  <div id="modalOverlay" class="modal-overlay hide">
-
-    <div id="modalOverlayBackground" class="modal-overlay-background"></div>
-    <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
-    <div id="modalCloseButton" class="modal-close-button">
-      <svg aria-label="닫기 버튼 아이콘" role="img" viewBox="0 0 24 24">
-        <title>Close</title>
-        <polyline class="modal-close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
-        <line class="modal-close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
-      </svg>
-    </div>
-
-    <div id="modalOverlayMiddle" class="modal-overlay-middle">
-      <div id="modalContent" class="modal-container">
-
-        <div id="modalContentTop" class="modal-content-top">
-
-          <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn hide" >
-            <!-- 뒤로가기 버튼 -->
-            <svg aria-label="뒤로가기 아이콘" height="24" role="img" viewBox="0 0 24 24" width="24">
-              <title>Back</title>
-              <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="2.909" x2="22.001" y1="12.004" y2="12.004"></line>
-              <polyline fill="none" points="9.276 4.726 2.001 12.004 9.276 19.274" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
-            </svg>
-          </div>
-
-          <div id="modalContentTopText" class="modal-content-top-text" style="text-align: center; flex-grow: 1;"></div>
-          <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
-        </div>
-
-
-        <div style="display: flex;">
-          <div id="modalContentLeft" class="modal-content-left">
-            <div id="modalContentLeftInner" class="modal-content-left-inner">
-              <div id="modalPostNew" class="hide">
-                <svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="96" viewBox="0 0 96 77" fill="none">
-                  <rect x="4" y="7.72168" width="52" height="52" rx="10" transform="rotate(-3 4 7.72168)" fill="white" stroke="black"/>
-                  <path d="M7.21627 53.7294C7.21627 53.7294 13.5611 45.8327 17.6266 40.7728L28.8275 48.3253L38.3724 36.9502" stroke="black"/>
-                  <circle cx="15.2431" cy="20.7012" r="4.5" transform="rotate(-3 15.2431 20.7012)" stroke="black"/>
-                  <rect x="40.0117" y="17.2847" width="52" height="52" rx="10" transform="rotate(3 40.0117 17.2847)" fill="white" stroke="black"/>
-                  <path d="M74.9668 36.4402C74.6995 41.5422 70.3467 45.4614 65.2448 45.194C60.1428 44.9266 56.2236 40.5739 56.491 35.4719C56.7583 30.3699 61.1111 26.4507 66.213 26.7181C71.315 26.9855 75.2342 31.3382 74.9668 36.4402Z" fill="black" stroke="black"/>
-                  <path d="M56.3 48.7287L73.7783 49.6447C79.0179 49.9193 83.0427 54.3894 82.7681 59.6289L82.6111 62.6256L46.1587 60.7153L46.3158 57.7185C46.5904 52.479 51.0605 48.4541 56.3 48.7287Z" fill="black" stroke="black"/>
-                </svg>
-              </div>
-              <div id="modalPostErr" class="hide">  <!-- js로 stroke, fill 값 변경 가능한지 이후 확인 -->
-                <svg aria-label="파일 업로드 오류 아이콘"  width="96" height="96" viewBox="0 0 98 98" fill="none">
-                  <circle cx="49" cy="49" r="48" stroke="black"/>
-                  <circle cx="49" cy="67" r="6" stroke="black"/>
-                  <path d="M51.9823 25.2558L52.7792 25.7871C53.3251 26.151 53.7665 26.651 54.0599 27.2377C54.3453 27.8087 54.4811 28.4427 54.4545 29.0805L53.5298 51.2749C53.5123 51.6954 53.4358 52.1113 53.3028 52.5106L53.0682 53.2144C52.7517 54.1637 52.1279 54.9805 51.2952 55.5356L50.5547 56.0293C50.0943 56.3362 49.5533 56.5 49 56.5C48.4467 56.5 47.9057 56.3362 47.4453 56.0293L46.7048 55.5356C45.8721 54.9805 45.2483 54.1637 44.9318 53.2144L44.6972 52.5106C44.5642 52.1113 44.4877 51.6954 44.4702 51.2749L43.5455 29.0805C43.5189 28.4427 43.6547 27.8087 43.9401 27.2377C44.2335 26.651 44.6749 26.151 45.2208 25.7871L46.0177 25.2558C46.7569 24.763 47.6255 24.5 48.5139 24.5H49.4861C50.3745 24.5 51.2431 24.763 51.9823 25.2558Z" stroke="black"/>
-                </svg>
-              </div>
-
-              <div id="modalContentLeftInnerText" class="modal-content-left-inner-text" style="font-size: 20px; padding: 14px;"></div>
-              <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px; color: #737373"></div>
-              <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
-
-            </div>
-
-            <!-- 이미지 출력부분 -->
-            <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%;">
-              <div id="modalContentLeftImgView" class="modal-content-left-img-view"><!-- 여기서부터 꼬였음 ====================================================== JSJSJSJSJSJSJSJSJSJ -->
-                <img class="preview" src="">
-                <input type="file" name="images" id="modalContentLeftInnerImg" class="modal-content-left-inner-button hide" accept="image/*" multiple>
-              </div>
-              <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
-            </div>
-          </div>
-
-          <!-- 모달 글쓰기 -->
-          <div id="modalContentRight" class="modal-content-right hide">
-            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; background-color: ivory; display: flex; flex-direction: column;" >
-
-              <!-- 글 작성자 출력 -->
-              <div style="width: 290px; height: 60px; ">
-
-                <!-- 프로필 이미지 -->
-                <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
-                <!-- <img th:unless="${board.profileImg}" th:src="#{user.default.image}"> -->
-
-                <!-- 프로필 이미지가 있을 경우 출력 -->
-                <!-- <img th:if="${board.profileImg}" th:src="${board.profileImg}"> -->
-                <!-- <span th:text="${board.memberNickname}">작성자 닉네임</span> -->
-
-                <!-- 세션에서 받아오는 방법으로 -->
-                <img th:unless="${session.profileImg}" th:src="#{user.default.image}" class="profile">
-                <img th:if="${session.profileImg}" th:src="${session.profileImg}" class="profile">
-                <span th:text="${session.loginMember.memberNickname}">작성자 닉네임</span>
-              </div>
-
-              <!-- 글 작성부분 -->
-              <div style="padding: 16px;">
-                <textarea style="width: 100%; height: 400px; resize: none;" id="emojiTextArea" placeholder="내용을 입력하세요..."></textarea>
-              </div>
-
-              <!-- 이모지 버튼과 글자수 출력부분 -->
-              <div style="width: 339px; display: flex; justify-content: space-between;">
-                <div style="cursor: pointer;" id="trigger">🙂</div>
-                <p><span id="byteCount">0</span>/2000</p>
-              </div>
-
-              <div>맨아래 24px 높이 여백</div>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-
-    <!-- 2nd 모달 -->
-    <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
-      <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
-      <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
-        <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
-          <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
-          <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
-        </div>
-        <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
-        <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
-      </div>
-    </div>
-
-  </div>
-</form>
-<!-- ======================================================================================================================================================================================================== -->
-<script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
-<script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
-<script>
-
   const modalOverlay = document.getElementById("modalOverlay");
 
   const modalContent = document.getElementById("modalContent");
@@ -431,8 +73,9 @@
     document.getElementById("modalContentLeftInnerText").innerText = "사진을 여기에 끌어다 놓으세요."
     document.getElementById("modalContentLeftInnerButton").innerText = "컴퓨터에서 선택"
 
-    modalProgress = 1;
     disableScroll();
+    clearProgress();
+    modalProgress = 1;
   }
 
   function modalError() {
@@ -485,11 +128,15 @@
   function clearProgress() {
 
     // 저장된 이전 파일 목록 삭제
-    for (let k = 0; k < lastValidFiles.length; i++) lastValidFiles[i].value = "";
+    for (let x = 0; x < lastValidFiles.length; x++) lastValidFiles[x] = "";
 
     // 삽입된 이미지 배열 초기화
-    for (let j = 0; j < inputImageList.length; i++) inputImageList[i].value = ""; 
+    for (let y = 0; y < inputImageList.length; y++) inputImageList[y].value = "";
+    
+    // 미리보기 삭제
+    for (let z = 0; z < previewList.length; z++) previewList[z].src = "";
 
+    console.log(previewList.currentSrc);
     // 가로 세로 hide hidden, 버튼, 텍스트 등 싹 초기화
   }
 
@@ -540,6 +187,12 @@
   }
 
   document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
+    if(modalProgress = 2) {
+      modalContentDeep.classList.add("hide");
+      modalNew();
+      return;
+    }
+
     modalContentDeep.classList.add("hide");
     modalOverlay.classList.add("hide");
     enableScroll();
@@ -639,9 +292,7 @@
       // 이전 선택된 파일이 있을 때
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(lastValidFiles[order]);
-      // dataTransfer.items.add(lastValidFiles);
       inputImageList[order].files = dataTransfer.files;
-      // inputImageList.files = dataTransfer.files;
 
       return;
     }
@@ -724,10 +375,11 @@
 
     picker.addEventListener('emoji:select', (selection) => {
       textArea.value += selection.emoji;
-      byteCount.textContent = byteLength(textArea.value); // UTF-8로 계산된 바이트 수
-      textArea.focus(); // 텍스트 영역에 포커스를 맞춰줌
+      byteCount.textContent = byteLength(textArea.value);
+      textArea.focus();
     });
   });
+
 
   // UTF-8 바이트 계산 함수
   function byteLength(str) {
@@ -748,12 +400,13 @@
   }
 
   textArea.addEventListener('input', () => {
-    byteCount.textContent = byteLength(textArea.value); // UTF-8로 계산된 바이트 수
+    // UTF-8로 계산된 바이트 수
+    byteCount.textContent = byteLength(textArea.value);
   });
-
 
   textArea.addEventListener('input', () => {
     if (byteLength(textArea.value) > MAX_BYTES) {
+
       // 바이트 초과 시 초과 부분 제거
       while (byteLength(textArea.value) > MAX_BYTES) {
         textArea.value = textArea.value.slice(0, -1);
@@ -784,8 +437,6 @@
         method: "POST",
         body: formData,
         headers: {
-          // 예시: Authorization 헤더나 추가적인 헤더가 필요할 경우 여기에 추가
-          'Authorization': 'Bearer ' + localStorage.getItem('accessToken')  // 토큰 예시
         }
       });
 
@@ -799,17 +450,7 @@
         else alert("게시물 등록에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("폼 제출 오류:", error);
       alert("서버와의 통신에 실패했습니다.");
     }
   }
-
-</script>
-</body>
-</html>
-
-<!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록, 
-     게시글 등록글 글자수 카운트 이벤트 , 게시글 등록 백엔드 마무리 + 이모지 버튼 이벤트 수정 및 적용 -->
-
-
-<!-- // <form enctype="multipart/form-data" method="POST" role="presentation"><input accept="image/jpeg,image/png,image/heic,image/heif" multiple="" type="file"></form> -->
