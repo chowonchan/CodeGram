@@ -32,6 +32,10 @@ public class Member {
 	private int    admin;
 	private int 	 reportCount;
 	private int    boardCount;
-  private int    followCount;
-  private int    followerCount;
+
+  // 추가 필드
+  private int postCount;                 // 게시물 수
+  private int followerCount;             // 팔로워 수
+  private int followCount;               // 팔로우 수
+
 }

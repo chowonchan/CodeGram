@@ -17,11 +17,13 @@ public interface StoryMapper {
 	void updateStoryCheck(@Param("storyNo") Long storyNo, 
 												@Param("memberNickname") String memberNickname);
 	
-  // 좋아요 추가
-  public int insertStoryLike(@Param("storyNo") Long storyNo, @Param("memberNo") Long memberNo);
-  
-  // 좋아요 삭제
-  public int deleteStoryLike(@Param("storyNo") Long storyNo, @Param("memberNo") Long memberNo);
+	/*
+	 * // 좋아요 추가 public int insertStoryLike(@Param("storyNo") Long
+	 * storyNo, @Param("memberNo") Long memberNo);
+	 * 
+	 * // 좋아요 삭제 public int deleteStoryLike(@Param("storyNo") Long
+	 * storyNo, @Param("memberNo") Long memberNo);
+	 */
   
   // 회원 번호로 memberNo 조회
   public Long getMemberNoByNickname(String memberNickname);

@@ -272,11 +272,11 @@ clearAllCancel.addEventListener('click', () => {
 
 /* -----------------알림 목록 창-------------------- */
 
-const connectSse = () => {
+const SseConnect = () => {
 
   if (notificationLoginCheck === false) return;
 
-  console.log("connectSse() 호출")
+  console.log("SseConnect() 호출");
 
   // 서버의 "/sse/connect" 주소로 연결 요청
   const eventSource = new EventSource("/sse/connect");
@@ -287,7 +287,8 @@ const connectSse = () => {
   eventSource.addEventListener("message", e => {
     console.log(e.data);
 
-    // JSON.parse 는 JSON 문자열을 JavaScript 객체로 변환하는 함수
+
+
     const obj = JSON.parse(e.data);
     console.log(obj);
     // 알림을 받는 사람 번호, 읽지 않은 알림 개수
@@ -298,7 +299,7 @@ const connectSse = () => {
       = document.querySelector(".notification-list");
 
     if (notificationList.classList.contains("notification-show")) {
-      selectNotificationList(); // 알림 목록 비동기 조회
+      selectNotiList(); // 알림 목록 비동기 조회
     }
   });
 
@@ -308,12 +309,12 @@ const connectSse = () => {
     eventSource.close(); // 기존 연결 닫기
 
     // 5초 후 재연결 시도
-    setTimeout(() => connectSse(), 5000);
+    setTimeout(() => SseConnect(), 5000);
   })
 }
 
 
-const sendNotification = (type, url, pkNo, content) => {
+const sendNoti = (type, url, pkNo, content) => {
   if (notificationLoginCheck === false) return;
 
   const notification = {
@@ -340,7 +341,7 @@ const sendNotification = (type, url, pkNo, content) => {
 
 
 
-const selectNotificationList = () => {
+const selectNotiList = () => {
   if (notificationLoginCheck === false) return;
 
   fetch("/notification")
@@ -406,7 +407,7 @@ const selectNotificationList = () => {
 
         // 삭제 버튼
         const notiDelete = document.createElement("span");
-        notiDelete.className = 'notidication-delete';
+        notiDelete.className = 'notification-delete';
         notiDelete.innerHTML = '&times;';
 
         notiDelete.addEventListener("click", e => {
@@ -416,10 +417,10 @@ const selectNotificationList = () => {
             body: data.notificationNo
           })
             .then(response => {
-              if (!response.ok) { // 비동기 통신 실패
+              if (response.ok) { // 비동기 통신 실패
                 // 클릭된 x버튼이 포함된 알림 삭제
                 notiDelete.parentElement.remove();
-                notReadCheck();
+
                 return;
               }
               console.log("응답이 좋지 않습니다");
@@ -439,7 +440,7 @@ const selectNotificationList = () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  connectSse(); // SSE 연결
+  SseConnect(); // SSE 연결
 
   // 종 버튼(알림) 클릭 시 알림 목록이 출력하기
   const notificationTab
@@ -459,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     else { // 안보이는 경우
-      selectNotificationList(); // 비동기로 목록 조회 후
+      selectNotiList(); // 비동기로 목록 조회 후
 
       // 화면에 목록 보이게 하기
       notificationList.classList.add("notification-show");
@@ -467,25 +468,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  /* 쿼리스트링 중 cn(댓글 번호)가 존재하는 경우
-      해당 댓글을 찾아 화면을 스크롤 해서 이동하기
-  */
+
   const params = new URLSearchParams(location.search);
-  const cn = params.get("cn"); // cn 값 얻어오기
+  const cn = params.get("cn");
 
-  if (cn != null) { // cn이 존재하는 경우
-    const targetId = "c" + cn; // "c100", "c1234" 형태로 변환
+  if (cn != null) {
+    const targetId = "c" + cn; 
 
-    // 아이디가 일치하는 댓글 요소 얻어오기
+
     const target = document.getElementById(targetId);
 
-    // 댓글 요소가 제일 위에서 얼만큼 떨어져 있는지 반환 받기
+
     const scrollPosition = target.offsetTop;
 
     // 창을 스크롤
     window.scrollTo({
       top: scrollPosition - 75,
-      behavior: "smooth" // 부드럽게 동작(행동)하도록 지정
+      behavior: "smooth"
     });
 
   }

@@ -29,16 +29,14 @@ public class StoryServiceImpl implements StoryService {
 		storyMapper.updateStoryCheck(storyNo, memberNickname);
 	}
 
-  @Override
-  public void insertStoryLike(Long storyNo, String memberNickname) {
-      Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
-      storyMapper.insertStoryLike(storyNo, memberNo);
-  }
-  
-  @Override
-  public void deleteStoryLike(Long storyNo, String memberNickname) {
-      Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
-      storyMapper.deleteStoryLike(storyNo, memberNo);
-  }
+	/*
+	 * @Override public void insertStoryLike(Long storyNo, String memberNickname) {
+	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
+	 * storyMapper.insertStoryLike(storyNo, memberNo); }
+	 * 
+	 * @Override public void deleteStoryLike(Long storyNo, String memberNickname) {
+	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
+	 * storyMapper.deleteStoryLike(storyNo, memberNo); }
+	 */
 
 }

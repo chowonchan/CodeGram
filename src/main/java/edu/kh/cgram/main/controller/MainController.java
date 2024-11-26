@@ -33,18 +33,14 @@ public class MainController {
 		return "/member/login";
 	}
 	
-//  public String mainPage 안에 넣어야되고 아직 업데이트중
-//	@GetMapping
-//	public String getFeedStory(
-//		Model model,
-//		RedirectAttributes ra,
-//		@SessionAttribute(value="loginMember", 
-//										 required=false) Member loginMember) {
-//    List<Story> stories = mainService.getStories(member.getMemberNo());
-//    model.addAttribute("stories", stories);
-//    return "feedStory";
-//	}
-	
+	public String mainPage(
+		) {
+
+	 // return "/feed/test";
+		 return "/board/randomPeed";
+		// return "/feed/mainPeed";
+	}
+
 	@GetMapping("board/insert")
 	public String insertBoard() {
 		return "modal/modal-new-post";

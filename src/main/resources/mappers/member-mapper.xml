@@ -80,7 +80,28 @@
     WHERE MEMBER_NICKNAME = #{nickname}
 </select>
 
-		
+	 <!-- 게시물 수 조회 -->
+    <select id="getPostCountByMemberNo" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD
+        WHERE MEMBER_NO = #{memberNo}
+          AND BOARD_DEL_FL = 'N'
+    </select>
+
+    <!-- 팔로워 수 조회 -->
+    <select id="getFollowerCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM FOLLOW
+        WHERE FOLLOWING_MEMBER = #{memberNo}
+          AND CONFIRM = '1'
+    </select>
+    <!-- 팔로우 수 조회 -->
+    <select id="getFollowCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM FOLLOW
+        WHERE FOLLOWER_MEMBER = #{memberNo}
+          AND CONFIRM = '1'
+    </select> 	
 	
 	
 	<!-- 이메일 중복 검사 -->

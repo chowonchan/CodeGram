@@ -16,7 +16,7 @@ public interface MemberService {
 
 	int idCheck(String id);
 	
-	int changePassword(String memberId, String newPassword); // 추가
+	int changePassword(String memberId, String newPassword);
 	
 	List<Member> searchMembersByName(String keyword, int memberNo);
 	
@@ -26,7 +26,13 @@ public interface MemberService {
 
 	boolean sendUserIdToEmail(String email, String userId);
 	
-  Member findMemberByNameEmailBirthAndId(String name, String email, String birthDate, String memberId); // 추가
+  Member findMemberByNameEmailBirthAndId(String name, String email, String birthDate, String memberId);
 
 	Member getMemberByNickname(String nickname);
+	
+	int getPostCountByMemberNo(int memberNo);
+
+	int getFollowerCount(int memberNo);
+
+	int getFollowCount(int memberNo);
 }
