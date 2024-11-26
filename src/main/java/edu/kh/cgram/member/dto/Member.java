@@ -25,15 +25,17 @@ public class Member {
 	private String memberName;
 	private String profileImg;
 	private String createdAt;
-	private String memberDelBanFl;
+	private int    memberDelBanFl;
 	private String memberBirth;
 	private String selfIntroduction;
 	private int		 memberDisclosureScope;
-	private String admin;
+	private int    admin;
 	private int 	 reportCount;
-	
+	private int    boardCount;
+
   // 추가 필드
   private int postCount;                 // 게시물 수
   private int followerCount;             // 팔로워 수
   private int followCount;               // 팔로우 수
+
 }

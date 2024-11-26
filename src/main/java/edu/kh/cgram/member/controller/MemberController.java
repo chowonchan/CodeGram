@@ -46,13 +46,20 @@ public class MemberController {
 
 	    // DB에서 회원 정보 조회 및 비밀번호 검증
 	    Member loginMember = service.login(memberId, memberPw);
+	    
+	    int adminNumber = loginMember.getAdmin();
 
 	    if (loginMember == null) {
 	        return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 맞지 않습니다."));
 	    } //응답 데이터
-
-	    session.setAttribute("loginMember", loginMember);
-	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
+	    
+	    if(adminNumber == 2) {
+	    	 session.setAttribute("loginMember", loginMember);
+	    	 return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/admin/admin-memberList"));
+	    } else {
+	    	session.setAttribute("loginMember", loginMember);
+	    	return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
+	    }
 	}
 
 
