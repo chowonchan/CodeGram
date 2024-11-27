@@ -273,7 +273,7 @@ public class MemberController {
 	    // 사용자 정보가 여전히 null이면 로그인 페이지로 리다이렉트
 	    if (member == null) {
 	        model.addAttribute("message", "사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
-	        return "redirect:/member/login";
+	        return "redirect:/";
 	    }
 
 	    // 추가 데이터 조회

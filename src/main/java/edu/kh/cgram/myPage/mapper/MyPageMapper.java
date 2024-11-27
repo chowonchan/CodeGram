@@ -48,6 +48,8 @@ public interface MyPageMapper {
 
 		Member findMemberByNickname(@Param("nickname") String nickname);
 
+		 int insertFollow(@Param("loggedInMemberNo") int loggedInMemberNo, @Param("profileMemberNo") int profileMemberNo);
+
     
     
 }

@@ -44,6 +44,8 @@ public interface MyPageService {
 
 		Member getMemberByNickname(String nickname);
 
+		boolean followMember(int loggedInMemberNo, int profileMemberNo);
+
 
 
 }

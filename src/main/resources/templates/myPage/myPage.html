@@ -46,12 +46,22 @@
               <h2 id="profileNickname" th:text="${member.memberNickname != null ? member.memberNickname : '닉네임 없음'}">
                   member_nickname
               </h2>
-              <div class="profile-buttons" 
-                   th:if="${session.loginMember != null and session.loginMember.memberNickname.equals(nickname)}">
-                  <button class="profile-edit-button">프로필 편집</button>
-                  <button>보관된 스토리 보기</button>
-                  <button class="profile-setting-button">설정</button>
-              </div>
+              <div class="profile-buttons">
+                <!-- 현재 로그인한 사용자가 자신의 프로필을 볼 때 -->
+                <div th:if="${session.loginMember != null and session.loginMember.memberNickname.equals(nickname)}">
+                    <button class="profile-edit-button">프로필 편집</button>
+                    <button class="saved-story-button">보관된 스토리 보기</button>
+                    <button class="profile-setting-button">설정</button>
+                </div>
+            
+                <!-- 현재 로그인한 사용자가 다른 사용자의 프로필을 볼 때 -->
+                <div th:if="${session.loginMember == null or !session.loginMember.memberNickname.equals(nickname)}">
+                    <button class="profile-follow-button">팔로우</button>
+                    <button class="start-message-button">메세지</button>
+                    <button class="profile-more-button">더보기</button>
+                </div>
+            </div>
+            
           </div>
           <div class="profile-info">
             <p>
@@ -69,7 +79,6 @@
 
       <!-- 프로필 소개글 영역 -->
       <div class="profile-bio">
-        <!-- <span th:text="${session.loginMember.selfIntroduction}"></span> -->
         <span th:text="${member.selfIntroduction}"></span>
       </div>
 
