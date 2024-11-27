@@ -55,3 +55,10 @@ span:hover{
   display: flex;
   margin-top: auto;
 }
+.logout a {
+  text-decoration: none;
+  color: inherit;
+}
+.logout a:hover {
+  color: white;
+}

@@ -12,4 +12,18 @@ public interface AdminService {
 
 	int updateMemberStatus(String memberNickname);
 
+	int getFeedCount();
+
+	Map<String, Object> selectFeedList(Pagination pagination);
+
+	int updateFeedStatus(int boardNo);
+
+	int getFeedReportCount();
+
+	Map<String, Object> selectFeedReportList(Pagination pagination);
+
+	int getCommentReportCount();
+	
+	Map<String, Object> selectCommentReportList(Pagination pagination);
+
 }
