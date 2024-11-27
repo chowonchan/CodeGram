@@ -82,8 +82,9 @@
 .modal-container {
   width: 734px;
   height: 777px;
-  padding: 20px;
-
+  object-fit: none;
+  overflow: hidden;
+  border-radius: 10px;
   z-index: 3;
 }
 
@@ -92,7 +93,6 @@
   height: 42px;
   background-color: #fff;
   border-bottom: solid 1px #DBDBDB;
-  border-radius: 10px 10px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -123,7 +123,6 @@
   width: 734px;
   height: 734px;
   background-color: #fff;
-  border-radius: 0 0 10px 10px;
 
   display: flex;
   flex-direction: column;
@@ -161,7 +160,6 @@
   height: 734px;
   background-color: #fff;
   border-left: solid 1px #DBDBDB;
-  border-radius: 0 0 10px 0;
 }
 
 .modal-deep {

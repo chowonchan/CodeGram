@@ -23,8 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/")
 public class MainController {
 	
-	private final EditBoardService service;
-	
 	private final MainService mainService;
 	
 	@RequestMapping("/")
@@ -62,26 +60,6 @@ public class MainController {
 		return "feed/mainFeed";
 	}
 
-	@GetMapping("board/insert")
-	public String insertBoard() {
-		return "write/modal-feed-write";
-	}
-	
-	@ResponseBody
-	@PostMapping("submitFeed")
-	public int submitFeed(
-			@ModelAttribute Board inputBoard,
-			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("images") List<MultipartFile> images
-	) {
-		inputBoard.setMemberNo(loginMember.getMemberNo());
-		
-		int result = service.boardInsert(inputBoard, images);
-	
-		return result;
-	}
-	
-	
 	// 좋아요
 	@ResponseBody
 	@PostMapping("/board/like")
