@@ -14,7 +14,7 @@ public interface MainService {
 	Map<String, Object> boardMark(int boardNo, int memberNo);
 
 	// Feed 목록 조회
-	Map<String, Object> selectFeedList(Member loginMember, int cp);
+	Map<String, Object> selectFeedList(int memberNo, int cp);
 
 
 }

@@ -4,17 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.board.dto.Board;
-import edu.kh.cgram.board.service.BoardService;
 import edu.kh.cgram.board.service.EditBoardService;
+import edu.kh.cgram.common.dto.Pagination;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.main.service.MainService;
 import edu.kh.cgram.member.dto.Member;
-import edu.kh.cgram.story.dto.Story;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -40,22 +39,28 @@ public class MainController {
 		 // return "/feed/mainFeed";
 	}
 	
+	// 메인 페이지 ( Feed 목록 조회 )
 	@GetMapping("main2")
 	public String selectFeedList(
 		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 		@ModelAttribute("loginMember") Member loginMember,
 		Model model
 		) {
+		
+		int memberNo = loginMember.getMemberNo();
+		
 		model.addAttribute("loginMember", loginMember);
 		
 		Map<String, Object> map = null;
 		
-		map = mainService.selectFeedList(loginMember, cp);
+		// Feed 목록 조회
+		map = mainService.selectFeedList(memberNo, cp);
 		
+		List<Board> feedList = (List<Board>) map.get("feedList");
+		Pagination pagination = (Pagination) map.get("pagination");
 		
-		
-		
-		
+		model.addAttribute("feedList", feedList);
+		model.addAttribute("pagination", pagination);
 		
 		return "feed/mainFeed";
 	}

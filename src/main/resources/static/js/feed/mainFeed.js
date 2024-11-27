@@ -1,23 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* 좋아요 클릭 시 */
 const boardLike = document.querySelector("#boardLike");
 boardLike.addEventListener("click", e => {
@@ -85,7 +66,6 @@ boardMark.addEventListener("click", e => {
       if (result.check === 1) {
         boardMark.classList.add("fa-solid");
         boardMark.classList.remove("fa-regular");
-
       } else {
         boardMark.classList.add("fa-regular");
         boardMark.classList.remove("fa-solid");

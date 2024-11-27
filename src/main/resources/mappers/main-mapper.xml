@@ -4,6 +4,32 @@
 <mapper namespace="edu.kh.cgram.main.mapper.MainMapper">
 
 
+
+  <resultMap type="Board" id="board_img_rm">
+  
+  	<id property="boardNo" column="BOARD_NO"/>
+
+	<collection 
+		property="imageList"
+		select="selectImageList"
+		column="BOARD_NO"
+		javaType="java.util.ArrayList"
+		ofType="BoardImg"
+	/>
+  </resultMap>
+  
+  <!-- 특정 게시글의 이미지를 order 순서로 조회 -->
+  <select id="selectImageList" resultType="BoardImg">
+  	SELECT *
+	FROM BOARD_IMG
+	WHERE BOARD_NO = #{boardNo}
+	ORDER BY IMG_ORDER ASC
+  </select>
+  
+  
+  
+  <!-- 좋아요 -->
+
 	<!-- 좋아요 눌렀는지 확인 -->
 	<select id="checkBoardLike" resultType="_int">
 		SELECT 
@@ -29,7 +55,7 @@
 		WHERE 
 			MEMBER_NO = #{memberNo}
 		AND   
-			MEMBER_NO = #{boardNo}
+			BOARD_NO = #{boardNo}
 	</delete>
 
 	 <!-- 좋아요 수 -->
@@ -42,6 +68,10 @@
 			BOARD_NO = #{boardNo}
 	</select>
 	
+	
+	
+	
+	<!-- 저장 -->
 	
 	<!-- Keep 눌렀는지 확인 -->
 	<select id="checkBoardMark" resultType="_int">
@@ -81,8 +111,11 @@
 			BOARD_NO = #{boardNo}
 	</select>
 	
+	
+	
+	
 	<!-- 팔로우한 회원목록 조회 -->
-	<select id="getFollowList" resultType="Member">
+	<select id="getFollowList" resultType="Follow">
 		SELECT
 			FOLLOWER_MEMBER
 		FROM
@@ -93,32 +126,97 @@
 			CONFIRM = 1
 	</select>
 	
+	<!-- 팔로우한 회원들의 삭제되지 않은 Feed 개수 조회 -->
+	<select id="getFollowListCount" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM
+			BOARD B
+		WHERE
+			B.MEMBER_NO IN (
+				SELECT	FOLLOWER_MEMBER
+				FROM	FOLLOW
+				WHERE	FOLLOWING_MEMBER = #{memberNo}
+				AND		CONFIRM = 1)
+		AND
+			BOARD_DEL_FL = 'N'
+	</select>
+	
+	<!-- /////  그래서 이미지를 어디서 가져온다고 ?? 
+		조회 결과를 board_rm에 지정된 Type == Board에 저장하고
+		+ collection 태그를 수행해서
+		selectImageList 조회 후 Board.imageList 필드에 저장-->
+		
+	<!-- 지정된 페이지 분량의 게시글 목록 조회 -->
+	<select id="selectFeedList" resultMap="board_img_rm">
+		SELECT
+			ROW_NUMBER() OVER(ORDER BY BOARD_NO ASC) AS "RNUM",
+			BOARD_NO,
+			BOARD_CONTENT,
+			MEMBER_NICKNAME,
+			PROFILE_IMG,
+			
+			(SELECT COUNT(*)
+			 FROM	"COMMENT" C
+			 WHERE	C.BOARD_NO = B.BOARD_NO
+			 AND	C.COMMENT_DEL_FL = 'N') AS "COMMENT_COUNT",
+			
+			(SELECT COUNT(*)
+			 FROM "BOARD_LIKE" L
+			 WHERE L.BOARD_NO = B.BOARD_NO) AS "LIKE_COUNT",
+			
+			(SELECT COUNT(*)
+			 FROM	"BOARD_LIKE" L2
+			 WHERE	B.BOARD_NO = L2.BOARD_NO
+			 AND	L2.MEMBER_NO = #{memberNo}) AS "LIKE_CHECK",
+			
+			(SELECT COUNT(*)
+			 FROM	"MARK" M2
+			 WHERE	B.BOARD_NO = M2.BOARD_NO
+			 AND	M2.MEMBER_NO = #{memberNo}) AS "MARK_CHECK",
+			
+			 <![CDATA[
+			 CASE
+			 	WHEN CURRENT_DATE - CREATED_AT < 1 / 24 / 60
+			 	THEN FLOOR( (CURRENT_DATE - CREATED_AT)
+			 				* 24 * 60 * 60 ) || '초 전'
+			 	
+				WHEN CURRENT_DATE - CREATED_AT  < 1 / 24
+				THEN FLOOR( (CURRENT_DATE - CREATED_AT) 
+							* 24 * 60  ) || '분 전'
+				
+				WHEN CURRENT_DATE - CREATED_AT  < 1 
+				THEN FLOOR( (CURRENT_DATE - CREATED_AT) 
+							* 24 ) || '시간 전'
+				WHEN CURRENT_DATE - CREATED_AT < 30 
+				THEN FLOOR( CURRENT_DATE - CREATED_AT ) || '일 전'
+				
+				ELSE TO_CHAR(CREATED_AT, 'YY-MM-DD')
+				
+			END AS "CREATED_AT" ]]>
+			
+		FROM
+			"BOARD" B
+		JOIN
+			"MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
+		JOIN
+			"FOLLOW" F ON (B.BOARD_NO = F.FOLLOWING_MEMBER)
+		WHERE
+			BOARD_DEL_FL = 'N'
+		AND
+			FOLLOWER_MEMBER IN (
+				SELECT
+					FOLLOWER_MEMBER
+				FROM
+					FOLLOW
+				WHERE
+					FOLLOWING_MEMBER = #{memberNo}
+				AND
+					CONFIRM = 1)
+		ORDER BY
+			RNUM DESC
+	</select>
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
 
 </mapper>

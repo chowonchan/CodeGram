@@ -25,7 +25,7 @@ public class Pagination {
   private int endPage;
   private int prevPage;
   private int nextPage;
-
+  // 전체 게시글 수, 현재 페이지 번호, 한 페이지에 보일 게시글 수, 보여질 페이지 번호개수
   public Pagination(int listCount, int currentPage, int limit, int pageSize) {
       this.listCount = listCount;
       this.currentPage = currentPage;
