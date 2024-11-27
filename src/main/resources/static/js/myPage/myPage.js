@@ -166,6 +166,192 @@ window.addEventListener("click", (event) => {
       window.location.href = "/myPage/editProfile"; // 프로필 편집 페이지 URL
     });
 
+    // 팔로우 버튼 클릭 처리
+if (profileFollowButton) {
+  // 현재 URL에서 닉네임 추출
+  const currentUrl = window.location.pathname;
+  const nickname = currentUrl.split("/").pop(); // URL의 마지막 부분 (닉네임)
+
+  // 초기 버튼 상태 설정
+  const setInitialFollowState = async () => {
+      try {
+          const response = await fetch(`/follow/${nickname}/status`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              // 팔로우 상태에 따라 버튼 텍스트 설정
+              profileFollowButton.textContent = result.isFollowing ? "팔로우 취소" : "팔로우";
+          } else {
+              console.error("팔로우 상태 확인 실패");
+          }
+      } catch (error) {
+          console.error("팔로우 상태 확인 중 오류 발생:", error);
+      }
+  };
+
+  // 버튼 클릭 이벤트 추가
+  profileFollowButton.addEventListener("click", async () => {
+      profileFollowButton.disabled = true; // 요청 시작 시 버튼 비활성화
+
+      try {
+          let response;
+          let actionType;
+
+          // 버튼의 현재 텍스트로 팔로우 상태 판단
+          if (profileFollowButton.textContent === "팔로우") {
+              // 팔로우 요청
+              response = await fetch(`/follow/${nickname}`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+              });
+              actionType = "FOLLOW"; // 알림 타입
+          } else {
+              // 팔로우 취소 요청
+              response = await fetch(`/follow/${nickname}`, {
+                  method: "DELETE",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+              });
+              actionType = "UNFOLLOW"; // 알림 타입
+          }
+
+          if (response.ok) {
+              const result = await response.json();
+              alert(result.message); // 서버 응답 메시지 표시
+
+              if (actionType === "FOLLOW") {
+                  // 팔로우 성공 처리
+                  profileFollowButton.textContent = "팔로우 취소";
+
+                  // 알림 전송 요청
+                  const notificationResponse = await fetch("/sse/follow", {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                          senderMemberNo: result.followerMemberNo, // 팔로우 요청한 사람
+                          receiverMemberNo: result.followingMemberNo, // 팔로우 대상
+                          type: "FOLLOW", // 알림 타입
+                          message: `${nickname}님을 팔로우했습니다.`, // 알림 메시지
+                      }),
+                  });
+
+                  if (notificationResponse.ok) {
+                      const notificationResult = await notificationResponse.json();
+                      console.log("알림 전송 성공:", notificationResult);
+                  } else {
+                      console.error("알림 전송 실패");
+                  }
+              } else {
+                  // 팔로우 취소 성공 처리
+                  profileFollowButton.textContent = "팔로우";
+              }
+          } else {
+              alert("요청 처리 중 오류가 발생했습니다.");
+          }
+      } catch (error) {
+          console.error("요청 중 오류 발생:", error);
+          alert("요청 처리 중 문제가 발생했습니다.");
+      } finally {
+          profileFollowButton.disabled = false; // 요청 완료 후 버튼 활성화
+      }
+  });
+
+  // 초기 버튼 상태 설정 실행
+  setInitialFollowState();
+
+
+
+// // 팔로우 버튼 클릭 처리
+// if (profileFollowButton) {
+//   // 현재 URL에서 닉네임 추출
+//   const currentUrl = window.location.pathname;
+//   const nickname = currentUrl.split("/").pop(); // URL의 마지막 부분을 가져옴 (닉네임)
+
+//       // 버튼 클릭 이벤트 추가
+//       profileFollowButton.addEventListener("click", async () => {
+//         profileFollowButton.disabled = true; // 요청 시작 시 버튼 비활성화
+
+//         try {
+//             let response;
+//             let actionType;
+
+//             // 버튼의 현재 텍스트로 팔로우 상태 판단
+//             if (profileFollowButton.textContent === "팔로우") {
+//                 // 팔로우 요청
+//                 response = await fetch(`/follow/${nickname}`, {
+//                     method: "POST",
+//                     headers: {
+//                         "Content-Type": "application/json",
+//                     },
+//                 });
+//                 actionType = "FOLLOW"; // 알림 타입
+//             } else {
+//                 // 팔로우 취소 요청
+//                 response = await fetch(`/follow/${nickname}`, {
+//                     method: "DELETE",
+//                     headers: {
+//                         "Content-Type": "application/json",
+//                     },
+//                 });
+//                 actionType = "UNFOLLOW"; // 알림 타입
+//             }
+
+//             if (response.ok) {
+//                 const result = await response.json();
+//                 alert(result.message); // 서버 응답 메시지 표시
+
+//                 if (actionType === "FOLLOW") {
+//                     // 팔로우 성공 처리
+//                     profileFollowButton.textContent = "팔로우 취소";
+
+//                     // 알림 전송 요청
+//                     const notificationResponse = await fetch("/sse/follow", {
+//                         method: "POST",
+//                         headers: {
+//                             "Content-Type": "application/json",
+//                         },
+//                         body: JSON.stringify({
+//                             senderMemberNo: result.followerMemberNo, // 팔로우 요청한 사람
+//                             receiverMemberNo: result.followingMemberNo, // 팔로우 대상
+//                             type: "FOLLOW", // 알림 타입
+//                             message: `${nickname}님을 팔로우했습니다.`, // 알림 메시지
+//                         }),
+//                     });
+
+//                     if (notificationResponse.ok) {
+//                         const notificationResult = await notificationResponse.json();
+//                         console.log("알림 전송 성공:", notificationResult);
+//                     } else {
+//                         console.error("알림 전송 실패");
+//                     }
+//                 } else {
+//                     // 팔로우 취소 성공 처리
+//                     profileFollowButton.textContent = "팔로우";
+//                 }
+//             } else {
+//                 alert("요청 처리 중 오류가 발생했습니다.");
+//             }
+//         } catch (error) {
+//             console.error("요청 중 오류 발생:", error);
+//             alert("요청 처리 중 문제가 발생했습니다.");
+//         } finally {
+//             profileFollowButton.disabled = false; // 요청 완료 후 버튼 활성화
+//         }
+//     });
+
+
+
+}
 
     logout.addEventListener("click", () => {
       window.location.href = "/member/logout";

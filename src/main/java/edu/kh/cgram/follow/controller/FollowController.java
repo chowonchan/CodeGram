@@ -31,36 +31,6 @@ public class FollowController {
     this.service = followService;
 }
 
-
-//	@PostMapping("/{nickname}")
-//	public ResponseEntity<?> followMember(
-//	        @PathVariable("nickname") String nickname,
-//	        @SessionAttribute("loginMember") Member loginMember) {
-//
-//	    int loggedInMemberNo = loginMember.getMemberNo();
-//	    Integer profileMemberNo = service.getMemberNoByNickname(nickname);
-//
-//	    if (profileMemberNo == null) {
-//	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
-//	            "success", false,
-//	            "message", "사용자를 찾을 수 없습니다."
-//	        ));
-//	    }
-//
-//	    boolean success = service.followMember(loggedInMemberNo, profileMemberNo);
-//
-//	    if (success) {
-//	        return ResponseEntity.ok(Map.of(
-//	            "success", true,
-//	            "message", "팔로우 성공!"
-//	        ));
-//	    } else {
-//	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-//	            "success", false,
-//	            "message", "팔로우 처리 중 문제가 발생했습니다."
-//	        ));
-//	    }
-//	}
 	@PostMapping("/{nickname}")
 	public ResponseEntity<?> followMember(
 	        @PathVariable("nickname") String nickname,
@@ -87,51 +57,120 @@ public class FollowController {
 	        log.info("팔로우 성공: {} -> {}", loggedInMemberNo, profileMemberNo);
 	        return ResponseEntity.ok(Map.of(
 	            "success", true,
-	            "message", nickname + "님을 성공적으로 팔로우했습니다."
+	            "message", nickname + "님을 성공적으로 팔로우했습니다.",
+	            "followingMemberNo", loggedInMemberNo,  // 팔로우를 한 회원 번호
+	            "followerMemberNo", profileMemberNo  // 팔로우를 당한 회원 번호
 	        ));
 	    } else {
 	        log.error("팔로우 실패: {} -> {}", loggedInMemberNo, profileMemberNo);
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
 	            "success", false,
 	            "message", "팔로우 처리 중 문제가 발생했습니다."
+
 	        ));
 	    }
 	}
+  @DeleteMapping("/{nickname}")
+  public ResponseEntity<?> unfollowMember(
+          @PathVariable("nickname") String nickname,
+          @SessionAttribute("loginMember") Member loginMember) {
 
+      int loggedInMemberNo = loginMember.getMemberNo();
+      log.debug("언팔로우 요청: loggedInMemberNo={}, nickname={}", loggedInMemberNo, nickname);
 
+      // 닉네임으로 회원 번호 조회
+      Integer profileMemberNo = service.getMemberNoByNickname(nickname);
 
-//  @DeleteMapping
-//  public ResponseEntity<Map<String, String>> unfollowMember(
-//          @RequestBody Map<String, Integer> followData,
-//          HttpSession session) {
+      if (profileMemberNo == null) {
+          log.warn("언팔로우 대상 사용자 없음: 닉네임={}", nickname);
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                  "success", false,
+                  "message", "해당 사용자를 찾을 수 없습니다."
+          ));
+      }
+
+      // 언팔로우 처리
+      boolean success = service.unfollowMember(loggedInMemberNo, profileMemberNo);
+
+      if (success) {
+          log.info("언팔로우 성공: {} -> {}", loggedInMemberNo, profileMemberNo);
+          return ResponseEntity.ok(Map.of(
+                  "success", true,
+                  "message", nickname + "님을 성공적으로 언팔로우했습니다."
+          ));
+      } else {
+          log.error("언팔로우 실패: {} -> {}", loggedInMemberNo, profileMemberNo);
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                  "success", false,
+                  "message", "언팔로우 처리 중 문제가 발생했습니다."
+          ));
+      }
+  }
+  
+  /**
+   * 팔로우 상태 확인
+   */
+  @GetMapping("/{nickname}/status")
+  public ResponseEntity<?> getFollowStatus(
+          @PathVariable("nickname") String nickname,
+          @SessionAttribute("loginMember") Member loginMember) {
+
+      int loggedInMemberNo = loginMember.getMemberNo();
+      log.debug("팔로우 상태 확인 요청: loggedInMemberNo={}, nickname={}", loggedInMemberNo, nickname);
+
+      // 닉네임으로 회원 번호 조회
+      Integer profileMemberNo = service.getMemberNoByNickname(nickname);
+
+      if (profileMemberNo == null) {
+          log.warn("팔로우 상태 확인 실패: 닉네임={} (해당 닉네임의 사용자 없음)", nickname);
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                  "success", false,
+                  "message", "해당 사용자를 찾을 수 없습니다."
+          ));
+      }
+
+      // 닉네임으로 찾은 회원 번호 로그 출력
+      log.debug("팔로우 상태 확인 대상: profileMemberNo={} nickname={}", profileMemberNo, nickname);
+
+      // 팔로우 상태 확인
+      boolean isFollowing = service.checkFollowStatus(loggedInMemberNo, profileMemberNo);
+
+      return ResponseEntity.ok(Map.of(
+              "success", true,
+              "isFollowing", isFollowing
+      ));
+  }
+
+  
+//  /**
+//   * 팔로우 상태 확인
+//   */
+//  @GetMapping("/{nickname}/status")
+//  public ResponseEntity<?> getFollowStatus(
+//          @PathVariable("nickname") String nickname,
+//          @SessionAttribute("loginMember") Member loginMember) {
 //
-//      // 세션에서 로그인 사용자 확인
-//      Member loginMember = (Member) session.getAttribute("loginMember");
-//      if (loginMember == null) {
-//          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-//              "message", "로그인이 필요합니다."
-//          ));
-//      }
+//      int loggedInMemberNo = loginMember.getMemberNo();
+//      log.debug("팔로우 상태 확인: loggedInMemberNo={}, nickname={}", loggedInMemberNo, nickname);
 //
-//      // 요청 데이터에서 사용자 번호 추출
-//      Integer profileMemberNo = followData.get("profileMemberNo");
+//      // 닉네임으로 회원 번호 조회
+//      Integer profileMemberNo = service.getMemberNoByNickname(nickname);
+//
 //      if (profileMemberNo == null) {
-//          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-//              "message", "프로필 사용자의 번호가 필요합니다."
+//          log.warn("팔로우 상태 확인 실패: 닉네임={}의 사용자를 찾을 수 없음", nickname);
+//          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+//                  "success", false,
+//                  "message", "해당 사용자를 찾을 수 없습니다."
 //          ));
 //      }
 //
-//      // 언팔로우 처리
-//      boolean success = service.unfollowMember(loginMember.getMemberNo(), profileMemberNo);
+//      // 팔로우 상태 확인
+//      boolean isFollowing = service.checkFollowStatus(loggedInMemberNo, profileMemberNo);
 //
-//      if (success) {
-//          return ResponseEntity.ok(Map.of(
-//              "message", "언팔로우 성공!"
-//          ));
-//      } else {
-//          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-//              "message", "언팔로우 처리 중 문제가 발생했습니다."
-//          ));
-//      }
+//      return ResponseEntity.ok(Map.of(
+//              "success", true,
+//              "isFollowing", isFollowing
+//      ));
 //  }
+	
 }

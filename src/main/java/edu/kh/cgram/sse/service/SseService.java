@@ -15,4 +15,6 @@ public interface SseService {
 
 	void updateNotification(int notificationNo);
 
+	Map<String, Object> insertFollowNotification(Notification notification);
+
 }

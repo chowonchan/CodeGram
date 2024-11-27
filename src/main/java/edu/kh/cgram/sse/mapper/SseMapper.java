@@ -19,5 +19,8 @@ public interface SseMapper {
 	void deleteNotification(int notificationNo);
 
 	void updateNotification(int notificationNo);
+	
+  void insertFollowNotification(Notification notification);
+
 
 }
