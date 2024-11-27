@@ -24,6 +24,8 @@ public interface ChattingService {
 
 	String uploadChatImage(MultipartFile image);
 
+	String NicknameByPartnerNo(int partnerNo);
+
 
 
 }

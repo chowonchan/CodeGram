@@ -34,7 +34,8 @@ public class MainController {
 
 	
 	public String mainPage(
-		) {
+	) {
+	
 
 	 // return "/feed/test";
 		  return "/board/randomPeed";
@@ -44,17 +45,21 @@ public class MainController {
 	@GetMapping("main2")
 	public String selectFeedList(
 		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-		Model model,
-		@RequestParam Map<String, Object> paramMap
+		@ModelAttribute("loginMember") Member loginMember,
+		Model model
 		) {
+		model.addAttribute("loginMember", loginMember);
 		
-		int cp2 = 1;
+		Map<String, Object> map = null;
 		
-		// if(paramMap.get("key") == null) cp2 = service.selectFeedList(cp);
+		map = mainService.selectFeedList(loginMember, cp);
 		
-		// return "/feed/test";
-		// return "/board/randomPeed";
-		return "/feed/mainFeed";
+		
+		
+		
+		
+		
+		return "feed/mainFeed";
 	}
 
 	@GetMapping("board/insert")
