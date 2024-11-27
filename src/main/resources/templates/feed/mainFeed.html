@@ -38,12 +38,12 @@
     </div>
 
     <!-- 6개 이상일 경우 버튼 출력 -->
-    <button class="nav-button prev" th:if="${#lists.size(stories != null stories : []) > 6}" 
+    <button class="nav-button prev" th:if="${#lists.size(stories != null ? stories : []) > 6}" 
             onclick="navigateStories('prev')"
             aria-label="이전 스토리">
       <span class="nav-icon">←</span>
     </button>
-    <button class="nav-button next" th:if="${#lists.size(stories != null stories : []) > 6}" 
+    <button class="nav-button next" th:if="${#lists.size(stories != null ? stories : []) > 6}" 
             onclick="navigateStories('next')"
             aria-label="다음 스토리">
       <span class="nav-icon">→</span>
