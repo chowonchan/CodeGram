@@ -29,8 +29,9 @@
       <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
         <div class="story-wrapper" th:classappend="${board.storyCheck ? 'viewed' : ''}">
           <div class="story-border">
-            <img th:src="${member.profileImg != null} ? 
-                         ${member.profileImg} : '/images/default-profile.png'" class="story-profile-image">
+            <img th:src="${member?.profileImg != null} ? 
+                         ${member?.profileImg} : 'https://via.placeholder.com/56'"
+                 class="story-profile-image">
           </div>
         </div>
         <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
@@ -38,16 +39,18 @@
     </div>
 
     <!-- 6개 이상일 경우 버튼 출력 -->
-    <button class="nav-button prev" th:if="${#lists.size(stories != null ? stories : []) > 6}" 
-            onclick="navigateStories('prev')"
-            aria-label="이전 스토리">
-      <span class="nav-icon">←</span>
-    </button>
-    <button class="nav-button next" th:if="${#lists.size(stories != null ? stories : []) > 6}" 
-            onclick="navigateStories('next')"
-            aria-label="다음 스토리">
-      <span class="nav-icon">→</span>
-    </button>
+<!-- 
+    <th:block th:if="${#lists.size(stories != null ? stories : []) > 6}">
+      <button class="nav-button prev" onclick="navigateStories('prev')" aria-label="이전 스토리">
+        <span class="nav-icon">←</span>
+      </button>
+
+      <button class="nav-button next" onclick="navigateStories('next')" aria-label="다음 스토리">
+        <span class="nav-icon">→</span>
+      </button>
+    </th:block>
+    오류 해결해야됨
+     -->
   </header>
 
 
@@ -82,7 +85,7 @@
       </th:block>
 
       <!-- 회원 추천 섹션 -->
-      <section th:replace="~{fragments/feed/memberRecommend :: memberRecommend}"></section>
+      <section th:replace="~{fragments/memberRecommend :: memberRecommend}"></section>
     </div>
 
   </main>
@@ -98,6 +101,7 @@
     const memberNickname = /*[[${session.loginMember?.memberNickname}]]*/ null;
     // 상세조회한 게시글 정보
     const boardDetail = /*[[${board}]]*/ null;
+
   </script>
 
   <!-- 스크립트 -->

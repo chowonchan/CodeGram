@@ -1,5 +1,8 @@
 package edu.kh.cgram.member.dto;
 
+import java.util.List;
+
+import edu.kh.cgram.follow.dto.Follow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,4 +39,7 @@ public class Member {
   private int followerCount;             // 팔로워 수
   private int followCount;               // 팔로우 수
 
+  // 특정 회원의 팔로우 목록을 저장할 필드
+  private List<Follow> followList;
+  
 }
