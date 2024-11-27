@@ -1,9 +1,14 @@
 package edu.kh.cgram.main.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
+import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.follow.dto.Follow;
 import edu.kh.cgram.member.dto.Member;
 
 @Mapper
@@ -46,6 +51,12 @@ public interface MainMapper {
 	int getMarkCount(int boardNo);
 
 	// Follow 리스트 조회
-	int getFollowList(Member loginMember);
+	List<Follow> getFollowList(int memberNo);
+
+	// 팔로우하고 있는 회원들 Peed의 전체 개수 조회
+	int getFollowListCount(int memberNo);
+
+	// 지정된 페이지 분량의 Feed 목록 조회
+	List<Board> selectFeedList(int memberNo, RowBounds rowBounds);
 
 }
