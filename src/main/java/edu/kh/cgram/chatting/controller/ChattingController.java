@@ -133,5 +133,11 @@ public class ChattingController {
   }
   
   
+  @GetMapping("/selectNickname")
+  @ResponseBody
+  public String getPartnerNickname(@RequestParam("partnerNo") int partnerNo) {
+      return service.NicknameByPartnerNo(partnerNo);
+  }
+  
 
 }

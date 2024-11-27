@@ -114,4 +114,15 @@ public class ChattingServiceImpl implements ChattingService {
 		}
 		return url;
 	}
+	
+	
+	@Override
+	public String NicknameByPartnerNo(int partnerNo) {
+		return mapper.NicknameByPartnerNo(partnerNo);
+	}
+	
+	
+	
+	
+	
 }
