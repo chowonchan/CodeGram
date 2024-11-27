@@ -54,6 +54,7 @@ function showPanel(type) {
   if (sidePanel.classList.contains('hidden')) {
     toggleSidebar();
   }
+
   // 패널 내용 변경
   if (type === 'search') {
     searchPanel.classList.add('active');
@@ -65,6 +66,12 @@ function showPanel(type) {
   } else if (type === 'notification') {
     notificationPanel.classList.add('active');
     searchPanel.classList.remove('active');
+  }
+
+  // 메시지 페이지로 이동한 경우 사이드바에 narrow 클래스 추가
+  if (window.location.pathname.includes('/chatting')) {
+    sidebar.classList.add('narrow'); // 사이드바에 narrow 클래스 추가
+    sidePanel.classList.add('hidden'); // 사이드 패널 숨기기 (필요 시)
   }
 }
 
@@ -388,22 +395,53 @@ const selectNotiList = () => {
 
         // 알림 보낸 회원 프로필 이미지
         const senderProfile = document.createElement("img");
-        if (data.sendMemberProfileImg == null) senderProfile.src = notificationDefaultImage;  // 기본 이미지
+        if (data.sendMemberProfileImg == null) senderProfile.src = notificationDefaultImage; // 기본 이미지
         else senderProfile.src = data.sendMemberProfileImg; // 프로필 이미지
-
+        
         // 알림 내용 영역
         const contentContainer = document.createElement("div");
         contentContainer.className = 'notification-content-container';
-
+        
         // 알림 내용
         const notiContent = document.createElement("p");
         notiContent.className = 'notification-content';
-        notiContent.innerHTML = data.notificationContent; // 태그가 해석 될 수 있도록 innerHTML
-
+        notiContent.innerHTML = data.notificationContent; // 태그가 해석될 수 있도록 innerHTML
+        
         // 알림 보내진 시간
         const notiDate = document.createElement("p");
         notiDate.className = 'notification-date';
         notiDate.innerText = data.notificationDate;
+        
+        // 팔로우 알림인 경우 버튼 생성
+        if (data.notificationType === 'follow') {
+          const followDiv = document.createElement("div");
+          followDiv.className = 'notification-follow-container';
+        
+          const followAlarmBtn = document.createElement("button");
+          followAlarmBtn.className = 'notification-follow-btn';
+        
+          // 내가 이미 팔로우한 경우
+          if (data.isFollowing) {
+            followAlarmBtn.innerText = '팔로잉'; // 팔로잉 버튼 텍스트
+            followAlarmBtn.disabled = true; // 팔로잉 버튼은 비활성화
+            followAlarmBtn.classList.add('following'); // 이미 팔로잉 중인 스타일 적용 (선택 사항)
+          } 
+          // 팔로우하지 않은 경우
+          else {
+            followAlarmBtn.innerText = '팔로우'; // 팔로우 버튼 텍스트
+            followAlarmBtn.addEventListener('click', () => {
+              // 팔로우 요청 로직 (API 호출 등)
+              console.log(`${data.senderId}를 팔로우합니다.`);
+              followAlarmBtn.innerText = '팔로잉'; // 클릭 후 팔로잉 상태로 변경
+              followAlarmBtn.disabled = true; // 버튼 비활성화
+            });
+          }
+        
+          followDiv.appendChild(followAlarmBtn); // 버튼을 div에 추가
+          contentContainer.appendChild(followDiv); // 알림 컨텐츠에 팔로우 div를 추가
+        }
+
+
 
         // 삭제 버튼
         const notiDelete = document.createElement("span");
@@ -442,7 +480,7 @@ const selectNotiList = () => {
 document.addEventListener("DOMContentLoaded", () => {
   SseConnect(); // SSE 연결
 
-  // 종 버튼(알림) 클릭 시 알림 목록이 출력하기
+  // 알림 버튼 클릭 후 출력
   const notificationTab
     = document.querySelector("#notificationTab");
 

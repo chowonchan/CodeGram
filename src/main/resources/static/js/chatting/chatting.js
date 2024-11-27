@@ -120,9 +120,19 @@ const sendMessagePartner = async (imagePath) => {
   // 텍스트또는 이미지가 있는 경우 알림 보내기
   if ((msg.length > 0 || imagePath.length > 0) ||
     (msg.length > 0 && imagePath.length > 0)) {
+    // 이미지와 메시지 여부를 확인하여 내용을 동적으로 생성
+    let previewContent = "";
+    if (imagePath && msg.length > 0) {
+      previewContent = `<span class="chat-preview">이미지와 메시지를 보냈습니다</span>`;
+    } else if (imagePath) {
+      previewContent = `<span class="chat-preview">이미지를 보냈습니다</span>`;
+    } else if (msg.length > 0) {
+      previewContent = `<span class="chat-preview">메시지 : ${msg}</span>`;
+    }
+
     const content =
       `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>
-      <span class="chat-preview">${msg}</span>`;
+      ${previewContent}`;
 
     const url = location.pathname + "?chat-no=" + selectChattingNo;
     console.log("// 상대방에게 알림 보내기");
@@ -409,6 +419,7 @@ const selectRoomList = () => {
 
       // 채팅방 목록 출력 영역 선택
       const ul = document.querySelector(".chatting-list");
+      ul.scrollTop = 0;
 
       // const DMLogo = document.querySelector(".DMLogo-container");
 
