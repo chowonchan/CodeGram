@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import edu.kh.cgram.main.mapper.MainMapper;
+import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -74,9 +75,22 @@ public class MainServiceImpl implements MainService {
 		else 						map.put("check", "delete");
 		
 		return map;
-		
-		
 	}
+	
+	
+	@Override
+	public Map<String, Object> selectFeedList(Member loginMember, int cp) {
+		
+		// 1. loginMember가 팔로우하고있는 회원들 조회
+		int followList = mapper.getFollowList(loginMember);
+		
+		
+		return null;
+	}
+
+	
+
+	
 
 	
 	
