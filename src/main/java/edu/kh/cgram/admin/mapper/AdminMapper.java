@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.common.dto.Pagination;
+import edu.kh.cgram.common.dto.Report;
 import edu.kh.cgram.member.dto.Member;
 
 @Mapper
@@ -16,5 +18,19 @@ public interface AdminMapper {
 	List<Member> selectMemberList(Pagination pagination);
 
 	int updateMemberStatus(@Param("memberNickname") String memberNickname);
+
+	int getFeedCount();
+
+	List<Board> selectFeedList(Pagination pagination);
+
+	int updateFeedStatus(int boardNo);
+
+	int getFeedReportCount();
+
+	List<Report> selectFeedReportList(Pagination pagination);
+
+	int getCommentReportCount();
+	
+	List<Report> selectCommentReportList(Pagination pagination);
 
 }

@@ -18,8 +18,8 @@
                 FROM BOARD 
                 WHERE MEMBER_NO = M.MEMBER_NO
                 AND BOARD_DEL_FL = 'N') AS boardCount,
-               (SELECT COUNT(*) FROM FOLLOW WHERE FOLLOWER_MEMBER = M.MEMBER_NO) AS followCount,
-               (SELECT COUNT(*) FROM FOLLOW WHERE FOLLOWING_MEMBER = M.MEMBER_NO) AS followerCount,
+               (SELECT COUNT(*) FROM FOLLOW WHERE FOLLOWING_MEMBER = M.MEMBER_NO) AS followCount,
+               (SELECT COUNT(*) FROM FOLLOW WHERE FOLLOWER_MEMBER = M.MEMBER_NO) AS followerCount,
                MEMBER_DEL_BAN_FL AS memberDelBanFl
         FROM MEMBER M
         WHERE ADMIN NOT IN (2)
@@ -30,11 +30,88 @@
     <update id="updateMemberStatus">
     	UPDATE MEMBER
     	SET MEMBER_DEL_BAN_FL = CASE
-    		WHEN MEMBER_DEL_BAN_FL = 1 THEN 2
-    		WHEN MEMBER_DEL_BAN_FL = 2 THEN 1
+    		WHEN MEMBER_DEL_BAN_FL = '1' THEN '2'
+    		WHEN MEMBER_DEL_BAN_FL = '2' THEN '1'
     		ELSE MEMBER_DEL_BAN_FL
     	END
     	WHERE MEMBER_NICKNAME = #{memberNickname}
     </update>
+    
+    <!-- 피드 수 조회 -->
+    <select id="getFeedCount" resultType="int">
+    	SELECT COUNT(*) FROM BOARD
+    </select>
+    
+    <!-- 피드 목록 조회 -->
+    <select id="selectFeedList" resultType="Board">
+    	SELECT B.BOARD_NO AS boardNo,
+    		   M.MEMBER_NICKNAME AS memberNickname,
+    		   B.BOARD_CONTENT AS boardContent,
+    		   B.CREATED_AT AS createdAt,
+    		   B.READ_COUNT AS readCount,
+    		   B.BOARD_DEL_FL AS boardDelFl
+        FROM BOARD B
+        JOIN MEMBER M ON (B.MEMBER_NO = M.MEMBER_NO)
+        ORDER BY B.BOARD_NO DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+    
+    <update id="updateFeedStatus">
+    	UPDATE BOARD
+    	SET BOARD_DEL_FL = CASE
+    		WHEN BOARD_DEL_FL = 'N' THEN 'Y'
+    		WHEN BOARD_DEL_FL = 'Y' THEN 'N'
+    		ELSE BOARD_DEL_FL
+    	END
+    	WHERE BOARD_NO = #{boardNo}
+    </update>
+    
+    <!-- 피드 신고 수 조회 -->
+    <select id="getFeedReportCount" resultType="int">
+    	SELECT COUNT(*) FROM REPORT
+    	WHERE CONTENT_CATEGORY = '1'
+    </select>
+    
+    <!-- 피드 신고 목록 조회 -->
+    <select id="selectFeedReportList" resultType="Report">
+    	SELECT R.REPORT_NO AS reportNo,
+    		   M.MEMBER_NICKNAME AS memberNickname,
+    		   B.BOARD_NO AS boardNo,
+    		   B.BOARD_CONTENT AS boardContent,
+    		   R.REPORT_CATEGORY AS reportCategory,
+    		   R.CREATED_AT AS createdAt,
+    		   B.BOARD_DEL_FL AS boardDelFl,
+    		   R.REPORT_VIEW AS reportView
+        FROM REPORT R
+        JOIN MEMBER M ON (R.MEMBER_NO = M.MEMBER_NO)
+        JOIN BOARD B ON (B.MEMBER_NO = M.MEMBER_NO)
+        WHERE CONTENT_CATEGORY = '1'
+        ORDER BY R.CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+    
+    <!-- 댓글 신고 수 조회 -->
+    <select id="getCommentReportCount" resultType="int">
+    	SELECT COUNT(*) FROM REPORT
+    	WHERE CONTENT_CATEGORY = '2'
+    </select>
+    
+    <!-- 댓글 신고 목록 조회 -->
+    <select id="selectCommentReportList" resultType="Report">
+    	SELECT R.REPORT_NO AS reportNo,
+    		   M.MEMBER_NICKNAME AS memberNickname,
+    		   R.CONTENT_NO AS boardNo,
+    		   C.COMMENT_CONTENT AS commentContent,
+    		   R.REPORT_CATEGORY AS reportCategory,
+    		   R.CREATED_AT AS createdAt,
+    		   C.COMMENT_DEL_FL AS commentDelFl,
+    		   R.REPORT_VIEW AS reportView
+        FROM REPORT R
+        JOIN MEMBER M ON (R.MEMBER_NO = M.MEMBER_NO)
+        JOIN "COMMENT" C ON (M.MEMBER_NO = C.MEMBER_NO)
+        WHERE CONTENT_CATEGORY = '2'
+        ORDER BY R.CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
 	
 </mapper>

@@ -37,5 +37,4 @@ public interface MemberService {
 
 	int getFollowCount(int memberNo);
 
-	List<BoardImg> getPostsByMemberNo(int memberNo);
 }

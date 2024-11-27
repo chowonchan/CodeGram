@@ -41,5 +41,4 @@ int getFollowerCount(@Param("memberNo") int memberNo);
 
 int getFollowCount(@Param("memberNo") int memberNo);
 
-
 }

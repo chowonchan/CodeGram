@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.member.mapper.MemberMapper;
 import edu.kh.cgram.member.util.HangulUtils;
@@ -181,14 +182,17 @@ public class MemberServiceImpl implements MemberService{
 	
 	  return postCount;
 	}
+	
 	@Override
 	public int getFollowCount(int memberNo) {
 	  int followCount = mapper.getFollowCount(memberNo);
 		return followCount;
 		
-	}@Override
+	}
+	
+	@Override
 	public int getFollowerCount(int memberNo) {
 	  int followerCount = mapper.getFollowerCount(memberNo);
 		return followerCount;
-}
+	}
 }
