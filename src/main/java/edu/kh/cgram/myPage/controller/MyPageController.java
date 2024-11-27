@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,11 +29,36 @@ import jakarta.servlet.http.HttpSession;
 
 @SessionAttributes("loginMember") // 세션에서 "loginMember" 속성을 관리하도록 설정
 @Controller // 이 클래스가 Spring MVC에서 컨트롤러 역할을 한다는 것을 Spring에 알림
-@RequestMapping("myPage") // 이 컨트롤러는 "/myPage"로 시작하는 모든 요청을 처리
+@RequestMapping("/myPage") // 이 컨트롤러는 "/myPage"로 시작하는 모든 요청을 처리
 public class MyPageController {
 
     @Autowired
     private MyPageService service; // MyPageService 객체를 의존성 주입하여 사용
+    
+    // 생성자 주입
+    public MyPageController(MyPageService myPageService) {
+        this.service = myPageService;
+    }
+
+    @PostMapping("/follow")
+    public ResponseEntity<Map<String, String>> followMember(@RequestBody Map<String, Integer> followData) {
+        int loggedInMemberNo = followData.get("loggedInMemberNo");
+        int profileMemberNo = followData.get("profileMemberNo");
+
+        // 로그 출력
+        System.out.println("로그인한 사용자 번호: " + loggedInMemberNo);
+        System.out.println("프로필 회원 번호: " + profileMemberNo);
+
+        // 비즈니스 로직 수행
+        boolean success = service.followMember(loggedInMemberNo, profileMemberNo);
+
+        if (success) {
+            return ResponseEntity.ok(Map.of("message", "팔로우 성공!"));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body(Map.of("message", "팔로우 실패. 다시 시도해주세요."));
+        }
+    }
 
     /**
      * 마이페이지 화면을 렌더링합니다.

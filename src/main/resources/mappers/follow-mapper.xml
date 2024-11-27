@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.kh.cgram.follow.mapper.FollowMapper">
+
+	<select id="findMemberNoByNickname" resultType="int">
+	    SELECT MEMBER_NO
+	    FROM MEMBER
+	    WHERE MEMBER_NICKNAME = #{nickname}
+	</select>
+
+	<insert id="insertFollow" >
+		INSERT INTO FOLLOW (FOLLOWING_MEMBER, FOLLOWER_MEMBER, CREATED_AT, CONFIRM)
+		VALUES (#{loggedInMemberNo}, #{profileMemberNo}, DEFAULT, DEFAULT)
+	</insert>
+
+
+
+</mapper>

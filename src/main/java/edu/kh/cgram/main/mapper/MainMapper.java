@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import org.apache.ibatis.annotations.Param;
 
+import edu.kh.cgram.member.dto.Member;
+
 @Mapper
 public interface MainMapper {
 
@@ -42,5 +44,8 @@ public interface MainMapper {
 
 	// Keep 개수
 	int getMarkCount(int boardNo);
+
+	// Follow 리스트 조회
+	int getFollowList(Member loginMember);
 
 }

@@ -2,6 +2,8 @@ package edu.kh.cgram.main.service;
 
 import java.util.Map;
 
+import edu.kh.cgram.member.dto.Member;
+
 public interface MainService {
 
 	
@@ -10,5 +12,9 @@ public interface MainService {
 
 	// Keep
 	Map<String, Object> boardMark(int boardNo, int memberNo);
+
+	// Feed 목록 조회
+	Map<String, Object> selectFeedList(Member loginMember, int cp);
+
 
 }
