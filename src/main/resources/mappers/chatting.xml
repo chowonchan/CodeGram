@@ -160,6 +160,14 @@
 	</insert>
 	
 	
+	<select id="NicknameByPartnerNo" resultType="string">
+		SELECT MEMBER_NICKNAME
+		FROM "MEMBER"
+		WHERE MEMBER_NO = #{partnerNo}
+	
+	</select>
+	
+	
 	
 
 </mapper>
