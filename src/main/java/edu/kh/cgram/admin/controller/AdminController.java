@@ -40,12 +40,51 @@ public class AdminController {
 	 @PutMapping("/updateMemberStatus")
 	 @ResponseBody
 	 public int updateMemberStatus(
-	   @RequestParam("memberNickname") String memberNickname) {
+	   @RequestBody String memberNickname) {
 		 
 		 int result = service.updateMemberStatus(memberNickname);
 		 
 		 return result;
 	 }
+	 
+	 @GetMapping("/selectFeedList")
+	 @ResponseBody
+	 public Map<String, Object> selectFeedList(@RequestParam(value = "cp", defaultValue = "1") int currentPage) {
+		 int listCount = service.getFeedCount();
+		 Pagination pagination = new Pagination(listCount, currentPage, 10, 5); // 한 페이지에 10개씩, 페이지네이션 블록 5개씩
+		 Map<String, Object> resultMap = service.selectFeedList(pagination);
+		 resultMap.put("pagination", pagination);
+		 return resultMap;
+	 }
+	 
+	 @PutMapping("/updateFeedStatus")
+	 @ResponseBody
+	 public int updateFeedStatus(
+		 @RequestBody int boardNo) {
+		 
+		 int result = service.updateFeedStatus(boardNo);
+		 
+		 return result;
+	 }
+	 
+	 @GetMapping("/selectFeedReportList")
+	 @ResponseBody
+	 public Map<String, Object> selectFeedReportList(@RequestParam(value = "cp", defaultValue = "1") int currentPage) {
+		 int listCount = service.getFeedReportCount();
+		 Pagination pagination = new Pagination(listCount, currentPage, 10, 5); // 한 페이지에 10개씩, 페이지네이션 블록 5개씩
+		 Map<String, Object> resultMap = service.selectFeedReportList(pagination);
+		 resultMap.put("pagination", pagination);
+		 return resultMap;
+	 }
 
+	 @GetMapping("/selectCommentReportList")
+	 @ResponseBody
+	 public Map<String, Object> selectCommentReportList(@RequestParam(value = "cp", defaultValue = "1") int currentPage) {
+		 int listCount = service.getCommentReportCount();
+		 Pagination pagination = new Pagination(listCount, currentPage, 10, 5); // 한 페이지에 10개씩, 페이지네이션 블록 5개씩
+		 Map<String, Object> resultMap = service.selectCommentReportList(pagination);
+		 resultMap.put("pagination", pagination);
+		 return resultMap;
+	 }
 
 }

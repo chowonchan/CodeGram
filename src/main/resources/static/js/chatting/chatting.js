@@ -118,11 +118,21 @@ const sendMessagePartner = async (imagePath) => {
 
   // type , url , pkNo , content
   // 텍스트또는 이미지가 있는 경우 알림 보내기
-  if  ( ( msg.length > 0 || imagePath.length > 0 ) || 
-        ( msg.length > 0 && imagePath.length > 0 ) ) {
-    const content = 
+  if ((msg.length > 0 || imagePath.length > 0) ||
+    (msg.length > 0 && imagePath.length > 0)) {
+    // 이미지와 메시지 여부를 확인하여 내용을 동적으로 생성
+    let previewContent = "";
+    if (imagePath && msg.length > 0) {
+      previewContent = `<span class="chat-preview">이미지와 메시지를 보냈습니다</span>`;
+    } else if (imagePath) {
+      previewContent = `<span class="chat-preview">이미지를 보냈습니다</span>`;
+    } else if (msg.length > 0) {
+      previewContent = `<span class="chat-preview">메시지 : ${msg}</span>`;
+    }
+
+    const content =
       `<strong>${loginMemberName}</strong>님이 채팅을 보냈습니다.<br>
-      <span class="chat-preview">${msg}</span>`;
+      ${previewContent}`;
 
     const url = location.pathname + "?chat-no=" + selectChattingNo;
     console.log("// 상대방에게 알림 보내기");
@@ -168,7 +178,7 @@ if (chattingSock != undefined) {
       if (msg.messageContent) {
         const contentDiv = document.createElement("div");
         contentDiv.innerHTML = msg.messageContent;
-        
+
         // 이미지가 있는 경우 클릭 이벤트 추가
         const chatImage = contentDiv.querySelector("img");
         if (chatImage) {
@@ -177,7 +187,7 @@ if (chattingSock != undefined) {
             window.open(chatImage.src, '_blank');
           });
         }
-        
+
         p.appendChild(contentDiv);
       }
 
@@ -199,7 +209,7 @@ if (chattingSock != undefined) {
         // 이전 시간과 분 단위로 비교하여 프로필 표시 여부 결정
         const [lastHour, lastMinute] = lastPartnerTime ? lastPartnerTime.split(':') : [null, null];
         const [currentHour, currentMinute] = currentTime.split(':');
-        const isSameMinute = 
+        const isSameMinute =
           lastHour === currentHour && lastMinute === currentMinute;
 
         if (!isSameMinute) {
@@ -249,9 +259,11 @@ function isKorean(text) {
   return koreanRegex.test(text);
 }
 
+
+
 const inputSearch = document.querySelector('.search-input');
 const sendButton = document.querySelector('.send-button');
-const searchMemberResults = document.querySelector('.search-results');
+const searchMemberResults = document.querySelector('ul.search-results');
 const noResultsMessage = document.querySelector('.no-results');
 const modalOverlay = document.querySelector('#modal-overlay');
 
@@ -274,6 +286,7 @@ inputSearch.addEventListener("input", () => {
   } else {
     searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
   }
+
 
   // 입력된 값이 있을 경우
   fetch(searchUrl)
@@ -406,8 +419,9 @@ const selectRoomList = () => {
 
       // 채팅방 목록 출력 영역 선택
       const ul = document.querySelector(".chatting-list");
+      ul.scrollTop = 0;
 
-      const DMLogo = document.querySelector(".DMLogo-container");
+      // const DMLogo = document.querySelector(".DMLogo-container");
 
       // DMLogo.style.display = "none";
 
@@ -540,6 +554,7 @@ const chatRoomListAddEvent = () => {
       // 전역변수에 채팅방 번호, 상대 번호, 상태 프로필, 상대 이름 저장
       selectChattingNo = item.getAttribute("chat-no");
       selectPartnerNo = item.getAttribute("partner-no");
+      selectPartnerNickname = item.getAttribute("partner-nickname");
 
       selectPartnerProfile = item.children[0].children[0].getAttribute("src") || userDefaultImage;
       selectPartnerName = item.children[1].children[0].children[0].innerText;
@@ -601,19 +616,19 @@ const chatRoomListAddEvent = () => {
 
 
 
-      span2.addEventListener("click", (e) => {
+      (span2, span3).addEventListener("click", (e) => {
         e.stopPropagation(); // 부모 클릭 이벤트로 전파되지 않도록 방지
 
-        // 프로필 페이지로 이동 (예: profile.html?userId=partnerNo)
-        window.location.href = `profile.html?userId=${selectPartnerNo}`;
+        fetch(`/chatting/selectNickname?partnerNo=${selectPartnerNo}`)
+          .then(resp => resp.text())
+          .then(partnerNickname => {
+            window.location.href = `/member/${partnerNickname}`;
+
+          })
+
+        // 상대방 ID를 포함한 URL로 이동
       });
 
-      span3.addEventListener("click", (e) => {
-        e.stopPropagation(); // 부모 클릭 이벤트로 전파되지 않도록 방지
-
-        // 프로필 페이지로 이동 (예: profile.html?userId=partnerNo)
-        window.location.href = `profile.html?userId=${selectPartnerNo}`;
-      });
     };
 
 

@@ -1,4 +1,19 @@
 const memberList = document.querySelector("#memberList");
+const feedList = document.querySelector("#feedList");
+const feedReportList = document.querySelector("#feedReportList");
+const commentReportList = document.querySelector("#commentReportList");
+const paginationBox1 = document.getElementById("memberPaginationBox");
+const paginationBox2 = document.getElementById("feedPaginationBox");
+const paginationBox3 = document.getElementById("feedReportPaginationBox");
+const paginationBox4 = document.getElementById("commentReportPaginationBox");
+
+// DOMContentLoaded 이벤트
+document.addEventListener("DOMContentLoaded", () => {
+  selectMemberList();
+  selectFeedList();
+  selectFeedReportList();
+  selectCommentReportList();
+});
 
 // 사이드바 탭 선택
 document.querySelector('.member-list').addEventListener('click', () => {
@@ -17,6 +32,7 @@ document.querySelector('.comment-report').addEventListener('click', () => {
   document.querySelector('#commentReportTable').scrollIntoView({ behavior: 'smooth' });
 });
 
+/* 회원 목록 조회 */
 const selectMemberList = (cp = 1) => {
   fetch(`/admin/selectMemberList?cp=${cp}`)
     .then(response => {
@@ -46,7 +62,7 @@ const selectMemberList = (cp = 1) => {
               member.memberDelBanFl === 1
                 ? `<button class="status-btn red">탈퇴</button>`
                 : member.memberDelBanFl === 2
-                ? `<button class="status-btn blue">되돌리기</button>`
+                ? `<button class="status-btn blue">복구</button>`
                 : `<span class="status-text">정지</span>`
             }
           </td>
@@ -59,15 +75,16 @@ const selectMemberList = (cp = 1) => {
         // 버튼 이벤트 추가
         const statusButton = tr.querySelector(".status-btn");
         if (statusButton) {
-          statusButton.addEventListener("click", () => {
+          statusButton.addEventListener("click", e => {
             updateMemberStatus(member.memberNickname);
+            e.stopPropagation();
           });
         }
 
         memberList.appendChild(tr);
       });
 
-      renderPagination(pagination);
+      renderMemberPagination(pagination);
     })
     .catch(err => console.error(err));
 };
@@ -78,27 +95,25 @@ const updateMemberStatus = (memberNickname) => {
     headers: { "Content-Type": "application/json" },
     body: memberNickname
   })
-    .then(result => {
-      if (result === 1) {
-        alert("회원 상태가 변경되었습니다.");
-        selectMemberList(); // 변경 후 목록 갱신
-      } else {
-        alert("회원 상태 변경에 실패했습니다.");
-      }
-    })
+    .then(response => {
+      if (response.ok) return response.text();
+      throw new Error("회원 상태 변경 실패");
+  }).then(result => {
+    if (result == 1) {
+      alert("회원 상태가 변경되었습니다.");
+      selectMemberList();
+      selectFeedList();
+      selectFeedReportList();
+      selectCommentReportList();
+    } else {
+      alert("회원 상태 변경에 실패했습니다.");
+    }
+  })
     .catch(err => console.error(err));
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  selectMemberList();
-});
-
-const paginationBox = document.querySelector(".pagination");
-const renderPagination = (pagination) => {
-
-  // let paginationBox;
-
-  paginationBox.innerHTML = '';  // 기존 페이지 버튼 초기화
+const renderMemberPagination = (pagination) => {
+  paginationBox1.innerHTML = '';  // 기존 페이지 버튼 초기화
 
   const createPageButton = (page, text, isActive = false) => {
     const button = document.createElement("a");
@@ -121,32 +136,400 @@ const renderPagination = (pagination) => {
 
       selectMemberList(cp);
     });
-
     return button;
   };
-
   // <<, < 버튼 추가
-  paginationBox.appendChild(createPageButton(1, "<<"));
-  paginationBox.appendChild(createPageButton(pagination.prevPage, "<"));
+  paginationBox1.appendChild(createPageButton(1, "<<"));
+  paginationBox1.appendChild(createPageButton(pagination.prevPage, "<"));
 
   // 동적 페이지 번호 버튼 생성
   for (let i = pagination.startPage; i <= pagination.endPage; i++) {
     const isActive = i === pagination.currentPage;
-    paginationBox.appendChild(createPageButton(i, i, isActive));
+    paginationBox1.appendChild(createPageButton(i, i, isActive));
   }
 
   // >, >> 버튼 추가
-  paginationBox.appendChild(createPageButton(pagination.nextPage, ">"));
-  paginationBox.appendChild(createPageButton(pagination.maxPage, ">>"));
+  paginationBox1.appendChild(createPageButton(pagination.nextPage, ">"));
+  paginationBox1.appendChild(createPageButton(pagination.maxPage, ">>"));
 };
 
+/* 피드 목록 조회 */
+const selectFeedList = (cp = 1) => {
+  fetch(`/admin/selectFeedList?cp=${cp}`)
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error("피드 목록 조회 실패");
+    })
+    .then(map => {
+      const list = map.feedList;
+      const pagination = map.pagination;
 
-// DOMContentLoaded 이벤트
-document.addEventListener("DOMContentLoaded", () => {
-  selectMemberList();
-});
+      feedList.innerHTML = ""; // 기존 리스트 초기화
 
-// 검색 
+      list.forEach(feed => {
+        const tr = document.createElement("tr");
+
+        // 피드 내용을 자르는 함수
+        const truncateText = (text, maxLength) => {
+          return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+        }
+
+        // 글자수 제한
+        const truncatedContent = truncateText(feed.boardContent, 30);
+
+        // 피드 정보 생성
+        tr.innerHTML = `
+          <td>${feed.boardNo}</td>
+          <td>${feed.memberNickname}</td>
+          <td><a href="/board/${feed.boardNo}" title="${feed.boardContent}">${truncatedContent}</a></td>
+          <td>${feed.createdAt}</td>
+          <td>${feed.readCount}</td>
+          <td>
+            ${
+              feed.boardDelFl === 'N'
+                ? `<button class="status-btn red">삭제</button>`
+                : feed.boardDelFl === 'Y'
+                ? `<button class="status-btn blue">복구</button>`
+                : `<span class="status-text">정지</span>`
+            }
+          </td>
+        `;
+
+        tr.addEventListener("click", () => {
+          location.href = `/board/${feed.boardNo}`; // 게시물 상세 페이지로 이동
+        });
+
+        // 버튼 이벤트 추가
+        const statusButton = tr.querySelector(".status-btn");
+        if (statusButton) {
+          statusButton.addEventListener("click", e => {
+            updateFeedStatus(feed.boardNo);
+            e.stopPropagation();
+          });
+        }
+
+        feedList.appendChild(tr);
+      });
+
+      renderFeedPagination(pagination);
+    })
+    .catch(err => console.error(err));
+};
+
+const updateFeedStatus = (boardNo) => {
+  fetch("/admin/updateFeedStatus", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: boardNo
+  })
+    .then(response => {
+      if (response.ok) return response.text();
+      throw new Error("피드 상태 변경 실패");
+  }).then(result => {
+    if (result == 1) {
+      alert("요청이 처리되었습니다.");
+      selectMemberList();
+      selectFeedList();
+      selectFeedReportList();
+      selectCommentReportList();
+    } else {
+      alert("요청 처리가 실패했습니다.");
+    }
+  })
+    .catch(err => console.error(err));
+};
+
+const renderFeedPagination = (pagination) => {
+  paginationBox2.innerHTML = '';  // 기존 페이지 버튼 초기화
+
+  const createPageButton = (page, text, isActive = false) => {
+    const button = document.createElement("a");
+    button.href = "#";
+    button.classList.add("page-btn");
+    button.dataset.page = page;
+    button.textContent = text;
+
+    if (isActive) button.classList.add("active");
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const cp = parseInt(event.target.dataset.page);
+
+      // 모든 페이지 버튼에서 active 클래스를 제거
+      document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+
+      // 현재 클릭된 버튼에 active 클래스 추가
+      button.classList.add("active");
+
+      selectFeedList(cp);
+    });
+    return button;
+  };
+  // <<, < 버튼 추가
+  paginationBox2.appendChild(createPageButton(1, "<<"));
+  paginationBox2.appendChild(createPageButton(pagination.prevPage, "<"));
+
+  // 동적 페이지 번호 버튼 생성
+  for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+    const isActive = i === pagination.currentPage;
+    paginationBox2.appendChild(createPageButton(i, i, isActive));
+  }
+
+  // >, >> 버튼 추가
+  paginationBox2.appendChild(createPageButton(pagination.nextPage, ">"));
+  paginationBox2.appendChild(createPageButton(pagination.maxPage, ">>"));
+};
+
+/* 피드 신고 목록 조회 */
+const selectFeedReportList = (cp = 1) => {
+  fetch(`/admin/selectFeedReportList?cp=${cp}`)
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error("피드 신고 목록 조회 실패");
+    })
+    .then(map => {
+      const list = map.feedReportList;
+      const pagination = map.pagination;
+
+      feedReportList.innerHTML = ""; // 기존 리스트 초기화
+
+      if (list.length === 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td colspan="6" class="no-data">접수된 피드 신고가 없습니다.</td>
+        `;
+        feedReportList.appendChild(tr);
+        return;
+      }
+
+      list.forEach(feedReport => {
+        const tr = document.createElement("tr");
+
+        // 피드 내용을 자르는 함수
+        const truncateText = (text, maxLength) => {
+          return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+        }
+
+        // 글자수 제한
+        const truncatedContent = truncateText(feedReport.boardContent, 20);
+
+        // 피드 정보 생성
+        tr.innerHTML = `
+          <td>${feedReport.reportNo}</td>
+          <td>${feedReport.memberNickname}</td>
+          <td><a href="/board/${feedReport.boardNo}" title="${feedReport.boardContent}">${truncatedContent}</a></td>
+          <td>${feedReport.ReportCategory}</td>
+          <td>${feedReport.createdAt}</td>
+          <td>
+            ${
+              feedReport.boardDelFl === 'N'
+                ? `<button class="status-btn red">삭제</button>`
+                : feedReport.boardDelFl === 'Y'
+                ? `<button class="status-btn blue">복구</button>`
+                : `<span class="status-text">정지</span>`
+            }
+          </td>
+        `;
+
+        tr.addEventListener("click", () => {
+          location.href = `/board/${feedReport.boardNo}`; // 게시물 상세 페이지로 이동
+        });
+
+        // 버튼 이벤트 추가
+        const statusButton = tr.querySelector(".status-btn");
+        if (statusButton) {
+          statusButton.addEventListener("click", e => {
+            updateFeedStatus(feedReport.boardNo);
+            e.stopPropagation();
+          });
+        }
+
+        feedList.appendChild(tr);
+      });
+
+      renderFeedReportPagination(pagination);
+    })
+    .catch(err => console.error(err));
+};
+
+const renderFeedReportPagination = (pagination) => {
+  paginationBox3.innerHTML = '';  // 기존 페이지 버튼 초기화
+
+  const createPageButton = (page, text, isActive = false) => {
+    const button = document.createElement("a");
+    button.href = "#";
+    button.classList.add("page-btn");
+    button.dataset.page = page;
+    button.textContent = text;
+
+    if (isActive) button.classList.add("active");
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const cp = parseInt(event.target.dataset.page);
+
+      // 모든 페이지 버튼에서 active 클래스를 제거
+      document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+
+      // 현재 클릭된 버튼에 active 클래스 추가
+      button.classList.add("active");
+
+      selectFeedReportList(cp);
+    });
+    return button;
+  };
+  // <<, < 버튼 추가
+  paginationBox3.appendChild(createPageButton(1, "<<"));
+  paginationBox3.appendChild(createPageButton(pagination.prevPage, "<"));
+
+  // 동적 페이지 번호 버튼 생성
+  for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+    const isActive = i === pagination.currentPage;
+    paginationBox3.appendChild(createPageButton(i, i, isActive));
+  }
+
+  // >, >> 버튼 추가
+  paginationBox3.appendChild(createPageButton(pagination.nextPage, ">"));
+  paginationBox3.appendChild(createPageButton(pagination.maxPage, ">>"));
+};
+
+/* 댓글 신고 목록 조회 */
+const selectCommentReportList = (cp = 1) => {
+  fetch(`/admin/selectCommentReportList?cp=${cp}`)
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error("댓글 신고 목록 조회 실패");
+    })
+    .then(map => {
+      const list = map.commentReportList;
+      const pagination = map.pagination;
+
+      commentReportList.innerHTML = ""; // 기존 리스트 초기화
+
+      if (list.length === 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td colspan="6" class="no-data">접수된 댓글 신고가 없습니다.</td>
+        `;
+        commentReportList.appendChild(tr);
+        return;
+      }
+
+      list.forEach(commentReport => {
+        const tr = document.createElement("tr");
+
+        // 피드 내용을 자르는 함수
+        const truncateText = (text, maxLength) => {
+          return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+        }
+
+        // 글자수 제한
+        const truncatedContent = truncateText(commentReport.commentContent, 20);
+
+        // 피드 정보 생성
+        tr.innerHTML = `
+          <td>${commentReport.reportNo}</td>
+          <td>${commentReport.memberNickname}</td>
+          <td><a href="/board/${commentReport.boardNo}" title="${commentReport.commentContent}">${truncatedContent}</a></td>
+          <td>${commentReport.reportCategory}</td>
+          <td>${commentReport.createdAt}</td>
+          <td>
+            ${
+              commentReport.commentDelFl === 'N'
+                ? `<button class="status-btn red">삭제</button>`
+                : commentReport.commentDelFl === 'Y'
+                ? `<button class="status-btn blue">복구</button>`
+                : `<span class="status-text">정지</span>`
+            }
+          </td>
+        `;
+
+        tr.addEventListener("click", () => {
+          location.href = `/board/${commentReport.boardNo}`; // 게시물 상세 페이지로 이동
+        });
+
+        // 버튼 이벤트 추가
+        const statusButton = tr.querySelector(".status-btn");
+        if (statusButton) {
+          statusButton.addEventListener("click", e => {
+            updateCommentStatus(commentReport.boardNo);
+            e.stopPropagation();
+          });
+        }
+
+        feedList.appendChild(tr);
+      });
+
+      renderCommentReportPagination(pagination);
+    })
+    .catch(err => console.error(err));
+};
+
+const updateCommentStatus = (boardNo) => {
+  fetch("/admin/updateCommentStatus", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: boardNo
+  })
+    .then(response => {
+      if (response.ok) return response.text();
+      throw new Error("댓글 상태 변경 실패");
+  }).then(result => {
+    if (result == 1) {
+      alert("요청이 처리되었습니다.");
+      selectMemberList();
+      selectFeedList();
+      selectFeedReportList();
+      selectCommentReportList();
+    } else {
+      alert("요청 처리가 실패했습니다.");
+    }
+  })
+    .catch(err => console.error(err));
+};
+
+const renderCommentReportPagination = (pagination) => {
+  paginationBox4.innerHTML = '';  // 기존 페이지 버튼 초기화
+
+  const createPageButton = (page, text, isActive = false) => {
+    const button = document.createElement("a");
+    button.href = "#";
+    button.classList.add("page-btn");
+    button.dataset.page = page;
+    button.textContent = text;
+
+    if (isActive) button.classList.add("active");
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const cp = parseInt(event.target.dataset.page);
+
+      // 모든 페이지 버튼에서 active 클래스를 제거
+      document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+
+      // 현재 클릭된 버튼에 active 클래스 추가
+      button.classList.add("active");
+
+      selectCommentReportList(cp);
+    });
+    return button;
+  };
+  // <<, < 버튼 추가
+  paginationBox4.appendChild(createPageButton(1, "<<"));
+  paginationBox4.appendChild(createPageButton(pagination.prevPage, "<"));
+
+  // 동적 페이지 번호 버튼 생성
+  for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+    const isActive = i === pagination.currentPage;
+    paginationBox4.appendChild(createPageButton(i, i, isActive));
+  }
+
+  // >, >> 버튼 추가
+  paginationBox4.appendChild(createPageButton(pagination.nextPage, ">"));
+  paginationBox4.appendChild(createPageButton(pagination.maxPage, ">>"));
+};
+
+/* 검색창 */ 
 (() => {
 
   // 쿼리스트링 모두 얻어와 관리하는 객체
@@ -162,7 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const options = document.querySelectorAll("#searchKey > option");
   options.forEach(op => {
     // op : <option> 태그
-    if (op.value === key) { // option의 valeu와 key가 같다면
+    if (op.value === key) { // option의 value와 key가 같다면
       op.selected = true; // selected 속성 추가
       return;
     }

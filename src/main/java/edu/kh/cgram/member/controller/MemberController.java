@@ -282,14 +282,14 @@ public class MemberController {
 	    int followCount = service.getFollowCount(member.getMemberNo());
 	    
 	    // **게시물 데이터 조회**
-	    List<BoardImg> posts = service.getPostsByMemberNo(member.getMemberNo());
+//	    List<BoardImg> posts = service.getPostsByMemberNo(member.getMemberNo());
 
 	    // 모델에 데이터 추가
 	    model.addAttribute("member", member);
 	    model.addAttribute("postCount", postCount);
 	    model.addAttribute("followerCount", followerCount);
 	    model.addAttribute("followCount", followCount);
-	    model.addAttribute("posts", posts);
+//	    model.addAttribute("posts", posts);
 
 	    log.info("프로필 조회 완료: {}", member);
 	    return "myPage/myPage";

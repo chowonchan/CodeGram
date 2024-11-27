@@ -182,19 +182,17 @@ public class MemberServiceImpl implements MemberService{
 	
 	  return postCount;
 	}
+	
 	@Override
 	public int getFollowCount(int memberNo) {
 	  int followCount = mapper.getFollowCount(memberNo);
 		return followCount;
 		
-	}@Override
+	}
+	
+	@Override
 	public int getFollowerCount(int memberNo) {
 	  int followerCount = mapper.getFollowerCount(memberNo);
 		return followerCount;
-	}
-	@Override
-	public List<BoardImg> getPostsByMemberNo(int memberNo) {
-		List<BoardImg> posts = mapper.selectPostsByMemberNo(memberNo);
-		return posts;
 	}
 }

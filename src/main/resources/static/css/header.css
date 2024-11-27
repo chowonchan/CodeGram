@@ -421,13 +421,35 @@ body {
   -webkit-box-orient: vertical;
 }
 
+
+
+/* 팔로우시 알림 */
+.notification-follow-container{
+  width: 100px;
+  height: 50px;
+}
+
+.notification-follow-btn{
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.following{
+  background-color: #007bff;
+  color: white;
+}
+
+
+
+
 .notification-delete{
   position: absolute;
   top: -1px;
   right: 4px;
   user-select: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
 }
 

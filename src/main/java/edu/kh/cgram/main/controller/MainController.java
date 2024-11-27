@@ -4,17 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.board.dto.Board;
-import edu.kh.cgram.board.service.BoardService;
 import edu.kh.cgram.board.service.EditBoardService;
+import edu.kh.cgram.common.dto.Pagination;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.cgram.main.service.MainService;
 import edu.kh.cgram.member.dto.Member;
-import edu.kh.cgram.story.dto.Story;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -22,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("loginMember")
 @RequestMapping("/")
 public class MainController {
-	
-	private final EditBoardService service;
 	
 	private final MainService mainService;
 	
@@ -34,49 +31,40 @@ public class MainController {
 
 	
 	public String mainPage(
-		) {
+	) {
+	
 
 	 // return "/feed/test";
 		  return "/board/randomPeed";
 		 // return "/feed/mainFeed";
 	}
 	
+	// 메인 페이지 ( Feed 목록 조회 )
 	@GetMapping("main2")
 	public String selectFeedList(
 		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-		Model model,
-		@RequestParam Map<String, Object> paramMap
+		@ModelAttribute("loginMember") Member loginMember,
+		Model model
 		) {
 		
-		int cp2 = 1;
+		int memberNo = loginMember.getMemberNo();
 		
-		// if(paramMap.get("key") == null) cp2 = service.selectFeedList(cp);
+		model.addAttribute("loginMember", loginMember);
 		
-		// return "/feed/test";
-		// return "/board/randomPeed";
-		return "/feed/mainFeed";
+		Map<String, Object> map = null;
+		
+		// Feed 목록 조회
+		map = mainService.selectFeedList(memberNo, cp);
+		
+		List<Board> feedList = (List<Board>) map.get("feedList");
+		Pagination pagination = (Pagination) map.get("pagination");
+		
+		model.addAttribute("feedList", feedList);
+		model.addAttribute("pagination", pagination);
+		
+		return "feed/mainFeed";
 	}
 
-	@GetMapping("board/insert")
-	public String insertBoard() {
-		return "write/modal-feed-write";
-	}
-	
-	@ResponseBody
-	@PostMapping("submitFeed")
-	public int submitFeed(
-			@ModelAttribute Board inputBoard,
-			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("images") List<MultipartFile> images
-	) {
-		inputBoard.setMemberNo(loginMember.getMemberNo());
-		
-		int result = service.boardInsert(inputBoard, images);
-	
-		return result;
-	}
-	
-	
 	// 좋아요
 	@ResponseBody
 	@PostMapping("/board/like")

@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
+import edu.kh.cgram.follow.dto.Follow;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,12 +51,12 @@ public class Board {
     // 특정 게시글의 댓글 목록을 저장할 필드
     private List<Comment> commentList;
     
-    // 좋아요 체크 여부를 저장할 필드(1 == 누른적 있음)
+    // 좋아요 체크 여부를 저장할 필드( 1 == 누른적 있음)
     private int likeCheck;
     
     // 저장함 체크 여부를 저장할 필드( 1 == 누른적 있음)
     private int markCheck;
-    
+
     
     
     

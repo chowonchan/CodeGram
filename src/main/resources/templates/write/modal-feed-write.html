@@ -4,34 +4,33 @@
   <meta charset="UTF-8">
   <title>Create New Post Modal</title>
 
-<!--  <link rel="stylesheet" href="/css/write/feed-write.css">-->
-   <link rel="stylesheet" href="../../static/css/write/feed-write.css">
+   <link rel="stylesheet" href="/css/write/feed-write.css">
+<!-- <link rel="stylesheet" href="../../static/css/write/feed-write.css">-->
 </head>
 <body>
 
-<span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px; cursor: pointer;">
-    누르면 모달</span>
-<h1 style="color: red;">작동하면 냅둬라...</h1>
-<h2>고쳐짐 당했다....</h2>
-<h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
-<h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
+  <span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px; cursor: pointer;">
+      누르면 모달</span>
+  <h1 style="color: red;">작동하면 냅둬라...</h1>
+  <h2>고쳐짐 당했다....</h2>
+  <h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
+  <h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
 
 
-<form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data"> <!--th:object="${board}" -->
-  <!-- 사진 업로드 모달 -->
-  <div id="modalOverlay" class="modal-overlay hide">
+  <form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data"> <!--th:object="${board}" -->
+    <!-- 사진 업로드 모달 -->
+    <div id="modalOverlay" class="modal-overlay hide">
 
-    <div id="modalOverlayBackground" class="modal-overlay-background"></div>
-    <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
-    <div id="modalCloseButton" class="modal-close-button">
-      <svg aria-label="닫기 버튼 아이콘" role="img" viewBox="0 0 24 24">
-        <title>Close</title>
-        <polyline class="modal-close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
-        <line class="modal-close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
-      </svg>
-    </div>
+      <div id="modalOverlayBackground" class="modal-overlay-background"></div>
+      <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
+      <div id="modalCloseButton" class="modal-close-button">
+        <svg aria-label="닫기 버튼 아이콘" role="img" viewBox="0 0 24 24">
+          <title>Close</title>
+          <polyline class="modal-close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
+          <line class="modal-close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
+        </svg>
+      </div>
 
-    <div id="modalOverlayMiddle" class="modal-overlay-middle">
       <div id="modalContent" class="modal-container">
 
         <div id="modalContentTop" class="modal-content-top">
@@ -85,6 +84,14 @@
               </div>
               <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
             </div>
+
+            <!-- 등록 -->
+            <div id="modalContentSubmit" class="modal-content-submit hide" style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+              <div style="width: 100px; height: 100px; padding-top: 317px; object-fit: cover">
+                <img id="submit" src="" style="width: 100%; height: 100%;">
+              </div>
+              <div id="submitText" style="font-size: 20px; padding-top: 20px"></div>
+            </div>
           </div>
 
           <!-- 모달 글쓰기 -->
@@ -107,7 +114,7 @@
                 <img th:if="${session.profileImg}" th:src="${session.profileImg}" class="profile">
                 <span th:text="${session.loginMember.memberNickname}">작성자 닉네임</span>
               </div>
-<!--               0 0 10 10 px-->
+
               <!-- 글 작성부분 -->
               <div style="padding: 0px 16px;">
                 <textarea style="width: 100%; height: 400px; padding: 0px; resize: none; border: none; outline: none;" id="emojiTextArea" spellcheck="false" placeholder="내용을 입력하세요..."></textarea>
@@ -129,32 +136,33 @@
             </div>
           </div>
 
+
+          </div>
+
         </div>
       </div>
-    </div>
 
-
-    <!-- 2nd 모달 -->
-    <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
-      <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
-      <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
-        <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
-          <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
-          <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
+      <!-- 2nd 모달 -->
+      <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
+        <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
+        <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
+          <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
+            <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
+            <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
+          </div>
+          <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
+          <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
         </div>
-        <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
-        <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
       </div>
+
     </div>
+  </form>
 
-  </div>
-</form>
-
-<!-- ======================================================================================================================================================================================================== -->
-<script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
-<script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
-<!--<script src="/js/write/feedWrite.js"></script>-->
- <script src="../../static/js/write/feedWrite.js"></script>
+  <!-- ======================================================================================================================================================================================================== -->
+  <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
+  <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
+    <script src="/js/write/feedWrite.js"></script>
+<!-- <script src="../../static/js/write/feedWrite.js"></script>-->
 </body>
 </html>
 

@@ -46,12 +46,14 @@
         	BOARD B
         JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
         WHERE 
-        	B.MEMBER_NO IN (
-	            SELECT FOLLOWING_MEMBER 
+        	B.MEMBER_NO NOT IN (
+	            SELECT FOLLOWER_MEMBER
 	            FROM FOLLOW
-	            WHERE FOLLOWER_MEMBER = #{memberNo}
+	            WHERE FOLLOWING_MEMBER = #{memberNo}
         )
         AND B.BOARD_DEL_FL = 'N'
+        AND B.MEMBER_NO != #{memberNo}
+        AND IMG_ORDER = 1
         ORDER BY B.CREATED_AT DESC
     </select>
     

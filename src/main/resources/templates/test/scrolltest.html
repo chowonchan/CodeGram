@@ -1,41 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크롤바 항상 표시하지만 스크롤 안되게 하기</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 100px;
+            overflow: scroll; /* 스크롤바는 항상 표시 */
+            background-color: lightgray;
+            padding: 10px;
+        }
+
+        /* 스크롤바는 표시되지만, 사용자가 스크롤하지 못하게 함 */
+        .box-content {
+            pointer-events: none; /* 사용자가 상호작용할 수 없게 비활성화 */
+            height: 200px; /* 콘텐츠가 박스를 넘어가도록 설정 */
+        }
+    </style>
 </head>
 <body>
-
-  <h1>1A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
-  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
-  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
-  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
-  <h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1><h1>A</h1>
-  <button id="disable-scroll-btn">스크롤 위치 고정</button>
-<button id="enable-scroll-btn">스크롤 위치 해제</button>
-
-<script>
-
-    const disableScrollBtn = document.getElementById("disable-scroll-btn");
-    const enableScrollBtn = document.getElementById("enable-scroll-btn");
-
-
-    function disableScroll() {
-        window.addEventListener('wheel', (event) => event.preventDefault(), { passive: false });
-    }
-    
-
-    function enableScroll() {
-        window.removeEventListener('wheel', preventScroll);
-    }
-
-
-
-
-    disableScrollBtn.addEventListener('click', disableScroll);
-    enableScrollBtn.addEventListener('click', enableScroll);
-</script>
-
+    <div class="box">
+        <div class="box-content">
+            <p>이 내용은 길어서 박스를 넘칩니다.</p>
+            <p>하지만 스크롤은 할 수 없습니다.</p>
+            <p>스크롤바는 항상 보이지만, 실제로 스크롤을 할 수 없어요.</p>
+        </div>
+    </div>
 </body>
 </html>
