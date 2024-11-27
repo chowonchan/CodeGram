@@ -1,5 +1,7 @@
 package edu.kh.cgram.member.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +32,6 @@ public class Member {
 	private int    admin;
 	private int 	 reportCount;
 	private int    boardCount;
-
-  // 추가 필드
   private int postCount;                 // 게시물 수
   private int followerCount;             // 팔로워 수
   private int followCount;               // 팔로우 수

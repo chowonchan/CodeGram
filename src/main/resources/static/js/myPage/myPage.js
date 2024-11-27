@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // 모달 요소
     const profileModal = document.getElementById("profileModal");
     const profileSettingModal = document.getElementById("profileSettingModal");
@@ -9,38 +9,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileImageArea = document.getElementById("profileImageArea");
     const profileImg = document.getElementById("profileImg");
     const logout = document.getElementById("logout");
-
+    const profileFollowButton = document.querySelector(".profile-follow-button");
     const defaultImageUrl = "/images/defaultImg.png";
-    // 탭 버튼 및 탭 콘텐츠
-    const tabButtons = document.querySelectorAll(".tab-button");
-    const tabContents = document.querySelectorAll(".tab-content");
-  
+    
     // 프로필 편집 버튼
     const profileEditButton = document.querySelector(".profile-edit-button");
     const profileSettingButton = document.querySelector(".profile-setting-button");
 
-    // DOM 요소 가져오기
     const myUploadsTab = document.getElementById("myUploads");
     const savedTab = document.getElementById("saved");
     const postsContent = document.getElementById("postsContent");
-  
-    // 모달 열기
-    profileImageArea.addEventListener("click", () => {
-    profileModal.style.display = "flex";
-    });
+    
+    // 탭 버튼 및 탭 콘텐츠
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabContents = document.querySelectorAll(".tab-content");
 
-    profileSettingButton.addEventListener("click", () => {
+    // 모달 열기
+    profileImageArea?.addEventListener("click", () => {
+      profileModal.style.display = "flex";
+    });
+    
+    profileSettingButton?.addEventListener("click", () => {
       profileSettingModal.style.display = "flex";
     });
-  
-  // 사진 업로드 옵션
-  uploadPhoto.addEventListener("click", () => {
+    
+    // 사진 업로드 옵션
+    uploadPhoto?.addEventListener("click", () => {
     imageInput.click();
     profileModal.style.display = "none";
   });
 
   // 파일 선택 시 바로 서버로 업로드
-  imageInput.addEventListener("change", async (event) => {
+  imageInput?.addEventListener("change", async (event) => {
     const file = event.target.files[0];
 
     if (file) {
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 1. deletePhoto
 // 이 변수는 "프로필 사진 삭제" 버튼 DOM 요소를 참조합니다.
 // HTML에서 특정 버튼을 선택하여 이벤트를 추가하거나 조작할 때 사용합니다.
-deletePhoto.addEventListener("click", async () => {
+deletePhoto?.addEventListener("click", async () => {
   // addEventListener
   // "deletePhoto"라는 버튼에 이벤트를 추가하는 메서드입니다.
   // 첫 번째 매개변수: "click" (클릭 이벤트)
@@ -152,29 +152,58 @@ window.addEventListener("click", (event) => {
 });
 
   // 취소 옵션
-  cancleModal.addEventListener("click", () => {
+  cancleModal?.addEventListener("click", () => {
     profileSettingModal.style.display = "none";
   });
   // 취소 옵션
-  cancelModal.addEventListener("click", () => {
+  cancelModal?.addEventListener("click", () => {
     profileModal.style.display = "none";
   });
   
 
-    // 프로필 편집 버튼 클릭 시 페이지 이동
-    profileEditButton.addEventListener("click", () => {
+//    프로필 편집 버튼 클릭 시 페이지 이동
+    profileEditButton?.addEventListener("click", () => {
       window.location.href = "/myPage/editProfile"; // 프로필 편집 페이지 URL
     });
+
+
+// 팔로우 버튼 클릭 처리
+if (profileFollowButton) {
+  // 현재 URL에서 닉네임 추출
+  const currentUrl = window.location.pathname;
+  const nickname = currentUrl.split("/").pop(); // URL의 마지막 부분을 가져옴 (닉네임)
+
+  // 버튼 클릭 이벤트 추가
+  profileFollowButton.addEventListener("click", async () => {
+      try {
+          // 팔로우 요청
+          const response = await fetch(`/follow/${nickname}`, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              alert(result.message); // 서버 응답 메시지 표시
+              // 팔로우 성공 시 버튼 텍스트 변경
+              profileFollowButton.textContent = "팔로우 완료";
+              profileFollowButton.disabled = true; // 버튼 비활성화
+          } else {
+              alert("팔로우 처리 중 오류가 발생했습니다.");
+          }
+      } catch (error) {
+          console.error("팔로우 요청 중 오류:", error);
+          alert("팔로우 요청 중 문제가 발생했습니다.");
+      }
+  });
+}
 
 
     logout.addEventListener("click", () => {
       window.location.href = "/member/logout";
     });
-
-
-
-
-
 
     // 기본 탭 활성화
 document.addEventListener("DOMContentLoaded", () => {
@@ -188,19 +217,21 @@ fetch("/mtPage/posts")
     .then(data => renderPosts(data, "uploads")) // uploads: 업로드한 게시물
     .catch(error => console.error("Error fetching uploaded posts:", error));
 });
+
 activateTab(myUploadsTab, "uploads");
 // 탭 클릭 이벤트
 myUploadsTab.addEventListener("click", () => {
   activateTab(myUploadsTab, "uploads");
 });
 
-savedTab.addEventListener("click", () => {
+savedTab?.addEventListener("click", () => {
   activateTab(savedTab, "saved");
 });
 
 // 탭 활성화 함수
 function activateTab(activeTab, type) {
   // 모든 탭에서 active 클래스 제거
+  if(savedTab)
   [myUploadsTab, savedTab].forEach(tab => tab.classList.remove("active"));
 
   // 선택된 탭에 active 클래스 추가
