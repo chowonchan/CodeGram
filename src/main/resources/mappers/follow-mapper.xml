@@ -12,6 +12,19 @@
 		INSERT INTO FOLLOW (FOLLOWING_MEMBER, FOLLOWER_MEMBER, CREATED_AT, CONFIRM)
 		VALUES (#{loggedInMemberNo}, #{profileMemberNo}, DEFAULT, DEFAULT)
 	</insert>
+	
+	<delete id="deleteFollow">
+        DELETE FROM FOLLOW
+        WHERE FOLLOWING_MEMBER = #{loggedInMemberNo} AND FOLLOWER_MEMBER = #{profileMemberNo}
+    </delete>
+
+	<!-- 팔로우 상태 확인 -->
+	<select id="checkFollowStatus" resultType="int">
+	    SELECT COUNT(*)
+	    FROM FOLLOW
+	    WHERE FOLLOWER_MEMBER = #{profileMemberNo}
+	      AND FOLLOWING_MEMBER = #{loggedInMemberNo}
+	</select>
 
 
 

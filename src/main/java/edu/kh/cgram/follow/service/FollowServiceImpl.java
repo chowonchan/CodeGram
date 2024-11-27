@@ -25,7 +25,16 @@ public class FollowServiceImpl implements FollowService{
       log.debug("INSERT 결과: {}", result);
       return result > 0; // 1 이상의 값이면 true, 그렇지 않으면 false
   }
+  
+  @Override
+  public boolean unfollowMember(int loggedInMemberNo, int profileMemberNo) {
+    int result = mapper.deleteFollow(loggedInMemberNo, profileMemberNo);
+    return result > 0;
+  }
 
-
+  @Override
+  public boolean checkFollowStatus(int loggedInMemberNo, int profileMemberNo) {
+      return mapper.checkFollowStatus(loggedInMemberNo, profileMemberNo) > 0;
+  }
 
 }

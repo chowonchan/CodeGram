@@ -1,6 +1,7 @@
 package edu.kh.cgram.sse.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Data
 public class Notification {
 	
   private int 	 notificationNo;
@@ -25,5 +27,9 @@ public class Notification {
   private int    pkNo; // 알림이 보내진 게시글 번호
 
   private String sendMemberProfileImg;
+  
+  // 팔로우용으로 추가함
+  private String type;           // 알림 타입 (예: FOLLOW)
+  private String message;        // 알림 메시지
 
 }

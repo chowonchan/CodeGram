@@ -11,6 +11,10 @@ public interface FollowMapper {
   
   int insertFollow(@Param("loggedInMemberNo") int loggedInMemberNo, @Param("profileMemberNo") int profileMemberNo);
 
+  int deleteFollow(@Param("loggedInMemberNo") int loggedInMemberNo, @Param("profileMemberNo") int profileMemberNo);
+
+  int checkFollowStatus(@Param("loggedInMemberNo") int loggedInMemberNo, @Param("profileMemberNo") int profileMemberNo); // 팔로우 상태 확인
+
 
 
 

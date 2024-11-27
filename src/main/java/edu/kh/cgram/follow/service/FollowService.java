@@ -4,7 +4,8 @@ public interface FollowService {
 
     Integer getMemberNoByNickname(String nickname);
     boolean followMember(int loggedInMemberNo, int profileMemberNo);
-//		boolean unfollowMember(int memberNo, Integer profileMemberNo);
+		boolean unfollowMember(int loggedInMemberNo, int profileMemberNo);
+		boolean checkFollowStatus(int loggedInMemberNo, int profileMemberNo);
 
 
 
