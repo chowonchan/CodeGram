@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 
 @Mapper
@@ -40,6 +41,8 @@ int getPostCountByMemberNo(@Param("memberNo") int memberNo);
 int getFollowerCount(@Param("memberNo") int memberNo);
 
 int getFollowCount(@Param("memberNo") int memberNo);
+
+List<BoardImg> selectPostsByMemberNo(int memberNo);
 
 
 }

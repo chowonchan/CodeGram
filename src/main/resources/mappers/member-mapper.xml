@@ -102,6 +102,13 @@
         WHERE FOLLOWER_MEMBER = #{memberNo}
           AND CONFIRM = '1'
     </select> 	
+    
+    <select id="selectPostsByMemberNo" resultType="BoardImg">
+	    SELECT *
+	    FROM BOARD
+	    WHERE MEMBER_NO = #{memberNo}
+	</select>
+    
 	
 	
 	<!-- 이메일 중복 검사 -->
