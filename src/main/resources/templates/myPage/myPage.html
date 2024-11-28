@@ -109,7 +109,7 @@
       <ul class="modal-options">
         <li id="uploadPhoto" class="option">사진 업로드</li>
         <li id="deletePhoto" class="option delete">현재 사진 삭제</li>
-        <li id="cancelModal" class="option cancel">취소</li>
+        <li id="cancleModal" class="option cancle">취소</li>
       </ul>
     </div>
   </div>
@@ -125,6 +125,40 @@
         <li id="blockList" class="option block ">차단 목록</li>
         <li id="logout" class="option logout">로그아웃</li>
         <li id="cancleModal" class="option cancle">취소</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 프로필 -> 더보기 모달 -->
+  <div id="profileMoreModal" class="modal">
+    <!-- 모달 내부 콘텐츠 -->
+    <div class="modal-content">
+      <!-- 모달 옵션 목록 -->
+      <ul class="modal-options">
+        <li id="blockUser" class="option block">차단</li>
+        <li id="reportUser" class="option report">신고</li>
+        <li id="infoUser" class="option info ">이 계정 정보</li>
+        <li id="cancleModal" class="option cancle">취소</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 프로필 계정 정보 모달 -->
+  <div id="profileInfoModal" class="modal">
+    <!-- 모달 내부 콘텐츠 -->
+    <div class="modal-content">
+      <!-- 모달 옵션 목록 -->
+
+        <!-- 프로필 이미지 표시 (사용자가 업로드한 이미지나 기본 이미지) -->
+        <div class="profile-image" id="profileImageArea">
+               <img th:src="${member.profileImg != null ? member.profileImg : '/images/defaultImg.png'}" id="profileImg" alt="프로필 이미지">
+        </div>
+
+      <span th:text="${member.memberNickname}" >닉네임</span>
+      <div></div>
+      <span th:text="${member.createdAt}" >가입한 날자</span>
+      <ul class="modal-options">
+        <li id="cancleModal" class="option cancle">닫기</li>
       </ul>
     </div>
   </div>

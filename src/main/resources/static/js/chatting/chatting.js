@@ -819,4 +819,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   }
-})
+});
+
+
+
+document.addEventListener("DOMContentLoaded", e => {
+  const params = new URLSearchParams(location.search); // URLSearchParams 객체 : 쿼리스트링 관리하는 객체 
+
+  if(params.get("chattingNo") === null) return;
+
+  const itemList = document.querySelectorAll(".chatting-item");
+
+  itemList.forEach(item => {
+    if (item.getAttribute("chat-no") === params.get("chattingNo")) {
+      item.click();
+      return;
+    }
+  })
+
+});

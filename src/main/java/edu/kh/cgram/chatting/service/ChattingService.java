@@ -26,6 +26,8 @@ public interface ChattingService {
 
 	String NicknameByPartnerNo(int partnerNo);
 
+	int getMemberNoByNickname(String nickname);
+
 
 
 }

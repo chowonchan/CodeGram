@@ -167,6 +167,11 @@
 	
 	</select>
 	
+	<select id="selectMemberNoByNickname" resultType="int">
+	    SELECT MEMBER_NO
+	    FROM MEMBER
+	    WHERE MEMBER_NICKNAME = #{nickname}
+	</select>
 	
 	
 

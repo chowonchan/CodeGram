@@ -122,7 +122,10 @@ public class ChattingServiceImpl implements ChattingService {
 	}
 	
 	
-	
+	@Override
+	public int getMemberNoByNickname(String nickname) {
+    return mapper.selectMemberNoByNickname(nickname);
+	}
 	
 	
 }

@@ -36,6 +36,9 @@ public interface ChattingMapper {
 
 	// 상대방 닉네임 가져 오기
 	String NicknameByPartnerNo(int partnerNo);
+
+	// 상대방 번호 가져오기
+	int selectMemberNoByNickname(String nickname);
 	
 	
 
