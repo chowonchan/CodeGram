@@ -50,10 +50,8 @@
 					#{pkNo}
 				</when>
 				
-				<when test="notificationType == 'follow'">
-					(SELECT FOLLOWING_MEMBER
-					 FROM "FOLLOW"
-					 WHERE FOLLOWING_MEMBER = #{pkNo})
+ 				<when test="notificationType == 'follow'">
+					#{pkNo}
 				</when>
 			
 			</choose>
@@ -114,27 +112,7 @@
 			NOTIFICATION_NO = #{notificationNo}
 	</update>
 	
-	<!-- 팔로우 알림 작동X 연결 페이지 주소 누락이 원인인 듯? -->
-<insert id="insertFollowNotification">
-        INSERT INTO NOTIFICATION (
-            NOTIFICATION_NO,
-            NOTIFICATION_CONTENT,
-            NOTIFICATION_CHECK,
-            CREATED_AT,
-            NOTIFICATION_URL,
-            SEND_MEMBER_NO,
-            RECEIVE_MEMBER_NO
-        )
-        VALUES (
-            NOTIFICATION_SEQ.NEXTVAL,       <!-- 알림 번호 (시퀀스 사용) -->
-            #{notificationContent},         <!-- 알림 내용 -->
-            DEFAULT,                        <!-- 읽음 여부 (기본값: 'N') -->
-            DEFAULT,                        <!-- 생성일 (기본값: CURRENT_DATE) -->
-            #{notificationUrl},             <!-- 알림 URL -->
-            #{sendMemberNo},                <!-- 보낸 사람 번호 -->
-            #{receiveMemberNo}              <!-- 받는 사람 번호 -->
-        )
-    </insert>
+
 	
 	
 
