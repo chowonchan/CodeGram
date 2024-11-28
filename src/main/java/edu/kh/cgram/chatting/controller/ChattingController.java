@@ -44,6 +44,8 @@ public class ChattingController {
     = service.chatRoomList(loginMember.getMemberNo());
 
 		model.addAttribute("chatRoomList", chatRoomList);
+		
+		
 		return "chatting/chatting";
 	}
 	
