@@ -139,5 +139,12 @@ public class ChattingController {
       return service.NicknameByPartnerNo(partnerNo);
   }
   
+  @GetMapping("/getMemberNo")
+  @ResponseBody
+  public int getMemberNoByNickname(@RequestParam("nickname") String nickname) {
+      return service.getMemberNoByNickname(nickname);
+  }
+
+  
 
 }

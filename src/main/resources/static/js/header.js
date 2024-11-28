@@ -351,7 +351,7 @@ const sendNoti = (type, url, pkNo, content) => {
 const selectNotiList = () => {
   if (notificationLoginCheck === false) return;
 
-  fetch("/notification")
+  fetch("/sse/notification")
     .then(response => {
       if (response.ok) return response.json();
       throw new Error("알림 목록 조회 실패");

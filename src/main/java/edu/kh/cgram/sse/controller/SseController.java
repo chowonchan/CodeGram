@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import edu.kh.cgram.member.dto.Member;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController // @Controller + @ResponseBody
+@SessionAttributes({"loginMember"})
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("sse")
