@@ -583,9 +583,9 @@ document.addEventListener("DOMContentLoaded", () => {
             buttons.profileFollowButton.textContent = "팔로우 취소";
             sendNoti(
               "follow",
-              `/member/${nickname}`,
+              `/member/${loginMemberNickname}`,
               result.followerMemberNo,
-              `<strong>${nickname}</strong>님이 회원님을 팔로우하기 시작했습니다.`
+              `<strong>${loginMemberNickname}</strong>님이 회원님을 팔로우하기 시작했습니다.`
             );
           } else {
             buttons.profileFollowButton.textContent = "팔로우";
