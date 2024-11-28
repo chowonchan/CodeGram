@@ -20,6 +20,7 @@ public class Report {
 	private String commentContent;
 	private String commentDelFl;
 	private String boardDelFl;
+	private String boardContent;
 	private String memberNickname;
 	private String createdAt;
 	private String reportCategory;

@@ -69,22 +69,73 @@ public class AdminController {
 	 
 	 @GetMapping("/selectFeedReportList")
 	 @ResponseBody
-	 public Map<String, Object> selectFeedReportList(@RequestParam(value = "cp", defaultValue = "1") int currentPage) {
-		 int listCount = service.getFeedReportCount();
+	 public Map<String, Object> selectFeedReportList(
+		 @RequestParam(value = "category", required = false) String queryParam,
+		 @RequestParam(value = "cp", defaultValue = "1") int currentPage) {
+		 
+		 int listCount = 0;
+		 Map<String, Object> resultMap= null;
+		 
+		 if(queryParam != null) {
+			 listCount = service.getFeedReportCount1(queryParam);
+		 } else {
+			 listCount = service.getFeedReportCount();
+		 }
+		
 		 Pagination pagination = new Pagination(listCount, currentPage, 10, 5); // 한 페이지에 10개씩, 페이지네이션 블록 5개씩
-		 Map<String, Object> resultMap = service.selectFeedReportList(pagination);
-		 resultMap.put("pagination", pagination);
+		 
+		 if(queryParam != null) {
+			 resultMap = service.selectFeedReportList1(pagination, queryParam);
+			 resultMap.put("pagination", pagination);
+		 } else {
+			 resultMap = service.selectFeedReportList(pagination);
+			 resultMap.put("pagination", pagination);
+		 }
 		 return resultMap;
 	 }
 
 	 @GetMapping("/selectCommentReportList")
 	 @ResponseBody
-	 public Map<String, Object> selectCommentReportList(@RequestParam(value = "cp", defaultValue = "1") int currentPage) {
-		 int listCount = service.getCommentReportCount();
+	 public Map<String, Object> selectCommentReportList(
+		 @RequestParam(value = "category", required = false) String queryParam,
+		 @RequestParam(value = "cp", defaultValue = "1") int currentPage) {
+		 
+		 int listCount = 0;
+		 Map<String, Object> resultMap= null;
+		 
+		 if(queryParam != null) {
+			 listCount = service.getCommentReportCount1(queryParam);
+		 } else {
+			 listCount = service.getCommentReportCount();
+		 }
+		 
 		 Pagination pagination = new Pagination(listCount, currentPage, 10, 5); // 한 페이지에 10개씩, 페이지네이션 블록 5개씩
-		 Map<String, Object> resultMap = service.selectCommentReportList(pagination);
-		 resultMap.put("pagination", pagination);
+		 
+		 if(queryParam != null) {
+			 resultMap = service.selectCommentReportList1(pagination, queryParam);
+			 resultMap.put("pagination", pagination);
+		 } else {
+			 resultMap = service.selectCommentReportList(pagination);
+			 resultMap.put("pagination", pagination);
+		 }
 		 return resultMap;
+	 }
+	 
+	 @PutMapping("/updateCommentStatus")
+	 @ResponseBody
+	 public int updateCommentStatus(
+		 @RequestBody int commentNo) {
+		 
+		 int result = service.updateCommentStatus(commentNo);
+		 
+		 return result;
+	 }
+	 
+	 @PutMapping("/deleteReport")
+	 @ResponseBody
+	 public int deleteReport(@RequestBody int reportNo) {
+		 int result = service.deleteReport(reportNo);
+		 return result;
 	 }
 
 }
