@@ -33,4 +33,16 @@ public interface AdminMapper {
 	
 	List<Report> selectCommentReportList(Pagination pagination);
 
+	int deleteReport(int reportNo);
+
+	int getFeedReportCount1(String queryParam);
+
+	List<Report> selectFeedReportList1(@Param("pagination") Pagination pagination, @Param("queryParam") String queryParam);
+
+	int getCommentReportCount1(String queryParam);
+
+	List<Report> selectCommentReportList1(@Param("pagination") Pagination pagination, @Param("queryParam") String queryParam);
+
+	int updateCommentStatus(int commentNo);
+
 }

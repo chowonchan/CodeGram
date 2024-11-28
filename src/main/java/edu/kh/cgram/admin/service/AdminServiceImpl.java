@@ -63,8 +63,21 @@ public class AdminServiceImpl implements AdminService {
   }
   
   @Override
+  public int getFeedReportCount1(String queryParam) {
+  	return mapper.getFeedReportCount1(queryParam);
+  }
+  
+  @Override
   public Map<String, Object> selectFeedReportList(Pagination pagination) {
 		List<Report> feedReportList = mapper.selectFeedReportList(pagination);
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("feedReportList", feedReportList);
+  	return resultMap;
+  }
+  
+  @Override
+  public Map<String, Object> selectFeedReportList1(Pagination pagination, String queryParam) {
+  	List<Report> feedReportList = mapper.selectFeedReportList1(pagination, queryParam);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("feedReportList", feedReportList);
   	return resultMap;
@@ -76,11 +89,34 @@ public class AdminServiceImpl implements AdminService {
   }
   
   @Override
+  public int getCommentReportCount1(String queryParam) {
+  	return mapper.getCommentReportCount1(queryParam);
+  }
+  
+  @Override
   public Map<String, Object> selectCommentReportList(Pagination pagination) {
 		List<Report> commentReportList = mapper.selectCommentReportList(pagination);
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("commentReportList", commentReportList);
   	return resultMap;
+  }
+  
+  @Override
+  public Map<String, Object> selectCommentReportList1(Pagination pagination, String queryParam) {
+		List<Report> commentReportList = mapper.selectCommentReportList1(pagination, queryParam);
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("commentReportList", commentReportList);
+  	return resultMap;
+  }
+  
+  @Override
+  public int updateCommentStatus(int commentNo) {
+  	return mapper.updateCommentStatus(commentNo);
+  }
+  
+  @Override
+  public int deleteReport(int reportNo) {
+  	return mapper.deleteReport(reportNo);
   }
 
 }

@@ -171,6 +171,7 @@ const selectFeedList = (cp = 1) => {
 
         // 피드 내용을 자르는 함수
         const truncateText = (text, maxLength) => {
+          if (!text) return "";
           return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
         }
 
@@ -281,10 +282,20 @@ const renderFeedPagination = (pagination) => {
 };
 
 /* 피드 신고 목록 조회 */
-const selectFeedReportList = (cp = 1) => {
-  fetch(`/admin/selectFeedReportList?cp=${cp}`)
+const selectFeedReportList = (query) => {
+  const queryParam = encodeURIComponent(query);
+  const cp = 1;
+  let url = `/admin/selectFeedReportList?cp=${cp}`;
+
+  if(query) url += `&category=${queryParam}`;
+
+  fetch(url)
     .then(response => {
-      if (response.ok) return response.json();
+    
+      if (response.ok) {
+        console.log("피드 신고 목록 조회 성공");
+        return response.json();
+      }
       throw new Error("피드 신고 목록 조회 실패");
     })
     .then(map => {
@@ -307,6 +318,7 @@ const selectFeedReportList = (cp = 1) => {
 
         // 피드 내용을 자르는 함수
         const truncateText = (text, maxLength) => {
+          if (text === "") text = "내용 없음";
           return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
         }
 
@@ -317,38 +329,71 @@ const selectFeedReportList = (cp = 1) => {
         tr.innerHTML = `
           <td>${feedReport.reportNo}</td>
           <td>${feedReport.memberNickname}</td>
-          <td><a href="/board/${feedReport.boardNo}" title="${feedReport.boardContent}">${truncatedContent}</a></td>
-          <td>${feedReport.ReportCategory}</td>
+          <td><a href="/board/${feedReport.contentNo}" title="${feedReport.boardContent}">${truncatedContent}</a></td>
+          <td>${feedReport.reportCategory}</td>
           <td>${feedReport.createdAt}</td>
           <td>
             ${
               feedReport.boardDelFl === 'N'
-                ? `<button class="status-btn red">삭제</button>`
-                : feedReport.boardDelFl === 'Y'
-                ? `<button class="status-btn blue">복구</button>`
-                : `<span class="status-text">정지</span>`
+                ? `<button class="status-btn red">처리</button>`
+                : `<div class="status-text">처리 완료</div>`
+            }
+            ${
+              feedReport.boardDelFl === 'N'
+                ? `<button class="status-btn blue">삭제</button>`
+                : ``
             }
           </td>
         `;
 
         tr.addEventListener("click", () => {
-          location.href = `/board/${feedReport.boardNo}`; // 게시물 상세 페이지로 이동
+          location.href = `/board/${feedReport.contentNo}`; // 게시물 상세 페이지로 이동
         });
 
         // 버튼 이벤트 추가
-        const statusButton = tr.querySelector(".status-btn");
+        const statusButton = tr.querySelector(".status-btn.red");
+        const statusButton1 = tr.querySelector(".status-btn.blue");
         if (statusButton) {
           statusButton.addEventListener("click", e => {
-            updateFeedStatus(feedReport.boardNo);
+            updateFeedStatus(feedReport.contentNo);
             e.stopPropagation();
           });
         }
 
-        feedList.appendChild(tr);
+        if (statusButton1) {
+          statusButton1.addEventListener("click", e => {
+            deleteReport(feedReport.reportNo);
+            e.stopPropagation();
+          });
+        }
+
+        feedReportList.appendChild(tr);
       });
 
       renderFeedReportPagination(pagination);
     })
+    .catch(err => console.error(err));
+};
+
+// 신고 삭제 함수
+const deleteReport = (reportNo) => {
+  fetch("/admin/deleteReport", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: reportNo
+  })
+    .then(response => {
+      if (response.ok) return response.text();
+      throw new Error("신고 삭제 실패");
+  }).then(result => {
+    if (result == 1) {
+      alert("신고가 삭제처리되었습니다.");
+      selectFeedReportList();
+      selectCommentReportList();
+    } else {
+      alert("신고 삭제가 실패했습니다.");
+    }
+  })
     .catch(err => console.error(err));
 };
 
@@ -394,8 +439,12 @@ const renderFeedReportPagination = (pagination) => {
 };
 
 /* 댓글 신고 목록 조회 */
-const selectCommentReportList = (cp = 1) => {
-  fetch(`/admin/selectCommentReportList?cp=${cp}`)
+const selectCommentReportList = (query) => {
+  const queryParam = encodeURIComponent(query);
+  const cp = 1;
+  let url = `/admin/selectCommentReportList?cp=${cp}`;
+  if(query) url += `&category=${queryParam}`;
+  fetch(url)
     .then(response => {
       if (response.ok) return response.json();
       throw new Error("댓글 신고 목록 조회 실패");
@@ -418,8 +467,8 @@ const selectCommentReportList = (cp = 1) => {
       list.forEach(commentReport => {
         const tr = document.createElement("tr");
 
-        // 피드 내용을 자르는 함수
         const truncateText = (text, maxLength) => {
+          if (text === "") text = "내용 없음";
           return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
         }
 
@@ -430,34 +479,44 @@ const selectCommentReportList = (cp = 1) => {
         tr.innerHTML = `
           <td>${commentReport.reportNo}</td>
           <td>${commentReport.memberNickname}</td>
-          <td><a href="/board/${commentReport.boardNo}" title="${commentReport.commentContent}">${truncatedContent}</a></td>
+          <td><a href="/board/${commentReport.contentNo}" title="${commentReport.commentContent}">${truncatedContent}</a></td>
           <td>${commentReport.reportCategory}</td>
           <td>${commentReport.createdAt}</td>
           <td>
             ${
               commentReport.commentDelFl === 'N'
-                ? `<button class="status-btn red">삭제</button>`
-                : commentReport.commentDelFl === 'Y'
-                ? `<button class="status-btn blue">복구</button>`
-                : `<span class="status-text">정지</span>`
+                ? `<button class="status-btn red">처리</button>`
+                : `<div class="status-text">처리 완료</div>`
+            }
+            ${
+              commentReport.commentDelFl === 'N'
+                ? `<button class="status-btn blue">삭제</button>`
+                : ``
             }
           </td>
         `;
-
         tr.addEventListener("click", () => {
-          location.href = `/board/${commentReport.boardNo}`; // 게시물 상세 페이지로 이동
+          location.href = `/board/${commentReport.contentNo}`; // 게시물 상세 페이지로 이동
         });
 
         // 버튼 이벤트 추가
-        const statusButton = tr.querySelector(".status-btn");
+        const statusButton = tr.querySelector(".status-btn.red");
+        const statusButton1 = tr.querySelector(".status-btn.blue");
         if (statusButton) {
           statusButton.addEventListener("click", e => {
-            updateCommentStatus(commentReport.boardNo);
+            updateCommentStatus(commentReport.contentNo);
             e.stopPropagation();
           });
         }
 
-        feedList.appendChild(tr);
+        if (statusButton1) {
+          statusButton1.addEventListener("click", e => {
+            deleteReport(commentReport.reportNo);
+            e.stopPropagation();
+          });
+        }
+
+        commentReportList.appendChild(tr);
       });
 
       renderCommentReportPagination(pagination);
@@ -465,11 +524,11 @@ const selectCommentReportList = (cp = 1) => {
     .catch(err => console.error(err));
 };
 
-const updateCommentStatus = (boardNo) => {
+const updateCommentStatus = (commentNo) => {
   fetch("/admin/updateCommentStatus", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: boardNo
+    body: commentNo
   })
     .then(response => {
       if (response.ok) return response.text();
@@ -477,9 +536,6 @@ const updateCommentStatus = (boardNo) => {
   }).then(result => {
     if (result == 1) {
       alert("요청이 처리되었습니다.");
-      selectMemberList();
-      selectFeedList();
-      selectFeedReportList();
       selectCommentReportList();
     } else {
       alert("요청 처리가 실패했습니다.");
@@ -528,6 +584,36 @@ const renderCommentReportPagination = (pagination) => {
   paginationBox4.appendChild(createPageButton(pagination.nextPage, ">"));
   paginationBox4.appendChild(createPageButton(pagination.maxPage, ">>"));
 };
+
+// 드롭다운 클릭 이벤트 (Feed Report)
+document.querySelectorAll("#feedReportDropdown a").forEach(item => {
+  item.addEventListener("click", (e) => {
+      e.preventDefault();
+      const selectedValue = item.getAttribute("data-value");
+      document.querySelector("#feedReportTable .dropbtn").textContent = selectedValue;
+      if (selectedValue == "전체") {
+        selectFeedReportList("");
+        return;
+      }
+      // 선택한 정렬 기준으로 목록을 갱신
+      selectFeedReportList(selectedValue);
+  });
+});
+
+// 드롭다운 클릭 이벤트 (Comment Report)
+document.querySelectorAll("#commentReportDropdown a").forEach(item => {
+  item.addEventListener("click", (e) => {
+      e.preventDefault();
+      const selectedValue = item.getAttribute("data-value");
+      document.querySelector("#commentReportTable .dropbtn").textContent = selectedValue;
+      if (selectedValue == "전체") {
+        selectCommentReportList("");
+        return;
+      }
+      // 선택한 정렬 기준으로 목록을 갱신
+      selectCommentReportList(selectedValue);
+  });
+});
 
 /* 검색창 */ 
 (() => {

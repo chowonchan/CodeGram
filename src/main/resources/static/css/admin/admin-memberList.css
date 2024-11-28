@@ -93,6 +93,36 @@ body {
   cursor: pointer;
 }
 
+#feedReportList tr:hover {
+  background-color: lightgray;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+#feedReportList tr td:nth-child(6) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#commentReportList tr:hover {
+  background-color: lightgray;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+#commentReportList tr td:nth-child(6) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#memberTable, #feedTable, #feedReportTable, #commentReportTable {
+  min-height: 600px;
+}
+
 .admin-table tbody tr {
   height: 50px;
 }
@@ -152,7 +182,10 @@ body {
 
 .status-text {
   color: gray;
-  font-weight: bold;
+  height: 25px;
+  font-size: 20px;
+  width: 100px;
+  border-radius: 5px;
 }
 
 /* 페이지네이션 기본 스타일 */
@@ -215,4 +248,61 @@ body {
   color: #ccc;
   pointer-events: none;
   background-color: transparent;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+}
+
+/* 드롭다운 스타일 */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px;
+  margin-top: 18px;
+}
+
+.dropbtn {
+  background-color: #f5f5f5;
+  color: black;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 270px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-content a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #ddd;
 }

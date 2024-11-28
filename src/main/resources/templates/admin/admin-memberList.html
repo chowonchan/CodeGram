@@ -70,7 +70,23 @@
 
       <!-- 피드 신고 관리 섹션 -->
       <section id="feedReportTable">
-        <h1>피드 신고 관리</h1>
+        <div class="table-header">
+          <h1>피드 신고 관리</h1>
+          <div class="dropdown">
+              <button class="dropbtn">정렬</button>
+              <div class="dropdown-content" id="feedReportDropdown">
+                  <a href="#" data-value="전체">전체</a>
+                  <a href="#" data-value="마음에 들지 않습니다">마음에 들지 않습니다</a>
+                  <a href="#" data-value="자살, 자해 및 섭식 장애">자살, 자해 및 섭식 장애</a>
+                  <a href="#" data-value="따돌림 또는 원치 않는 연락">따돌림 또는 원치 않는 연락</a>
+                  <a href="#" data-value="폭력, 혐오 또는 학대">폭력, 혐오 또는 학대</a>
+                  <a href="#" data-value="제한된 품목을 판매하거나 홍보함">제한된 품목을 판매하거나 홍보함</a>
+                  <a href="#" data-value="나체 이미지 또는 성적 행위">나체 이미지 또는 성적 행위</a>
+                  <a href="#" data-value="스캠, 사기 또는 스팸">스캠, 사기 또는 스팸</a>
+                  <a href="#" data-value="거짓 정보">거짓 정보</a>
+              </div>
+          </div>
+        </div>
         <div class="table-container">
           <table class="admin-table">
             <thead>
@@ -93,7 +109,23 @@
 
       <!-- 댓글 신고 관리 섹션 -->
       <section id="commentReportTable">
-        <h1>댓글 신고 관리</h1>
+        <div class="table-header">
+          <h1>댓글 신고 관리</h1>
+          <div class="dropdown">
+              <button class="dropbtn">정렬</button>
+              <div class="dropdown-content" id="commentReportDropdown">
+                  <a href="#" data-value="전체">전체</a>
+                  <a href="#" data-value="마음에 들지 않습니다">마음에 들지 않습니다</a>
+                  <a href="#" data-value="자살, 자해 및 섭식 장애">자살, 자해 및 섭식 장애</a>
+                  <a href="#" data-value="따돌림 또는 원치 않는 연락">따돌림 또는 원치 않는 연락</a>
+                  <a href="#" data-value="폭력, 혐오 또는 학대">폭력, 혐오 또는 학대</a>
+                  <a href="#" data-value="신고 사유 순">제한된 품목을 판매하거나 홍보함</a>
+                  <a href="#" data-value="제한된 품목을 판매하거나 홍보함">나체 이미지 또는 성적 행위</a>
+                  <a href="#" data-value="스캠, 사기 또는 스팸">스캠, 사기 또는 스팸</a>
+                  <a href="#" data-value="거짓 정보">거짓 정보</a>
+              </div>
+          </div>
+        </div>
         <div class="table-container">
           <table class="admin-table">
             <thead>
@@ -111,7 +143,7 @@
             </tbody>
           </table>
         </div>
-        <div id="commentPaginationBox" class="pagination"></div>
+        <div id="commentReportPaginationBox" class="pagination"></div>
       </section>
     </div>
     <script src="/js/admin/admin-memberList.js"></script>
