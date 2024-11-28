@@ -439,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
     profileSettingModal: document.getElementById("profileSettingModal"),
     profileMoreModal: document.getElementById("profileMoreModal"),
     profileInfoModal: document.getElementById("profileInfoModal"),
+    profileBlockModal: document.getElementById("profileBlockModal"),
   };
 
   // 버튼 관련 요소
@@ -453,6 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
     profileMoreButton: document.querySelector(".profile-more-button"),
     profileFollowButton: document.querySelector(".profile-follow-button"),
     startMessageButton: document.querySelector(".start-message-button"),
+    blocktUserButton: document.querySelector(".option block"),
   };
 
   const tabs = {
@@ -466,6 +468,16 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => {
       const modal = button.closest(".modal");
       if (modal) modal.style.display = "none";
+    });
+  });
+
+  // 모달 외부 클릭 시 닫기 - 통합 이벤트
+  window.addEventListener("click", (event) => {
+    // 이벤트 대상이 각 모달 중 하나일 경우 해당 모달 닫기
+    Object.values(modals).forEach((modal) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
     });
   });
 
@@ -485,6 +497,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector(".option.info")?.addEventListener("click", () => {
     modals.profileInfoModal.style.display = "flex";
   });
+
+  // 신고 버튼 클릭 시 profileBlockModal 열기
+  buttons.blocktUserButton?.addEventListener("click", () => {
+    modals.profileBlockModal.style.display = "flex"; // 차단 모달 열기
+    modals.profileMoreModal.style.display = "none"; // 더보기 모달 닫기
+  });
+
 
   // 사진 업로드
   buttons.uploadPhoto?.addEventListener("click", () => {
