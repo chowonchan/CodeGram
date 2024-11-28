@@ -35,24 +35,6 @@ public class SseServiceImpl implements SseService{
 	
 		return map;
 	}
-	
-	@Override
-	public Map<String, Object> insertFollowNotification(Notification notification) {
-	    // FOLLOW 알림 삽입
-	    int insert = mapper.insertNotification(notification);
-
-	    if (insert > 0) {
-	        // 팔로우 알림에 필요한 데이터만 반환
-	        return Map.of(
-	            "sendMemberNo", notification.getSendMemberNo(),
-	            "receiveMemberNo", notification.getReceiveMemberNo(),
-	            "type", notification.getType(),
-	            "message", notification.getMessage()
-	        );
-	    }
-
-	    return null;
-	}
 
 	
 	

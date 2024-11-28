@@ -111,44 +111,7 @@ public class SseController {
 		service.updateNotification(notificationNo);		
 	}
 	
-	// 팔로우 알람
-	@PostMapping("/follow")
-	public void sendFollowNotification(
-	        @RequestBody Map<String, Object> notificationData,
-	        @SessionAttribute("loginMember") Member loginMember) {
 
-	    // 요청 데이터에서 필요한 정보를 추출
-	    int senderMemberNo = loginMember.getMemberNo(); // 세션에서 가져온 보낸 사람 번호
-	    int receiverMemberNo = (int) notificationData.get("receiverMemberNo"); // 팔로우 대상 번호
-	    String type = (String) notificationData.get("type"); // 알림 타입
-	    String message = (String) notificationData.get("message"); // 알림 메시지
-
-	    // Notification 객체 생성 및 데이터 설정
-	    Notification notification = new Notification();
-	    notification.setSendMemberNo(senderMemberNo);
-	    notification.setReceiveMemberNo(receiverMemberNo);
-	    notification.setType(type);
-	    notification.setMessage(message);
-
-	    // 알림 저장 로직 호출
-	    Map<String, Object> resultMap = service.insertNotification(notification);
-
-	    // SSE를 통해 클라이언트로 알림 전송
-	    String clientId = String.valueOf(receiverMemberNo); // 수신자 ID
-	    SseEmitter emitter = emitters.get(clientId);
-
-	    if (emitter != null) {
-	        try {
-	            emitter.send(resultMap); // 알림 데이터 전송
-	            log.info("알림 전송 성공: {}", resultMap);
-	        } catch (Exception e) {
-	            emitters.remove(clientId); // 오류 시 연결 제거
-	            log.error("알림 전송 실패: {}", e.getMessage());
-	        }
-	    } else {
-	        log.warn("수신 클라이언트가 연결되지 않았습니다: memberNo={}", receiverMemberNo);
-	    }
-	}
 
 
 }
