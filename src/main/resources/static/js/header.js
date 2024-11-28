@@ -288,6 +288,7 @@ const SseConnect = () => {
   // 서버의 "/sse/connect" 주소로 연결 요청
   const eventSource = new EventSource("/sse/connect");
 
+  console.log(eventSource);
   // -------------------------------------------------------
 
   /* 메시지가 왔을 경우 */
@@ -351,7 +352,7 @@ const sendNoti = (type, url, pkNo, content) => {
 const selectNotiList = () => {
   if (notificationLoginCheck === false) return;
 
-  fetch("/notification")
+  fetch("/sse/notification")
     .then(response => {
       if (response.ok) return response.json();
       throw new Error("알림 목록 조회 실패");
@@ -376,7 +377,7 @@ const selectNotiList = () => {
         notiText.addEventListener("click", e => {
           // 만약 읽지 않은 알람인 경우
           if (data.notificationCheck == 'N') {
-            fetch("/notification", {
+            fetch("/sse/notification", {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(data.notificationNo)
@@ -449,7 +450,7 @@ const selectNotiList = () => {
         notiDelete.innerHTML = '&times;';
 
         notiDelete.addEventListener("click", e => {
-          fetch("/notification", {
+          fetch("/sse/notification", {
             method: "DELETE", // DELETE
             headers: { "Content-Type": "application/json" },
             body: data.notificationNo
