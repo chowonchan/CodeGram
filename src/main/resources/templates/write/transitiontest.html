@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    #a {
+      width: 700px;
+      height: 700px;
+      background-color: coral;
+    }
+
+    #b {
+      width: 500px;
+      height: 500px;
+      background-color: yellow;
+    }
+
+    #c {
+      width: 300px;
+      height: 300px;
+      background-color: yellowgreen;
+    }
+
+    .tr {
+      transition-timing-function: ease-in-out;
+      transition-property: width;
+      transition-duration: 500ms, 2s;
+    }
+
+    .al {
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  </style>
+</head>
+<body>
+<h1>aaa</h1>
+  <div id="a" class="al tr">
+    <div id="b" class="al tr">
+      <div id="c" class="al tr">
+
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    const a = document.getElementById("a");
+    const b = document.getElementById("b");
+    const c = document.getElementById("c");
+    a.addEventListener("click", () => {
+      c.toggle();
+    })
+
+  </script>
+</body>
+</html>

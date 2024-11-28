@@ -8,131 +8,62 @@ const modalTopPrev = document.getElementById("modalContentTopPrev");
 const modalTopText = document.getElementById("modalContentTopText");
 const modalTopNext = document.getElementById("modalContentTopNext");
 
-const modalLeft = document.getElementById("modalContentLeft");
 const modalRight = document.getElementById("modalContentRight");
-
 
 let filename = "등록 시도한 파일의 이름.확장자"
 let flag = 0;
 
+// 사진만 있다가 가로로 길어짐
 
 // 모달 X 버튼 클릭
 document.getElementById("modalCloseButton").addEventListener("click", () => {
   modalCloseAlert();
 });
 
-document.getElementById("modalContentDeepBackground").addEventListener("click", () => {
-  modalContentDeep.classList.add('hide');
-})
-
 // 모달 반투명 배경 클릭
 document.getElementById("modalOverlayBackground").addEventListener("click", () => {
+  console.log("클릭?");
   modalCloseAlert();
 });
-
-let modalProgress = 1;
-// 0. 에러
-// 1. 초기
-// 2. 순서변경
-// 3. 이미지 편집
-// 4. 글 등록
 
 // 이벤트 넣을때는 매우 신중하게!
 function modalSmall() {
   modalContent.style.width = "734px";
   modalTop.style.width = "734px";
   modalRight.style.width = "0px";
-  modalRight.style.borderLeft = "0px";
-  // modalRight.classList.add("hide");
-  document.getElementById("modalContentTopNext").style.width = "50px";
 }
 
 function modalLarge() {
   modalContent.style.width = "1074px";
   modalTop.style.width = "1074px";
-  document.getElementById("modalContentTopNext").style.width = "80px";
-  // modalRight.classList.remove("hide");
   modalRight.style.width = "339px";
-  modalRight.style.borderLeft = "solid 1px #DBDBDB";
 }
 
 function modalHide() {
   modalOverlay.classList.remove("hide");
 
-  document.getElementById("modalPostNew").classList.add("hide");
-  document.getElementById("modalPostErr").classList.add("hide");
-  document.getElementById("modalContentLeftInner").classList.add("hide");
-
-  document.getElementById("modalContentLeftInnerErr").classList.add("hidden");
   document.getElementById("modalContentLeftImg").classList.add("hide");
 
   document.getElementById("modalContentSubmit").classList.add("hide");
-
-  modalTopNext.classList.add("hide");
-  modalTopPrev.classList.add("hide");
 }
+
 
 function modalNew() {
   // 모달 초기값 지정
+  clearProgress();
   modalSmall();
   modalHide();
-  // top 가로, content 가로, right display: none;
-  // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
-  document.getElementById("modalContentLeftInner").classList.remove("hide");
-  document.getElementById("modalPostNew").classList.remove("hide");
 
-  modalTopText.innerText = "새 게시물 만들기";
-  document.getElementById("modalContentLeftInnerText").innerText = "사진을 여기에 끌어다 놓으세요."
-  document.getElementById("modalContentLeftInnerButton").innerText = "컴퓨터에서 선택"
-
+  modalTopNext.classList.remove("hide");
+  modalTopPrev.classList.remove("hide");
+  modalTopText.innerText = "정보 수정";
   document.getElementById("submit").src = "";
   document.getElementById("submitText").innerText = ""
 
   scrollLock();
 
-  clearProgress();
-  modalProgress = 1;
-}
-
-function modalError() {
-  // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
-  document.getElementById("modalPostNew").classList.add("hide");
-  document.getElementById("modalPostErr").classList.remove("hide");
-  document.getElementById("modalContentLeftImg").classList.add("hide");
-
-  modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
-  document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
-  document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."
-  document.getElementById("modalContentLeftInnerErr").classList.remove("hidden");
-
-  document.getElementById("modalContentLeftInnerButton").innerText = "다른 파일 선택"
-
-  modalProgress = 0;
-}
-
-function modalWithImg() {
-  // 상단 텍스트 변경 및 버튼 좌, 우 생성
-  // 내부 이미지, 내부 텍스트, 버튼 글자 제거
-  modalSmall();
-  document.getElementById("modalContentLeftInner").classList.add("hide");
-  document.getElementById("modalContentLeftImg").classList.remove("hide");
-
-  modalTopNext.classList.remove("hide");
-  modalTopPrev.classList.remove("hide");
-
-  modalTopText.innerText = "이미지 순서 변경";
-  document.getElementById("modalContentTopNext").innerText = "다음"
-
-  modalProgress = 2;
-}
-
-function modalWrite() {
-  modalLarge();
-
-  modalTopText.innerText = "게시글 등록";
-  document.getElementById("modalContentTopNext").innerText = "공유하기";
-
-  modalProgress = 4;
+  setTimeout(()=>{modalLarge();}, 1);
+  
 }
 
 function modalSubmit() {
@@ -146,7 +77,6 @@ function modalSubmit() {
 
   document.getElementById("submit").src = "/images/loading.gif";
   modalTopText.innerText = "공유 중입니다";
-  modalProgress = 0;
 }
 
 
@@ -164,57 +94,38 @@ function clearProgress() {
 
   document.getElementById("modalContentLeftInnerImg").value = "";
 
-
   textAreaContent = "";
-  // 가로 세로 hide hidden, 버튼, 텍스트 등 싹 초기화
+
 }
 
-let backflag = false;
 document.getElementById("modalContentTopPrev").addEventListener("click", () => {
-  console.log("뒤로가기 버튼 클릭 : ", modalProgress);
-  switch(modalProgress) {
-    case 2 : backflag = true; modalCloseAlert();  break;
-          // case 3 : modalWithImg(); break;
-          // case 4 : modalImgEdit(); break;
-    case 4 : modalWithImg(); break;
-    default : console.log("뒤로가기 버튼 클릭"); break;
-  }
+  modalCloseAlert();
 });
 
 document.getElementById("modalContentTopNext").addEventListener("click", () => {
-  switch(modalProgress) {
-    case 2 : modalWrite(); break;
-          // case 2 : modalImgEdit(); break;
-          // case 3 : modalWrite(); break;
-//========================================================================
-    case 4 : modalSubmit(); submitForm(); break;
-
-    default : console.log("다음 버튼 클릭"); break;
-  }
+  modalSubmit();
+  submitForm();
 });
 
 function modalCloseAlert() {
-  if(modalProgress > 1) {
-    modalContentDeep.classList.remove("hide");
-    return;
-  }
   modalOverlay.classList.add("hide");
+  modalOverlay.style.overflow = "hidden";
   document.documentElement.style.overflowY = "auto";
 }
 
-document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
-  modalContentDeep.classList.add("hide");
-  modalOverlay.classList.add("hide");
+// document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
+//   modalContentDeep.classList.add("hide");
+//   modalOverlay.classList.add("hide");
 
-  if(backflag === true) {
-    backflag = false;
-    modalNew();
-  }
-});
+//   if(backflag === true) {
+//     backflag = false;
+//     modalNew();
+//   }
+// });
 
-document.getElementById("modalContentDeepCancel").addEventListener("click", () => {
-  modalContentDeep.classList.add("hide");
-});
+// document.getElementById("modalContentDeepCancel").addEventListener("click", () => {
+//   modalContentDeep.classList.add("hide");
+// });
 
 function scrollLock() {
   // html 문서의 스크롤을 없에고
@@ -239,9 +150,9 @@ const maxSize = 1024 * 1024 * 10;  // 10MB를 byte 단위로 작성
 const lastValidFiles = [null, null, null, null, null];
 
 // 사진 추가 버튼 클릭
-document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
-  document.getElementById("modalContentLeftInnerImg").click();
-});
+// document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
+//   document.getElementById("modalContentLeftInnerImg").click();
+// });
 
 document.getElementById("modalContentLeftInnerImg").addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -406,74 +317,13 @@ textArea.addEventListener('input', () => {
   byteCount.textContent = byteLength(textArea.innerText);
 });
 
-
-// 검색 결과 업데이트 함수
-function updateSearchResults(results, isHashtag = false) {
-  searchResults.innerHTML = ''; // 이전 결과 지우기
-  if (results.length === 0) {
-    searchResults.innerHTML = '<div style="padding-right: 20px; text-align: center;"><p>검색 결과가 없습니다.</p></div>';
-    return;
-  }
-
-  // 검색 결과 렌더링
-  results.forEach(result => {
-    const resultItem = document.createElement('div');
-    resultItem.classList.add('result-item');
-    if(isHashtag) {
-      // 해시태그 결과 랜더링
-      resultItem.innerHTML = `
-        <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
-          <div class="hashtag-name">${result.tagName}</div>
-          <div class="hashtag-count">게시물 수: ${result.postCount}</div>
-        </a>
-      `;
-    } else {
-      resultItem.innerHTML = `
-          <a href="/member/${result.memberNickname}" class="member-info">
-            <div class="profile-img">
-              <img src="${result.profileImg}">
-            </div>
-            <div class="member-text">
-              <div class="member-nickname">${result.memberNickname}</div>
-              <div class="member-name">${result.memberName}</div>
-            </div>
-          </a>
-      `;
-    }
-    searchResults.appendChild(resultItem);
-  });
-
-}
-
-
-  if (query.startsWith('#')) {
-    // 해시태그 검색인 경우
-    searchUrl = `/hashtag/search?query=${encodeURIComponent(query)}`;
-  } else if (isKorean(query)) {
-    searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
-  } else {
-    searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
-  }
-
-  // 비동기 요청(Fetch API 사용)
-  fetch(searchUrl)
-      .then(response => response.json())
-      .then(data => {
-        updateSearchResults(data, query.startsWith('#')); // 해시태그 여부 전달
-      })
-      .catch(error => {
-        console.error('Error fetching search results:', error);
-      });
-
-
-
 //=======================================================
 // 제출
 
 async function submitForm() {
 
   const formData = new FormData();
-  const textAreaContent = document.getElementById("emojiTextArea").innerText;
+  const textAreaContent = document.getElementById("emojiTextArea").innerHTML;
   const files = document.getElementById("modalContentLeftInnerImg").files;
 
   formData.append("boardContent", textAreaContent);
@@ -487,6 +337,7 @@ async function submitForm() {
       method: "POST",
       body: formData,
       headers: {
+        // 필요 없어졌음
       }
     });
 
@@ -496,9 +347,14 @@ async function submitForm() {
 
         setTimeout(() => {
           document.getElementById("submit").src = "/images/check.gif";
-          modalTopText.innerText = "게시물이 공유되었습니다";
-          document.getElementById("submitText").innerText = "게시물이 공유되었습니다"
-        }, 3000);
+          modalTopText.innerText = "게시물이 수정되었습니다";
+          document.getElementById("submitText").innerText = "게시물이 수정되었습니다"
+
+          setTimeout(() => {
+            modalNew();
+            modalOverlay.classList.add("hide")
+          }, 1000)
+        }, 2000);
 
       }
       // 모달 닫기, 화면 초기화 등 추가 작업
