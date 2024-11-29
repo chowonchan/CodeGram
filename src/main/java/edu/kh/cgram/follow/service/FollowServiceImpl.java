@@ -32,9 +32,10 @@ public class FollowServiceImpl implements FollowService{
     return result > 0;
   }
 
-  @Override
-  public boolean checkFollowStatus(int loggedInMemberNo, int profileMemberNo) {
-      return mapper.checkFollowStatus(loggedInMemberNo, profileMemberNo) > 0;
-  }
+@Override
+public boolean checkFollowStatus(int loggedInMemberNo, int profileMemberNo) {
+	// TODO Auto-generated method stub
+	return false;
+}
 
 }
