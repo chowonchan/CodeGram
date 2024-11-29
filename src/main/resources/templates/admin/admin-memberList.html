@@ -14,13 +14,15 @@
 
     <div class="main-content">
       <section id="memberTable">
-        <h1>회원 목록</h1>
-
-        <!-- 검색 영역 -->
-        <form class="search-area" id="boardSearch">
-          <input type="text" class="search-input" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
-          <button><div class="fa-solid fa-magnifying-glass"></div></button>
-        </form>
+        
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+          <h1>회원 목록</h1>
+          <!-- 검색 영역 -->
+          <form class="search-area" id="boardSearch">
+            <input type="text" class="search-input" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+            <button><div class="fa-solid fa-magnifying-glass"></div></button>
+          </form>
+        </div>
 
         <!-- 테이블 영역 -->
         <div class="table-container">
@@ -112,15 +114,15 @@
         <div class="table-header">
           <h1>댓글 신고 관리</h1>
           <div class="dropdown">
-              <button class="dropbtn">정렬</button>
+              <button class="dropbtn2">정렬</button>
               <div class="dropdown-content" id="commentReportDropdown">
                   <a href="#" data-value="전체">전체</a>
                   <a href="#" data-value="마음에 들지 않습니다">마음에 들지 않습니다</a>
                   <a href="#" data-value="자살, 자해 및 섭식 장애">자살, 자해 및 섭식 장애</a>
                   <a href="#" data-value="따돌림 또는 원치 않는 연락">따돌림 또는 원치 않는 연락</a>
                   <a href="#" data-value="폭력, 혐오 또는 학대">폭력, 혐오 또는 학대</a>
-                  <a href="#" data-value="신고 사유 순">제한된 품목을 판매하거나 홍보함</a>
-                  <a href="#" data-value="제한된 품목을 판매하거나 홍보함">나체 이미지 또는 성적 행위</a>
+                  <a href="#" data-value="제한된 품목을 판매하거나 홍보함">제한된 품목을 판매하거나 홍보함</a>
+                  <a href="#" data-value="나체 이미지 또는 성적 행위">나체 이미지 또는 성적 행위</a>
                   <a href="#" data-value="스캠, 사기 또는 스팸">스캠, 사기 또는 스팸</a>
                   <a href="#" data-value="거짓 정보">거짓 정보</a>
               </div>

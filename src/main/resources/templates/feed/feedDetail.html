@@ -1,93 +1,94 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게시물 상세 - CODEGRAM</title>
+  <title>Feed Detail</title>
   <link rel="stylesheet" href="/css/feed/feedDetail.css">
+  <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 </head>
 
-<body class="modal-open">
-  <div class="modal-overlay">
-    <div class="modal-container">
-      <div class="modal-close-btn">&times;</div>
+<body>
+  <button id="openModalButton">modal open</button>
 
-      <div class="modal-content">
-        <!-- 이미지 영역 -->
-        <div class="modal-image-section">
-          <img th:src="${post.imageUrl}" alt="게시물 이미지" class="modal-image">
+  <!-- 모달 창 -->
+  <div class="modal" id="feedModal">
+    <div class="modal-container">
+      <!-- 왼쪽 이미지 영역 -->
+      <div class="modal-image">
+        <img id="feedImage" src="/images/user.png" alt="Feed Image">
+      </div>
+
+      <!-- 오른쪽 상세 내용 영역 -->
+      <div class="modal-details">
+        <!-- 닉네임 및 옵션 -->
+        <div class="modal-header">
+          <div class="user-info">
+            <span class="user-avatar">
+              <img src="/images/default-avatar.png" alt="User Avatar">
+            </span>
+            <a href="#" class="user-nickname" style="padding-top: 3px;">username</a>
+          </div>
+          <div class="modal-options">
+            <span class="fa-solid fa-ellipsis"></span>
+          </div>
         </div>
 
-        <!-- 상세 정보 영역 -->
-        <div class="modal-info-section">
-          <!-- 헤더 -->
-          <div class="modal-header">
-            <div class="user-profile">
-              <div class="user-profile-img">
-                <img th:src="${memberImg}" alt="프로필">
-              </div>
-              <div class="user-info">
-                <span class="username" th:text="${memberNickname}">사용자명</span>
-              </div>
-            </div>
-            <div class="more-options">...</div>
-          </div>
-
-          <!-- 댓글 영역 -->
-          <div class="modal-comments">
-            <!-- 본문 -->
-            <div class="post-caption-container">
-              <div class="user-profile">
-                <div class="user-profile-img">
-                  <img th:src="${memberImg}" alt="프로필">
-                </div>
-                <div class="comment-content">
-                  <span class="username" th:text="${memberNickname}">사용자명</span>
-                  <span class="caption-text" th:text="${post.content}">게시물 내용</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 댓글 목록 -->
-            <div class="comments-list">
-              <div th:each="comment : ${comments}" class="comment">
-                <div class="user-profile">
-                  <div class="user-profile-img">
-                    <img th:src="${comment.memberImg}" alt="프로필">
-                  </div>
-                  <div class="comment-content">
-                    <span class="username" th:text="${comment.memberNickname}">댓글작성자</span>
-                    <span class="comment-text" th:text="${comment.content}">댓글 내용</span>
-                  </div>
-                </div>
+        <!-- 댓글 및 내용 -->
+        <div class="modal-content">
+          <!-- 피드 내용 -->
+          <div class="feed-description">
+            <div class="user-info">
+              <span class="user-avatar">
+                <img src="/images/default-avatar.png" alt="User Avatar">
+              </span>
+              <div class="feed-info">
+                <span class="feed-text"><a href="#" class="user-nickname">username</a> 이곳은 피드 설명이 들어가는 영역입니다.</span>
+                <span class="feed-time">하루 전</span>
               </div>
             </div>
           </div>
 
-          <!-- 액션 영역 -->
-          <div class="modal-actions">
-            <div class="action-buttons">
-              <span class="action-btn like-btn">H</span>
-              <span class="action-btn comment-btn">C</span>
-              <span class="action-btn share-btn">K</span>
-            </div>
-            <div class="likes-count">
-              좋아요 <span th:text="${likeCount}">0</span>개
-            </div>
+          <!-- 댓글 리스트 -->
+          <div class="comments">
+            <ul id="commentList">
+              <li class="comment">
+                <span class="user-nickname">comment_user</span>
+                <span class="comment-text">댓글 내용이 여기에 표시됩니다.</span>
+              </li>
+              <li class="comment">
+                <span class="user-nickname">another_user</span>
+                <span class="comment-text">다른 댓글 내용이 여기에 표시됩니다.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-            <!-- 댓글 입력 영역 -->
-            <div class="comment-input-container">
-              <input type="text" class="comment-input" placeholder="댓글 달기...">
-              <button class="post-comment-btn">게시</button>
+        <!-- 좋아요 및 입력 -->
+        <div class="modal-footer">
+          <div class="like-section">
+            <div class="like-icons">
+              <span class="fa-regular fa-heart"></span>
+              <span class="fa-regular fa-comment"></span>
             </div>
+            <div class="save-icons">
+              <span class="fa-regular fa-flag"></span>
+            </div>
+          </div>
+          <div class="likes-count">
+            <span class="like-count">좋아요 65개</span>
+            <span class="feed-time">11월 30일</span>
+          </div>
+          <div class="comment-input">
+            <span class="fa-regular fa-face-smile"></span>
+            <textarea rows="4" cols="50" placeholder="댓글 달기..."></textarea>
+            <button id="commentSubmit">게시</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
   <script src="/js/feed/feedDetail.js"></script>
 </body>
-
 </html>

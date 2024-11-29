@@ -129,7 +129,8 @@ body {
 
 /* 검색 영역 수정 */
 .search-area {
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: flex-end;
   position: relative; /* 상대 위치 설정 */
@@ -273,6 +274,16 @@ body {
   cursor: pointer;
 }
 
+.dropbtn2 {
+  background-color: #f5f5f5;
+  color: black;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -299,10 +310,6 @@ body {
   background-color: #f1f1f1;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
+.dropdown:hover .dropbtn .dropdtn2{
   background-color: #ddd;
 }
