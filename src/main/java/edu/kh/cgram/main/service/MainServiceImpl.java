@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.dto.Recommend;
 import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.follow.dto.Follow;
 import edu.kh.cgram.main.mapper.MainMapper;
@@ -105,12 +106,17 @@ public class MainServiceImpl implements MainService {
 		int offset = (cp - 1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
+		// 팔로우 하고 있는 회원들의 피드 목록 조회
 		List<Board> feedList = mapper.selectFeedList(memberNo, rowBounds);
+		
+		// 팔로우 하지 않은 회원 추천 목록
+		List<Recommend> recommendList = mapper.selectRecommendList(memberNo);
 		
 		// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
 		map.put("feedList", feedList);
 		map.put("pagination", pagination);
+		map.put("recommendList", recommendList);
 		
 		return map;
 	}
