@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", async() => {
     profileMoreButton: document.querySelector(".profile-more-button"),
     profileFollowButton: document.querySelector(".profile-follow-button"),
     startMessageButton: document.querySelector(".start-message-button"),
-    blockUser: document.getElementById("blockUser") // "차단" 버튼 추가
+    blockUser: document.getElementById("blockUser"),
+    optionBlock: document.getElementById("modal-option-block")
   };
 
   const tabs = {
@@ -75,11 +76,11 @@ document.addEventListener("DOMContentLoaded", async() => {
       modals.profileBlockModal.style.display = "flex"; // 프로필 차단 모달 열기
     });
 
-  // 신고 버튼 클릭 시 profileBlockModal 열기
-  buttons.blocktUserButton?.addEventListener("click", () => {
-    modals.profileBlockModal.style.display = "flex"; // 차단 모달 열기
-    modals.profileMoreModal.style.display = "none"; // 더보기 모달 닫기
-  });
+  // // 신고 버튼 클릭 시 profileBlockModal 열기
+  // buttons.blocktUserButton?.addEventListener("click", () => {
+  //   modals.profileBlockModal.style.display = "flex"; // 차단 모달 열기
+  //   modals.profileMoreModal.style.display = "none"; // 더보기 모달 닫기
+  // });
   
 
 
@@ -232,57 +233,45 @@ async function initFollowButton(button) {
     });
   }
 
+// 차단
+buttons.optionBlock?.addEventListener("click", async () => {
+  const nickname = extractNicknameFromURL();
+  try {
+    // 닉네임 변수 확인
+    if (!nickname || nickname.trim() === "") {
+      alert("차단할 닉네임을 확인할 수 없습니다.");
+      return;
+    }
+    console.log(`[차단 버튼] 차단 요청 대상: ${nickname}`);
 
-  // // 팔로우 버튼 처리
-  // if (buttons.profileFollowButton) {
-  //   buttons.profileFollowButton.addEventListener("click", async () => {
-  //     buttons.profileFollowButton.disabled = true; // 요청 시작 시 버튼 비활성화
-  //     try {
-  //       let response;
-  //       let actionType;
-  //       const nickname = extractNicknameFromURL();
+    // 서버에 차단 요청
+    const response = await fetch(`/block/${nickname}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
 
-  //       if (buttons.profileFollowButton.textContent === "팔로우") {
-  //         // 팔로우 요청
-  //         response = await fetch(`/follow/${nickname}`, {
-  //           method: "POST",
-  //           headers: { "Content-Type": "application/json" },
-  //         });
-  //         actionType = "FOLLOW";
-  //       } else {
-  //         // 팔로우 취소 요청
-  //         response = await fetch(`/follow/${nickname}`, {
-  //           method: "DELETE",
-  //           headers: { "Content-Type": "application/json" },
-  //         });
-  //         actionType = "UNFOLLOW";
-  //       }
+    // 요청 성공 여부 확인
+    if (response.ok) {
+      const result = await response.json();
+      console.log("[차단 버튼] 차단 요청 성공:", result);
 
-  //       if (response.ok) {
-  //         const result = await response.json();
-  //         alert(result.message);
-  //         if (actionType === "FOLLOW") {
-  //           buttons.profileFollowButton.textContent = "팔로우 취소";
-  //           sendNoti(
-  //             "follow",
-  //             `/member/${loginMemberNickname}`,
-  //             result.followerMemberNo,
-  //             `<strong>${loginMemberNickname}</strong>님이 회원님을 팔로우하기 시작했습니다.`
-  //           );
-  //         } else {
-  //           buttons.profileFollowButton.textContent = "팔로우";
-  //         }
-  //       } else {
-  //         alert("요청 처리 중 오류가 발생했습니다.");
-  //       }
-  //     } catch (error) {
-  //       console.error("요청 처리 중 오류 발생:", error);
-  //       alert("요청 처리 중 문제가 발생했습니다.");
-  //     } finally {
-  //       buttons.profileFollowButton.disabled = false; // 요청 완료 후 버튼 활성화
-  //     }
-  //   });
-  // }
+      // 성공 메시지 표시 및 UI 업데이트
+      alert(result.message || "차단이 완료되었습니다.");
+      // 예: 차단 후 모달 닫기
+      modals.profileBlockModal.style.display = "none";
+
+      // 차단 대상이 프로필인 경우, 특정 UI 변경 가능
+      buttons.profileFollowButton?.remove(); // 팔로우 버튼 제거
+    } else {
+      console.error("[차단 버튼] 서버 응답 오류:", response.statusText);
+      alert("차단 요청 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  } catch (error) {
+    console.error("[차단 버튼] 요청 중 오류 발생:", error);
+    alert("요청 처리 중 문제가 발생했습니다. 네트워크 상태를 확인해주세요.");
+  }
+});
+
 
   // 로그아웃
   buttons.logout?.addEventListener("click", () => {

@@ -11,5 +11,16 @@ public class BlockServiceImpl implements BlockService {
 	
 	@Autowired 
 	private BlockMapper mapper;
+	
+	@Override
+	public int getMemberNoByNickname(String nickname) {
+		return mapper.getMemberNoByNickname(nickname);
+	}
+	
+	@Override
+	public boolean BlockMember(int loggedInMemberNo, int profileMemberNo) {
+    int result = mapper.insertBlock(loggedInMemberNo, profileMemberNo);
+		return result > 0;
+	}
 
 }

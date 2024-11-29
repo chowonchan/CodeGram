@@ -141,36 +141,5 @@ public class FollowController {
       ));
   }
 
-  
-//  /**
-//   * 팔로우 상태 확인
-//   */
-//  @GetMapping("/{nickname}/status")
-//  public ResponseEntity<?> getFollowStatus(
-//          @PathVariable("nickname") String nickname,
-//          @SessionAttribute("loginMember") Member loginMember) {
-//
-//      int loggedInMemberNo = loginMember.getMemberNo();
-//      log.debug("팔로우 상태 확인: loggedInMemberNo={}, nickname={}", loggedInMemberNo, nickname);
-//
-//      // 닉네임으로 회원 번호 조회
-//      Integer profileMemberNo = service.getMemberNoByNickname(nickname);
-//
-//      if (profileMemberNo == null) {
-//          log.warn("팔로우 상태 확인 실패: 닉네임={}의 사용자를 찾을 수 없음", nickname);
-//          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
-//                  "success", false,
-//                  "message", "해당 사용자를 찾을 수 없습니다."
-//          ));
-//      }
-//
-//      // 팔로우 상태 확인
-//      boolean isFollowing = service.checkFollowStatus(loggedInMemberNo, profileMemberNo);
-//
-//      return ResponseEntity.ok(Map.of(
-//              "success", true,
-//              "isFollowing", isFollowing
-//      ));
-//  }
 	
 }

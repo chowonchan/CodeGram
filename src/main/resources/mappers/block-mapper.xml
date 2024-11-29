@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.kh.cgram.follow.mapper.BlockMapper">
+<mapper namespace="edu.kh.cgram.block.mapper.BlockMapper">
 
-
+	<select id="getMemberNoByNickname" resultType="int">
+	    SELECT MEMBER_NO
+	    FROM MEMBER
+	    WHERE MEMBER_NICKNAME = #{nickname}
+	</select>
+	
+	<insert id="insertBlock">
+		INSERT INTO BLOCK (BLOCK_MEMBER, BLOCKED_MEMBER, CREATED_AT )
+		VALUES (#{loggedInMemberNo}, #{profileMemberNo}, DEFAULT)
+	</insert>
 
 
 
