@@ -1,4 +1,6 @@
+
 document.addEventListener("DOMContentLoaded", async() => {
+
   const defaultImageUrl = "/images/defaultImg.png";
 
   // 모달 관련 요소
@@ -214,7 +216,18 @@ async function initFollowButton(button) {
 
           if (actionType === "FOLLOW") {
             buttons.profileFollowButton.textContent = "팔로우 취소";
+
             console.log(`[팔로우 버튼] 팔로우 성공: ${result.message}`);
+
+            sendNoti(
+              "follow",
+              `/member/${loginMemberNickname}`,
+              result.followerMemberNo,
+              `<strong>${loginMemberNickname}</strong>님이 회원님을 
+              <br>
+              팔로우하기 시작했습니다.`
+            );
+
           } else {
             buttons.profileFollowButton.textContent = "팔로우";
             console.log(`[팔로우 버튼] 팔로우 취소 성공: ${result.message}`);

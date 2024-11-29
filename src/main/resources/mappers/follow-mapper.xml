@@ -3,6 +3,7 @@
 <mapper namespace="edu.kh.cgram.follow.mapper.FollowMapper">
 
 	<select id="getMemberNoByNickname" resultType="int">
+
 	    SELECT MEMBER_NO
 	    FROM MEMBER
 	    WHERE MEMBER_NICKNAME = #{nickname}
@@ -19,7 +20,7 @@
     </delete>
 
 	<!-- 팔로우 상태 확인 -->
-	<select id="checkFollowStatus" resultType="int">
+	<select id="checkFollowStatus" resultType="_int">
 	    SELECT COUNT(*)
 	    FROM FOLLOW
 	    WHERE FOLLOWER_MEMBER = #{profileMemberNo}
