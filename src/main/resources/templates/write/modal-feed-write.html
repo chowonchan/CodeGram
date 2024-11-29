@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Create New Post Modal</title>
 
-   <link rel="stylesheet" href="/css/write/feed-write.css">
-<!-- <link rel="stylesheet" href="../../static/css/write/feed-write.css">-->
-</head>
-<body>
-
-  <span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px; cursor: pointer;">
-      누르면 모달</span>
-  <h1 style="color: red;">작동하면 냅둬라...</h1>
-  <h2>고쳐짐 당했다....</h2>
-  <h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
-  <h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
-
-
-  <form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data"> <!--th:object="${board}" -->
+  <form th:fragment= "frag-modal-write" action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data">
     <!-- 사진 업로드 모달 -->
-    <div id="modalFeedWriteOverlay" class="modal-overlay hide">
+    <div id="modalFeedWriteOverlay" class="modal-overlay hide" style="z-index: 1;">
 
       <div id="modalFeedWriteOverlayBackground" class="modal-overlay-background"></div>
       <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
@@ -48,7 +30,7 @@
           <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
         </div>
 
-        
+
         <div style="display: flex;">
           <div id="modalContentLeft" class="modal-content-left">
             <div id="modalContentLeftInner" class="modal-content-left-inner">
@@ -105,7 +87,7 @@
 
           <!-- 모달 글쓰기 -->
           <div id="modalContentRight" class="modal-content-right">
-            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column;" >
+            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; overflow-x: hidden;">
 
               <!-- 글 작성자 출력 -->
               <div style="width: 290px; height: 60px; display: flex; align-items: center;">
@@ -123,9 +105,9 @@
               </div>
 
               <!-- 이모지 버튼과 글자수 출력부분 -->
-              <div style="width: 339px; display: flex; justify-content: space-between;">
+              <div style="width: 319px; height: 34px; display: flex; justify-content: space-between; padding: 5px; align-items: center;">
                 <div style="cursor: pointer;" id="trigger">🙂</div>
-                <p><span id="byteCount">0</span>/2000</p>
+                <p style="padding: 5px"><span id="byteCount">0</span>/2000</p>
               </div>
 
               <!-- 해시태그 검색결과 출력할 창 -->
@@ -142,9 +124,9 @@
       </div>
 
       <!-- 2nd 모달 -->
-      <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
+      <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 7;">
         <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
-        <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
+        <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 9;">
           <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
             <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
             <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
@@ -157,15 +139,7 @@
     </div>
   </form>
 
-  <!-- ======================================================================================================================================================================================================== -->
-  <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
-  <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
-    <script src="/js/write/feedWrite.js"></script>
-<!-- <script src="../../static/js/write/feedWrite.js"></script>-->
-</body>
-</html>
-
-<!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록, 
+<!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록,
      게시글 등록글 글자수 카운트 이벤트 , 게시글 등록 백엔드 마무리 + 이모지 버튼 이벤트 수정 및 적용 -->
 
 

@@ -1,3 +1,10 @@
+if (document.getElementsByTagName("head").length > 0) {
+  document.getElementsByTagName("head")[0].insertAdjacentHTML(
+      "beforeend",
+      '<link rel="stylesheet" href="/css/write/feed-write.css"/>'
+  );
+}
+
 const modalFeedWriteOverlay = document.getElementById("modalFeedWriteOverlay");
 
 const modalContent = document.getElementById("modalContent");
@@ -165,36 +172,50 @@ function clearProgress() {
   document.getElementById("modalContentLeftInnerImg").value = "";
 
 
-  textAreaContent = "";
+  textArea.innerText = "";
   // 가로 세로 hide hidden, 버튼, 텍스트 등 싹 초기화
 }
 
 let backflag = false;
 document.getElementById("modalContentTopPrev").addEventListener("click", () => {
   console.log("뒤로가기 버튼 클릭 : ", modalProgress);
-  switch(modalProgress) {
-    case 2 : backflag = true; modalCloseAlert();  break;
-          // case 3 : modalWithImg(); break;
-          // case 4 : modalImgEdit(); break;
-    case 4 : modalWithImg(); break;
-    default : console.log("뒤로가기 버튼 클릭"); break;
+  switch (modalProgress) {
+    case 2 :
+      backflag = true;
+      modalCloseAlert();
+      break;
+      // case 3 : modalWithImg(); break;
+      // case 4 : modalImgEdit(); break;
+    case 4 :
+      modalWithImg();
+      break;
+    default :
+      console.log("뒤로가기 버튼 클릭");
+      break;
   }
 });
 
 document.getElementById("modalContentTopNext").addEventListener("click", () => {
-  switch(modalProgress) {
-    case 2 : modalWrite(); break;
-          // case 2 : modalImgEdit(); break;
-          // case 3 : modalWrite(); break;
+  switch (modalProgress) {
+    case 2 :
+      modalWrite();
+      break;
+      // case 2 : modalImgEdit(); break;
+      // case 3 : modalWrite(); break;
 //========================================================================
-    case 4 : modalSubmit(); submitForm(); break;
+    case 4 :
+      modalSubmit();
+      submitForm();
+      break;
 
-    default : console.log("다음 버튼 클릭"); break;
+    default :
+      console.log("다음 버튼 클릭");
+      break;
   }
 });
 
 function modalCloseAlert() {
-  if(modalProgress > 1) {
+  if (modalProgress > 1) {
     modalContentDeep.classList.remove("hide");
     return;
   }
@@ -206,7 +227,7 @@ document.getElementById("modalContentDeepConfirm").addEventListener("click", () 
   modalContentDeep.classList.add("hide");
   modalFeedWriteOverlay.classList.add("hide");
 
-  if(backflag === true) {
+  if (backflag === true) {
     backflag = false;
     modalNew();
   }
@@ -219,7 +240,7 @@ document.getElementById("modalContentDeepCancel").addEventListener("click", () =
 function scrollLock() {
   // html 문서의 스크롤을 없에고
   document.documentElement.style.overflowY = "hidden";
-  
+
   // 모달창에 스크롤을 주겠다 == 스크롤바가 존재는 하지만 비활성 상태로 존재
   modalFeedWriteOverlay.style.overflowY = "scroll";
   modalFeedWriteOverlay.style.overflowX = "hidden";
@@ -250,7 +271,7 @@ document.getElementById("modalContentLeftInnerImg").addEventListener("change", (
     console.log("File uploaded:", file.name);
     console.log("File:", file);
     modalWithImg();
-  } else if(file && !isSupportedFile(file)) {
+  } else if (file && !isSupportedFile(file)) {
     filename = file.name;
     modalError();
   }
@@ -261,7 +282,7 @@ const previewList = document.getElementsByClassName("preview");
 
 /**
  * 미리보기 함수
- * @param file  : <input type="file"> 에서 선택된 파일
+ * @param file  : <input type="file"/> 에서 선택된 파일
  * @param order : 이미지 순서
  */
 const updatePreview = (file, order) => {  // 이미지 순서까지 얻어와야
@@ -269,10 +290,10 @@ const updatePreview = (file, order) => {  // 이미지 순서까지 얻어와야
   // 선택된 파일이 지정된 크기를 초과한 경우선택 막기
   const maxSize = 1024 * 1024 * 10;
 
-  if(file.size > maxSize) {   // 파일 크기 초과 시
+  if (file.size > maxSize) {   // 파일 크기 초과 시
     alert("10MB 이하의 이미지만 선택해 주세요");
 
-    if(lastValidFiles[order] === null) {
+    if (lastValidFiles[order] === null) {
       inputImageList[order].value = ""; // 선택 파일 삭제
       return;
     }
@@ -302,7 +323,7 @@ const updatePreview = (file, order) => {  // 이미지 순서까지 얻어와야
   });
 }
 
-for(let i = 0; i < inputImageList.length; i++) {
+for (let i = 0; i < inputImageList.length; i++) {
 
   // input 태그에 이미지 선택 시 미리보기 함수 호출
   inputImageList[i].addEventListener("change", e => {
@@ -315,9 +336,9 @@ for(let i = 0; i < inputImageList.length; i++) {
 
     console.log(file)
 
-    if(file === undefined) {    // 선택 취소 시
+    if (file === undefined) {    // 선택 취소 시
       // 이전에 선택한 파일이 없는 경우
-      if(lastValidFiles[i] === null) return;
+      if (lastValidFiles[i] === null) return;
 
       // ** 이전에 선택한 파일이 "있을" 경우 **
       const dataTransfer = new DataTransfer();
@@ -341,7 +362,7 @@ for(let i = 0; i < inputImageList.length; i++) {
 
 //========================================================================
 // 글쓰기 부분
-const { createPopup } = window.picmoPopup;
+const {createPopup} = window.picmoPopup;
 const MAX_BYTES = 2000; // 최대 바이트 제한
 const textArea = document.getElementById('emojiTextArea');
 const byteCount = document.getElementById('byteCount');
@@ -351,8 +372,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const picker = createPopup({}, {
     referenceElement: trigger,
-    triggerElement: trigger,
-    position: 'right-end'
+    triggerElement  : trigger,
+    position        : 'right-end',
+    zIndex : 1
   });
 
   trigger.addEventListener('click', () => {
@@ -361,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   picker.addEventListener('emoji:select', (selection) => {
     console.log(byteLength(selection.emoji));
-    if(byteLength(textAreaContent) + byteLength(selection.emoji) <= MAX_BYTES)
+    if (byteLength(textAreaContent) + byteLength(selection.emoji) <= MAX_BYTES)
       textArea.innerText += selection.emoji;
 
     byteCount.textContent = byteLength(textArea.innerText);
@@ -419,7 +441,7 @@ function updateSearchResults(results, isHashtag = false) {
   results.forEach(result => {
     const resultItem = document.createElement('div');
     resultItem.classList.add('result-item');
-    if(isHashtag) {
+    if (isHashtag) {
       // 해시태그 결과 랜더링
       resultItem.innerHTML = `
         <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
@@ -446,27 +468,6 @@ function updateSearchResults(results, isHashtag = false) {
 }
 
 
-  if (query.startsWith('#')) {
-    // 해시태그 검색인 경우
-    searchUrl = `/hashtag/search?query=${encodeURIComponent(query)}`;
-  } else if (isKorean(query)) {
-    searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
-  } else {
-    searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
-  }
-
-  // 비동기 요청(Fetch API 사용)
-  fetch(searchUrl)
-      .then(response => response.json())
-      .then(data => {
-        updateSearchResults(data, query.startsWith('#')); // 해시태그 여부 전달
-      })
-      .catch(error => {
-        console.error('Error fetching search results:', error);
-      });
-
-
-
 //=======================================================
 // 제출
 
@@ -484,22 +485,21 @@ async function submitForm() {
 
   try {
     const response = await fetch("/board/submitFeed", {
-      method: "POST",
-      body: formData,
-      headers: {
-      }
+      method : "POST",
+      body   : formData,
+      headers: {}
     });
+
+    let timeout = Math.floor(Math.random() * 200) + 500;
 
     if (response.ok) {
       const result = await response.text();
-      if(result > 0) {
-
+      if (result > 0) {
         setTimeout(() => {
           document.getElementById("submit").src = "/images/check.gif";
           modalTopText.innerText = "게시물이 공유되었습니다";
           document.getElementById("submitText").innerText = "게시물이 공유되었습니다"
-        }, 3000);
-
+        }, timeout);
       }
       // 모달 닫기, 화면 초기화 등 추가 작업
       else alert("게시물 등록에 실패했습니다.");
@@ -513,46 +513,44 @@ async function submitForm() {
 // ====================================================================================================
 
 
-
-
 //  + 공유하기 눌렀을 때 나올 모달창 두개만 만들어서 header에 넣으면 진진짜 끝끝
 
 
 // 검색 입력 필드 이벤트 리스너
-textArea.addEventListener('input', () => {
-  const query = textArea.innerText.trim();
-  if (query) {
-    clearButton.style.display = 'block'; // 입력값이 있을 때 X 버튼 표시
-    recentSearch.style.display = 'none'; // 최근 검색 항목 숨기기
-    searchResults.style.display = 'block'; // 검색 결과 표시
-
-    let searchUrl;
-
-    if (query.startsWith('#')) {
-      // 해시태그 검색인 경우
-      searchUrl = `/hashtag/search?query=${encodeURIComponent(query)}`;
-    } else if (isKorean(query)) {
-      searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
-    } else {
-      searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
-    }
-
-    // 비동기 요청(Fetch API 사용)
-    fetch(searchUrl)
-        .then(response => response.json())
-        .then(data => {
-          updateSearchResults(data, query.startsWith('#')); // 해시태그 여부 전달
-        })
-        .catch(error => {
-          console.error('Error fetching search results:', error);
-        });
-  } else {
-    clearButton.style.display = 'none'; // 입력값이 없을 때 X 버튼 숨김
-    recentSearch.style.display = 'block'; // 최근 검색 항목 표시
-    searchResults.innerHTML = ''; // 검색 결과 초기화
-    searchResults.style.display = 'none'; // 검색 결과 숨기기
-  }
-});
+// textArea.addEventListener('input', () => {
+//   const query = textArea.innerText.trim();
+//   if (query) {
+//     clearButton.style.display = 'block'; // 입력값이 있을 때 X 버튼 표시
+//     recentSearch.style.display = 'none'; // 최근 검색 항목 숨기기
+//     searchResults.style.display = 'block'; // 검색 결과 표시
+//
+//     let searchUrl;
+//
+//     if (query.startsWith('#')) {
+//       // 해시태그 검색인 경우
+//       searchUrl = `/hashtag/search?query=${encodeURIComponent(query)}`;
+//     } else if (isKorean(query)) {
+//       searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
+//     } else {
+//       searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
+//     }
+//
+//     // 비동기 요청(Fetch API 사용)
+//     fetch(searchUrl)
+//         .then(response => response.json())
+//         .then(data => {
+//           updateSearchResults(data, query.startsWith('#')); // 해시태그 여부 전달
+//         })
+//         .catch(error => {
+//           console.error('Error fetching search results:', error);
+//         });
+//   } else {
+//     clearButton.style.display = 'none'; // 입력값이 없을 때 X 버튼 숨김
+//     recentSearch.style.display = 'block'; // 최근 검색 항목 표시
+//     searchResults.innerHTML = ''; // 검색 결과 초기화
+//     searchResults.style.display = 'none'; // 검색 결과 숨기기
+//   }
+// });
 
 // 검색 결과 업데이트 함수
 function updateSearchResults(results, isHashtag = false) {
@@ -566,7 +564,7 @@ function updateSearchResults(results, isHashtag = false) {
   results.forEach(result => {
     const resultItem = document.createElement('div');
     resultItem.classList.add('result-item');
-    if(isHashtag) {
+    if (isHashtag) {
       // 해시태그 결과 랜더링
       resultItem.innerHTML = `
         <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">

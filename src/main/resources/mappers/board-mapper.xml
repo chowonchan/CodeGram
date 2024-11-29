@@ -4,17 +4,26 @@
 <mapper namespace="edu.kh.cgram.board.mapper.BoardMapper">
 
 
-  <resultMap type="Board" id="board_rm">
-  	<id property="boardNo" column="BOARD_NO"/>
+	<resultMap type="Board" id="board_rm">
 
-	<collection 
-		property="imageList"
-		select="selectImageList"
-		column="BOARD_NO"
-		javaType="java.util.ArrayList"
-		ofType="BoardImg"
-	/>
-  </resultMap>
+		<id property="boardNo" column="BOARD_NO"/>
+
+		<collection
+				property="imageList"
+				select="selectImageList"
+				column="BOARD_NO"
+				javaType="java.util.ArrayList"
+				ofType="BoardImg"
+		/>
+
+		<collection
+				property="commentList"
+				select="selectCommentList"
+				column="BOARD_NO"
+				javaType="java.util.ArrayList"
+				ofType="Comment"
+		/>
+	</resultMap>
 
 
 
@@ -34,28 +43,59 @@
 		ORDER BY CREATED_AT DESC
 		LIMIT #{pageSize} OFFSET #{pageSize} * (#{page} - 1)
 	</select>
-	
+
 	<!-- 팔로우하지 않은 회원들의 게시물을 최신순으로 랜덤 조회 -->
 	<select id="selectRandomPosts" resultType="BoardImg">
-        SELECT 
-            BI.BOARD_NO,
-            BI.IMG_NO, 
-            BI.IMG_PATH,
-            BI.IMG_RENAME
-        FROM 
-        	BOARD B
-        JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
-        WHERE 
-        	B.MEMBER_NO NOT IN (
-	            SELECT FOLLOWER_MEMBER
-	            FROM FOLLOW
-	            WHERE FOLLOWING_MEMBER = #{memberNo}
-        )
-        AND B.BOARD_DEL_FL = 'N'
-        AND B.MEMBER_NO != #{memberNo}
-        AND IMG_ORDER = 1
-        ORDER BY B.CREATED_AT DESC
-    </select>
+		SELECT
+			BI.BOARD_NO,
+			BI.IMG_NO,
+			BI.IMG_PATH,
+			BI.IMG_RENAME
+		FROM
+			BOARD B
+		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
+		WHERE
+			B.MEMBER_NO NOT IN (
+				SELECT FOLLOWER_MEMBER
+				FROM FOLLOW
+				WHERE FOLLOWING_MEMBER = #{memberNo}
+		)
+		AND B.BOARD_DEL_FL = 'N'
+		AND B.MEMBER_NO != #{memberNo}
+		AND IMG_ORDER = 1
+		ORDER BY B.CREATED_AT DESC
+	</select>
+
+	<!-- 게시글 상세 조회 -->
+	<select id="selectDetail" resultMap="board_rm">
+		SELECT	BOARD_NO,
+				BOARD_CONTENT,
+				READ_COUNT,
+				B.MEMBER_NO,
+				MEMBER_NICKNAME,
+				PROFILE_IMG,
+				TO_CHAR(B.CREATED_AT, 'YYYY"년" MM"월" DD"일" HH24:MI:SS')
+				  AS BOARD_WRITE_DATE,
+				TO_CHAR(MODIFIED_AT, 'YYYY"년" MM"월" DD"일" HH24:MI:SS')
+				  AS BOARD_UPDATE_DATE,
+				(	SELECT	COUNT(*)
+				   FROM BOARD_LIKE L
+				   WHERE L.BOARD_NO = #{boardNo}
+				) AS LIKE_COUNT,
+				(	SELECT	IMG_PATH || IMG_RENAME
+				   FROM	BOARD_IMG I
+				   WHERE	I.BOARD_NO = #{boardNo}
+					 AND		IMG_ORDER = 0
+				) AS THUMBNAIL,
+				(	SELECT	COUNT(*)
+				   FROM 	"BOARD_LIKE"
+				   WHERE	BOARD_NO  = #{boardNo}
+					 AND		MEMBER_NO = #{memberNo}
+				) AS LIKE_CHECK
+		FROM	"BOARD" B
+		JOIN	"MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
+		WHERE	BOARD_NO = #{boardNo}
+	</select>
     
   <!-- 특정 게시글의 이미지를 order 순서로 조회 -->
   <select id="selectImageList" resultType="BoardImg">
@@ -64,4 +104,5 @@
   	WHERE BOARD_NO = #{boardNo}
   	ORDER BY IMG_ORDER ASC
   </select>
+
 </mapper>

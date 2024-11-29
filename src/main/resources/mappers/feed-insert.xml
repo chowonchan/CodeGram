@@ -37,6 +37,25 @@
 
 
 
+<!--    임시    -->
+<!--    게시'글' 조회-->
+    <select id="boardDetail" resultType="Board">
+        SELECT  BOARD_CONTENT
+        FROM    BOARD
+        WHERE   MEMBER_NO = #{memberNo}
+        AND     BOARD_NO  = #{boardNo}
+    </select>
+
+<!--    게시글 이미지 조회 -->
+    <select id="boardImgDetail" resultType="BoardImg">
+        SELECT  *
+        FROM    BOARD_IMG
+        WHERE   BOARD_NO = #{boardNo}
+        ORDER BY IMG_ORDER ASC;
+    </select>
+
+
+
 
 
 

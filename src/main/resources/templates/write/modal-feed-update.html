@@ -9,19 +9,11 @@
 </head>
 <body>
 
-  <span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px; cursor: pointer;">
-      누르면 모달</span>
-  <h1 style="color: red;">작동하면 냅둬라...</h1>
-  <h2>고쳐짐 당했다....</h2>
-  <h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
-  <h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
-
-
-  <form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data"> <!--th:object="${board}" -->
+  <form th:fragment= "frag-modal-update" action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data">
     <!-- 사진 업로드 모달 -->
-    <div id="modalOverlay" class="modal-overlay hide">
+    <div id="modalFeedWriteOverlay" class="modal-overlay hide" style="z-index: 1;">
 
-      <div id="modalOverlayBackground" class="modal-overlay-background"></div>
+      <div id="modalFeedWriteOverlayBackground" class="modal-overlay-background"></div>
       <!-- 닫기 버튼 모양 ==> 대각선 두개를 교차해서 만들어짐 -->
       <div id="modalCloseButton" class="modal-close-button">
         <svg aria-label="닫기 버튼 아이콘" role="img" viewBox="0 0 24 24">
@@ -35,27 +27,24 @@
 
         <div id="modalContentTop" class="modal-content-top">
 
-          <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn" style="font-weight: lighter; width: 60px;">취소</div>
-
+          <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn hide"></div>
           <div id="modalContentTopText" class="modal-content-top-text" style="text-align: center; flex-grow: 1;"></div>
-          <div id="modalContentTopNext" class="modal-content-top-next mtbtn" style="width: 60px;">완료</div>
+          <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
         </div>
 
 
         <div style="display: flex;">
           <div id="modalContentLeft" class="modal-content-left">
-
+            
             <!-- 이미지 출력부분 -->
             <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%;">
               <div id="modalContentLeftImgView" class="modal-content-left-img-view">
-
-                <!-- 여기에 이미지 등록할 수 있도록 -->
                 <img class="preview" src="">
                 <input type="file" name="images" id="modalContentLeftInnerImg" class="modal-content-left-inner-button hide" accept="image/*" multiple>
               </div>
               <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
             </div>
-              
+
             <!-- 등록 -->
             <div id="modalContentSubmit" class="modal-content-submit hide" style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
               <div style="width: 100px; height: 100px; padding-top: 317px; object-fit: cover">
@@ -63,14 +52,11 @@
               </div>
               <div id="submitText" style="font-size: 20px; padding-top: 20px"></div>
             </div>
-          
-
-
           </div>
 
           <!-- 모달 글쓰기 -->
           <div id="modalContentRight" class="modal-content-right">
-            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;" >
+            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; overflow-x: hidden;">
 
               <!-- 글 작성자 출력 -->
               <div style="width: 290px; height: 60px; display: flex; align-items: center;">
@@ -88,9 +74,10 @@
               </div>
 
               <!-- 이모지 버튼과 글자수 출력부분 -->
-              <div style="width: 339px; display: flex; justify-content: space-between;">
+              <div style="width: 319px; height: 34px; display: flex; justify-content: space-between; padding: 5px; align-items: center;">
+
                 <div style="cursor: pointer;" id="trigger">🙂</div>
-                <p><span id="byteCount">0</span>/2000</p>
+                <p style="padding: 5px; margin: 0;"><span id="byteCount">0</span>/2000</p>
               </div>
 
               <!-- 해시태그 검색결과 출력할 창 -->
@@ -101,18 +88,39 @@
               <div style="height: 24px; width: 1px;"></div>
 
             </div>
-          </div>          
+          </div>
+
+        </div>
       </div>
+
     </div>
   </form>
+
+
+  <div style="position: fixed; background-color: cornflowerblue; width: 200px; height: 100px; font-weight: bold;
+              display: flex; justify-content: center; align-items: center; z-index: 1;"
+       onmouseover="this.style.backgroundColor = 'coral';"
+       onmouseout="this.style.backgroundColor = 'cornflowerblue';"
+       onclick="modalCloseAlert(); setTimeout(() => {
+        modalNew();
+        modalTopText.innerText += ' : ' + this.querySelector('input').value;
+      } , 3)"
+  >
+    <input type="number" style="overflow-y: auto; width: 100px; height: 50px" />
+  </div>
 
   <!-- ======================================================================================================================================================================================================== -->
   <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
   <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
   <!-- <script src="/js/write/feedUpdate.js"></script> -->
   <script src="../../static/js/write/feedUpdate.js"></script>
+
+  <!-- 임시 -->
+  <!-- <script src="/js/write/feedUpdateTest.js"></script> -->
+
 </body>
 </html>
+
 
 <!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록,
      게시글 등록글 글자수 카운트 이벤트 , 게시글 등록 백엔드 마무리 + 이모지 버튼 이벤트 수정 및 적용 -->
