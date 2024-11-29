@@ -170,7 +170,7 @@ function updateSearchResults(results, isHashtag = false) {
   results.forEach(result => {
     const resultItem = document.createElement('div');
     resultItem.classList.add('result-item');
-    if(isHashtag) {
+    if (isHashtag) {
       // 해시태그 결과 랜더링
       resultItem.innerHTML = `
         <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
@@ -279,256 +279,509 @@ clearAllCancel.addEventListener('click', () => {
 
 /* -----------------알림 목록 창-------------------- */
 
-// const SseConnect = () => {
+const SseConnect = () => {
 
-//   if (notificationLoginCheck === false) return;
+  if (notificationLoginCheck === false) return;
 
-//   console.log("SseConnect() 호출");
+  console.log("SseConnect() 호출");
 
-//   // 서버의 "/sse/connect" 주소로 연결 요청
-//   const eventSource = new EventSource("/sse/connect");
+  // 서버의 "/sse/connect" 주소로 연결 요청
+  const eventSource = new EventSource("/sse/connect");
 
-//   console.log(eventSource);
-//   // -------------------------------------------------------
+  console.log(eventSource);
+  // -------------------------------------------------------
 
-//   /* 메시지가 왔을 경우 */
-//   eventSource.addEventListener("message", e => {
-//     console.log(e.data);
-
-
-
-//     const obj = JSON.parse(e.data);
-//     console.log(obj);
-//     // 알림을 받는 사람 번호, 읽지 않은 알림 개수
-
-
-//     /* 만약 알림 목록이 열려 있을 경우 */
-//     const notificationList
-//       = document.querySelector(".notification-list");
-
-//     if (notificationList.classList.contains("notification-show")) {
-//       selectNotiList(); // 알림 목록 비동기 조회
-//     }
-//   });
-
-//   /* 서버 연결이 종료된 경우( 타임 아웃 초과 ) */
-//   eventSource.addEventListener("error", () => {
-//     console.log("SSE 재연결 시도")
-//     eventSource.close(); // 기존 연결 닫기
-
-//     // 5초 후 재연결 시도
-//     setTimeout(() => SseConnect(), 5000);
-//   })
-// }
-
-
-// const sendNoti = (type, url, pkNo, content) => {
-//   if (notificationLoginCheck === false) return;
-
-//   const notification = {
-//     "notificationType": type,
-//     "notificationUrl": url,
-//     "pkNo": pkNo,
-//     "notificationContent": content
-//   }
-//   fetch("/sse/send", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(notification)
-//   })
-//     .then(response => {
-//       if (!response.ok) { // 비동기 통신 실패
-//         throw new Error("전송 실패");
-//       }
-//       console.log("전송 성공");
-//     })
-//     .catch(err => console.error(err));
-
-// }
+  /* 메시지가 왔을 경우 */
+  eventSource.addEventListener("message", e => {
+    console.log(e.data);
 
 
 
-
-// const selectNotiList = () => {
-//   if (notificationLoginCheck === false) return;
-
-//   fetch("/sse/notification")
-//     .then(response => {
-//       if (response.ok) return response.json();
-//       throw new Error("알림 목록 조회 실패");
-//     })
-//     .then(list => {
-//       console.log(list);
-
-//       const notiList = document.querySelector(".notification-list");
-//       notiList.innerHTML = '';
-
-//       for (let data of list) {
-//         const notiItem = document.createElement("li");
-//         notiItem.className = 'notification-item';
+    const obj = JSON.parse(e.data);
+    console.log(obj);
+    // 알림을 받는 사람 번호, 읽지 않은 알림 개수
 
 
-//         // 알림을 읽지 않은 경우 'not-read' 추가
-//         if (data.notificationCheck == 'N') notiItem.classList.add("not-read");
+    /* 만약 알림 목록이 열려 있을 경우 */
+    const notificationList
+      = document.querySelector(".notification-list");
 
-//         const notiText = document.createElement("div");
-//         notiText.className = 'notification-text';
+    if (notificationList.classList.contains("notification-show")) {
+      selectNotiList(); // 알림 목록 비동기 조회
+    }
+  });
 
-//         notiText.addEventListener("click", e => {
-//           // 만약 읽지 않은 알람인 경우
-//           if (data.notificationCheck == 'N') {
-//             fetch("/sse/notification", {
-//               method: "PUT",
-//               headers: { "Content-Type": "application/json" },
-//               body: JSON.stringify(data.notificationNo)
-//             })
-//               .then(response => {
-//                 if (!response.ok) { // 비동기 통신 실패
-//                   throw new Error("전송 실패");
-//                 }
-//                 console.log("전송 성공");
-//               })
-//               .catch(err => console.error(err));
-//           }
+  /* 서버 연결이 종료된 경우( 타임 아웃 초과 ) */
+  eventSource.addEventListener("error", () => {
+    console.log("SSE 재연결 시도")
+    eventSource.close(); // 기존 연결 닫기
 
-//           window.location.href = data.notificationUrl;
-//         })
+    // 5초 후 재연결 시도
+    setTimeout(() => SseConnect(), 5000);
+  })
+}
 
-//         // 알림 보낸 회원 프로필 이미지
-//         const senderProfile = document.createElement("img");
-//         if (data.sendMemberProfileImg == null) senderProfile.src = notificationDefaultImage; // 기본 이미지
-//         else senderProfile.src = data.sendMemberProfileImg; // 프로필 이미지
+
+const sendNoti = (type, url, pkNo, content) => {
+  if (notificationLoginCheck === false) return;
+
+  const notification = {
+    "notificationType": type,
+    "notificationUrl": url,
+    "pkNo": pkNo,
+    "notificationContent": content
+  }
+  fetch("/sse/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(notification)
+  })
+    .then(response => {
+      if (!response.ok) { // 비동기 통신 실패
+        throw new Error("전송 실패");
+      }
+      console.log("전송 성공");
+    })
+    .catch(err => console.error(err));
+
+
+}
+
+function getNotificationType(content) {
+  if (content.includes('팔로우')) return 'FOLLOW';
+  return 'ETC';
+}
+
+
+
+
+const selectNotiList = () => {
+  if (notificationLoginCheck === false) return;
+
+
+  fetch("/sse/notification")
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error("알림 목록 조회 실패");
+    })
+    .then(list => {
+      console.log(list);
+
+      for (let data of list) {
+
+        data.notificationType = getNotificationType(data.notificationContent);
+
+        const notiItem = document.createElement("li");
+        notiItem.className = 'notification-item';
+
+
+      const notiList = document.querySelector(".notification-list");
+      notiList.innerHTML = '';
+
+      for (let data of list) {
+        const notiItem = document.createElement("li");
+        notiItem.className = 'notification-item';
+
+
+
+        // 알림을 읽지 않은 경우 'not-read' 추가
+        if (data.notificationCheck == 'N') notiItem.classList.add("not-read");
+
+        const notiText = document.createElement("div");
+        notiText.className = 'notification-text';
+
+        notiText.addEventListener("click", e => {
+          // 만약 읽지 않은 알람인 경우
+          if (data.notificationCheck == 'N') {
+            fetch("/sse/notification", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data.notificationNo)
+            })
+              .then(response => {
+                if (!response.ok) { // 비동기 통신 실패
+                  throw new Error("전송 실패");
+                }
+                console.log("전송 성공");
+              })
+              .catch(err => console.error(err));
+          }
+
+          window.location.href = data.notificationUrl;
+        })
+
+        // 알림 보낸 회원 프로필 이미지
+        const senderProfile = document.createElement("img");
+        if (data.sendMemberProfileImg == null) senderProfile.src = notificationDefaultImage; // 기본 이미지
+        else senderProfile.src = data.sendMemberProfileImg; // 프로필 이미지
         
-//         // 알림 내용 영역
-//         const contentContainer = document.createElement("div");
-//         contentContainer.className = 'notification-content-container';
+        // 알림 내용 영역
+        const contentContainer = document.createElement("div");
+        contentContainer.className = 'notification-content-container';
         
-//         // 알림 내용
-//         const notiContent = document.createElement("p");
-//         notiContent.className = 'notification-content';
-//         notiContent.innerHTML = data.notificationContent; // 태그가 해석될 수 있도록 innerHTML
+        // 알림 내용
+        const notiContent = document.createElement("p");
+        notiContent.className = 'notification-content';
+        notiContent.innerHTML = data.notificationContent; // 태그가 해석될 수 있도록 innerHTML
         
-//         // 알림 보내진 시간
-//         const notiDate = document.createElement("p");
-//         notiDate.className = 'notification-date';
-//         notiDate.innerText = data.notificationDate;
+        // 알림 보내진 시간
+        const notiDate = document.createElement("p");
+        notiDate.className = 'notification-date';
+        notiDate.innerText = data.notificationDate;
         
-//         // 팔로우 알림인 경우 버튼 생성
-//         if (data.notificationType === 'follow') {
-//           const followDiv = document.createElement("div");
-//           followDiv.className = 'notification-follow-container';
+        // 팔로우 알림인 경우 버튼 생성
+        if (data.notificationType === 'follow') {
+          const followDiv = document.createElement("div");
+          followDiv.className = 'notification-follow-container';
         
-//           const followAlarmBtn = document.createElement("button");
-//           followAlarmBtn.className = 'notification-follow-btn';
+          const followAlarmBtn = document.createElement("button");
+          followAlarmBtn.className = 'notification-follow-btn';
         
-//           // 내가 이미 팔로우한 경우
-//           if (data.isFollowing) {
-//             followAlarmBtn.innerText = '팔로잉'; // 팔로잉 버튼 텍스트
-//             followAlarmBtn.disabled = true; // 팔로잉 버튼은 비활성화
-//             followAlarmBtn.classList.add('following'); // 이미 팔로잉 중인 스타일 적용 (선택 사항)
-//           } 
-//           // 팔로우하지 않은 경우
-//           else {
-//             followAlarmBtn.innerText = '팔로우'; // 팔로우 버튼 텍스트
-//             followAlarmBtn.addEventListener('click', () => {
-//               // 팔로우 요청 로직 (API 호출 등)
-//               console.log(`${data.senderId}를 팔로우합니다.`);
-//               followAlarmBtn.innerText = '팔로잉'; // 클릭 후 팔로잉 상태로 변경
-//               followAlarmBtn.disabled = true; // 버튼 비활성화
-//             });
-//           }
+          // 내가 이미 팔로우한 경우
+          if (data.isFollowing) {
+            followAlarmBtn.innerText = '팔로잉'; // 팔로잉 버튼 텍스트
+            followAlarmBtn.disabled = true; // 팔로잉 버튼은 비활성화
+            followAlarmBtn.classList.add('following'); // 이미 팔로잉 중인 스타일 적용 (선택 사항)
+          } 
+          // 팔로우하지 않은 경우
+          else {
+            followAlarmBtn.innerText = '팔로우'; // 팔로우 버튼 텍스트
+            followAlarmBtn.addEventListener('click', () => {
+              // 팔로우 요청 로직 (API 호출 등)
+              console.log(`${data.senderId}를 팔로우합니다.`);
+              followAlarmBtn.innerText = '팔로잉'; // 클릭 후 팔로잉 상태로 변경
+              followAlarmBtn.disabled = true; // 버튼 비활성화
+            });
+          }
         
-//           followDiv.appendChild(followAlarmBtn); // 버튼을 div에 추가
-//           contentContainer.appendChild(followDiv); // 알림 컨텐츠에 팔로우 div를 추가
-//         }
+          followDiv.appendChild(followAlarmBtn); // 버튼을 div에 추가
+          contentContainer.appendChild(followDiv); // 알림 컨텐츠에 팔로우 div를 추가
+        }
 
 
 
-//         // 삭제 버튼
-//         const notiDelete = document.createElement("span");
-//         notiDelete.className = 'notification-delete';
-//         notiDelete.innerHTML = '&times;';
+        // 삭제 버튼
+        const notiDelete = document.createElement("span");
+        notiDelete.className = 'notification-delete';
+        notiDelete.innerHTML = '&times;';
 
-//         notiDelete.addEventListener("click", e => {
-//           fetch("/sse/notification", {
-//             method: "DELETE", // DELETE
-//             headers: { "Content-Type": "application/json" },
-//             body: data.notificationNo
-//           })
-//             .then(response => {
-//               if (response.ok) { // 비동기 통신 실패
-//                 // 클릭된 x버튼이 포함된 알림 삭제
-//                 notiDelete.parentElement.remove();
-
-//                 return;
-//               }
-//               console.log("응답이 좋지 않습니다");
-//             })
-//             .catch(err => console.error(err));
-//         })
-
-//         // 조립
-//         notiList.append(notiItem);
-//         notiItem.append(notiText, notiDelete);
-//         notiText.append(senderProfile, contentContainer);
-//         contentContainer.append(notiDate, notiContent);
-//       }
-//     })
-//     .catch(err => console.error(err));
-// }
+        notiText.addEventListener("click", e => {
+          // e.stopPropagation(); // 이벤트 전파 중지
+          // 만약 읽지 않은 알람인 경우
 
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   SseConnect(); // SSE 연결
+          if (data.notificationCheck == 'N') {
+            fetch("/sse/notification", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data.notificationNo)
+            })
+              .then(response => {
+                if (!response.ok) { // 비동기 통신 실패
+                  throw new Error("전송 실패");
+                }
+                console.log("전송 성공");
+              })
+              .catch(err => console.error(err));
+          }
+          // console.log(e.target);
+          if (!e.target.classList.contains('notification-follow-btn'))
+            window.location.href = data.notificationUrl;
+        })
 
-//   // 알림 버튼 클릭 후 출력
-//   const notificationTab
-//     = document.querySelector("#notificationTab");
+        // 알림 보낸 회원 프로필 이미지
+        const senderProfile = document.createElement("img");
+        if (data.sendMemberProfileImg == null) senderProfile.src = notificationDefaultImage; // 기본 이미지
+        else senderProfile.src = data.sendMemberProfileImg; // 프로필 이미지
 
-//     notificationTab?.addEventListener("click", () => {
+        // 알림 내용 영역
+        const contentContainer = document.createElement("div");
+        contentContainer.className = 'notification-content-container';
 
-//     // 알림 목록
-//     const notificationList
-//       = document.querySelector(".notification-list");
+        // 알림 내용
+        const notiContent = document.createElement("p");
+        notiContent.className = 'notification-content';
+        notiContent.innerHTML = data.notificationContent; // 태그가 해석될 수 있도록 innerHTML
 
-//     // 알림 목록이 보이고 있을 경우
-//     if (notificationList.classList.contains("notification-show")) {
+        // 알림 보내진 시간
+        const notiDate = document.createElement("p");
+        notiDate.className = 'notification-date';
+        notiDate.innerText = data.notificationDate;
 
-//       // 안보이게 하기
-//       notificationList.classList.remove("notification-show");
-//     }
+        // 조립
+        notiList.append(notiItem);
+        notiItem.append(notiText);
+        notiText.append(senderProfile, contentContainer);
+        contentContainer.append(notiContent, notiDate); // 알림 내용과 시간을 먼저 추가
 
-//     else { // 안보이는 경우
-//       selectNotiList(); // 비동기로 목록 조회 후
+        // 알림 번호
+        // const notificationNo = notificationNo;
 
-//       // 화면에 목록 보이게 하기
-//       notificationList.classList.add("notification-show");
-//     }
-//   });
+        // 상대 닉네임
+        const targetNickname = data.notificationUrl.split("/")[2];
+
+        // 팔로우 알림인 경우 버튼을 별도 div로 추가
+        if (data.notificationType === 'follow'
+          || data.notificationType === 'FOLLOW') {
+
+          const followDiv = document.createElement("div");
+          followDiv.className = 'notification-follow-container';
+
+          const followAlarmBtn = document.createElement("span");
+          followAlarmBtn.className = 'notification-follow-btn';
+
+          (async () => {
+            try {
+              // 팔로우 상태 가져오기
+              let response = await fetch(`/follow/${targetNickname}/status`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+              });
+
+              const data = await response.json();
+
+              if (!data.success) {
+                console.error("팔로우 상태를 확인할 수 없습니다:", data.message);
+                return;
+              }
+
+              const isFollowing = data.isFollowing === true || data.isFollowing === "1";
+
+              // followAlarmBtn 초기화
+              followAlarmBtn.innerText = isFollowing ? "팔로잉" : "팔로우";
+              followAlarmBtn.classList.toggle("follow", !isFollowing);
+              followAlarmBtn.classList.toggle("notFollow", isFollowing);
+              followAlarmBtn.disabled = isFollowing;
+
+              // 팔로우 상태에 따른 이벤트 설정
+              if (isFollowing) {
+
+                followAlarmBtn.addEventListener("click", () => {
+
+                  const modal = document.getElementById("followCancelModal");
+                  const followCancel = document.querySelector(".followCancelModal-cancelText");
+                  const followClose = document.querySelector(".followCancelModal-closeText");
+
+                  modal.classList.remove("cancel-hidden"); // 모달 보이기
+
+
+                  followCancel.addEventListener("click",  () => {
+
+                    response =  fetch(`/follow/${targetNickname}`, {
+                      method: "DELETE",
+                      headers: { "Content-Type": "application/json" },
+                    });
+
+                    // "팔로잉" 상태를 "팔로우"로 변경
+                    followAlarmBtn.innerText = "팔로우";
+                    followAlarmBtn.classList.add("follow");
+                    followAlarmBtn.classList.remove("notFollow");
+                    followAlarmBtn.disabled = false; // 버튼 비활성화 해제 (필요에 따라)
+                    modal.classList.add("cancel-hidden"); // 모달 안보이기
+                  });
+
+                  followClose.addEventListener("click", () => {
+                    modal.classList.add("cancel-hidden"); // 모달 안보이기
+
+                  })
+                });
+              } else {
+                followAlarmBtn.addEventListener("click", async () => {
+                  try {
+                    const followResponse = await fetch(`/follow/${targetNickname}`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                    });
+
+                    if (followResponse.ok) {
+                      console.log(`${targetNickname}를 팔로우합니다.`);
+                      followAlarmBtn.innerText = "팔로잉";
+                      followAlarmBtn.classList.remove("follow");
+                      followAlarmBtn.classList.add("notFollow");
+                      followAlarmBtn.disabled = true;
+
+                      // 비동기 작업 (notificationNo 수정) 추가 가능
+                    } else {
+                      console.error("팔로우 요청 실패:", await followResponse.json());
+                    }
+                  } catch (error) {
+                    console.error("팔로우 요청 중 오류 발생:", error);
+                  }
+                });
+              }
+
+              // followDiv 및 contentContainer에 버튼 추가
+              followDiv.appendChild(followAlarmBtn);
+              contentContainer.appendChild(followDiv);
+            } catch (error) {
+              console.error("팔로우 상태를 가져오는 중 오류 발생:", error);
+            }
+          })();
+        }
 
 
 
-//   const params = new URLSearchParams(location.search);
-//   const cn = params.get("cn");
 
-//   if (cn != null) {
-//     const targetId = "c" + cn; 
+        // 삭제 버튼
+        const notiDelete = document.createElement("span");
+        notiDelete.className = 'notification-delete';
+        notiDelete.innerHTML = '&times;';
+
+        notiDelete.addEventListener("click", e => {
+          fetch("/sse/notification", {
+            method: "DELETE", // DELETE
+            headers: { "Content-Type": "application/json" },
+            body: data.notificationNo
+          })
+            .then(response => {
+              if (response.ok) { // 비동기 통신 실패
+                // 클릭된 x버튼이 포함된 알림 삭제
+                notiDelete.parentElement.remove();
+
+                return;
+              }
+              console.log("응답이 좋지 않습니다");
+            })
+            .catch(err => console.error(err));
+        })
+
+        // 조립
+
+        notiItem.append(notiDelete);
+
+      }
+    })
+    .catch(err => console.error(err));
+}
 
 
-//     const target = document.getElementById(targetId);
 
 
-//     const scrollPosition = target.offsetTop;
+const notReadCheck = () => {
+  // 로그인 여부 확인
+  if (!notificationLoginCheck) return;
 
-//     // 창을 스크롤
-//     window.scrollTo({
-//       top: scrollPosition - 75,
-//       behavior: "smooth"
-//     });
+  fetch("/notification/notReadCheck")
+    .then(response => {
+      if (!response.ok) throw new Error("알림 확인 실패");
+      return response.json(); // 서버에서 boolean 값 반환
+    })
+    .then(hasUnread => {
 
-//   }
+      const notificationCountArea = document.querySelector(".notification-count-area");
 
-// });
+      if (!notificationCountArea) {
+        console.error("notification-count-area 요소를 찾을 수 없습니다.");
+        return;
+      }
+
+      // 읽지 않은 알림이 있을 때
+      if (hasUnread === true) {
+        notificationCountArea.style.display = "block"; // 빨간 점 표시
+
+      } else {
+        // 읽지 않은 알림이 없을 때
+        notificationCountArea.style.display = "none"; // 빨간 점 숨김
+
+      }
+    })
+    .catch(err => console.error(err));
+};
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  SseConnect(); // SSE 연결
+
+
+        notiDelete.addEventListener("click", e => {
+          fetch("/sse/notification", {
+            method: "DELETE", // DELETE
+            headers: { "Content-Type": "application/json" },
+            body: data.notificationNo
+          })
+            .then(response => {
+              if (response.ok) { // 비동기 통신 실패
+                // 클릭된 x버튼이 포함된 알림 삭제
+                notiDelete.parentElement.remove();
+
+
+                return;
+              }
+              console.log("응답이 좋지 않습니다");
+            })
+            .catch(err => console.error(err));
+        })
+
+  notificationTab?.addEventListener("click", () => {
+
+
+        // 조립
+        notiList.append(notiItem);
+        notiItem.append(notiText, notiDelete);
+        notiText.append(senderProfile, contentContainer);
+        contentContainer.append(notiDate, notiContent);
+      }
+    })
+    .catch(err => console.error(err));
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  SseConnect(); // SSE 연결
+
+  // 알림 버튼 클릭 후 출력
+  const notificationTab
+    = document.querySelector("#notificationTab");
+
+    notificationTab?.addEventListener("click", () => {
+
+    // 알림 목록
+    const notificationList
+      = document.querySelector(".notification-list");
+
+    // 알림 목록이 보이고 있을 경우
+    if (notificationList.classList.contains("notification-show")) {
+
+      // 안보이게 하기
+      notificationList.classList.remove("notification-show");
+    }
+
+
+    else { // 안보이는 경우
+      selectNotiList(); // 비동기로 목록 조회 후
+
+  if (cn != null) {
+    const targetId = "c" + cn;
+
+
+      // 화면에 목록 보이게 하기
+      notificationList.classList.add("notification-show");
+    }
+  });
+
+
+
+  const params = new URLSearchParams(location.search);
+  const cn = params.get("cn");
+
+  if (cn != null) {
+    const targetId = "c" + cn; 
+
+
+    const target = document.getElementById(targetId);
+
+
+    const scrollPosition = target.offsetTop;
+
+    // 창을 스크롤
+    window.scrollTo({
+      top: scrollPosition - 75,
+      behavior: "smooth"
+    });
+
+  }
+
+});
 
 
 /* -----------------알림 목록 창-------------------- */
