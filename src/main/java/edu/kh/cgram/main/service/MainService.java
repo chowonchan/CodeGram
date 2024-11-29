@@ -16,5 +16,4 @@ public interface MainService {
 	// Feed 목록 조회
 	Map<String, Object> selectFeedList(int memberNo, int cp);
 
-
 }

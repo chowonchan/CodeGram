@@ -106,14 +106,6 @@ public class MyPageServiceImpl implements MyPageService {
   	    return mapper.findMemberByNickname(nickname);
   	}
   	
-  	@Override
-  	public boolean followMember(int loggedInMemberNo, int profileMemberNo) {
-      try {
-          return mapper.insertFollow(loggedInMemberNo, profileMemberNo) > 0;
-      } catch (Exception e) {
-          e.printStackTrace();
-          return false;
-      }
-  }
+
 
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.dto.Recommend;
 import edu.kh.cgram.follow.dto.Follow;
 import edu.kh.cgram.member.dto.Member;
 
@@ -58,5 +59,8 @@ public interface MainMapper {
 
 	// 지정된 페이지 분량의 Feed 목록 조회
 	List<Board> selectFeedList(int memberNo, RowBounds rowBounds);
+
+	// 팔로우하지 않은 회원 추천 목록
+	List<Recommend> selectRecommendList(int memberNo);
 
 }

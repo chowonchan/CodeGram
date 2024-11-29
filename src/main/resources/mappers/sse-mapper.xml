@@ -96,6 +96,28 @@
 	
 	</select>
 	
+<!-- 	SELECT *
+	FROM FOLLOW
+	WHERE FOLLOWING_NO = 내 번호
+	AND FOLLOWED_NO = 상대 번호
+	== 조회 되면 팔로우 된 상태
+	!= 조회가 안 되면 팔로우 X 상태  -->
+	
+	
+	
+	<select id="notReadCheck" resultType="boolean">
+	    SELECT CASE 
+	        WHEN EXISTS (
+	            SELECT 1
+	            FROM "NOTIFICATION"
+	            WHERE RECEIVE_MEMBER_NO = #{memberNo}
+	            AND NOTIFICATION_CHECK = 'N'
+	        ) THEN 'true'
+	        ELSE 'false'
+	    END AS hasUnread
+	    FROM DUAL
+	</select>
+	
 	
 	<delete id="deleteNotification">
 		DELETE 

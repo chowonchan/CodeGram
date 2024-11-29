@@ -23,6 +23,12 @@ public class StoryController {
 
 	
 	private final StoryService storyService;
+	
+	@GetMapping("/feed/feedDetail")
+	public String feedDetail() {
+		return "/feed/feedDetail";
+	}
+	
   
   @GetMapping("/story/{memberNickname}/{storyNo}")
   public String showStoryModal(

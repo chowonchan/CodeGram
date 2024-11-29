@@ -39,18 +39,15 @@
     </div>
 
     <!-- 6개 이상일 경우 버튼 출력 -->
-<!-- 
-    <th:block th:if="${#lists.size(stories != null ? stories : []) > 6}">
+    <th:block th:if="${stories != null && #lists.size(stories) > 6}">
       <button class="nav-button prev" onclick="navigateStories('prev')" aria-label="이전 스토리">
         <span class="nav-icon">←</span>
       </button>
-
+    
       <button class="nav-button next" onclick="navigateStories('next')" aria-label="다음 스토리">
         <span class="nav-icon">→</span>
       </button>
-    </th:block>
-    오류 해결해야됨
-     -->
+    </th:block>    
   </header>
 
 

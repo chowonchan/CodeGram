@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  th:fragment="header">
 
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,6 @@
 
   <link rel="stylesheet" href="/css/header.css">
   <link rel="stylesheet" href="/css/write/feed-write.css">
-
 </head>
 
 <body th:fragment="header">
@@ -37,14 +36,16 @@
         <span>메시지</span>
       </a>
       <div class="nav-item" id="notificationTab">
-        <span class="fa-solid fa-heart"></span>
+        <span class="fa-solid fa-heart">
+          <div class="notification-count-area"></div>
+        </span>
         <span>알림</span>
       </div>
       <a class="nav-item" href="#" onclick="modalNew()">
         <span class="fa-regular fa-square-plus"></span>
         <span>게시물 작성</span>
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="/feed/feedDetail">
         <span class="fa-regular fa-square-plus"></span>
         <span>스토리 작성</span>
       </a>
@@ -100,6 +101,7 @@
         <h3 class="notification-title">알림</h3>
 
         <div class="notification-container"  th:if="${session.loginMember}">
+          
           <!-- 알림 목록 -->
           <ul class="notification-list">
 
@@ -121,8 +123,26 @@
     </div>
   </div>
 
+
+  <!-- 팔로우 취소 선택 모달창 -->
+  <div class="followCancelModal cancel-hidden" id="followCancelModal">
+
+    <div class="followCancelModal-content">
+
+      <div class="followCancelModal-cancel">
+        <span class="followCancelModal-cancelText">팔로우 취소</span>
+      </div>
+
+      <div class="followCancelModal-close">
+        <span class="followCancelModal-closeText">취소</span>
+
+      </div>
+    </div>
+  </div>
+
+
+  
   <script src="/js/header.js"></script>
-  <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
 
   <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
   <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
@@ -139,6 +159,4 @@
     const loginMemberNickname = /*[[${session.loginMember?.memberNickname}]]*/ '로그인 회원 닉네임';
   </script>
 </body>
-
-
 </html>

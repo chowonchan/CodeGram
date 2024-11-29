@@ -586,6 +586,12 @@ const renderCommentReportPagination = (pagination) => {
 };
 
 // 드롭다운 클릭 이벤트 (Feed Report)
+document.querySelector(".dropbtn").addEventListener("click", () => {
+  document.getElementById("feedReportDropdown").style.display = "block";
+})
+document.querySelector(".dropbtn2").addEventListener("click", () => {
+  document.getElementById("commentReportDropdown").style.display = "block";
+})
 document.querySelectorAll("#feedReportDropdown a").forEach(item => {
   item.addEventListener("click", (e) => {
       e.preventDefault();
@@ -593,10 +599,12 @@ document.querySelectorAll("#feedReportDropdown a").forEach(item => {
       document.querySelector("#feedReportTable .dropbtn").textContent = selectedValue;
       if (selectedValue == "전체") {
         selectFeedReportList("");
+        document.getElementById("feedReportDropdown").style.display = "none";
         return;
       }
       // 선택한 정렬 기준으로 목록을 갱신
       selectFeedReportList(selectedValue);
+      document.getElementById("feedReportDropdown").style.display = "none";
   });
 });
 
@@ -605,13 +613,15 @@ document.querySelectorAll("#commentReportDropdown a").forEach(item => {
   item.addEventListener("click", (e) => {
       e.preventDefault();
       const selectedValue = item.getAttribute("data-value");
-      document.querySelector("#commentReportTable .dropbtn").textContent = selectedValue;
+      document.querySelector("#commentReportTable .dropbtn2").textContent = selectedValue;
       if (selectedValue == "전체") {
         selectCommentReportList("");
+        document.getElementById("commentReportDropdown").style.display = "none";
         return;
       }
       // 선택한 정렬 기준으로 목록을 갱신
       selectCommentReportList(selectedValue);
+      document.getElementById("commentReportDropdown").style.display = "none";
   });
 });
 
