@@ -46,7 +46,7 @@ public class SseController {
 			@SessionAttribute("loginMember") Member loginMember) {
 
 		String clientId = loginMember.getMemberNo() + "";
-		SseEmitter emitter = new SseEmitter(10 * 60 * 1000L);
+		SseEmitter emitter = new SseEmitter(10 * 60 * 10000L	);
 		
 		emitters.put(clientId, emitter);
 		

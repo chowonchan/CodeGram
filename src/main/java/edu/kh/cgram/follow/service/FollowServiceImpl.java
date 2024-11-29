@@ -15,7 +15,7 @@ public class FollowServiceImpl implements FollowService{
 
   @Override
   public Integer getMemberNoByNickname(String nickname) {
-      return mapper.findMemberNoByNickname(nickname);
+      return mapper.getMemberNoByNickname(nickname);
   }
 
   @Override
@@ -34,8 +34,8 @@ public class FollowServiceImpl implements FollowService{
 
 @Override
 public boolean checkFollowStatus(int loggedInMemberNo, int profileMemberNo) {
-	// TODO Auto-generated method stub
-	return false;
+	int result = mapper.checkFollowStatus(loggedInMemberNo, profileMemberNo);
+	return result > 0;
 }
 
 }
