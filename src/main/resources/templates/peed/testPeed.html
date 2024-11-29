@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram 클론</title>
+  <link rel="stylesheet" th:href="@{/css/mainPeed.css}">
+</head>
+
+<body>
+
+  <!-- 피드 영역 -->
+  <div class="feed-margin">
+    <div class="feed">
+      <!-- 게시물 1 article마다 게시물 1개임 -->
+      <article class="board-article">
+        <div class="post">
+
+          <!-- 게시물 헤더 -->
+          <div class="post-header post-header-padding">
+            <div class="board-profile">
+              <div class="user-profile inline-block">
+                <a th:href="@{/{page}(page=${myPage})}">
+                  <div class="user-profile-img pointer radius">
+                    <th:block th:unless="${memberImg}">
+                      <img src="https://via.placeholder.com/50" alt="user1">
+                    </th:block>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="board-n-a pointer inline-block">
+              <span th:text="${memberNickname}">N</span>
+            </div>
+            <div class="more-options">
+              ...
+            </div>
+          </div>
+
+          <div> <!-- 게시물 이미지 -->
+            <img
+              src="https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202306/04/138bdfca-3e86-4c09-9632-d22df52a0484.jpg"
+              alt="post1" class="post-image">
+          </div>
+
+          <div class="important-box"> <!-- 게시물 정보 -->
+            <section>
+              <!-- <section class="section-1">
+                <div class="box-1">
+                  <span class="margin-1 pointer">
+                    <svg aria-label="좋아요" height="24" width="24" viewBox="0 0 24 24">...</svg>
+                  </span>
+                  <span class="margin-1 pointer">
+                    <div>댓글 보기</div>
+                  </span>
+                </div>
+                <div class="box-2">
+                  <div class="item pointer">
+                    저장
+                  </div>
+                </div>
+              </section> -->
+              <section class="section-1">
+                <div class="box-1">
+                  <button class="action-button like-button" aria-label="좋아요">
+                    <svg aria-label="좋아요" class="like-icon" height="24" width="24" viewBox="0 0 24 24">
+                      <path
+                        d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z" />
+                    </svg>
+                  </button>
+                  <button class="action-button comment-button" aria-label="댓글">
+                    <svg aria-label="댓글 달기" class="comment-icon" height="24" width="24" viewBox="0 0 24 24">
+                      <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none" stroke="currentColor"
+                        stroke-linejoin="round" stroke-width="2" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="box-2">
+                  <button class="action-button save-button" aria-label="저장">
+                    <svg aria-label="저장" class="save-icon" height="24" width="24" viewBox="0 0 24 24">
+                      <path
+                        d="M20 22a.999.999 0 0 1-.687-.273L12 14.815l-7.313 6.912A1 1 0 0 1 3 21V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1Z" />
+                    </svg>
+                  </button>
+                </div>
+              </section>
+              <div>
+                <span>좋아요</span>
+                <span th:text="${likeCount}">0</span>
+                <span>개</span>
+              </div>
+              <div class="post-caption">
+                <span th:text="${memberNickname}">N</span>
+                <span>내용</span>
+                <span class="detailBtn">더보기...</span>
+              </div>
+              <th:block th:if="${commentCount}" class="pointer"></th:block>
+              <span>
+                댓글 <th:block th:text="${commentCount}"></th:block>개 보기...
+              </span>
+              </th:if>
+              <div class="comment-box">
+                <span>댓글 달기...</span>
+              </div>
+            </section>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+
+</body>
+
+</html>

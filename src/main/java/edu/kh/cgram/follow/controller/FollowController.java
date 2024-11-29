@@ -110,7 +110,7 @@ public class FollowController {
   /**
    * 팔로우 상태 확인
    */
-  @GetMapping("/{nickname}/status")
+  @GetMapping("/status/{nickname}")
   public ResponseEntity<?> getFollowStatus(
           @PathVariable("nickname") String nickname,
           @SessionAttribute("loginMember") Member loginMember) {
@@ -119,9 +119,9 @@ public class FollowController {
       log.debug("팔로우 상태 확인 요청: loggedInMemberNo={}, nickname={}", loggedInMemberNo, nickname);
 
       // 닉네임으로 회원 번호 조회
-      Integer profileMemberNo = service.getMemberNoByNickname(nickname);
+      int profileMemberNo = service.getMemberNoByNickname(nickname);
 
-      if (profileMemberNo == null) {
+      if (profileMemberNo == 0) {
           log.warn("팔로우 상태 확인 실패: 닉네임={} (해당 닉네임의 사용자 없음)", nickname);
           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                   "success", false,
@@ -141,7 +141,6 @@ public class FollowController {
       ));
   }
 
-  
 
 	
 }

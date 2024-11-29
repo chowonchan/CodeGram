@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface FollowMapper {
 
-  Integer findMemberNoByNickname(@Param("nickname") String nickname);
+  Integer getMemberNoByNickname(@Param("nickname") String nickname);
   
   int insertFollow(@Param("loggedInMemberNo") int loggedInMemberNo, @Param("profileMemberNo") int profileMemberNo);
 

@@ -40,25 +40,6 @@ public class MyPageController {
         this.service = myPageService;
     }
 
-    @PostMapping("/follow")
-    public ResponseEntity<Map<String, String>> followMember(@RequestBody Map<String, Integer> followData) {
-        int loggedInMemberNo = followData.get("loggedInMemberNo");
-        int profileMemberNo = followData.get("profileMemberNo");
-
-        // 로그 출력
-        System.out.println("로그인한 사용자 번호: " + loggedInMemberNo);
-        System.out.println("프로필 회원 번호: " + profileMemberNo);
-
-        // 비즈니스 로직 수행
-        boolean success = service.followMember(loggedInMemberNo, profileMemberNo);
-
-        if (success) {
-            return ResponseEntity.ok(Map.of("message", "팔로우 성공!"));
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(Map.of("message", "팔로우 실패. 다시 시도해주세요."));
-        }
-    }
 
     /**
      * 마이페이지 화면을 렌더링합니다.
