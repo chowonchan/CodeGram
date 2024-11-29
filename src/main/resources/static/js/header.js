@@ -344,16 +344,20 @@ const sendNoti = (type, url, pkNo, content) => {
     })
     .catch(err => console.error(err));
 
-}
 
+}
 
 function getNotificationType(content) {
   if (content.includes('팔로우')) return 'FOLLOW';
   return 'ETC';
 }
 
+
+
+
 const selectNotiList = () => {
   if (notificationLoginCheck === false) return;
+
 
   fetch("/sse/notification")
     .then(response => {
@@ -363,9 +367,6 @@ const selectNotiList = () => {
     .then(list => {
       console.log(list);
 
-      const notiList = document.querySelector(".notification-list");
-      notiList.innerHTML = '';
-
       for (let data of list) {
 
         data.notificationType = getNotificationType(data.notificationContent);
@@ -374,11 +375,95 @@ const selectNotiList = () => {
         notiItem.className = 'notification-item';
 
 
+      const notiList = document.querySelector(".notification-list");
+      notiList.innerHTML = '';
+
+      for (let data of list) {
+        const notiItem = document.createElement("li");
+        notiItem.className = 'notification-item';
+
+
+
         // 알림을 읽지 않은 경우 'not-read' 추가
         if (data.notificationCheck == 'N') notiItem.classList.add("not-read");
 
         const notiText = document.createElement("div");
         notiText.className = 'notification-text';
+
+        notiText.addEventListener("click", e => {
+          // 만약 읽지 않은 알람인 경우
+          if (data.notificationCheck == 'N') {
+            fetch("/sse/notification", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data.notificationNo)
+            })
+              .then(response => {
+                if (!response.ok) { // 비동기 통신 실패
+                  throw new Error("전송 실패");
+                }
+                console.log("전송 성공");
+              })
+              .catch(err => console.error(err));
+          }
+
+          window.location.href = data.notificationUrl;
+        })
+
+        // 알림 보낸 회원 프로필 이미지
+        const senderProfile = document.createElement("img");
+        if (data.sendMemberProfileImg == null) senderProfile.src = notificationDefaultImage; // 기본 이미지
+        else senderProfile.src = data.sendMemberProfileImg; // 프로필 이미지
+        
+        // 알림 내용 영역
+        const contentContainer = document.createElement("div");
+        contentContainer.className = 'notification-content-container';
+        
+        // 알림 내용
+        const notiContent = document.createElement("p");
+        notiContent.className = 'notification-content';
+        notiContent.innerHTML = data.notificationContent; // 태그가 해석될 수 있도록 innerHTML
+        
+        // 알림 보내진 시간
+        const notiDate = document.createElement("p");
+        notiDate.className = 'notification-date';
+        notiDate.innerText = data.notificationDate;
+        
+        // 팔로우 알림인 경우 버튼 생성
+        if (data.notificationType === 'follow') {
+          const followDiv = document.createElement("div");
+          followDiv.className = 'notification-follow-container';
+        
+          const followAlarmBtn = document.createElement("button");
+          followAlarmBtn.className = 'notification-follow-btn';
+        
+          // 내가 이미 팔로우한 경우
+          if (data.isFollowing) {
+            followAlarmBtn.innerText = '팔로잉'; // 팔로잉 버튼 텍스트
+            followAlarmBtn.disabled = true; // 팔로잉 버튼은 비활성화
+            followAlarmBtn.classList.add('following'); // 이미 팔로잉 중인 스타일 적용 (선택 사항)
+          } 
+          // 팔로우하지 않은 경우
+          else {
+            followAlarmBtn.innerText = '팔로우'; // 팔로우 버튼 텍스트
+            followAlarmBtn.addEventListener('click', () => {
+              // 팔로우 요청 로직 (API 호출 등)
+              console.log(`${data.senderId}를 팔로우합니다.`);
+              followAlarmBtn.innerText = '팔로잉'; // 클릭 후 팔로잉 상태로 변경
+              followAlarmBtn.disabled = true; // 버튼 비활성화
+            });
+          }
+        
+          followDiv.appendChild(followAlarmBtn); // 버튼을 div에 추가
+          contentContainer.appendChild(followDiv); // 알림 컨텐츠에 팔로우 div를 추가
+        }
+
+
+
+        // 삭제 버튼
+        const notiDelete = document.createElement("span");
+        notiDelete.className = 'notification-delete';
+        notiDelete.innerHTML = '&times;';
 
         notiText.addEventListener("click", e => {
           // e.stopPropagation(); // 이벤트 전파 중지
@@ -607,11 +692,48 @@ const notReadCheck = () => {
 document.addEventListener("DOMContentLoaded", () => {
   SseConnect(); // SSE 연결
 
+
+        notiDelete.addEventListener("click", e => {
+          fetch("/sse/notification", {
+            method: "DELETE", // DELETE
+            headers: { "Content-Type": "application/json" },
+            body: data.notificationNo
+          })
+            .then(response => {
+              if (response.ok) { // 비동기 통신 실패
+                // 클릭된 x버튼이 포함된 알림 삭제
+                notiDelete.parentElement.remove();
+
+
+                return;
+              }
+              console.log("응답이 좋지 않습니다");
+            })
+            .catch(err => console.error(err));
+        })
+
+  notificationTab?.addEventListener("click", () => {
+
+
+        // 조립
+        notiList.append(notiItem);
+        notiItem.append(notiText, notiDelete);
+        notiText.append(senderProfile, contentContainer);
+        contentContainer.append(notiDate, notiContent);
+      }
+    })
+    .catch(err => console.error(err));
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  SseConnect(); // SSE 연결
+
   // 알림 버튼 클릭 후 출력
   const notificationTab
     = document.querySelector("#notificationTab");
 
-  notificationTab?.addEventListener("click", () => {
+    notificationTab?.addEventListener("click", () => {
 
     // 알림 목록
     const notificationList
@@ -624,8 +746,13 @@ document.addEventListener("DOMContentLoaded", () => {
       notificationList.classList.remove("notification-show");
     }
 
+
     else { // 안보이는 경우
       selectNotiList(); // 비동기로 목록 조회 후
+
+  if (cn != null) {
+    const targetId = "c" + cn;
+
 
       // 화면에 목록 보이게 하기
       notificationList.classList.add("notification-show");
@@ -638,7 +765,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cn = params.get("cn");
 
   if (cn != null) {
-    const targetId = "c" + cn;
+    const targetId = "c" + cn; 
 
 
     const target = document.getElementById(targetId);
