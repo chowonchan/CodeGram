@@ -20,4 +20,6 @@ public interface SseMapper {
 
 	void updateNotification(int notificationNo);
 
+	boolean notReadCheck(int memberNo);
+
 }

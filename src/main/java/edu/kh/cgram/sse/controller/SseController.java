@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,6 +85,16 @@ public class SseController {
     }
 		
 	}
+	
+  @GetMapping("notification/notReadCheck")
+  public ResponseEntity<Boolean> notReadCheck(
+          @SessionAttribute("loginMember") Member loginMember) {
+
+      int memberNo = loginMember.getMemberNo();
+      boolean hasUnread = service.notReadCheck(memberNo);
+
+      return ResponseEntity.ok(hasUnread); // boolean 값을 JSON 형식으로 반환
+  }
 	
 	@GetMapping("notification")
 	public List<Notification> selectNotificationList(
