@@ -110,22 +110,26 @@ class MainFeedInfiniteScroll {
         <div class="post-header post-header-padding">
           <div class="board-profile">
             <div class="user-profile inline-block">
-              <a href="/${board.memberNickname}">
+              <a th:href="/${board.memberNickname}">
                 <div class="user-profile-img pointer radius">
-                  <img src="${board.profileImg || 'https://via.placeholder.com/50'}">
+                  <img th:unless="${board.memberImg}" th:src="https://via.placeholder.com/50">
+                  <img th:if="${board.memberImg}" th:src="${board.memberImg}">
                 </div>
               </a>
             </div>
           </div>
-          <a href="/${board.memberNickname}">
+          <a th:href="/${board.memberNickname}">
             <div class="board-n-a pointer inline-block">
-              <span>${board.memberNickname}</span>
+              <span th:text="${board.memberNickname}">작성자닉네임</span>
             </div>
             <div>
               <span th:text="${board.createAt}">작성일</span>
             </div>
           </a>
+          // 옵션 모달창이 떠야돼
+          <a th:href="#">
           <div class="more-options pointer">...</div>
+          </a>
         </div>
         <!-- 이미지 슬라이드 영역 -->
         <div class="post-images-container">
@@ -245,8 +249,8 @@ class MainFeedInfiniteScroll {
         <span id="moreBtn" class="more-btn">더보기</span>
       </div>
       ${board.commentCount > 0 ? `
-        <a href="/p/${board.boardNo}">
-          댓글 <span>[${board.commentCount}]</span>개 보기...
+        <a th:href="/p/${board.boardNo}">
+          댓글 <span th:text="${board.commentCount}">0</span>개 보기...
         </a>
       ` : ''}
       <div class="comment-box pointer">

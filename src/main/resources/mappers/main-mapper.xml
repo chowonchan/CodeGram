@@ -147,6 +147,11 @@
 		+ collection 태그를 수행해서
 		selectImageList 조회 후 Board.imageList 필드에 저장-->
 		
+<!-- 							
+		WHEN CURRENT_DATE - CREATED_AT < 30 
+		THEN FLOOR( CURRENT_DATE - CREATED_AT ) || '일 전'
+-->
+		
 	<!-- 지정된 페이지 분량의 게시글 목록 조회 -->
 	<select id="selectFeedList" resultMap="board_img_rm">
 		SELECT
@@ -175,38 +180,38 @@
 			 WHERE	B.BOARD_NO = M2.BOARD_NO
 			 AND	M2.MEMBER_NO = #{memberNo}) AS "MARK_CHECK",
 			
-			 <![CDATA[
-			 CASE
-			 	WHEN CURRENT_DATE - CREATED_AT < 1 / 24 / 60
-			 	THEN FLOOR( (CURRENT_DATE - CREATED_AT)
-			 				* 24 * 60 * 60 ) || '초 전'
-			 	
-				WHEN CURRENT_DATE - CREATED_AT  < 1 / 24
-				THEN FLOOR( (CURRENT_DATE - CREATED_AT) 
-							* 24 * 60  ) || '분 전'
-				
-				WHEN CURRENT_DATE - CREATED_AT  < 1 
-				THEN FLOOR( (CURRENT_DATE - CREATED_AT) 
-							* 24 ) || '시간 전'
-				WHEN CURRENT_DATE - CREATED_AT < 30 
-				THEN FLOOR( CURRENT_DATE - CREATED_AT ) || '일 전'
-				
-				ELSE TO_CHAR(CREATED_AT, 'YY-MM-DD')
-				
-			END AS "CREATED_AT" ]]>
+		<![CDATA[ 
+		CASE 
+			WHEN CURRENT_DATE - B.CREATED_AT  < 1 / 24 / 60
+			THEN FLOOR( (CURRENT_DATE - B.CREATED_AT) 
+						* 24 * 60 * 60 ) || '초 전'
+						
+			WHEN CURRENT_DATE - B.CREATED_AT  < 1 / 24
+			THEN FLOOR( (CURRENT_DATE - B.CREATED_AT) 
+						* 24 * 60  ) || '분 전'
+			
+			WHEN CURRENT_DATE - B.CREATED_AT  < 1 
+			THEN FLOOR( (CURRENT_DATE - B.CREATED_AT) 
+						* 24 ) || '시간 전'
+						
+			ELSE TO_CHAR(B.CREATED_AT, 'YYYY-MM-DD')
+						
+		END AS "CREATED_AT"
+		]]>
 			
 		FROM
 			"BOARD" B
 		JOIN
 			"MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
 		JOIN
-			"FOLLOW" F ON (B.BOARD_NO = F.FOLLOWING_MEMBER)
+			"FOLLOW" F ON (B.MEMBER_NO = F.FOLLOWING_MEMBER)
 		WHERE
 			BOARD_DEL_FL = 'N'
 		AND
-			FOLLOWER_MEMBER IN (
+			M.MEMBER_NO IN (
 				SELECT
 					FOLLOWER_MEMBER
+					
 				FROM
 					FOLLOW
 				WHERE
@@ -215,6 +220,23 @@
 					CONFIRM = 1)
 		ORDER BY
 			RNUM DESC
+	</select>
+	
+	<select id="selectRecommendList" resultType="Member">
+	SELECT 
+	    MEMBER_NO,
+	    MEMBER_NICKNAME,
+	    MEMBER_NAME,
+	    PROFILE_IMG
+	FROM 
+	    MEMBER MM
+	WHERE 
+	    MEMBER_DEL_BAN_FL = 1
+	AND 
+	    MEMBER_NO NOT IN (
+	        SELECT FOLLOWER_MEMBER
+	        FROM FOLLOW
+	        WHERE FOLLOWING_MEMBER = #{memberNo})
 	</select>
 	
 	

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.dto.Recommend;
 import edu.kh.cgram.board.service.EditBoardService;
 import edu.kh.cgram.common.dto.Pagination;
 
@@ -24,32 +25,38 @@ public class MainController {
 	
 	private final MainService mainService;
 	
+	
+	
 	@RequestMapping("/")
 	public String loginPage() {
 		return "/member/login";
 	}
 
 	
-	public String mainPage(
-	) {
-	
+	public String mainPage() 
+		{
 
-	 // return "/feed/test";
-		  return "/board/randomPeed";
-		 // return "/feed/mainFeed";
+	  return "/board/randomPeed";
 	}
 	
 	// 메인 페이지 ( Feed 목록 조회 )
-	@GetMapping("main2")
+	@GetMapping("main")
 	public String selectFeedList(
 		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 		@ModelAttribute("loginMember") Member loginMember,
 		Model model
 		) {
 		
+		// 로그인 여부 확인
+		if (loginMember == null) {
+			//model.addAttribute("message", "로그인 후 이용해주세요.");
+			
+			return "redirect:/login"; 
+		}
+		
 		int memberNo = loginMember.getMemberNo();
 		
-		model.addAttribute("loginMember", loginMember);
+//		model.addAttribute("loginMember", loginMember);
 		
 		Map<String, Object> map = null;
 		
@@ -64,6 +71,44 @@ public class MainController {
 		
 		return "feed/mainFeed";
 	}
+	
+	// 메인 페이지 ( Feed 목록 조회 )
+	@GetMapping("main2")
+	public String selectFeedListTest(
+		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+		@ModelAttribute("loginMember") Member loginMember,
+		Model model
+		) {
+		
+		// 로그인 여부 확인
+		if (loginMember == null) {
+			//model.addAttribute("message", "로그인 후 이용해주세요.");
+			
+			return "redirect:/login"; 
+		}
+		
+		int memberNo = loginMember.getMemberNo();
+		
+//		model.addAttribute("loginMember", loginMember);
+		
+		Map<String, Object> map = null;
+		
+		// Feed 목록 조회
+		map = mainService.selectFeedList(memberNo, cp);
+		
+		List<Recommend> recommendList = (List<Recommend>) map.get("recommendList");
+		List<Board> feedList = (List<Board>) map.get("feedList");
+		Pagination pagination = (Pagination) map.get("pagination");
+		
+		model.addAttribute("recommendList", recommendList);
+		model.addAttribute("feedList", feedList);
+		model.addAttribute("pagination", pagination);
+		
+		return "feed/mainFeedTest";
+	}
+
+	
+	
 
 	// 좋아요
 	@ResponseBody
@@ -88,8 +133,6 @@ public class MainController {
 		
 		return mainService.boardMark(boardNo, memberNo);
 	}
-	
-	
 	
 	
 	
