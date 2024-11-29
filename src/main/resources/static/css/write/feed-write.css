@@ -185,7 +185,7 @@
   display: none !important;
 }
 
-.hidden {
+.feed-write-hidden {
   visibility: hidden;
   pointer-events: none;
 }

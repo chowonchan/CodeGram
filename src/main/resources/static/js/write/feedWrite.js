@@ -63,7 +63,7 @@ function modalHide() {
   document.getElementById("modalPostErr").classList.add("hide");
   document.getElementById("modalContentLeftInner").classList.add("hide");
 
-  document.getElementById("modalContentLeftInnerErr").classList.add("hidden");
+  document.getElementById("modalContentLeftInnerErr").classList.add("feed-write-hidden");
   document.getElementById("modalContentLeftImg").classList.add("hide");
 
   document.getElementById("modalContentSubmit").classList.add("hide");
@@ -103,7 +103,7 @@ function modalError() {
   modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
   document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
   document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."
-  document.getElementById("modalContentLeftInnerErr").classList.remove("hidden");
+  document.getElementById("modalContentLeftInnerErr").classList.remove("feed-write-hidden");
 
   document.getElementById("modalContentLeftInnerButton").innerText = "다른 파일 선택"
 
