@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.kh.cgram.follow.mapper.FollowMapper">
 
-	<select id="findMemberNoByNickname" resultType="int">
+	<select id="findMemberNoByNickname" resultType="_int">
 	    SELECT MEMBER_NO
 	    FROM MEMBER
 	    WHERE MEMBER_NICKNAME = #{nickname}
@@ -19,7 +19,7 @@
     </delete>
 
 	<!-- 팔로우 상태 확인 -->
-	<select id="checkFollowStatus" resultType="int">
+	<select id="checkFollowStatus" resultType="_int">
 	    SELECT COUNT(*)
 	    FROM FOLLOW
 	    WHERE FOLLOWER_MEMBER = #{profileMemberNo}

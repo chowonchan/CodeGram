@@ -32,7 +32,9 @@
         <span>메시지</span>
       </a>
       <div class="nav-item" id="notificationTab">
-        <span class="fa-solid fa-heart"></span>
+        <span class="fa-solid fa-heart">
+          <div class="notification-count-area"></div>
+        </span>
         <span>알림</span>
       </div>
       <a class="nav-item" href="#">
@@ -95,6 +97,7 @@
         <h3 class="notification-title">알림</h3>
 
         <div class="notification-container"  th:if="${session.loginMember}">
+          
           <!-- 알림 목록 -->
           <ul class="notification-list">
 
@@ -115,6 +118,29 @@
       </div>
     </div>
   </div>
+
+  <!-- 팔로우 취소 선택 모달창 -->
+  <div class="followCancelModal cancel-hidden" id="followCancelModal">
+
+    <div class="followCancelModal-content">
+
+      <div class="followCancelModal-cancel">
+        <span class="followCancelModal-cancelText">팔로우 취소</span>
+      </div>
+
+      <div class="followCancelModal-close">
+        <span class="followCancelModal-closeText">취소</span>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
   <script src="/js/header.js"></script>
   <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
 
