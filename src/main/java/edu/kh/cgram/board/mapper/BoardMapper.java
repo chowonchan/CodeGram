@@ -25,5 +25,7 @@ public interface BoardMapper {
 
 	// 팔로우 하지 않은 회원들의 피드 랜덤 조회
 	List<BoardImg> selectRandomPosts(int memberNo);
-
+ 
+	// 게시글 상세 조회
+    int selectDetail(int boardNo);
 }

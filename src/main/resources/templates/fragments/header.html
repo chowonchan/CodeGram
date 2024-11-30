@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"  th:fragment="header">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codegram Sidebar</title>
+
   <link rel="stylesheet" href="/css/header.css">
-  <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="/css/write/feed-write.css">
+
 </head>
 
-<body>
+<body th:fragment="header">
+  <div th:replace= "~{write/modal-feed-write}"></div>
+
   <div class="sidebar">
     <div>
       <a class="logo" href="/board/randomPeed">
@@ -33,16 +37,14 @@
         <span>메시지</span>
       </a>
       <div class="nav-item" id="notificationTab">
-        <span class="fa-solid fa-heart">
-          <div class="notification-count-area"></div>
-        </span>
+        <span class="fa-solid fa-heart"></span>
         <span>알림</span>
       </div>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="#" onclick="modalNew()">
         <span class="fa-regular fa-square-plus"></span>
         <span>게시물 작성</span>
       </a>
-      <a class="nav-item" href="/feed/feedDetail">
+      <a class="nav-item" href="#">
         <span class="fa-regular fa-square-plus"></span>
         <span>스토리 작성</span>
       </a>
@@ -98,7 +100,6 @@
         <h3 class="notification-title">알림</h3>
 
         <div class="notification-container"  th:if="${session.loginMember}">
-          
           <!-- 알림 목록 -->
           <ul class="notification-list">
 
@@ -120,29 +121,12 @@
     </div>
   </div>
 
-  <!-- 팔로우 취소 선택 모달창 -->
-  <div class="followCancelModal cancel-hidden" id="followCancelModal">
-
-    <div class="followCancelModal-content">
-
-      <div class="followCancelModal-cancel">
-        <span class="followCancelModal-cancelText">팔로우 취소</span>
-      </div>
-
-      <div class="followCancelModal-close">
-        <span class="followCancelModal-closeText">취소</span>
-
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-
-
   <script src="/js/header.js"></script>
+  <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
+  <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
+  <script src="/js/write/feedWrite.js"></script>
 
   <script th:inline="javascript">
     const userDefaultImage = /*[[@{/images/defaultImg.png}]]*/ '기본 이미지';
@@ -155,4 +139,6 @@
     const loginMemberNickname = /*[[${session.loginMember?.memberNickname}]]*/ '로그인 회원 닉네임';
   </script>
 </body>
+
+
 </html>

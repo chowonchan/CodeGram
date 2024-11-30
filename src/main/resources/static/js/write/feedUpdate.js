@@ -1,4 +1,4 @@
-const modalOverlay = document.getElementById("modalOverlay");
+const modalFeedWriteOverlay = document.getElementById("modalFeedWriteOverlay");
 
 const modalContent = document.getElementById("modalContent");
 const modalContentDeep = document.getElementById("modalContentDeep");
@@ -21,7 +21,7 @@ document.getElementById("modalCloseButton").addEventListener("click", () => {
 });
 
 // 모달 반투명 배경 클릭
-document.getElementById("modalOverlayBackground").addEventListener("click", () => {
+document.getElementById("modalFeedWriteOverlayBackground").addEventListener("click", () => {
   console.log("클릭?");
   modalCloseAlert();
 });
@@ -40,7 +40,7 @@ function modalLarge() {
 }
 
 function modalHide() {
-  modalOverlay.classList.remove("hide");
+  modalFeedWriteOverlay.classList.remove("hide");
 
   document.getElementById("modalContentLeftImg").classList.add("hide");
 
@@ -94,8 +94,7 @@ function clearProgress() {
 
   document.getElementById("modalContentLeftInnerImg").value = "";
 
-  textAreaContent = "";
-
+  textArea.innerText = "";
 }
 
 document.getElementById("modalContentTopPrev").addEventListener("click", () => {
@@ -108,14 +107,14 @@ document.getElementById("modalContentTopNext").addEventListener("click", () => {
 });
 
 function modalCloseAlert() {
-  modalOverlay.classList.add("hide");
-  modalOverlay.style.overflow = "hidden";
+  modalFeedWriteOverlay.classList.add("hide");
+  modalFeedWriteOverlay.style.overflow = "hidden";
   document.documentElement.style.overflowY = "auto";
 }
 
 // document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
 //   modalContentDeep.classList.add("hide");
-//   modalOverlay.classList.add("hide");
+//   modalFeedWriteOverlay.classList.add("hide");
 
 //   if(backflag === true) {
 //     backflag = false;
@@ -132,8 +131,8 @@ function scrollLock() {
   document.documentElement.style.overflowY = "hidden";
   
   // 모달창에 스크롤을 주겠다 == 스크롤바가 존재는 하지만 비활성 상태로 존재
-  modalOverlay.style.overflowY = "scroll";
-  modalOverlay.style.overflowX = "hidden";
+  modalFeedWriteOverlay.style.overflowY = "scroll";
+  modalFeedWriteOverlay.style.overflowX = "hidden";
 }
 
 // ====================================================================================================
@@ -352,7 +351,7 @@ async function submitForm() {
 
           setTimeout(() => {
             modalNew();
-            modalOverlay.classList.add("hide")
+            modalFeedWriteOverlay.classList.add("hide")
           }, 1000)
         }, 2000);
 

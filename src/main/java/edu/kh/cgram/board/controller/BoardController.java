@@ -47,40 +47,5 @@ public class BoardController {
 	}
 	
 	
-	private final EditBoardService editBoardService;
-	@GetMapping("insert")
-	public String insertBoard() {
-		return "write/modal-feed-write";
-	}
-	
-	@GetMapping("update")
-	public String updateBoard() {
-		return "write/modal-feed-update";
-	}
-	
-	@ResponseBody
-	@PostMapping("submitFeed")
-	public int submitFeed(
-			@ModelAttribute Board inputBoard,
-			@SessionAttribute("loginMember") Member loginMember,
-			@RequestParam("images") List<MultipartFile> images
-	) {
-		inputBoard.setMemberNo(loginMember.getMemberNo());
-		
-		int result = editBoardService.boardInsert(inputBoard, images);
-		
-		return result;
-	}
-	
-	@ResponseBody
-	@PostMapping("updateFeed")
-	public int updateFeed(
-			@SessionAttribute("loginMember") Member loginMember
-	) {
-	
-		return 0;
-	}
-	
-	
 	
 }

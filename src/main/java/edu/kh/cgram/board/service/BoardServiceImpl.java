@@ -16,7 +16,13 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 
 	private final BoardMapper mapper;
-
+	
+	// 게시글 상세 조회
+	@Override
+	public int selectDetail(int boardNo) {
+		return mapper.selectDetail(boardNo);
+	}
+	
 	@Override
 	public List<Board> getBoards(int page, Long lastBoardNo) {
 		int pageSize = 10; // 한 번에 가져올 게시물 개수 (예: 10개)
