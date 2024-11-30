@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           showMessage(data.message || "로그인 성공!", "success");
           setTimeout(() => {
-            window.location.href = data.url || "/board/randomPeed";
+            window.location.href = data.url || "/";
           }, 1000);
         } else {
           showMessage(data.message || "로그인 실패", "error");
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((error) => {
         console.error("서버와 통신하는 중 오류 발생:", error);
-        alert(error.message || "서버와 통신하는 중 오류가 발생했습니다.");
+        alert(error.message || "로그인 처리 중 문제가 발생했습니다.");
       })
       .finally(() => {
         findButton.disabled = false;

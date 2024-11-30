@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import edu.kh.cgram.member.dto.Member;
@@ -14,33 +15,39 @@ import edu.kh.cgram.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController // @Controller + @ResponseBody
+@SessionAttributes({"loginMember"})
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("sse")
 public class SseController {
 
-	private final SseService service;
+	@Autowired
+	private SseService service;
 
-	//SseEmitter : 서버로 부터 메시지를 전달 받을
+	// SseEmitter : 서버로 부터 메시지를 전달 받을
 	// 클라이언트 정보를 저장한 객체 == 연결된 클라이언트
 
 	private final Map<String, SseEmitter> emitters 
 			= new ConcurrentHashMap<>();
 
 	/* 클라이언트 연결요청 */
-	@GetMapping("sse/connect")
-	public SseEmitter getMethodName(
+	@GetMapping("/connect")
+	public SseEmitter SseConnect(
 			@SessionAttribute("loginMember") Member loginMember) {
 
 		String clientId = loginMember.getMemberNo() + "";
-		SseEmitter emitter = new SseEmitter(10 * 60 * 1000L);
+		SseEmitter emitter = new SseEmitter(10 * 60 * 10000L	);
 		
 		emitters.put(clientId, emitter);
 		
@@ -53,14 +60,14 @@ public class SseController {
 	}
 	
 	
-	@PostMapping("sse/send")
+	@PostMapping("/send")
 	public void sendNotification(
 			@RequestBody Notification notification,
 			@SessionAttribute("loginMember") Member loginMember
 			) {
 		
 		
-		notification.setNotificationNo(loginMember.getMemberNo());
+		notification.setSendMemberNo(loginMember.getMemberNo());
 		
   	Map<String, Object> map = service.insertNotification(notification);
   	
@@ -78,6 +85,16 @@ public class SseController {
     }
 		
 	}
+	
+  @GetMapping("notification/notReadCheck")
+  public ResponseEntity<Boolean> notReadCheck(
+          @SessionAttribute("loginMember") Member loginMember) {
+
+      int memberNo = loginMember.getMemberNo();
+      boolean hasUnread = service.notReadCheck(memberNo);
+
+      return ResponseEntity.ok(hasUnread); // boolean 값을 JSON 형식으로 반환
+  }
 	
 	@GetMapping("notification")
 	public List<Notification> selectNotificationList(
@@ -105,6 +122,7 @@ public class SseController {
 		service.updateNotification(notificationNo);		
 	}
 	
+
 
 
 }

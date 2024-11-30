@@ -348,21 +348,217 @@ body {
   justify-content: center;
 }
 
+.profile-img2 {
+  width: 30px; /* 프로필 이미지의 크기 */
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* 동그랗게 만들기 */
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+.profile-img2 img {
+  width: 100%; /* 이미지가 프로필 박스를 채우도록 */
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 박스에 맞추기 */
+}
+
 
 
 /* 알림 목록 스타일 */
 .notification-show{ display: block; }
 
-.notification-item {
-  background-color: white;
-  margin: 15px 0;
+.notification-list{
+  position: absolute;
+  width: 90%;
+
+  list-style: none;
+
   border-radius: 5px;
-  width: 100%;
+}
+
+.notification-item {
+
+  background-color: rgb(255, 255, 255);
+
+  border-radius: 5px;
+  width: 95%;
   height: 70px;
   font-size: 15px;
   letter-spacing: -1px;
   position: relative;
 }
 
+.notification-text{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  cursor: pointer;
+}
+.not-read{
+  background-color: rgba(218, 232, 244, 0.7)
+}
+.notification-text >img {
+  width: 55px;
+  height: 55px;
+  margin: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+
+.notification-content-container{
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-content{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+
+/* 팔로우시 알림 */
+.notification-follow-container{
+  /* display: flex; */
+  width: 100px;
+  height: 35px;
+  
+}
+
+.notification-follow-btn{
+  display: block; /* span을 block으로 변경 */
+  border-radius: 13px;
+  width: 100%;
+  height: 100%;
+  text-align: center; /* 텍스트를 중앙 정렬 */
+  line-height: 35px; /* 텍스트가 세로로 중앙에 위치하도록 설정 */
+  cursor: pointer;
+  border: none;
+}
+
+.follow{
+  background-color: #2a91ff;
+  color: white;
+}
+
+.notFollow{
+  background-color: #dcdcdc;
+  color: black;
+}
+
+
+
+
+.notification-delete{
+  position: absolute;
+  top: -1px;
+  right: 4px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.notification-delete:hover{
+  color: red;
+}
+
+.notification-item:hover > .notification-text{
+  text-decoration: underline;
+}
+
+.chat-preview{
+  word-break: break-word;
+}
+
+
+
+.notification-count-area{
+  position: absolute;
+  bottom: -6px;
+  right: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+  display: none;
+}
 /* 알림 목록 스타일 */
+
+
+
+
+/* 알림 에서 팔로우 취소 모달창 */
+
+.followCancelModal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(143, 143, 143, 0.3); /* 배경색 및 투명도 */
+  z-index: 9999;
+}
+
+.cancel-hidden {
+  display: none;
+}
+
+.followCancelModal-content {
+  width: 400px;
+  height: 100px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+
+/* 취소 버튼 */
+.followCancelModal-cancel{
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: #000000 solid 1px;
+}
+
+.followCancelModal-cancelText {
+
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+  /* display: block; */
+  /* margin-bottom: 20px; */
+}
+.followCancelModal-close{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+.followCancelModal-closeText {
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+/* 알림 에서 팔로우 취소 모달창 */
 

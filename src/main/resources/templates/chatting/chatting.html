@@ -13,7 +13,7 @@
 <body>
 
   <!-- 헤더 조각 포함 -->
-  <!-- <th:block class="header-container" th:replace="fragments/header :: header"></th:block> -->
+  <th:block class="header-container" th:replace="fragments/chattingHeader :: header"></th:block>
 
 
   <div class="chatting-area">
@@ -35,9 +35,8 @@
       </div>
 
       <ul class="chatting-list">
-
-
-
+        
+        
         <th:block th:each="chatRoom : ${chatRoomList}" th:object="${chatRoom}">
 
 
@@ -142,7 +141,7 @@
 
       <div class="modal-content">
         <div class="no-results">제안을 찾을 수 없습니다.</div>
-        <div class="search-results"></div>
+        <ul class="search-results"></ul>
       </div>
 
       <!-- <div class="modal-footer">
@@ -154,17 +153,17 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-  <script th:inline="javascript">
+  <!-- 해더 사이드 바 완성시 제거  -->
+  <!-- <script th:inline="javascript">
     const userDefaultImage = /*[[@{/images/defaultImg.png}]]*/ '기본 이미지';
     const notificationLoginCheck
       = /*[[${session.loginMember} ? true : false]]*/ false;
 
     const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ '로그인 회원 번호';
     const loginMemberName = /*[[${session.loginMember?.memberName}]]*/ '로그인 회원 닉네임';
-  </script>
+  </script> -->
 
   <script src="/js/chatting/chatting.js"></script>
-
 
 
 </body>

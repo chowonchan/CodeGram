@@ -35,6 +35,7 @@ function renderLikedPosts(posts) {
 
   if (posts.length === 0) {
     const noPostsMessage = document.createElement("p");
+    noPostsMessage.classList.add("no-posts-message");
     noPostsMessage.textContent = "회원님이 좋아요를 누른 게시물이 존재하지 않습니다.";
     postsGrid.appendChild(noPostsMessage);
     return;
@@ -120,6 +121,7 @@ function renderMemberPosts(posts) {
 
   if (posts.length === 0) {
     const noPostsMessage = document.createElement("p");
+    noPostsMessage.classList.add("no-posts-message");
     noPostsMessage.textContent = "회원님이 작성한 게시물이 존재하지 않습니다.";
     postsGrid.appendChild(noPostsMessage);
     return;
@@ -168,6 +170,7 @@ function renderComments(comments) {
 
   if (comments.length === 0) {
     const noCommentsMessage = document.createElement("p");
+    noCommentsMessage.classList.add("no-comments-message");
     noCommentsMessage.textContent = "회원님이 작성한 댓글이 존재하지 않습니다.";
     commentList.appendChild(noCommentsMessage);
     return;

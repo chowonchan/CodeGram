@@ -96,9 +96,9 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 2px;
-  min-height: 653px;
-  overflow-y: auto;
   max-height: 653px;
+  overflow-y: auto; 
+  overflow-x: hidden;
 }
 .post-item {
   background-color: #f8f8f8;
@@ -212,8 +212,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 127px;
-  height: 127px;
+  width: 125px;
+  height: 125px;
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
@@ -226,4 +226,10 @@ footer {
   width: 20px; /* 체크박스 크기 설정 */
   height: 20px; /* 체크박스 크기 설정 */
   cursor: pointer; /* 클릭 가능한 상태를 표시 */
+}
+.no-comments-message, .no-posts-message {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  justify-content: center;
 }

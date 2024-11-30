@@ -2,16 +2,17 @@ package edu.kh.cgram.board.controller;
 
 import java.util.List;
 
+import edu.kh.cgram.board.dto.Board;
+import edu.kh.cgram.board.service.EditBoardService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.service.BoardService;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myactivity.service.MyActivityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 	
 	private final BoardService service;
+	private final MyActivityService myActivityService;
 	
 	@GetMapping("myActivity")
 	public String myActivityPage() {
@@ -43,5 +45,42 @@ public class BoardController {
 		
 		return randomPosts;
 	}
+	
+	
+	private final EditBoardService editBoardService;
+	@GetMapping("insert")
+	public String insertBoard() {
+		return "write/modal-feed-write";
+	}
+	
+	@GetMapping("update")
+	public String updateBoard() {
+		return "write/modal-feed-update";
+	}
+	
+	@ResponseBody
+	@PostMapping("submitFeed")
+	public int submitFeed(
+			@ModelAttribute Board inputBoard,
+			@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("images") List<MultipartFile> images
+	) {
+		inputBoard.setMemberNo(loginMember.getMemberNo());
+		
+		int result = editBoardService.boardInsert(inputBoard, images);
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping("updateFeed")
+	public int updateFeed(
+			@SessionAttribute("loginMember") Member loginMember
+	) {
+	
+		return 0;
+	}
+	
+	
 	
 }

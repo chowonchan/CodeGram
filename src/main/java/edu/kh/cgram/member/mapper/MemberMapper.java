@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 
 @Mapper
@@ -32,5 +33,13 @@ public interface MemberMapper {
       @Param("birthDate") String birthDate, @Param("memberId") String memberId);
 
 int updatePassword(@Param("memberId") String memberId, @Param("newPassword") String newPassword);
+
+Member selectMemberByNickname(String nickname);
+
+int getPostCountByMemberNo(@Param("memberNo") int memberNo);
+
+int getFollowerCount(@Param("memberNo") int memberNo);
+
+int getFollowCount(@Param("memberNo") int memberNo);
 
 }

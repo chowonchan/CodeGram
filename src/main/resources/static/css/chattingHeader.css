@@ -1,0 +1,467 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  user-select: none;
+  height: 100vh;
+  transition: all 0.3s ease;
+}
+.sidebar {
+  width: 336px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  height: 100vh;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed; /* 화면에 고정 */
+  top: 0; /* 위쪽 위치 */
+  left: 0; /* 왼쪽 위치 */
+  transition: width 0.3s ease; /* 부드러운 전환 효과 */
+}
+.logo {
+  font-size: 24px;
+  display: flex;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 19px;
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 25px 12px 16px;
+  transition: opacity 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+}
+.fa-instagram {
+  cursor: pointer;
+  color: inherit;
+  margin-left: 3px;
+  margin-bottom: 4px;
+  text-decoration: none;
+  transition: opacity 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+}
+.fa-instagram:hover {
+  transform: scale(1.05);
+}
+.sidebar.narrow {
+  width: 73px; /* 축소된 사이드바 너비 */
+  border-right: 1px solid #ddd;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  margin: 15px 0px;
+  padding: 12px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  position: relative; /* 아이콘과 텍스트 위치 고정을 위해 추가 */
+  height: 24px;
+}
+.nav-item:hover {
+  background-color: #f0f0f0;
+}
+.nav-item span:first-child {
+  font-size: 24px; /* 아이콘 크기 */
+  margin-right: 15px;
+  transition: transform 0.3s;
+  position: absolute; /* 아이콘을 고정 위치에 배치 */
+  left: 12px; /* 아이콘 위치 조정 */
+}
+.nav-item:hover span:first-child {
+  transform: scale(1.05);
+}
+.nav-item span:nth-child(2) {
+  font-size: 16px;
+  transition: opacity 0.3s ease, transform 0.3s ease; /* 텍스트 투명도와 위치 전환 */
+  margin-left: 40px; /* 아이콘 오른쪽에 텍스트 위치 */
+}
+.sidebar.narrow .nav-item span:nth-child(2) {
+  opacity: 0; /* 텍스트 숨김 */
+  transform: translateX(-20px); /* 텍스트를 왼쪽으로 이동하여 숨김 효과 */
+  pointer-events: none; /* 텍스트에 대한 포인터 이벤트 비활성화 */
+}
+.sidebar.narrow .more span:nth-child(2)  {
+  opacity: 0; /* 텍스트 숨김 */
+  transform: translateX(-20px); /* 텍스트를 왼쪽으로 이동하여 숨김 효과 */
+  pointer-events: none; /* 텍스트에 대한 포인터 이벤트 비활성화 */
+}
+.more {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  height: 35px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  transition: background-color 0.3s;
+}
+.more span:first-child {
+  font-size: 24px;
+  margin-right: 15px;
+  transition: transform 0.3s;
+}
+.more:hover {
+  background-color: #f0f0f0;
+}
+.more-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  z-index: 1000;
+}
+.more-menu #moreTab {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.more-menu a:hover {
+  background-color: #f0f0f0;
+}
+.more.active {
+  cursor: default;
+}
+.more.active span:first-child {
+  font-weight: bold;
+}
+.more.active:hover {
+  background-color: transparent;
+}
+/* 추가된 사이드 패널 스타일 */
+.side-panel {
+  position: fixed;
+  top: 0;
+  left: 73px;
+  width: 400px;
+  height: 100vh;
+  box-sizing: border-box;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-right: 1px solid #ddd;
+  box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 500;
+  transition: left 0.3s ease;
+}
+
+.side-panel.hidden {
+  left: 80px;
+  display: none;
+}
+
+.panel-content {
+  display: none;
+}
+
+.panel-content.active {
+  display: block;
+}
+.panel-content h2 {
+  padding-bottom: 10px;
+}
+.panel-content h3 {
+  padding-bottom: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.clear-button {
+  position: absolute;
+  right: 30px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: none; /* 기본적으로 숨김 */
+}
+
+#searchInput {
+  flex: 1;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-right: 30px; /* X 버튼 공간 확보 */
+  width: 340px;
+  height: 37px;
+  border: none;
+  padding-left: 10px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  font-size: 16px;
+}
+#searchInput:focus {
+  outline: none;
+}
+
+.search-results {
+  overflow-y: auto;
+}
+
+.recent-search-title {
+  border-top: 1px solid #ddd; 
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* 사용자 정보 */
+.member-info {
+  display: flex;
+  padding: 8px 24px;
+  align-items: center;
+  text-decoration: none;
+  color: #000; /* 기본 텍스트 색상 */
+}
+
+.member-info:hover {
+  background-color: #f0f0f0;
+}
+
+.profile-img {
+  width: 44px; /* 프로필 이미지의 크기 */
+  height: 44px;
+  border-radius: 50%; /* 동그랗게 만들기 */
+  overflow: hidden;
+  padding-right: 10px;
+  margin-right: 10px; /* 이미지와 텍스트 간의 간격 */
+}
+
+.profile-img img {
+  width: 100%; /* 이미지가 프로필 박스를 채우도록 */
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 박스에 맞추기 */
+}
+
+.member-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-nickname {
+  font-size: 18px; /* 닉네임 폰트 크기 */
+  font-weight: bold; /* 이름 강조 */
+}
+
+.member-name {
+  font-size: 13px; /* 이름 폰트 크기 */
+  color: #666; /* 닉네임 텍스트 색상 */  
+}
+
+.remove-button {
+  position: absolute;
+  right: 30px;
+  background: none;
+  border: none;
+  font-size: 30px;
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  color: #007bff; /* 파란색 글씨 */
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
+}
+
+/* 모달 스타일 */
+.modal {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  width: 400px;
+  height: 195px;
+}
+
+.modal-content h3 {
+  font-size: 18px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.modal-content p {
+  font-size: 14px;
+  color: #666;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.clear-all-confirm {
+  background: none;
+  color: red;
+  border: none;
+  border-top: 1px solid #ddd;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.clear-all-cancel {
+  background: none;
+  border: none;
+  border-top: 1px solid #ddd;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-img2 {
+  width: 30px; /* 프로필 이미지의 크기 */
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* 동그랗게 만들기 */
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+.profile-img2 img {
+  width: 100%; /* 이미지가 프로필 박스를 채우도록 */
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 박스에 맞추기 */
+}
+
+
+
+/* 알림 목록 스타일 */
+.notification-show{ display: block; }
+
+.notification-list{
+  position: absolute;
+  width: 90%;
+
+  list-style: none;
+
+  border-radius: 5px;
+}
+
+.notification-item {
+
+  background-color: rgb(255, 255, 255);
+
+  border-radius: 5px;
+  width: 95%;
+  height: 70px;
+  font-size: 15px;
+  letter-spacing: -1px;
+  position: relative;
+}
+
+.notification-text{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  cursor: pointer;
+}
+
+.notification-text >img {
+  width: 55px;
+  height: 55px;
+  margin: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+
+.notification-content-container{
+  height: 90%;
+}
+
+.notification-content{
+  width: 270px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+
+/* 팔로우시 알림 */
+.notification-follow-container{
+  width: 100px;
+  height: 50px;
+}
+
+.notification-follow-btn{
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.following{
+  background-color: #007bff;
+  color: white;
+}
+
+
+
+
+.notification-delete{
+  position: absolute;
+  top: -1px;
+  right: 4px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.notification-delete:hover{
+  color: red;
+}
+
+.notification-item:hover > .notification-text{
+  text-decoration: underline;
+}
+
+.chat-preview{
+  word-break: break-word;
+}
+/* 알림 목록 스타일 */

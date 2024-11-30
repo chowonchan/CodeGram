@@ -4,226 +4,9 @@
   <meta charset="UTF-8">
   <title>Create New Post Modal</title>
 
-  <style>
-
-    /** <  모달창 뒷배경 > **/
-    .modal-overlay {
-      user-select: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-
-      /* 투명도 65%의 검정배경 */
-      background-color: #000000a6;
-      width: 100%;
-      height: 100%;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .modal-overlay-background {
-      width: 100%;
-      height: 100%;
-
-      position: absolute;
-      z-index: 0;
-    }
-
-    .modal-overlay-middle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    /** </ 모달창 뒷배경 > **/
-
-
-    /** <  modal-close-button Css > **/
-    /* 전체 버튼 스타일 */
-
-    .modal-close-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      width: 34px;
-      height: 34px;
-      padding: 10px;
-
-      position: absolute;
-      z-index: 3;
-
-      margin: 10px;
-      top: 0;
-      right: 0;
-    }
-
-    /* SVG 기본 스타일 */
-    .modal-close-button svg {
-      width: 18px;
-      height: 18px;
-      fill: none; /* 내부 채우기 없음 */
-      stroke: currentColor;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    /* 선 스타일 */
-    .modal-close-button-line-diagonal {
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-width: 3;
-    }
-
-    /* 아이콘의 기본 색상 */
-    .modal-close-button {
-      color: #ffffff;
-    }
-
-    /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
-    .modal-close-button:hover {
-      color: #ff9999;
-      transform: scale(1.2);
-    }
-    /** </ modal-close-button Css > **/
-
-    .modal-content {
-      width: 734px;
-      height: 777px;
-      padding: 20px;
-
-      z-index: 3;
-    }
-
-    .modal-content-top {
-      width: 734px;
-      height: 42px;
-      background-color: #fff;
-      border-bottom: solid 1px #DBDBDB;
-      border-radius: 10px 10px 0 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
-
-    .mtbtn {
-      width: 50px;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      cursor: pointer;
-    }
-
-    .modal-content-top-next {
-      font-weight: bold;
-      font-size: 15px;
-      color: #0095F6;
-      &:hover {
-        color: #0060F6;
-      }
-    }
-
-
-    .modal-content-left {
-      width: 734px;
-      height: 734px;
-      background-color: #fff;
-      border-radius: 0 0 10px 10px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .modal-content-left-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .modal-content-left-inner-button {
-      width: 133px;
-      height: 32px;
-      background-color: #0095F6;
-      color: #ffffff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-
-      border-radius: 8px;
-
-      &:hover {
-        background-color: #0050F6;
-      }
-
-    }
-
-
-    .modal-content-right {
-      width: 339px;
-      height: 734px;
-      background-color: #fff;
-      border-left: solid 1px #DBDBDB;
-      border-radius: 0 0 10px 0;
-    }
-
-    .modal-deep {
-      border-top: solid 1px #D9D9D9;
-      flex-grow: 1;
-      cursor: pointer;
-    }
-
-
-    .hide {
-      display: none !important;
-    }
-
-    .hidden {
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .modal-expand {
-      width: 1074px;
-    }
-
-    .fcenter {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .preview {
-      width: 734px;
-      height: 734px;
-      max-width: 100%;     /* 부모 요소 너비를 넘지 않음 */
-      max-height: 100%;    /* 부모 요소 높이를 넘지 않음 */
-      object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
-    }
-
-    .profile {
-      width: 28px;
-      height: 28px;
-      object-fit: cover;
-    }
-
-  </style>
+  <link rel="stylesheet" href="/css/write/feed-write.css">
 </head>
 <body>
-
-<span onclick="modalNew();" style="background-color: aquamarine; width: 100px; height: 75px; cursor: pointer;">
-    누르면 모달</span>
-<h1 style="color: red;">작동하면 냅둬라...</h1>
-<h2>고쳐짐 당했다....</h2>
-<h1>A</h1><h1>B</h1><h1>C</h1><h1>D</h1><h1>E</h1><h1>F</h1><h1>G</h1>
-<h1>H</h1><h1>I</h1><h1>J</h1><h1>K</h1><h1>L</h1><h1>M</h1><h1>N</h1>
-
 
 <form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data"> <!--th:object="${board}" -->
   <!-- 사진 업로드 모달 -->
@@ -239,561 +22,137 @@
       </svg>
     </div>
 
-    <div id="modalOverlayMiddle" class="modal-overlay-middle">
-      <div id="modalContent" class="modal-content">
+    <div id="modalContent" class="modal-container">
 
-        <div id="modalContentTop" class="modal-content-top">
+      <div id="modalContentTop" class="modal-content-top">
 
-          <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn hide" >
-            <!-- 뒤로가기 버튼 -->
-            <svg aria-label="뒤로가기 아이콘" height="24" role="img" viewBox="0 0 24 24" width="24">
-              <title>Back</title>
-              <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="2.909" x2="22.001" y1="12.004" y2="12.004"></line>
-              <polyline fill="none" points="9.276 4.726 2.001 12.004 9.276 19.274" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
-            </svg>
-          </div>
-
-          <div id="modalContentTopText" class="modal-content-top-text" style="text-align: center; flex-grow: 1;"></div>
-          <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
+        <div id="modalContentTopPrev" class="modal-content-top-prev mtbtn hide" >
+          <!-- 뒤로가기 버튼 -->
+          <svg aria-label="뒤로가기 아이콘" height="24" role="img" viewBox="0 0 24 24" width="24">
+            <title>Back</title>
+            <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="2.909" x2="22.001" y1="12.004" y2="12.004"></line>
+            <polyline fill="none" points="9.276 4.726 2.001 12.004 9.276 19.274" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+          </svg>
         </div>
 
-
-        <div style="display: flex;">
-          <div id="modalContentLeft" class="modal-content-left">
-            <div id="modalContentLeftInner" class="modal-content-left-inner">
-              <div id="modalPostNew" class="hide">
-                <svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="96" viewBox="0 0 96 77" fill="none">
-                  <rect x="4" y="7.72168" width="52" height="52" rx="10" transform="rotate(-3 4 7.72168)" fill="white" stroke="black"/>
-                  <path d="M7.21627 53.7294C7.21627 53.7294 13.5611 45.8327 17.6266 40.7728L28.8275 48.3253L38.3724 36.9502" stroke="black"/>
-                  <circle cx="15.2431" cy="20.7012" r="4.5" transform="rotate(-3 15.2431 20.7012)" stroke="black"/>
-                  <rect x="40.0117" y="17.2847" width="52" height="52" rx="10" transform="rotate(3 40.0117 17.2847)" fill="white" stroke="black"/>
-                  <path d="M74.9668 36.4402C74.6995 41.5422 70.3467 45.4614 65.2448 45.194C60.1428 44.9266 56.2236 40.5739 56.491 35.4719C56.7583 30.3699 61.1111 26.4507 66.213 26.7181C71.315 26.9855 75.2342 31.3382 74.9668 36.4402Z" fill="black" stroke="black"/>
-                  <path d="M56.3 48.7287L73.7783 49.6447C79.0179 49.9193 83.0427 54.3894 82.7681 59.6289L82.6111 62.6256L46.1587 60.7153L46.3158 57.7185C46.5904 52.479 51.0605 48.4541 56.3 48.7287Z" fill="black" stroke="black"/>
-                </svg>
-              </div>
-              <div id="modalPostErr" class="hide">  <!-- js로 stroke, fill 값 변경 가능한지 이후 확인 -->
-                <svg aria-label="파일 업로드 오류 아이콘"  width="96" height="96" viewBox="0 0 98 98" fill="none">
-                  <circle cx="49" cy="49" r="48" stroke="black"/>
-                  <circle cx="49" cy="67" r="6" stroke="black"/>
-                  <path d="M51.9823 25.2558L52.7792 25.7871C53.3251 26.151 53.7665 26.651 54.0599 27.2377C54.3453 27.8087 54.4811 28.4427 54.4545 29.0805L53.5298 51.2749C53.5123 51.6954 53.4358 52.1113 53.3028 52.5106L53.0682 53.2144C52.7517 54.1637 52.1279 54.9805 51.2952 55.5356L50.5547 56.0293C50.0943 56.3362 49.5533 56.5 49 56.5C48.4467 56.5 47.9057 56.3362 47.4453 56.0293L46.7048 55.5356C45.8721 54.9805 45.2483 54.1637 44.9318 53.2144L44.6972 52.5106C44.5642 52.1113 44.4877 51.6954 44.4702 51.2749L43.5455 29.0805C43.5189 28.4427 43.6547 27.8087 43.9401 27.2377C44.2335 26.651 44.6749 26.151 45.2208 25.7871L46.0177 25.2558C46.7569 24.763 47.6255 24.5 48.5139 24.5H49.4861C50.3745 24.5 51.2431 24.763 51.9823 25.2558Z" stroke="black"/>
-                </svg>
-              </div>
-
-              <div id="modalContentLeftInnerText" class="modal-content-left-inner-text" style="font-size: 20px; padding: 14px;"></div>
-              <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px; color: #737373"></div>
-              <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
-
-            </div>
-
-            <!-- 이미지 출력부분 -->
-            <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%;">
-              <div id="modalContentLeftImgView" class="modal-content-left-img-view"><!-- 여기서부터 꼬였음 ====================================================== JSJSJSJSJSJSJSJSJSJ -->
-                <img class="preview" src="">
-                <input type="file" name="images" id="modalContentLeftInnerImg" class="modal-content-left-inner-button hide" accept="image/*" multiple>
-              </div>
-              <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
-            </div>
-          </div>
-
-          <!-- 모달 글쓰기 -->
-          <div id="modalContentRight" class="modal-content-right hide">
-            <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; background-color: ivory; display: flex; flex-direction: column;" >
-
-              <!-- 글 작성자 출력 -->
-              <div style="width: 290px; height: 60px; ">
-
-                <!-- 프로필 이미지 -->
-                <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
-                <!-- <img th:unless="${board.profileImg}" th:src="#{user.default.image}"> -->
-
-                <!-- 프로필 이미지가 있을 경우 출력 -->
-                <!-- <img th:if="${board.profileImg}" th:src="${board.profileImg}"> -->
-                <!-- <span th:text="${board.memberNickname}">작성자 닉네임</span> -->
-
-                <!-- 세션에서 받아오는 방법으로 -->
-                <img th:unless="${session.profileImg}" th:src="#{user.default.image}" class="profile">
-                <img th:if="${session.profileImg}" th:src="${session.profileImg}" class="profile">
-                <span th:text="${session.loginMember.memberNickname}">작성자 닉네임</span>
-              </div>
-
-              <!-- 글 작성부분 -->
-              <div style="padding: 16px;">
-                <textarea style="width: 100%; height: 400px; resize: none;" id="emojiTextArea" placeholder="내용을 입력하세요..."></textarea>
-              </div>
-
-              <!-- 이모지 버튼과 글자수 출력부분 -->
-              <div style="width: 339px; display: flex; justify-content: space-between;">
-                <div style="cursor: pointer;" id="trigger">🙂</div>
-                <p><span id="byteCount">0</span>/2000</p>
-              </div>
-
-              <div>맨아래 24px 높이 여백</div>
-
-            </div>
-          </div>
-
-        </div>
+        <div id="modalContentTopText" class="modal-content-top-text" style="text-align: center; flex-grow: 1;"></div>
+        <div id="modalContentTopNext" class="modal-content-top-next mtbtn hide"></div>
       </div>
-    </div>
 
 
-    <!-- 2nd 모달 -->
-    <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
-      <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
-      <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
-        <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
-          <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
-          <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
+      <div style="display: flex;">
+        <div id="modalContentLeft" class="modal-content-left">
+          <div id="modalContentLeftInner" class="modal-content-left-inner">
+            <div id="modalPostNew" class="hide">
+              <svg aria-label="풍경이나 인물과 같은 사진를 나타내는 아이콘" width="96" height="96" viewBox="0 0 96 77" fill="none">
+                <rect x="4" y="7.72168" width="52" height="52" rx="10" transform="rotate(-3 4 7.72168)" fill="white" stroke="black"/>
+                <path d="M7.21627 53.7294C7.21627 53.7294 13.5611 45.8327 17.6266 40.7728L28.8275 48.3253L38.3724 36.9502" stroke="black"/>
+                <circle cx="15.2431" cy="20.7012" r="4.5" transform="rotate(-3 15.2431 20.7012)" stroke="black"/>
+                <rect x="40.0117" y="17.2847" width="52" height="52" rx="10" transform="rotate(3 40.0117 17.2847)" fill="white" stroke="black"/>
+                <path d="M74.9668 36.4402C74.6995 41.5422 70.3467 45.4614 65.2448 45.194C60.1428 44.9266 56.2236 40.5739 56.491 35.4719C56.7583 30.3699 61.1111 26.4507 66.213 26.7181C71.315 26.9855 75.2342 31.3382 74.9668 36.4402Z" fill="black" stroke="black"/>
+                <path d="M56.3 48.7287L73.7783 49.6447C79.0179 49.9193 83.0427 54.3894 82.7681 59.6289L82.6111 62.6256L46.1587 60.7153L46.3158 57.7185C46.5904 52.479 51.0605 48.4541 56.3 48.7287Z" fill="black" stroke="black"/>
+              </svg>
+            </div>
+            <div id="modalPostErr" class="hide">  <!-- js로 stroke, fill 값 변경 가능한지 이후 확인 -->
+              <svg aria-label="파일 업로드 오류 아이콘"  width="96" height="96" viewBox="0 0 98 98" fill="none">
+                <circle cx="49" cy="49" r="48" stroke="black"/>
+                <circle cx="49" cy="67" r="6" stroke="black"/>
+                <path d="M51.9823 25.2558L52.7792 25.7871C53.3251 26.151 53.7665 26.651 54.0599 27.2377C54.3453 27.8087 54.4811 28.4427 54.4545 29.0805L53.5298 51.2749C53.5123 51.6954 53.4358 52.1113 53.3028 52.5106L53.0682 53.2144C52.7517 54.1637 52.1279 54.9805 51.2952 55.5356L50.5547 56.0293C50.0943 56.3362 49.5533 56.5 49 56.5C48.4467 56.5 47.9057 56.3362 47.4453 56.0293L46.7048 55.5356C45.8721 54.9805 45.2483 54.1637 44.9318 53.2144L44.6972 52.5106C44.5642 52.1113 44.4877 51.6954 44.4702 51.2749L43.5455 29.0805C43.5189 28.4427 43.6547 27.8087 43.9401 27.2377C44.2335 26.651 44.6749 26.151 45.2208 25.7871L46.0177 25.2558C46.7569 24.763 47.6255 24.5 48.5139 24.5H49.4861C50.3745 24.5 51.2431 24.763 51.9823 25.2558Z" stroke="black"/>
+              </svg>
+            </div>
+
+            <div id="modalContentLeftInnerText" class="modal-content-left-inner-text" style="font-size: 20px; padding: 14px;"></div>
+            <div id="modalContentLeftInnerErr" class="modal-content-left-inner-err hidden" style="font-size: 15px; padding: 10px; color: #737373"></div>
+            <div id="modalContentLeftInnerButton" class="modal-content-left-inner-button"></div>
+
+          </div>
+
+          <!-- 이미지 출력부분 -->
+          <div id="modalContentLeftImg" class="modal-content-left-img hide" style="width: 100%; height: 100%;">
+            <div id="modalContentLeftImgView" class="modal-content-left-img-view">
+              <img class="preview" src="">
+              <input type="file" name="images" id="modalContentLeftInnerImg" class="modal-content-left-inner-button hide" accept="image/*" multiple>
+            </div>
+            <div id="modalContentLeftImgList" class="modal-content-left-img-list"></div>
+          </div>
+
+          <!-- 등록 -->
+          <div id="modalContentSubmit" class="modal-content-submit hide" style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+            <div style="width: 100px; height: 100px; padding-top: 317px; object-fit: cover">
+              <img id="submit" src="" style="width: 100%; height: 100%;">
+            </div>
+            <div id="submitText" style="font-size: 20px; padding-top: 20px"></div>
+          </div>
         </div>
-        <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
-        <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
+
+        <!-- 모달 글쓰기 -->
+        <div id="modalContentRight" class="modal-content-right hide">
+          <div id="modalContentScrollable" style="width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column;" >
+
+            <!-- 글 작성자 출력 -->
+            <div style="width: 290px; height: 60px; display: flex; align-items: center;">
+
+              <!-- 프로필 이미지 -->
+              <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
+              <!-- <img th:unless="${board.profileImg}" th:src="#{user.default.image}"> -->
+
+              <!-- 프로필 이미지가 있을 경우 출력 -->
+              <!-- <img th:if="${board.profileImg}" th:src="${board.profileImg}"> -->
+              <!-- <span th:text="${board.memberNickname}">작성자 닉네임</span> -->
+
+              <!-- 세션에서 받아오는 방법으로 -->
+              <img th:unless="${session.profileImg}" th:src="#{user.default.image}" class="profile">
+              <img th:if="${session.profileImg}" th:src="${session.profileImg}" class="profile">
+              <span th:text="${session.loginMember.memberNickname}">작성자 닉네임</span>
+            </div>
+
+            <!-- 글 작성부분 -->
+            <div style="padding: 0px 16px;">
+              <textarea style="width: 100%; height: 400px; padding: 0px; resize: none; border: none; outline: none;" id="emojiTextArea" spellcheck="false" placeholder="내용을 입력하세요..."></textarea>
+            </div>
+
+            <!-- 이모지 버튼과 글자수 출력부분 -->
+            <div style="width: 339px; display: flex; justify-content: space-between;">
+              <div style="cursor: pointer;" id="trigger">🙂</div>
+              <p><span id="byteCount">0</span>/2000</p>
+            </div>
+
+            <!-- 해시태그 검색결과 출력할 창 -->
+            <div id="hashTagList">
+
+            </div>
+
+            <div style="height: 24px; width: 1px;"></div>
+
+          </div>
+        </div>
+
       </div>
+
     </div>
+  </div>
+
+  <!-- 2nd 모달 -->
+  <div id="modalContentDeep" class="modal-overlay hide" style="z-index: 5;">
+    <div id="modalContentDeepBackground" class="modal-overlay-background"></div>
+    <div style="width: 400px; height: 202px; background-color: #fff; border-radius: 11px; display: flex; flex-direction: column; z-index: 7;">
+      <div class="fcenter" style="width: 100%; height: 106px; display: flex; flex-direction: column;">
+        <div style="padding: 5px; font-size: 20px; font-weight: bold;">게시글 작성을 취소하시겠습니까?</div>
+        <div style="padding: 5px; font-size: 15px; color: #737373;" >지금 나가면 작성 내용이 저장되지 않습니다.</div>
+      </div>
+      <div id="modalContentDeepConfirm" class="fcenter modal-deep" style="color: #ED4956;">확인</div>
+      <div id="modalContentDeepCancel" class="fcenter modal-deep">취소</div>
+    </div>
+  </div>
 
   </div>
 </form>
-<!-- ======================================================================================================================================================================================================== -->
+
 <script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
 <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
-<script>
+<script src="/js/write/feedWrite.js"></script>
 
-  const modalOverlay = document.getElementById("modalOverlay");
 
-  const modalContent = document.getElementById("modalContent");
-  const modalContentDeep = document.getElementById("modalContentDeep");
 
-  const modalTop = document.getElementById("modalContentTop");
-  const modalTopPrev = document.getElementById("modalContentTopPrev");
-  const modalTopText = document.getElementById("modalContentTopText");
-  const modalTopNext = document.getElementById("modalContentTopNext");
-
-  const modalLeft = document.getElementById("modalContentLeft");
-  const modalRight = document.getElementById("modalContentRight");
-
-
-  let filename = "등록 시도한 파일의 이름.확장자"
-  let flag = 0;
-  // 이벤트 경우의 수가 너무 많다.......................................................................
-  // 아아아아아악.......................................................................................
-
-
-  // 발생 문제 ==> X버튼이나 배경 클릭으로 껐다가 다시켜면 작성중이던 화면이 나옴
-  // ==> 지우거나 변경한 값들을 모조리 초기화 시켜줄 수 있어야 함 ==> 파일 선택부분을 제외한 나머지 호출부분은 수정하였음
-
-  // ==> modal top 값을 아래 left + right value로 변경하는 방식으로 바꾸고
-
-  // 모달 X 버튼 클릭
-  document.getElementById("modalCloseButton").addEventListener("click", () => {
-
-    modalCloseAlert();
-
-  });
-
-  document.getElementById("modalContentDeepBackground").addEventListener("click", () => {
-    modalContentDeep.classList.add('hide');
-  })
-
-  // 모달 반투명 배경 클릭
-  document.getElementById("modalOverlayBackground").addEventListener("click", () => {
-
-    modalCloseAlert();
-
-  });
-
-  let modalProgress = 1;
-  // 0. 에러
-  // 1. 초기
-  // 2. 순서변경
-  // 3. 이미지 편집
-  // 4. 글 등록
-
-  // 이벤트 넣을때는 매우 신중하게!
-
-  function modalNew() {
-    // 모달 초기값 지정
-    // top 가로, content 가로, right display: none;
-    // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
-    modalContent.style.width = "734px";
-    modalTop.style.width = "734px";
-    modalRight.classList.add("hide");
-
-    modalOverlay.classList.remove("hide");
-    document.getElementById("modalContentLeftInner").classList.remove("hide");
-    document.getElementById("modalPostNew").classList.remove("hide");
-    document.getElementById("modalPostErr").classList.add("hide");
-    document.getElementById("modalContentLeftInnerErr").classList.add("hidden");
-    document.getElementById("modalContentLeftImg").classList.add("hide");
-
-
-    modalTopNext.classList.add("hide");
-    modalTopPrev.classList.add("hide");
-
-    modalTopText.innerText = "새 게시물 만들기";
-    document.getElementById("modalContentLeftInnerText").innerText = "사진을 여기에 끌어다 놓으세요."
-    document.getElementById("modalContentLeftInnerButton").innerText = "컴퓨터에서 선택"
-
-    modalProgress = 1;
-    disableScroll();
-  }
-
-  function modalError() {
-    // 상단 텍스트, 내부 이미지, 내부 텍스트, 버튼 글자
-    modalContent.style.width = "734px";
-    modalTop.style.width = "734px";
-    document.getElementById("modalPostNew").classList.add("hide");
-    document.getElementById("modalPostErr").classList.remove("hide");
-    document.getElementById("modalContentLeftImg").classList.add("hide");
-
-    modalTopNext.classList.add("hide");
-    modalTopPrev.classList.add("hide");
-
-    modalTopText.innerText = "이미지를 업로드하지 못하였습니다";
-    document.getElementById("modalContentLeftInnerText").innerText = "지원되지 않는 파일입니다."
-    document.getElementById("modalContentLeftInnerErr").innerText = filename + " 파일을 업로드하지 못하였습니다."
-    document.getElementById("modalContentLeftInnerErr").classList.remove("hidden");
-
-    document.getElementById("modalContentLeftInnerButton").innerText = "다른 파일 선택"
-
-    modalProgress = 0;
-  }
-
-  function modalWithImg() {
-    // 상단 텍스트 변경 및 버튼 좌, 우 생성
-    // 내부 이미지, 내부 텍스트, 버튼 글자 제거
-    document.getElementById("modalContentLeftInner").classList.add("hide");
-    document.getElementById("modalContentLeftImg").classList.remove("hide");
-
-    modalTopNext.classList.remove("hide");
-    modalTopPrev.classList.remove("hide");
-
-    modalContent.style.width = "734px";
-    modalTop.style.width = "734px";
-    modalRight.classList.add("hide");
-
-
-    modalTopText.innerText = "이미지 순서 변경";
-    document.getElementById("modalContentTopNext").innerText = "다음"
-    document.getElementById("modalContentTopNext").style.width = "50px";
-
-    modalProgress = 2;
-  }
-
-  /*   function modalImgEdit() {
-    // top 가로, content 가로, right display:none classList Remove
-  } */
-
-  function modalWrite() {
-    // right 에 게시글 작성내용
-    //새 게시물 만들기
-    modalContent.style.width = "1074px";
-    modalTop.style.width = "1074px";
-    modalLeft.style.borderRadius = "0 0 0 10px";
-    modalRight.classList.remove("hide");
-    modalTopText.innerText = "게시글 등록";
-    document.getElementById("modalContentTopNext").innerText = "공유하기";
-    document.getElementById("modalContentTopNext").style.width = "80px";
-
-    modalProgress = 4;
-  }
-
-  document.getElementById("modalContentTopPrev").addEventListener("click", () => {
-    console.log("뒤로가기 버튼 클릭 : ", modalProgress);
-    switch(modalProgress) {
-      case 2 : modalCloseAlert(); break;
-            // case 3 : modalWithImg(); break;
-            // case 4 : modalImgEdit(); break;
-      case 4 : modalWithImg(); break;
-      default : console.log("뒤로가기 버튼 클릭"); break;
-    }
-  });
-
-  document.getElementById("modalContentTopNext").addEventListener("click", () => {
-    switch(modalProgress) {
-      case 2 : modalWrite(); break;
-            // case 2 : modalImgEdit(); break;
-            // case 3 : modalWrite(); break;
-//========================================================================
-      case 4 : submitForm();
-
-      default : console.log("다음 버튼 클릭"); break;
-    }
-  });
-
-  function modalCloseAlert() {
-    if(modalProgress > 1) {
-      modalContentDeep.classList.remove("hide");
-      return;
-    }
-    modalOverlay.classList.add("hide");
-    enableScroll();
-  }
-
-  document.getElementById("modalContentDeepConfirm").addEventListener("click", () => {
-    modalContentDeep.classList.add("hide");
-    modalOverlay.classList.add("hide");
-    enableScroll();
-  });
-
-  document.getElementById("modalContentDeepCancel").addEventListener("click", () => {
-    modalContentDeep.classList.add("hide");
-  });
-
-
-
-
-  // 스크롤을 방지하는 함수
-  function preventScroll(e) {
-    e.preventDefault();
-  }
-
-  // 스크롤 비활성화
-  function disableScroll() {
-    document.addEventListener('wheel', preventScroll, { passive: false });
-  }
-
-  // 스크롤 활성화
-  function enableScroll() {
-    document.removeEventListener('wheel', preventScroll);
-  }
-
-  function enableElementScroll(element) {
-    element.addEventListener('wheel', function(e) {
-      // 모달창이 열리면, 전체 페이지에서 스크롤을 할 수 없도록 하고
-      // 글쓰기 모달창 우측부분에서만 스크롤 가능하도록 수정
-      if (element.scrollHeight > element.clientHeight) {
-        e.stopPropagation();
-      }
-    }, { passive: false });
-  }
-  enableElementScroll(document.getElementById('modalContentScrollable'));
-
-  // ====================================================================================================
-
-
-  // 이미지 삽입 관련 script
-  function isSupportedFile(file) {
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-    return allowedTypes.includes(file.type);
-  }
-
-  const maxSize = 1024 * 1024 * 10;  // 10MB를 byte 단위로 작성
-  // 이미지는 최대 10장까지
-  // const lastValidFiles = [null, null, null, null, null, null, null, null, null, null];
-  const lastValidFiles = [null, null, null, null, null];
-
-  // 사진 추가 버튼 클릭
-  document.getElementById("modalContentLeftInnerButton").addEventListener("click", () => {
-    document.getElementById("modalContentLeftInnerImg").click();
-  });
-
-  document.getElementById("modalContentLeftInnerImg").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file && isSupportedFile(file)) {
-      // 파일 업로드 성공
-      console.log("File uploaded:", file.name);
-      console.log("File:", file);
-      modalWithImg();
-    } else if(file && !isSupportedFile(file)) {
-      filename = file.name;
-      modalError();
-    }
-  });
-
-  const inputImageList = document.getElementsByClassName("modal-content-left-img-view");
-  const previewList = document.getElementsByClassName("preview");
-  /**
-   * 미리보기 함수
-   * @param file  : <input type="file"> 에서 선택된 파일
-   * @param order : 이미지 순서
-   */
-  const updatePreview = (file, order) => {  // 이미지 순서까지 얻어와야
-
-    // 선택된 파일이 지정된 크기를 초과한 경우선택 막기
-    const maxSize = 1024 * 1024 * 10;  // 10MB를 byte 단위로 작성
-
-    if(file.size > maxSize) {   // 파일 크기 초과 시
-      alert("10MB 이하의 이미지만 선택해 주세요");
-
-      /* 미리보기는 막았는데, 업로드 파일에는 크기가 초과된 파일이 선택되어져 있음!! */
-      // 이전  선택된 파일이 없는데, 크기 초과 파일을 선택한 경우
-      if(lastValidFiles[order] === null) {
-        // if(lastValidFiles === null) {
-        inputImageList[order].value = ""; // 선택 파일 삭제
-        // inputImageList.value = ""; // 선택 파일 삭제
-        return;
-      }
-
-      // 이전 선택된 파일이 있을 때
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(lastValidFiles[order]);
-      // dataTransfer.items.add(lastValidFiles);
-      inputImageList[order].files = dataTransfer.files;
-      // inputImageList.files = dataTransfer.files;
-
-      return;
-    }
-
-
-    // 선택된 이미지 백업
-    lastValidFiles[order] = file;
-
-    // JS 에서 제공하는 파일을 읽어오는 객체
-    const reader = new FileReader();
-
-    // 파일을 읽어 오는데
-    // DataURL 형식으로 읽어옴
-    // DataURL : 파일 전체 데이터가 브라우저가 해석할 수 있는 긴 주소형태 문자열로 반환
-    reader.readAsDataURL(file);
-
-    reader.addEventListener("load", e => {
-      previewList[order].src = e.target.result;
-      // e.target.result == 파일이 변환된 주소 형태 문자열
-    });
-  }
-
-  for(let i = 0; i < inputImageList.length; i++) {
-
-    // input 태그에 이미지 선택 시 미리보기 함수 호출
-    inputImageList[i].addEventListener("change", e => {
-//================================================================================================================
-// 여기를 수정해서 createElement 를 생성한다!
-// 그런데 이미 있는 파일은 어떻게?
-//================================================================================================================
-      const file = e.target.files[i];
-
-
-      console.log(file)
-
-      if(file === undefined) {    // 선택 취소 시
-        // 이전에 선택한 파일이 없는 경우
-        if(lastValidFiles[i] === null) return;
-
-        // ** 이전에 선택한 파일이 "있을" 경우 **
-        const dataTransfer = new DataTransfer();
-
-        // DataTransfer 가 가지고 있는 files 필드에
-        // lastValidFiles[i] 추가
-        dataTransfer.items.add(lastValidFiles[i]);
-
-        // input의 files 변수에 lastValidFile이 추가된 files 대입
-        inputImageList[i].files = dataTransfer.files;
-
-        // 이전 선택된 파일로 미리보기 되돌리기
-        updatePreview(lastValidFiles[i], i);
-
-        return;
-      }
-
-      updatePreview(file, i);
-    });
-  }
-
-  //========================================================================
-  // 글쓰기 부분
-  const { createPopup } = window.picmoPopup;
-  const MAX_BYTES = 2000; // 최대 바이트 제한
-  const textArea = document.getElementById('emojiTextArea');
-  const byteCount = document.getElementById('byteCount');
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const trigger = document.querySelector('#trigger');
-
-    const picker = createPopup({}, {
-      referenceElement: trigger,
-      triggerElement: trigger,
-      position: 'right-end'
-    });
-
-
-    trigger.addEventListener('click', () => {
-      picker.toggle();
-    });
-
-    picker.addEventListener('emoji:select', (selection) => {
-      textArea.value += selection.emoji;
-      byteCount.textContent = byteLength(textArea.value); // UTF-8로 계산된 바이트 수
-      textArea.focus(); // 텍스트 영역에 포커스를 맞춰줌
-    });
-  });
-
-  // UTF-8 바이트 계산 함수
-  function byteLength(str) {
-    let bytes = 0;
-    for (let i = 0; i < str.length; i++) {
-      const code = str.charCodeAt(i);
-      if (code <= 0x7F) {
-        bytes += 1; // ASCII
-      } else if (code <= 0x7FF) {
-        bytes += 2; // 2바이트
-      } else if (code <= 0xFFFF) {
-        bytes += 3; // 3바이트
-      } else {
-        bytes += 4; // 4바이트 (Surrogate pair)
-      }
-    }
-    return bytes;
-  }
-
-  textArea.addEventListener('input', () => {
-    byteCount.textContent = byteLength(textArea.value); // UTF-8로 계산된 바이트 수
-  });
-
-
-  textArea.addEventListener('input', () => {
-    if (byteLength(textArea.value) > MAX_BYTES) {
-      // 바이트 초과 시 초과 부분 제거
-      while (byteLength(textArea.value) > MAX_BYTES) {
-        textArea.value = textArea.value.slice(0, -1);
-      }
-    }
-
-    // 현재 바이트 수 업데이트
-    byteCount.textContent = byteLength(textArea.value);
-  });
-
-  //=======================================================
-  // 제출
-
-  async function submitForm() {
-
-    const formData = new FormData();
-    const textAreaContent = document.getElementById("emojiTextArea").value;
-    const files = document.getElementById("modalContentLeftInnerImg").files;
-
-    formData.append("boardContent", textAreaContent);
-    
-    for (let i = 0; i < files.length; i++) {
-      formData.append("images", files[i]);
-    }
-
-    try {
-      const response = await fetch("/submitFeed", {  
-        method: "POST",
-        body: formData,
-        headers: {
-          // 예시: Authorization 헤더나 추가적인 헤더가 필요할 경우 여기에 추가
-          'Authorization': 'Bearer ' + localStorage.getItem('accessToken')  // 토큰 예시
-        }
-      });
-
-      if (response.ok) {
-        const result = await response.text();
-        if(result > 0) alert("게시물이 성공적으로 등록되었습니다.");
-        // 모달 닫기, 화면 초기화 등 추가 작업
-        else alert("게시물 등록에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("서버와의 통신에 실패했습니다.");
-    }
-  }
-
-</script>
 </body>
 </html>
-
-<!-- 파일 첨부, 이미지 드래그로 순서 변경, 이미지 미리보기 캐러셀의 순서는 드래그를 따라가도록, 
-     게시글 등록글 글자수 카운트 이벤트 , 게시글 등록 백엔드 마무리 + 이모지 버튼 이벤트 수정 및 적용 -->
-
-
-<!-- // <form enctype="multipart/form-data" method="POST" role="presentation"><input accept="image/jpeg,image/png,image/heic,image/heif" multiple="" type="file"></form> -->

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -45,20 +47,27 @@ public class MemberController {
 
 	    // DB에서 회원 정보 조회 및 비밀번호 검증
 	    Member loginMember = service.login(memberId, memberPw);
+	    
+	    int adminNumber = loginMember.getAdmin();
 
 	    if (loginMember == null) {
 	        return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 맞지 않습니다."));
 	    } //응답 데이터
-
-	    session.setAttribute("loginMember", loginMember);
-	    return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
+	    
+	    if(adminNumber == 2) {
+	    	 session.setAttribute("loginMember", loginMember);
+	    	 return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/admin/admin-memberList"));
+	    } else {
+	    	session.setAttribute("loginMember", loginMember);
+	    	return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
+	    }
 	}
 
 
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
 		status.setComplete();// 세션 종료
-		return "redirect:/member/login";// 로그인 페이지로 리다이렉트
+		return "redirect:/";// 로그인 페이지로 리다이렉트
 	}
 	//----------------------------------------------------
 	
@@ -200,6 +209,63 @@ public class MemberController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
 	    }
 	}
+	
+	/**************************************************/
+	
+	
+	@GetMapping("/{nickname}")
+	public String showUserPage(
+	        @PathVariable(value = "nickname", required = false) String nickname,
+	        HttpSession session, 
+	        Model model) {
+
+	    // 세션에서 로그인 사용자 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        log.warn("세션에 로그인된 사용자가 없습니다.");
+	        model.addAttribute("message", "로그인이 필요합니다.");
+	        return "redirect:/";
+	    }
+
+	    // 닉네임으로 사용자 조회
+	    Member member = null;
+	    if (nickname != null && !nickname.isEmpty()) {
+	        member = service.getMemberByNickname(nickname);
+	    }
+
+	    // 닉네임 조회 실패 시 로그인된 사용자 정보 사용
+	    if (member == null) {
+	        member = loginMember;
+	    }
+
+	    // 사용자 정보가 여전히 null이면 로그인 페이지로 리다이렉트
+	    if (member == null) {
+	        model.addAttribute("message", "사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
+	        return "redirect:/";
+	    }
+
+	    // 추가 데이터 조회
+	    int postCount = service.getPostCountByMemberNo(member.getMemberNo());
+	    int followerCount = service.getFollowerCount(member.getMemberNo());
+	    int followCount = service.getFollowCount(member.getMemberNo());
+	    
+	    // **게시물 데이터 조회**
+//	    List<BoardImg> posts = service.getPostsByMemberNo(member.getMemberNo());
+
+	    // 모델에 데이터 추가
+	    model.addAttribute("member", member);
+	    model.addAttribute("postCount", postCount);
+	    model.addAttribute("followerCount", followerCount);
+	    model.addAttribute("followCount", followCount);
+//	    model.addAttribute("posts", posts);
+
+	    log.info("프로필 조회 완료: {}", member);
+	    return "myPage/myPage";
+	}
+
+
+
+	/**************************************************/
 
 
 

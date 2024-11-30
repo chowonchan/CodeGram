@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <link rel="stylesheet" href="/css/admin/admin-memberList.css">
+</head>
+
+<body>
+    <div class="header-container" th:replace="~{admin/adminHeader}"></div>
+
+    <div class="main-content">
+      <section id="memberTable">
+        
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+          <h1>회원 목록</h1>
+          <!-- 검색 영역 -->
+          <form class="search-area" id="boardSearch">
+            <input type="text" class="search-input" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+            <button><div class="fa-solid fa-magnifying-glass"></div></button>
+          </form>
+        </div>
+
+        <!-- 테이블 영역 -->
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>아이디</th>
+                <th>닉네임</th>
+                <th>가입일</th>
+                <th>게시글 수</th>
+                <th>팔로우 수</th>
+                <th>팔로워 수</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="memberList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>  
+        </div>
+        <div id="memberPaginationBox" class="pagination"></div>
+      </section>
+
+      <!-- 피드 관리 섹션 -->
+      <section id="feedTable">
+        <h1>피드 관리</h1>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>작성자</th>
+                <th>피드 내용</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="feedList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>
+        </div>
+        <div id="feedPaginationBox" class="pagination"></div>
+      </section>
+
+      <!-- 피드 신고 관리 섹션 -->
+      <section id="feedReportTable">
+        <div class="table-header">
+          <h1>피드 신고 관리</h1>
+          <div class="dropdown">
+              <button class="dropbtn">정렬</button>
+              <div class="dropdown-content" id="feedReportDropdown">
+                  <a href="#" data-value="전체">전체</a>
+                  <a href="#" data-value="마음에 들지 않습니다">마음에 들지 않습니다</a>
+                  <a href="#" data-value="자살, 자해 및 섭식 장애">자살, 자해 및 섭식 장애</a>
+                  <a href="#" data-value="따돌림 또는 원치 않는 연락">따돌림 또는 원치 않는 연락</a>
+                  <a href="#" data-value="폭력, 혐오 또는 학대">폭력, 혐오 또는 학대</a>
+                  <a href="#" data-value="제한된 품목을 판매하거나 홍보함">제한된 품목을 판매하거나 홍보함</a>
+                  <a href="#" data-value="나체 이미지 또는 성적 행위">나체 이미지 또는 성적 행위</a>
+                  <a href="#" data-value="스캠, 사기 또는 스팸">스캠, 사기 또는 스팸</a>
+                  <a href="#" data-value="거짓 정보">거짓 정보</a>
+              </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>신고자</th>
+                <th>피드 내용</th>
+                <th>신고 사유</th>
+                <th>신고 날짜</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="feedReportList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>
+          <div id="feedReportPaginationBox" class="pagination"></div>
+        </div>
+      </section>
+
+      <!-- 댓글 신고 관리 섹션 -->
+      <section id="commentReportTable">
+        <div class="table-header">
+          <h1>댓글 신고 관리</h1>
+          <div class="dropdown">
+              <button class="dropbtn2">정렬</button>
+              <div class="dropdown-content" id="commentReportDropdown">
+                  <a href="#" data-value="전체">전체</a>
+                  <a href="#" data-value="마음에 들지 않습니다">마음에 들지 않습니다</a>
+                  <a href="#" data-value="자살, 자해 및 섭식 장애">자살, 자해 및 섭식 장애</a>
+                  <a href="#" data-value="따돌림 또는 원치 않는 연락">따돌림 또는 원치 않는 연락</a>
+                  <a href="#" data-value="폭력, 혐오 또는 학대">폭력, 혐오 또는 학대</a>
+                  <a href="#" data-value="제한된 품목을 판매하거나 홍보함">제한된 품목을 판매하거나 홍보함</a>
+                  <a href="#" data-value="나체 이미지 또는 성적 행위">나체 이미지 또는 성적 행위</a>
+                  <a href="#" data-value="스캠, 사기 또는 스팸">스캠, 사기 또는 스팸</a>
+                  <a href="#" data-value="거짓 정보">거짓 정보</a>
+              </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>신고자</th>
+                <th>댓글 내용</th>
+                <th>신고 사유</th>
+                <th>신고 날짜</th>
+                <th>처리 상태</th>
+              </tr>
+            </thead>
+            <tbody id="commentReportList">
+              <!-- 데이터 삽입 -->
+            </tbody>
+          </table>
+        </div>
+        <div id="commentReportPaginationBox" class="pagination"></div>
+      </section>
+    </div>
+    <script src="/js/admin/admin-memberList.js"></script>
+    <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
+</body>
+</html>

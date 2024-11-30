@@ -196,7 +196,7 @@ const nickMessage = document.querySelector("#nickMessage");
 
 // 2) 닉네임 관련 메시지 작성
 const nickMessageObj = {};
-nickMessageObj.normal = "한글,영어,숫자로만 3~10글자";
+nickMessageObj.normal = "영어,숫자로만 3~10글자";
 nickMessageObj.invaild = "유효하지 않은 닉네임 형식 입니다";
 nickMessageObj.duplication = "이미 사용중인 닉네임 입니다.";
 nickMessageObj.check = "사용 가능한 닉네임 입니다.";
@@ -222,7 +222,7 @@ memberNickname.addEventListener("input", () => {
     }
 
     // 5) 닉네임 유효성 검사(정규 표현식)
-    const regEx = /^[a-zA-Z0-9가-힣]{3,10}$/; // 한글,영어,숫자로만 3~10글자
+    const regEx = /^[a-zA-Z0-9]{3,10}$/; // 영어,숫자로만 3~10글자
 
     if( regEx.test(inputNickname) === false ){ 
         nickMessage.innerText = nickMessageObj.invaild; // 유효 X 메시지

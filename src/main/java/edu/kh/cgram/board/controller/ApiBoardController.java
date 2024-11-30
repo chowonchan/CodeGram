@@ -25,7 +25,8 @@ public class ApiBoardController {
 
 	// 게시물 목록을 반환하는 엔드포인트
 	@GetMapping
-	public ResponseEntity<Map<String, Object>> getBoards(@RequestParam int page, // 페이지 번호
+	public ResponseEntity<Map<String, Object>> getBoards(
+			@RequestParam int page, // 페이지 번호
 			@RequestParam(required = false) Long lastBoardNo) { // 마지막 게시물 번호
 
 		// 게시물 목록 조회
@@ -39,4 +40,7 @@ public class ApiBoardController {
 
 		return ResponseEntity.ok(response); // JSON 응답 반환
 	}
+	
+	
+	
 }

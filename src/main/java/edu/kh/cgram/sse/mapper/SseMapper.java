@@ -14,10 +14,12 @@ public interface SseMapper {
 
 	Map<String, Object> selectReceiveMember(int notificationNo);
 
-	List<Notification> selectNotification(int memberNo);
+	List<Notification> selectNotificationList(int memberNo);
 
 	void deleteNotification(int notificationNo);
 
 	void updateNotification(int notificationNo);
+
+	boolean notReadCheck(int memberNo);
 
 }

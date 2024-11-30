@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODEGRAM_TEST</title>
+
+  <link rel="stylesheet" th:href="@{/css/feed/mainFeed.css}">
+  <!-- <link rel="stylesheet" th:href="@{/css/header.css}"> -->
+  <!-- <link rel="stylesheet" th:href="@{/css/footer.css}"> -->
+  <link rel="stylesheet" th:href="@{/css/feed/feedSlide.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/memberRecommend.css}">
+  <link rel="stylesheet" th:href="@{/css/feed/feedStory.css}">
+
+</head>
+
+
+<body>
+  <!-- 사이드바 조각 -->
+  <!-- <div class="header-container" th:replace="~{fragments/header :: header}"></div> -->
+  <main>
+    <div class="parent-container">
+      <section class="section-left-right">
+        <div class="story_plus_main">
+          <section class="section-left">
+            <!-- 스토리 영역 -->
+            <section class="stories-section">
+
+              <div th:if="${#lists.isEmpty(stories)}" class="empty-stories">
+                <p>새로운 스토리가 없습니다</p>
+              </div>
+
+              <div class="stories-container" th:if="${not #lists.isEmpty(stories)}">
+                <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
+                  <div class="story-wrapper" th:class="${board.storyCheck ? 'viewed' : ''}">
+                    <div class="story-border">
+                      <img th:src="${story.profileImg != null ? story.profileImg : '/path/to/default/image.jpg'}"
+                        class="story-profile-image">
+                    </div>
+                  </div>
+                  <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
+                </div>
+              </div>
+
+              <th:block th:if="${stories != null && #lists.size(stories) > 6}">
+                <button class="nav-button prev" onclick="navigateStories('prev')" aria-label="이전 스토리">
+                  <span class="nav-icon">←</span>
+                </button>
+
+                <button class="nav-button next" onclick="navigateStories('next')" aria-label="다음 스토리">
+                  <span class="nav-icon">→</span>
+                </button>
+              </th:block>
+            </section>
+
+
+
+
+
+
+
+            <div class="main_plus_right">
+              <div class="main-container">
+                <!-- 피드 영역 - 무한 스크롤을 위한 container class 추가 -->
+                <!-- 게시물이 존재하지 않을 때 -->
+                <th:block th:if="${#lists.isEmpty(feedList)}">
+                  <p>게시글이 존재하지 않습니다.</p>
+                </th:block>
+
+                <!-- 게시물이 존재할 때 -->
+                <th:block th:unless="${#lists.isEmpty(feedList)}">
+                  <article class="board-article" th:each="board : ${feedList}">
+                    <div class="post">
+                      <div class="post-header post-header-padding">
+                        <div class="board-profile">
+                          <div class="user-profile inline-block">
+                            <a th:href="${board.memberNickname}">
+                              <div class="user-profile-img pointer radius">
+                                <img th:unless="${board.profileImg}" src="https://via.placeholder.com/50">
+                                <img th:if="${board.profileImg}" th:src="${board.profileImg}">
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                        <a th:href="${board.memberNickname}">
+                          <div class="board-n-a pointer inline-block">
+                            <span th:text="${board.memberNickname}">작성자닉네임</span>
+                          </div>
+                          <div>
+                            <span th:text="${board.createdAt}">작성일</span>
+                          </div>
+                        </a>
+                        <!-- 옵션 모달창이 떠야돼 -->
+                        <a href="#">
+                          <div class="more-options pointer">...</div>
+                        </a>
+                      </div>
+                      <!-- 이미지 슬라이드 영역 -->
+                      <div class="post-images-container">
+                        <div class="image-slider">
+                          <button class="slider-button prev-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M15 18l-6-6 6-6" />
+                            </svg>
+                          </button>
+                          <button class="slider-button next-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M9 18l6-6-6-6" />
+                            </svg>
+                          </button>
+                          <th:block th:each="i : ${#numbers.sequence(0, #lists.size(board.imageList)-1)}">
+                            <div class="image-track" th:with="img = ${board.imageList[i]}">
+                              <img th:src="|${img.imgPath}|" class="post-image">
+                            </div>
+                          </th:block>
+                          <div class="slider-dots">
+                            <span class="dot ${index === 0 ? 'active' : ''}"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 게시물 정보 영역 -->
+                      <div class="important-box">
+                        <!-- 좋아요, 댓글, 북마크 버튼 등 -->
+                        <section class="section-1">
+                          <div class="box-1">
+                            <button class="action-button like-button pointer" aria-label="좋아요"
+                              data-board-no="${board.boardNo}">
+                              <svg aria-label="좋아요" class="like-icon"
+                                th:class="${board.likeCheck == 1} ? 'fa-solid' : 'fa-regular'" height="24" width="24"
+                                viewBox="0 0 24 24" id="boardLike">
+                                <path
+                                  d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z" />
+                              </svg>
+                            </button>
+                            <button class="action-button comment-button pointer" aria-label="댓글">
+                              <svg aria-label="댓글 달기" class="comment-icon" height="24" width="24" viewBox="0 0 24 24">
+                                <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none"
+                                  stroke="currentColor" stroke-linejoin="round" stroke-width="2" />
+                              </svg>
+                            </button>
+                          </div>
+                          <div class="box-2">
+                            <button class="action-button mark-button pointer" aria-label="저장"
+                              th:data-member-no="${board.boardNo}">
+                              <svg aria-label="저장" class="mark-icon"
+                                th:class="${board.markCheck == 1} ? 'fa-solid' : 'fa-regular'" height="24" width="24"
+                                viewBox="0 0 24 24" id="boardMark">
+                                <path
+                                  d="M20 22a.999.999 0 0 1-.687-.273L12 14.815l-7.313 6.912A1 1 0 0 1 3 21V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1Z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </section>
+                        <!-- 좋아요 수, 내용, 댓글 등 -->
+                        <div>좋아요 <span id="likeCount" th:text="${board.likeCount}">0</span>개</div>
+                        <div class="post-caption" id="contentContainer">
+                          <!-- 타임리프에서 넘어온 content를 여기에 삽입 -->
+                          <p id="shortContent"></p>
+                          <span id="fullContent" class="hidden-content"></span>
+                          <span id="moreBtn" class="more-btn">더보기</span>
+                        </div>
+                        <a th:href="${board.boardNo}">
+                          댓글 <span th:text="|[${board.commentCount}]|">0</span>개 보기...
+                        </a>
+                        <div class="comment-box pointer">
+                          <span>댓글 달기...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </th:block>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <!-- 세션에서 가져오기. -->
+      <!-- 회원 추천 섹션 -->
+      <!-- <section th:replace="~{fragments/memberRecommend :: memberRecommend}"></section> -->
+      <!-- 회원 추천 영역 -->
+      <section class="section-right">
+        <section class="right-div">
+          <!-- 내 프로필 -->
+          <div class="my-profile">
+            <div class="profile-img">
+              <img th:unless="${session.loginMember.profileImg}" src="https://via.placeholder.com/56">
+              <img th:if="${session.loginMember.profileImg}" th:src="${session.loginMember.profileImg}">
+            </div>
+            <div class="profile-info">
+              <div class="profile-nickname pointer">
+                <a th:href="#{/myPage/${session.loginMember.memberNickname}}">
+                  <span th:text="${session.loginMember.memberNickname}">내 닉네임</span>
+                </a>
+              </div>
+              <div class="profile-name">
+                <span th:text="${session.loginMember.memberName}">내 이름</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 추천 헤더 -->
+          <div class="recommend-header">
+            <span class="recommend-text">회원님을 위한 추천</span>
+            <span class="recommend-all pointer">모두 보기</span>
+          </div>
+
+          <!-- "recommend : ${recommendList}"  -->
+          <!-- 추천 목록 -->
+          <div class="recommend-list">
+            <!-- 걍 동기로 할래.. -->
+            <article th:each="recommend : ${recommendList.subList(0, 5)}" class="recommend-user">
+              <div class="recommend-user-img">
+                <img th:unless="${recommend.profileImg}" src="https://via.placeholder.com/32">
+                <img th:if="${recommend.profileImg}" th:src="${recommend.profileImg}">
+              </div>
+              <div class="recommend-user-info">
+                <div class="recommend-user-nickname pointer">
+                  <span th:text="${recommend.memberNickname}">해당 회원 닉네임</span>
+                </div>
+              </div>
+              <div class="recommend-follow pointer">
+                <span>팔로우</span>
+              </div>
+              <!-- 팔로우 누르면 바뀐 버튼이 나와야됨. 추후 수정 -->
+            </article>
+          </div>
+
+        </section>
+      </section>
+    </div>
+    <!-- </div> -->
+
+
+
+  </main>
+
+  <!-- 푸터 -->
+  <!-- <div th:replace="~{fragments/footer :: footer}"></div> -->
+
+
+  <script th:inline="javascript">
+    // 로그인 true, 비회원 false
+    const loginCheck = /*[[${session.loginMember != null}]]*/ false;
+    // 로그인한 회원 닉네임
+    const memberNickname = /*[[${session.loginMember?.memberNickname}]]*/ null;
+    // 상세조회한 게시글 정보
+    const boardDetail = /*[[${board}]]*/ null;
+
+  </script>
+
+  <!-- 스크립트 -->
+  <script src="/js/feed/feedStory.js"></script>
+  <script src="/js/feed/feedSlide.js"></script>
+  <script src="/js/feed/mainfeedInfiniteScroll.js"></script>
+  <script src="/js/feed/mainfeed.js"></script>
+</body>
+
+</html>

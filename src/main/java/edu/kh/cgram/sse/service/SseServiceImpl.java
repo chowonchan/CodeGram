@@ -35,11 +35,17 @@ public class SseServiceImpl implements SseService{
 	
 		return map;
 	}
+
+	
+	@Override
+	public boolean notReadCheck(int memberNo) {
+		return mapper.notReadCheck(memberNo);
+	}
 	
 	
 	@Override
 	public List<Notification> selectNotificationList(int memberNo) {
-		return mapper.selectNotification(memberNo);
+		return mapper.selectNotificationList(memberNo);
 	}
 	
 	

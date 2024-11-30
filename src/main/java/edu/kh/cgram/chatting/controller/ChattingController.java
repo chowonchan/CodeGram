@@ -44,6 +44,8 @@ public class ChattingController {
     = service.chatRoomList(loginMember.getMemberNo());
 
 		model.addAttribute("chatRoomList", chatRoomList);
+		
+		
 		return "chatting/chatting";
 	}
 	
@@ -132,6 +134,19 @@ public class ChattingController {
       return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
   
+  
+  @GetMapping("/selectNickname")
+  @ResponseBody
+  public String getPartnerNickname(@RequestParam("partnerNo") int partnerNo) {
+      return service.NicknameByPartnerNo(partnerNo);
+  }
+  
+  @GetMapping("/getMemberNo")
+  @ResponseBody
+  public int getMemberNoByNickname(@RequestParam("nickname") String nickname) {
+      return service.getMemberNoByNickname(nickname);
+  }
+
   
 
 }

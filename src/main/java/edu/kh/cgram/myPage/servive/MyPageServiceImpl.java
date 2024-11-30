@@ -2,6 +2,7 @@ package edu.kh.cgram.myPage.servive;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.mapper.MyPageMapper;
 
 /**
@@ -93,4 +96,16 @@ public class MyPageServiceImpl implements MyPageService {
       // 업데이트된 행의 개수가 1 이상이면 성공
       return result > 0;
   }
+  	@Override
+  	public List<BoardImg> getMemberPosts(int memberNo) {
+  		return mapper.selectMemberPosts(memberNo);
+  	}
+  	
+  	@Override
+  	public Member getMemberByNickname(String nickname) {
+  	    return mapper.findMemberByNickname(nickname);
+  	}
+  	
+
+
 }

@@ -173,6 +173,7 @@ body {
   /* 뷰포트 높이에서 상하 여백 제외 */
   overflow-y: auto;
   /* 내용이 많을 경우 스크롤 가능하도록 */
+  /* display: flex */
 }
 
 .my-profile {
@@ -245,11 +246,6 @@ body {
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 2px;
-}
-
-.recommend-user-subtitle {
-  color: var(--text-secondary);
-  font-size: 12px;
 }
 
 .recommend-follow {
