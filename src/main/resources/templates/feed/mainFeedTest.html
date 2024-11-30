@@ -12,6 +12,7 @@
   <link rel="stylesheet" th:href="@{/css/feed/feedSlide.css}">
   <link rel="stylesheet" th:href="@{/css/feed/memberRecommend.css}">
   <link rel="stylesheet" th:href="@{/css/feed/feedStory.css}">
+  <!-- <link rel="stylesheet" th:href="@{/css/feed/feedModal.css}"> -->
 
 </head>
 
@@ -62,7 +63,6 @@
 
             <div class="main_plus_right">
               <div class="main-container">
-                <!-- 피드 영역 - 무한 스크롤을 위한 container class 추가 -->
                 <!-- 게시물이 존재하지 않을 때 -->
                 <th:block th:if="${#lists.isEmpty(feedList)}">
                   <p>게시글이 존재하지 않습니다.</p>
@@ -92,9 +92,9 @@
                           </div>
                         </a>
                         <!-- 옵션 모달창이 떠야돼 -->
-                        <a href="#">
-                          <div class="more-options pointer">...</div>
-                        </a>
+                        <div class="post-options">
+                          <button class="more-options options-button" onclick="openModal()">...</button>
+                        </div>
                       </div>
                       <!-- 이미지 슬라이드 영역 -->
                       <div class="post-images-container">
@@ -252,6 +252,7 @@
   </script>
 
   <!-- 스크립트 -->
+  <!-- <script src="/js/feed/feedModal.js"></script> -->
   <script src="/js/feed/feedStory.js"></script>
   <script src="/js/feed/feedSlide.js"></script>
   <script src="/js/feed/mainfeedInfiniteScroll.js"></script>
