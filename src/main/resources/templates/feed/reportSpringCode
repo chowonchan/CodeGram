@@ -1,0 +1,175 @@
+
+---------------------------------------------------------------------------------
+[ReportDto]
+
+package com.yourproject.report.model.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ReportDTO {
+    private int reportNo;        // 신고 번호 (시퀀스)
+    private int memberNo;        // 신고한 회원 번호
+    private String createdAt;    // 신고 생성 시간
+    private String reportCategory; // 신고 이유
+    private char reportView;     // 신고 처리 상태 (기본값 'N')
+    private int contentNo;       // 신고된 게시물 번호
+    private char contentCategory; // 컨텐츠 카테고리 (피드 신고는 '1')
+}
+
+
+--------------------------------------------------------------------------------
+
+[ReportMapper]
+
+package com.yourproject.report.model.mapper;
+
+import com.yourproject.report.model.dto.ReportDTO;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface ReportMapper {
+    // 신고 생성
+    int insertReport(ReportDTO report);
+}
+
+--------------------------------------------------------------------------------
+
+[ReportService]
+
+package com.yourproject.report.service;
+
+import com.yourproject.report.model.dto.ReportDTO;
+
+public interface ReportService {
+    // 신고 생성
+    boolean createReport(ReportDTO report);
+}
+
+--------------------------------------------------------------------------------
+
+[ReportServiceImpl]
+
+package com.yourproject.report.service.impl;
+
+import com.yourproject.report.model.dto.ReportDTO;
+import com.yourproject.report.model.mapper.ReportMapper;
+import com.yourproject.report.service.ReportService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class ReportServiceImpl implements ReportService {
+
+    private final ReportMapper reportMapper;
+
+    @Override
+    @Transactional
+    public boolean createReport(ReportDTO report) {
+        // 신고 생성 로직
+        int result = reportMapper.insertReport(report);
+        return result > 0;
+    }
+}
+
+--------------------------------------------------------------------------------
+
+[ReportController]
+
+package com.yourproject.report.controller;
+
+import com.yourproject.member.model.dto.MemberDTO;
+import com.yourproject.report.model.dto.ReportDTO;
+import com.yourproject.report.service.ReportService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Controller
+@RequestMapping("/report")
+@RequiredArgsConstructor
+public class ReportController {
+
+    private final ReportService reportService;
+
+    @PostMapping("/create")
+    @ResponseBody
+    public ResponseEntity<?> createReport(
+            @RequestBody ReportDTO reportRequest, 
+            HttpSession session) {
+        
+        // 세션에서 로그인한 회원 정보 가져오기
+        MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        
+        if (loginMember == null) {
+            // 로그인되지 않은 경우 에러 응답
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        // ReportDTO 구성
+        ReportDTO report = ReportDTO.builder()
+            .memberNo(loginMember.getMemberNo())
+            .contentNo(reportRequest.getContentNo())
+            .reportCategory(reportRequest.getReportCategory())
+            .contentCategory('1')  // 피드 신고는 '1'로 고정
+            .reportView('N')  // 기본값 'N'
+            .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+            .build();
+
+        // 신고 처리
+        boolean result = reportService.createReport(report);
+
+        if (result) {
+            return ResponseEntity.ok().body("신고가 성공적으로 접수되었습니다.");
+        } else {
+            return ResponseEntity.status(500).body("신고 처리 중 오류가 발생했습니다.");
+        }
+    }
+}
+
+--------------------------------------------------------------------------------
+
+[report-mapper.xml]
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yourproject.report.model.mapper.ReportMapper">
+    
+    <!-- 신고 등록 쿼리 -->
+    <insert id="insertReport" parameterType="ReportDTO">
+        INSERT INTO REPORT (
+            REPORT_NO,
+            MEMBER_NO, 
+            REPORT_CATEGORY, 
+            CONTENT_NO, 
+            CONTENT_CATEGORY
+        ) VALUES (
+            SEQ_REPORT_NO.NEXTVAL,
+            #{memberNo},
+            #{reportCategory},
+            #{contentNo},
+            #{contentCategory}
+        )
+    </insert>
+</mapper>
+
+--------------------------------------------------------------------------------
+

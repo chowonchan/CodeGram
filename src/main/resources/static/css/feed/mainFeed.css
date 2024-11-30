@@ -10,13 +10,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.section-left-right{
+.section-left-right {
   margin: 0px;
   padding: 0px;
-  display:flex;
+  display: flex;
 }
 
-.section-left{
+.section-left {
   margin: 0px;
   padding: 0px;
 }
@@ -34,21 +34,31 @@ body {
 
 /* section-right 고정 */
 .section-right {
-  position: fixed;    /* 화면 상단에 고정 */
-  top: 0;              /* 화면의 상단에 고정 */
-  right: 0;            /* 화면의 오른쪽 끝에 배치 */
-  width: 300px;        /* section-right의 너비 설정 */
-  height: 100%;        /* 화면의 전체 높이를 차지하도록 설정 */
-  background-color: #fff;  /* 배경색 */
-  z-index: 10;         /* 다른 요소 위에 표시 */
-  padding-left: 64px;  /* section-right의 왼쪽에 64px 패딩 추가 */
-  transition: right 0.3s ease; /* 숨길 때 부드럽게 이동 */
+  position: fixed;
+  /* 화면 상단에 고정 */
+  top: 0;
+  /* 화면의 상단에 고정 */
+  right: 0;
+  /* 화면의 오른쪽 끝에 배치 */
+  width: 300px;
+  /* section-right의 너비 설정 */
+  height: 100%;
+  /* 화면의 전체 높이를 차지하도록 설정 */
+  background-color: #fff;
+  /* 배경색 */
+  z-index: 10;
+  /* 다른 요소 위에 표시 */
+  padding-left: 64px;
+  /* section-right의 왼쪽에 64px 패딩 추가 */
+  transition: right 0.3s ease;
+  /* 숨길 때 부드럽게 이동 */
 }
 
 /* 화면 크기가 일정 이하일 때 section-right 숨기기 */
 @media (max-width: 768px) {
   .section-right {
-    display: none;    /* 화면 크기가 768px 이하일 때 section-right 숨기기 */
+    display: none;
+    /* 화면 크기가 768px 이하일 때 section-right 숨기기 */
   }
 }
 
@@ -96,7 +106,7 @@ body {
   margin: 0 auto;
 }
 
-.main_plus_right{
+.main_plus_right {
   display: flex;
   margin: 0px;
 }
