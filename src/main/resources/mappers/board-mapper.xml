@@ -104,5 +104,34 @@
   	WHERE BOARD_NO = #{boardNo}
   	ORDER BY IMG_ORDER ASC
   </select>
+  
+  <!-- 게시글 상세 조회 -->
+    <select id="selectBoardDetail" resultType="Board">
+        SELECT 
+            BOARD_NO AS boardNo,
+            MEMBER_NO AS memberNo,
+            BOARD_CONTENT AS boardContent,
+            READ_COUNT AS readCount,
+            CREATED_AT AS createdAt,
+            (SELECT NICKNAME FROM MEMBER WHERE MEMBER_NO = b.MEMBER_NO) AS memberNickname,
+            (SELECT IMG_PATH FROM BOARD_IMG WHERE BOARD_NO = b.BOARD_NO AND IMG_ORDER = 1) AS imagePath,
+            (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = b.BOARD_NO) AS likeCount
+        FROM BOARD b
+        WHERE BOARD_NO = #{boardNo}
+    </select>
+
+    <!-- 게시글 댓글 조회 -->
+    <select id="selectBoardComments" resultType="Comment">
+        SELECT 
+            COMMENT_NO AS commentNo,
+            BOARD_NO AS boardNo,
+            MEMBER_NO AS memberNo,
+            COMMENT_CONTENT AS commentContent,
+            CREATED_AT AS createdAt,
+            (SELECT NICKNAME FROM MEMBER WHERE MEMBER_NO = c.MEMBER_NO) AS memberNickname
+        FROM COMMENT c
+        WHERE BOARD_NO = #{boardNo}
+        ORDER BY CREATED_AT ASC
+    </select>
 
 </mapper>
