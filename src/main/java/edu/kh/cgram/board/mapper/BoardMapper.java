@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.board.dto.Comment;
 import io.lettuce.core.dynamic.annotation.Param;
 
 
@@ -28,4 +29,10 @@ public interface BoardMapper {
  
 	// 게시글 상세 조회
     int selectDetail(int boardNo);
+
+ // 게시글 상세 조회
+    Board selectBoardDetail(int boardNo);
+
+    // 게시글 댓글 조회
+    List<Comment> selectBoardComments(int boardNo);
 }

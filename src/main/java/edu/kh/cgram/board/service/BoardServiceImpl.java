@@ -1,12 +1,15 @@
 package edu.kh.cgram.board.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.board.dto.Comment;
 import edu.kh.cgram.board.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -40,4 +43,14 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardImg> getRandomPosts(int memberNo) {
 		return mapper.selectRandomPosts(memberNo);
 	}
+	
+	@Override
+    public Board selectBoardDetail(int boardNo) {
+        return mapper.selectBoardDetail(boardNo);
+    }
+
+    @Override
+    public List<Comment> selectBoardComments(int boardNo) {
+        return mapper.selectBoardComments(boardNo);
+    }
 }
