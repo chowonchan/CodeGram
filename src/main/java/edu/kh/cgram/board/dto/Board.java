@@ -24,6 +24,7 @@ public class Board {
     private int    boardNo;
     private String boardContent;
     private int    readCount;
+    private String imagePath;
     
     // 작성일 수정일
     private String createdAt;

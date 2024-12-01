@@ -10,14 +10,14 @@
 </head>
 
 <body>
-  <button id="openModalButton">modal open</button>
+  <button id="openModalButton" data-board-no="1">modal open</button>
 
   <!-- 모달 창 -->
   <div class="modal" id="feedModal">
     <div class="modal-container">
       <!-- 왼쪽 이미지 영역 -->
       <div class="modal-image">
-        <img id="feedImage" src="/images/user.png" alt="Feed Image">
+        <img id="feedImage" alt="Feed Image">
       </div>
 
       <!-- 오른쪽 상세 내용 영역 -->
@@ -26,9 +26,9 @@
         <div class="modal-header">
           <div class="user-info">
             <span class="user-avatar">
-              <img src="/images/default-avatar.png" alt="User Avatar">
+              <img id="userAvatar" src="/images/default-avatar.png" alt="User Avatar">
             </span>
-            <a href="#" class="user-nickname" style="padding-top: 3px;">username</a>
+            <a id="userNickname" href="#" class="user-nickname" style="padding-top: 3px;">username</a>
           </div>
           <div class="modal-options">
             <span class="fa-solid fa-ellipsis"></span>
@@ -41,11 +41,14 @@
           <div class="feed-description">
             <div class="user-info">
               <span class="user-avatar">
-                <img src="/images/default-avatar.png" alt="User Avatar">
+                <img id="feedUserAvatar" src="/images/default-avatar.png" alt="User Avatar">
               </span>
               <div class="feed-info">
-                <span class="feed-text"><a href="#" class="user-nickname">username</a> 이곳은 피드 설명이 들어가는 영역입니다.</span>
-                <span class="feed-time">하루 전</span>
+                <span class="feed-text">
+                  <a id="feedUserNickname" href="#" class="user-nickname"></a> 
+                  <span id="feedDescription">이곳은 피드 설명이 들어가는 영역입니다.</span>
+                </span>
+                <span id="feedTime" class="feed-time">하루 전</span>
               </div>
             </div>
           </div>
@@ -77,12 +80,12 @@
             </div>
           </div>
           <div class="likes-count">
-            <span class="like-count">좋아요 65개</span>
-            <span class="feed-time">11월 30일</span>
+            <span id="likesCount" class="like-count"></span>
+            <span id="feedCreatedTime" class="feed-time"></span>
           </div>
           <div class="comment-input">
             <span class="fa-regular fa-face-smile"></span>
-            <textarea rows="4" cols="50" placeholder="댓글 달기..."></textarea>
+            <textarea id="commentInput" rows="4" cols="50" placeholder="댓글 달기..."></textarea>
             <button id="commentSubmit">게시</button>
           </div>
         </div>
