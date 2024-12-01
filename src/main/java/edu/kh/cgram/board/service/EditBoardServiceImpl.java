@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class EditBoardServiceImpl implements EditBoardService {
     private String webPath;
     
     private final EditBoardMapper mapper;
-    
+
     @Override
     public int boardInsert(Board inputBoard, List<MultipartFile> images) {
         
@@ -83,4 +84,5 @@ public class EditBoardServiceImpl implements EditBoardService {
         
         return result;
     }
+
 }
