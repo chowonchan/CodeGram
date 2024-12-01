@@ -1,7 +1,65 @@
+const followTabs = {
+  followTab: null,
+  followerTab: null,
+  followListContent: null,
+  followerListContent: null,
+  followList: null,
+  followerList: null,
+};
 
 document.addEventListener("DOMContentLoaded", async() => {
 
   const defaultImageUrl = "/images/defaultImg.png";
+
+  
+    // 모달 및 요소 관련 추가
+    const followModals = {
+      followListModal: document.getElementById("followListModal"),
+    };
+    const followTabs = {
+      followTab: document.getElementById("followTab"),
+      followerTab: document.getElementById("followerTab"),
+      followListContent: document.getElementById("followListContent"),
+      followerListContent: document.getElementById("followerListContent"),
+      followList: document.getElementById("followList"),
+      followerList: document.getElementById("followerList"),
+    };
+    
+
+    followTabs.followList = document.getElementById("followList");
+    if (!followTabs.followList) {
+      console.error("팔로우 리스트 요소를 찾을 수 없습니다.");
+      return; // 함수 실행 중단
+    }
+    
+
+  // 팔로우 리스트 모달 열기
+  document.getElementById("followList")?.addEventListener("click", () => {
+    followModals.followListModal.style.display = "flex";
+    loadFollowList(); // 기본적으로 팔로우 리스트 로드
+  });
+
+  // 탭 전환
+  followTabs.followTab.addEventListener("click", () => {
+    followTabs.followTab.classList.add("active");
+    followTabs.followerTab.classList.remove("active");
+    followTabs.followListContent.style.display = "block";
+    followTabs.followerListContent.style.display = "none";
+    loadFollowList();
+  });
+
+  followTabs.followerTab.addEventListener("click", () => {
+    followTabs.followTab.classList.remove("active");
+    followTabs.followerTab.classList.add("active");
+    followTabs.followListContent.style.display = "none";
+    followTabs.followerListContent.style.display = "block";
+    loadFollowerList();
+  });
+
+  // 모달 닫기
+  document.getElementById("closeFollowList")?.addEventListener("click", () => {
+    followModals.followListModal.style.display = "none";
+  });
 
   // 모달 관련 요소
   const modals = {
@@ -334,6 +392,194 @@ async function startChatting(nickname) {
     alert(error.message);
   }
 }
+
+// 차단 목록 모달 열기
+document.getElementById("blockList")?.addEventListener("click", async () => {
+  try {
+    const response = await fetch("/block/blockList");
+    if (!response.ok) throw new Error("차단 목록 데이터를 불러오는 데 실패했습니다.");
+
+    const data = await response.json();
+
+    const blockedUsers = data.blockList;
+    console.log("서버에서 반환된 데이터:", data); // 서버 데이터 확인
+    const userList = document.getElementById("blockedUsers");
+    userList.innerHTML = "";
+
+    if (!blockedUsers || blockedUsers.length === 0) {
+      const emptyMessage = document.createElement("p");
+      emptyMessage.textContent = "차단한 회원이 없습니다.";
+      emptyMessage.classList.add("empty-message");
+      userList.appendChild(emptyMessage);
+    } else {
+      blockedUsers.forEach(user => {
+        console.log("차단된 사용자 데이터:", user); // 각 사용자 데이터 확인
+        const userItem = document.createElement("li");
+        userItem.className = "user-item";
+        userItem.innerHTML = `
+          <img src="${user.PROFILE_IMG}" class="profile-img">
+          <span class="nickname">${user.MEMBER_NICKNAME || '알 수 없음'}</span>
+          <button class="unblock-btn" data-user-id="${user.MEMBERNO}">차단 취소</button>
+        `;
+        console.log("생성된 버튼의 data-user-id 값:", user.MEMBERNO);
+        userList.appendChild(userItem);
+      });
+    }
+
+    // 모달 표시
+    const blockListModal = document.getElementById("blockListModal");
+    blockListModal.style.display = "flex"; // 모달 보이기
+  } catch (err) {
+    alert("차단 목록을 불러오는 중 오류가 발생했습니다.");
+    console.error(err);
+  }
+});
+
+// 모달 닫기 버튼
+document.getElementById("closeBlockList")?.addEventListener("click", () => {
+  const blockListModal = document.getElementById("blockListModal");
+  blockListModal.style.display = "none"; // 모달 숨기기
+});
+
+
+// 차단 취소 버튼 이벤트 처리
+document.getElementById("blockedUsers").addEventListener("click", async (event) => {
+  if (event.target.classList.contains("unblock-btn")) {
+    const userId = event.target.dataset.userId; // 버튼에 저장된 사용자 ID
+        // userId 값 검증
+        if (!userId || userId === "undefined") {
+          alert("차단 취소할 사용자 ID를 찾을 수 없습니다.");
+          console.error("잘못된 userId:", userId);
+          return;
+        }
+    try {
+      // 서버로 DELETE 요청 보내기
+      const response = await fetch(`/block/unBlock`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ blockedMemberNo: userId }),
+      });
+
+      if (!response.ok) throw new Error("차단 해제 요청 실패");
+
+      const result = await response.json();
+      if (result.success) {
+        // DOM에서 사용자 항목 제거
+        event.target.closest(".user-item").remove();
+        alert(result.message || "차단이 해제되었습니다.");
+      } else {
+        alert(result.message || "차단 해제 중 문제가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("차단 해제 요청 중 오류:", error);
+      alert("차단 해제 요청 중 문제가 발생했습니다.");
+    }
+  }
+});
+
+  // 팔로우 목록 로드
+  async function loadFollowList() {
+    try {
+      const response = await fetch("/follow/followList");
+      const data = await response.json();
+      followTabs.followList.innerHTML = "";
+      console.log("followTabs.followList:", followTabs.followList);
+
+      if (data.length === 0) {
+        followTabs.followList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
+      } else {
+        data.forEach(user => {
+          const userItem = document.createElement("li");
+          userItem.className = "user-item";
+          userItem.innerHTML = `
+            <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
+            <span class="nickname">${user.MEMBER_NICKNAME}</span>
+            <button class="unfollow-btn" data-user-id="${user.MEMBERNO}">팔로우 취소</button>
+          `;
+          followTabs.followList.appendChild(userItem);
+        });
+      }
+    } catch (error) {
+      console.error("팔로우 목록 로드 실패:", error);
+    }
+  }
+
+  // 팔로워 목록 로드
+  async function loadFollowerList() {
+    try {
+      const response = await fetch("/follow/followerList");
+      const data = await response.json();
+      followTabs.followerList.innerHTML = "";
+
+      if (data.length === 0) {
+        followTabs.followerList.innerHTML = "<p class='empty-message'>팔로워가 없습니다.</p>";
+      } else {
+        data.forEach(user => {
+          const userItem = document.createElement("li");
+          userItem.className = "user-item";
+          userItem.innerHTML = `
+            <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
+            <span class="nickname">${user.MEMBER_NICKNAME}</span>
+            <button class="follow-back-btn" data-user-id="${user.MEMBERNO}">맞팔로우</button>
+          `;
+          followTabs.followerList.appendChild(userItem);
+        });
+      }
+    } catch (error) {
+      console.error("팔로워 목록 로드 실패:", error);
+    }
+  }
+
+  // 팔로우 취소 버튼 이벤트
+  followTabs.followList.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("unfollow-btn")) {
+      const userId = event.target.dataset.userId;
+
+      try {
+        const response = await fetch(`/follow/unfollow/${userId}`, { method: "DELETE" });
+
+        if (response.ok) {
+          event.target.closest(".user-item").remove();
+          alert("팔로우를 취소했습니다.");
+        } else {
+          alert("팔로우 취소 실패.");
+        }
+      } catch (error) {
+        console.error("팔로우 취소 중 오류:", error);
+      }
+    }
+  });
+
+  // 맞팔로우 버튼 이벤트
+  followTabs.followerList.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("follow-back-btn")) {
+      const userId = event.target.dataset.userId;
+
+      try {
+        const response = await fetch(`/follow/follow/${userId}`, { method: "POST" });
+
+        if (response.ok) {
+          event.target.textContent = "팔로우 완료";
+          event.target.disabled = true;
+        } else {
+          alert("맞팔로우 실패.");
+        }
+      } catch (error) {
+        console.error("맞팔로우 중 오류:", error);
+      }
+    }
+  });
+
+
+
+
+
+
+
+
+
 
 // 탭 초기화
 function initTabs(tabs) {

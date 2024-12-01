@@ -1,5 +1,8 @@
 package edu.kh.cgram.follow.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,16 @@ public class FollowServiceImpl implements FollowService{
 public boolean checkFollowStatus(int loggedInMemberNo, int profileMemberNo) {
 	int result = mapper.checkFollowStatus(loggedInMemberNo, profileMemberNo);
 	return result > 0;
+}
+
+@Override
+public List<Map<String, Object>> getFollowingList(int memberNo) {
+    return mapper.getFollowingList(memberNo);
+}
+
+@Override
+public List<Map<String, Object>> getFollowerList(int memberNo) {
+    return mapper.getFollowerList(memberNo);
 }
 
 }
