@@ -3,6 +3,7 @@ package edu.kh.cgram.board.service;
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.mapper.EditBoardMapper;
+import edu.kh.cgram.common.exception.FileUploadFailException;
 import edu.kh.cgram.common.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class EditBoardServiceImpl implements EditBoardService {
     private String webPath;
     
     private final EditBoardMapper mapper;
+
 
     @Override
     public int boardInsert(Board inputBoard, List<MultipartFile> images) {
@@ -85,4 +87,72 @@ public class EditBoardServiceImpl implements EditBoardService {
         return result;
     }
 
+
+    @Override
+    public int boardDelete(int memberNo, int boardNo) {
+        return mapper.boardDelete(memberNo, boardNo);
+    }
+
+
+    @Override
+    public int boardUpdate(Board updateBoard, List<MultipartFile> images, String deleteOrderList) {
+
+        int result = mapper.boardUpdate(updateBoard);
+        if(result == 0) return 0;
+
+        if(deleteOrderList != null && deleteOrderList.equals("") == false) {
+            result = mapper.deleteImage(deleteOrderList, updateBoard.getBoardNo());
+
+            if(result == 0) {
+                throw new RuntimeException("이미지 삭제 실패");
+            }
+        }
+
+        List<BoardImg> uploadImgs = new ArrayList<>();
+
+
+        int i = 1;
+        for(MultipartFile img : images) {
+            if(images.get(i).isEmpty()) continue;
+
+
+            BoardImg boardImg = new BoardImg();
+            boardImg.setBoardNo(updateBoard.getBoardNo());
+            boardImg.setImgOrder(i++);
+            String rename = FileUtil.rename(img.getOriginalFilename());
+            boardImg.setImgRename(rename);
+
+            boardImg.setImgPath(webPath);
+
+            boardImg.setUploadFile(img);
+            uploadImgs.add(boardImg);
+
+            result = mapper.updateImage(img);
+
+            if(result == 0) {
+                result = mapper.boardImgInsert(uploadImgs);
+            }
+
+            if(result == 0) {
+                throw new RuntimeException("이미지 DB 추가 실패");
+            }
+
+        }
+
+
+        if(uploadImgs.isEmpty()) return result;
+
+        try {
+            for(BoardImg img : uploadImgs) {
+                img.getUploadFile()
+                        .transferTo(new File(folderPath + img.getImgRename()));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new FileUploadFailException();
+        }
+
+        return result;
+
+    }
 }

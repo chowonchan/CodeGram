@@ -58,11 +58,16 @@ public class EditBoardController {
     @ResponseBody
     @PostMapping("{boardNo}/updateFeed")
     public int updateFeed(
+            @ModelAttribute Board updateBoard,
             @PathVariable("boardNo") int boardNo,
-            @SessionAttribute("loginMember") Member loginMember
+            @SessionAttribute("loginMember") Member loginMember,
+            @RequestParam("images") List<MultipartFile> images,
+            @RequestParam(value="deleteOrderList", required = false) String deleteOrderList
     ) {
 
-        return 0;
+        updateBoard.setMemberNo(loginMember.getMemberNo());
+
+        return editBoardService.boardUpdate(updateBoard, images, deleteOrderList);
     }
 
     @PostMapping("delete")
