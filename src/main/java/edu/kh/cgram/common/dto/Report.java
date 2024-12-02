@@ -16,14 +16,22 @@ import lombok.ToString;
 public class Report {
 	
 	private int reportNo;
+	private int memberNo;
+	private String createdAt;
+	private String reportCategory;
+	private char reportView;
+	private int contentNo;
+	private char contentCategory;
+	
+	
 	private int boardNo;
 	private String commentContent;
 	private String commentDelFl;
 	private String boardDelFl;
 	private String boardContent;
 	private String memberNickname;
-	private String createdAt;
-	private String reportCategory;
-	private String reportView;
-	private int contentNo;
+	
+	
+	
+	
 }

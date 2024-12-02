@@ -104,4 +104,3 @@ document.addEventListener('DOMContentLoaded', function() {
       moreBtnEl.style.display = 'none';
   }
 });
-

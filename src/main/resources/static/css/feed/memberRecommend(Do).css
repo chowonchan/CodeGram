@@ -1,10 +1,4 @@
 /* 전역 스타일 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
 
 :root {
   --feed-sidebar-width: 319px;
@@ -13,11 +7,6 @@
   --primary-color: #0095f6;
   --text-secondary: #8e8e8e;
   --border-color: #DBDBDB;
-}
-
-body {
-  background-color: #ffffff;
-  color: #333;
 }
 
 /* 헤더 스타일 */

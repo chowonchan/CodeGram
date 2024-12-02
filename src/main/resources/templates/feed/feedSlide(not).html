@@ -1,0 +1,26 @@
+<!-- 이미지 슬라이드 영역 -->
+<div class="post-images-container">
+  <div class="image-slider">
+    <button class="slider-button prev-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
+    <button class="slider-button next-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </button>
+    <div class="image-track">
+      <th:block th:each="i : ${#numbers.sequence(0, #lists.size(board.imageList)-1)}">
+        <th:block th:with="img = ${board.imageList[i]}">
+          <img th:src="|${img.imgPath}${img.imgRename}|" class="post-image">
+        </th:block>
+      </th:block>
+    </div>
+    <div class="slider-dots">
+    </div>
+  </div>
+</div>
