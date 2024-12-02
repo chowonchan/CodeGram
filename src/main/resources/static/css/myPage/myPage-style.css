@@ -434,3 +434,11 @@ main {
   background-color: #e74c3c; /* 호버 시 배경색 변경 */
   color: #fff; /* 호버 시 텍스트 색상 변경 */
 }
+
+.empty-message {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
