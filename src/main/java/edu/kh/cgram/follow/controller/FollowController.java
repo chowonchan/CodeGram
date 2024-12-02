@@ -146,6 +146,10 @@ public class FollowController {
   public ResponseEntity<List<Map<String, Object>>> getFollowList(@SessionAttribute("loginMember") Member loginMember) {
       int memberNo = loginMember.getMemberNo();
       List<Map<String, Object>> followList = service.getFollowingList(memberNo);
+      
+      // 서버 로그에 데이터 출력
+      System.out.println("팔로우 리스트: " + followList);
+      
       return ResponseEntity.ok(followList);
   }
 

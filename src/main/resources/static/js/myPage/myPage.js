@@ -1,49 +1,51 @@
-const followTabs = {
-  followTab: null,
-  followerTab: null,
-  followListContent: null,
-  followerListContent: null,
-  followList: null,
-  followerList: null,
-};
-
 document.addEventListener("DOMContentLoaded", async() => {
 
   const defaultImageUrl = "/images/defaultImg.png";
 
   
-    // 모달 및 요소 관련 추가
-    const followModals = {
-      followListModal: document.getElementById("followListModal"),
-    };
-    const followTabs = {
-      followTab: document.getElementById("followTab"),
-      followerTab: document.getElementById("followerTab"),
-      followListContent: document.getElementById("followListContent"),
-      followerListContent: document.getElementById("followerListContent"),
-      followList: document.getElementById("followList"),
-      followerList: document.getElementById("followerList"),
-    };
-    
+  // 모달 및 요소 관련 추가
+  const followModals = {
+    followListModal: document.getElementById("followListModal"),
+  };
 
-    followTabs.followList = document.getElementById("followList");
-    if (!followTabs.followList) {
-      console.error("팔로우 리스트 요소를 찾을 수 없습니다.");
-      return; // 함수 실행 중단
-    }
-    
+  const followTabs = {
+    followTab: document.getElementById("followTab"),
+    followerTab: document.getElementById("followerTab"),
+    followListContent: document.getElementById("followListContent"),
+    followerListContent: document.getElementById("followerListContent"),
+    followingList: document.getElementById("followingList"),
+    followerList: document.getElementById("followerList"),
+  };
 
-  // 팔로우 리스트 모달 열기
-  document.getElementById("followList")?.addEventListener("click", () => {
-    followModals.followListModal.style.display = "flex";
-    loadFollowList(); // 기본적으로 팔로우 리스트 로드
+  // 팔로우 목록 버튼 클릭 이벤트 추가
+  const followListButton = document.getElementById("followList");
+  followListButton?.addEventListener("click", () => {
+    followModals.followListModal.style.display = "flex"; // 모달 열기
+    loadFollowList(); // 팔로우 리스트 로드
   });
+
+  // 팔로우 리스트 모달 닫기
+  document.getElementById("closeFollowList")?.addEventListener("click", () => {
+    followModals.followListModal.style.display = "none"; // 모달 닫기
+  });
+
+  // followTabs.followingList = document.getElementById("followingList");
+  // if (!followTabs.followingList) {
+  //   console.error("팔로우 리스트 요소를 찾을 수 없습니다.");
+  //   return; // 함수 실행 중단
+  // }
+    
+  // // 팔로우 리스트 모달 열기
+  // document.getElementById("followingList")?.addEventListener("click", () => {
+  //   followModals.followListModal.style.display = "flex";
+  //   loadFollowList(); // 기본적으로 팔로우 리스트 로드
+  // });
 
   // 탭 전환
   followTabs.followTab.addEventListener("click", () => {
     followTabs.followTab.classList.add("active");
     followTabs.followerTab.classList.remove("active");
-    followTabs.followListContent.style.display = "block";
+    followTabs.followingListContent.style.display = "block";
     followTabs.followerListContent.style.display = "none";
     loadFollowList();
   });
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async() => {
   followTabs.followerTab.addEventListener("click", () => {
     followTabs.followTab.classList.remove("active");
     followTabs.followerTab.classList.add("active");
-    followTabs.followListContent.style.display = "none";
+    followTabs.followingListContent.style.display = "none";
     followTabs.followerListContent.style.display = "block";
     loadFollowerList();
   });
@@ -135,12 +137,6 @@ document.addEventListener("DOMContentLoaded", async() => {
     buttons.blockUser?.addEventListener("click", () => {
       modals.profileBlockModal.style.display = "flex"; // 프로필 차단 모달 열기
     });
-
-  // // 신고 버튼 클릭 시 profileBlockModal 열기
-  // buttons.blocktUserButton?.addEventListener("click", () => {
-  //   modals.profileBlockModal.style.display = "flex"; // 차단 모달 열기
-  //   modals.profileMoreModal.style.display = "none"; // 더보기 모달 닫기
-  // });
   
 
 
@@ -362,7 +358,7 @@ buttons.optionBlock?.addEventListener("click", async () => {
 
   // 탭 초기화 및 클릭 이벤트
   initTabs(tabs);
-});
+
 
 // 닉네임 추출
 function extractNicknameFromURL() {
@@ -417,7 +413,7 @@ document.getElementById("blockList")?.addEventListener("click", async () => {
         const userItem = document.createElement("li");
         userItem.className = "user-item";
         userItem.innerHTML = `
-          <img src="${user.PROFILE_IMG}" class="profile-img">
+          <img src="${user.PROFILE_IMG ||'/images/defaultImg.png'}" class="profile-img">
           <span class="nickname">${user.MEMBER_NICKNAME || '알 수 없음'}</span>
           <button class="unblock-btn" data-user-id="${user.MEMBERNO}">차단 취소</button>
         `;
@@ -479,16 +475,20 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
   }
 });
 
-  // 팔로우 목록 로드
+  // 팔로잉 목록 로드
   async function loadFollowList() {
     try {
       const response = await fetch("/follow/followList");
+      if (!response.ok) throw new Error("팔로우 리스트를 가져오는 데 실패했습니다.");
+
       const data = await response.json();
-      followTabs.followList.innerHTML = "";
-      console.log("followTabs.followList:", followTabs.followList);
+      console.log("팔로우 리스트 데이터:", data); // 콘솔에 출력
+
+      followTabs.followingList.innerHTML = "";
+      console.log("followTabs.followingList:", followTabs.followingList);
 
       if (data.length === 0) {
-        followTabs.followList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
+        followTabs.followingList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
       } else {
         data.forEach(user => {
           const userItem = document.createElement("li");
@@ -497,8 +497,8 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
             <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
             <span class="nickname">${user.MEMBER_NICKNAME}</span>
             <button class="unfollow-btn" data-user-id="${user.MEMBERNO}">팔로우 취소</button>
-          `;
-          followTabs.followList.appendChild(userItem);
+        `;
+          followTabs.followingList.appendChild(userItem);
         });
       }
     } catch (error) {
@@ -570,6 +570,8 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
         console.error("맞팔로우 중 오류:", error);
       }
     }
+
+
   });
 
 
@@ -619,4 +621,8 @@ function renderPosts(posts, type) {
       </a>`;
     postsContent.appendChild(postItem);
   });
+
+
 }
+
+});
