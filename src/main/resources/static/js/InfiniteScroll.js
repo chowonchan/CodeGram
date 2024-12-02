@@ -15,7 +15,7 @@ class InfiniteScroll {
   constructor(options) {
     this.container = document.querySelector(options.container);
     this.itemsWrapper = document.querySelector(options.itemsWrapper);
-    this.loadMore = options.loadMore;
+    this.loadMore = options.loadMore; // fetchMoreFeedItems
     this.threshold = options.threshold || 100;
     this.loadingIndicator = options.loadingIndicator || '';
     this.debounceTime = options.debounceTime || 200;
@@ -54,15 +54,22 @@ class InfiniteScroll {
    * 스크롤이 하단 근처에 도달하면 새로운 아이템을 로드
    */
   async handleScroll() {
-    if (this.isLoading || !this.hasMore) return;
 
+    console.log("handleScroll()");
+    console.log("this.container.clientHeight : ", this.container.clientHeight); 
+    console.log("this.container.scrollHeight : ", this.container.scrollHeight);
+    console.log("this.container.scrollTop : ", this.container.scrollTop);
+    
+    if (this.isLoading || !this.hasMore) return;
+    
     const containerHeight = this.container.clientHeight;
     const scrollHeight = this.container.scrollHeight;
     const scrollTop = this.container.scrollTop;
-
+    
+    console.log(scrollHeight - (scrollTop + containerHeight));
     // 스크롤이 하단 임계값에 도달했는지 확인
     if (scrollHeight - (scrollTop + containerHeight) < this.threshold) {
-      await this.loadMoreItems();
+      // await this.loadMoreItems();
     }
   }
 
@@ -77,7 +84,7 @@ class InfiniteScroll {
       this.showLoading();
 
       // loadMore 함수 실행하여 새로운 데이터 가져오기
-      const result = await this.loadMore(this.page);
+      const result = await this.loadMore(this.page); // fetchMoreFeedItems
 
       // 결과 처리
       if (result) {
@@ -129,8 +136,14 @@ class InfiniteScroll {
    * @returns {Function} 디바운스된 함수
    */
   debounce(func, wait) {
+    console.log("debounce()");
+    console.log(func);
+    console.log(wait);
+
     let timeout;
-    return function executedFunction(...args) {
+    const fn = function executedFunction(...args) {
+      console.log("executedFunction()");
+
       const later = () => {
         clearTimeout(timeout);
         func(...args);
@@ -138,6 +151,9 @@ class InfiniteScroll {
       clearTimeout(timeout);
       timeout = setTimeout(later, wait);
     };
+
+    console.log(fn);
+    return fn;
   }
 
   

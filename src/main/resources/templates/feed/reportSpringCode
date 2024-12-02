@@ -1,6 +1,6 @@
 
 ---------------------------------------------------------------------------------
-[ReportDto]
+[Report]
 
 package com.yourproject.report.model.dto;
 
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReportDTO {
+public class Report {
     private int reportNo;        // 신고 번호 (시퀀스)
     private int memberNo;        // 신고한 회원 번호
     private String createdAt;    // 신고 생성 시간
@@ -30,13 +30,13 @@ public class ReportDTO {
 
 package com.yourproject.report.model.mapper;
 
-import com.yourproject.report.model.dto.ReportDTO;
+import com.yourproject.report.model.dto.Report;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ReportMapper {
     // 신고 생성
-    int insertReport(ReportDTO report);
+    int insertReport(Report report);
 }
 
 --------------------------------------------------------------------------------
@@ -45,11 +45,11 @@ public interface ReportMapper {
 
 package com.yourproject.report.service;
 
-import com.yourproject.report.model.dto.ReportDTO;
+import com.yourproject.report.model.dto.Report;
 
 public interface ReportService {
     // 신고 생성
-    boolean createReport(ReportDTO report);
+    boolean createReport(Report report);
 }
 
 --------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public interface ReportService {
 
 package com.yourproject.report.service.impl;
 
-import com.yourproject.report.model.dto.ReportDTO;
+import com.yourproject.report.model.dto.Report;
 import com.yourproject.report.model.mapper.ReportMapper;
 import com.yourproject.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +73,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional
-    public boolean createReport(ReportDTO report) {
+    public boolean createReport(Report report) {
         // 신고 생성 로직
         int result = reportMapper.insertReport(report);
         return result > 0;
@@ -87,7 +87,7 @@ public class ReportServiceImpl implements ReportService {
 package com.yourproject.report.controller;
 
 import com.yourproject.member.model.dto.MemberDTO;
-import com.yourproject.report.model.dto.ReportDTO;
+import com.yourproject.report.model.dto.Report;
 import com.yourproject.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -111,7 +111,7 @@ public class ReportController {
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity<?> createReport(
-            @RequestBody ReportDTO reportRequest, 
+            @RequestBody Report reportRequest, 
             HttpSession session) {
         
         // 세션에서 로그인한 회원 정보 가져오기
@@ -122,8 +122,8 @@ public class ReportController {
             return ResponseEntity.status(401).body("로그인이 필요합니다.");
         }
 
-        // ReportDTO 구성
-        ReportDTO report = ReportDTO.builder()
+        // Report 구성
+        Report report = Report.builder()
             .memberNo(loginMember.getMemberNo())
             .contentNo(reportRequest.getContentNo())
             .reportCategory(reportRequest.getReportCategory())
@@ -154,7 +154,7 @@ public class ReportController {
 <mapper namespace="com.yourproject.report.model.mapper.ReportMapper">
     
     <!-- 신고 등록 쿼리 -->
-    <insert id="insertReport" parameterType="ReportDTO">
+    <insert id="insertReport" parameterType="Report">
         INSERT INTO REPORT (
             REPORT_NO,
             MEMBER_NO, 

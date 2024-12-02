@@ -1,0 +1,47 @@
+<section class="section-right">
+  <section class="right-div">
+    <!-- 내 프로필 -->
+    <div class="recommend-my-profile">
+      <div class="recommend-profile-img">
+        <img th:unless="${session.loginMember.profileImg}" src="https://via.placeholder.com/56">
+        <img th:if="${session.loginMember.profileImg}" th:src="${session.loginMember.profileImg}">
+      </div>
+      <div class="recommend-profile-info">
+        <div class="recommend-profile-nickname pointer">
+          <a th:href="#{/myPage/${session.loginMember.memberNickname}}">
+            <span th:text="${session.loginMember.memberNickname}">내 닉네임</span>
+          </a>
+        </div>
+        <div class="recommend-profile-name">
+          <span th:text="${session.loginMember.memberName}">내 이름</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 추천 헤더 -->
+    <div class="recommend-header">
+      <span class="recommend-text">회원님을 위한 추천</span>
+      <span class="recommend-all pointer">모두 보기</span>
+    </div>
+
+    <!-- 추천 목록 -->
+    <div class="recommend-list">
+      <!-- 걍 동기로 할래.. -->
+      <article th:each="recommend : ${recommendList.subList(0, 5)}" class="recommend-user">
+        <div class="recommend-user-img">
+          <img th:unless="${recommend.profileImg}" src="https://via.placeholder.com/32">
+          <img th:if="${recommend.profileImg}" th:src="${recommend.profileImg}">
+        </div>
+        <div class="recommend-user-info">
+          <div class="recommend-user-nickname pointer">
+            <span th:text="${recommend.memberNickname}">해당 회원 닉네임</span>
+          </div>
+        </div>
+        <div class="recommend-follow pointer">
+          <span>팔로우</span>
+          <!-- 팔로우 누르면 바뀐 버튼이 나와야됨. 추후 수정 -->
+        </div>
+      </article>
+    </div>
+  </section>
+</section> <!-- 회원 추천 영역 end -->

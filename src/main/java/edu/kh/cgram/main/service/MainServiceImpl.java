@@ -90,7 +90,7 @@ public class MainServiceImpl implements MainService {
 		// 1. memberNo가 팔로우하고있는 회원들 조회
 		List<Follow> followList = mapper.getFollowList(memberNo);
 		
-		// 2. 팔로우하고 있는 회원들 Peed의 전체 개수 조회 ( 삭제되지 않은 글만 카운트)
+		// 2. 팔로우하고 있는 회원들 Feed의 전체 개수 조회 ( 삭제되지 않은 글만 카운트)
 		int followListCount = mapper.getFollowListCount(memberNo);
 		
 		// 3. followListCount, cp를 사용해
