@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -11,87 +11,149 @@
 
 <body>
   <button id="openModalButton" data-board-no="1">modal open</button>
+ -->
+
+  <!-- 모달 오버레이 -->
+  <div class="detail-modal-overlay hidden" id="modalOverlay">
 
   <!-- 모달 창 -->
-  <div class="modal" id="feedModal">
-    <div class="modal-container">
-      <!-- 왼쪽 이미지 영역 -->
-      <div class="modal-image">
-        <img id="feedImage" alt="Feed Image">
-      </div>
-
-      <!-- 오른쪽 상세 내용 영역 -->
-      <div class="modal-details">
-        <!-- 닉네임 및 옵션 -->
-        <div class="modal-header">
-          <div class="user-info">
-            <span class="user-avatar">
-              <img id="userAvatar" src="/images/default-avatar.png" alt="User Avatar">
-            </span>
-            <a id="userNickname" href="#" class="user-nickname" style="padding-top: 3px;">username</a>
-          </div>
-          <div class="modal-options">
-            <span class="fa-solid fa-ellipsis"></span>
-          </div>
+    <div class="detail-modal" id="feedModal">
+      <div class="detail-modal-container">
+        <!-- 왼쪽 이미지 영역 -->
+        <div class="detail-modal-image">
+          <img id="feedImage" alt="Feed Image">
         </div>
 
-        <!-- 댓글 및 내용 -->
-        <div class="modal-content">
-          <!-- 피드 내용 -->
-          <div class="feed-description">
+        <!-- 오른쪽 상세 내용 영역 -->
+        <div class="detail-modal-details">
+          <!-- 닉네임 및 옵션 -->
+          <div class="detail-modal-header">
             <div class="user-info">
               <span class="user-avatar">
-                <img id="feedUserAvatar" src="/images/default-avatar.png" alt="User Avatar">
+                <img id="userAvatar" src="/images/default-avatar.png" alt="User Avatar">
               </span>
-              <div class="feed-info">
-                <span class="feed-text">
-                  <a id="feedUserNickname" href="#" class="user-nickname"></a> 
-                  <span id="feedDescription">이곳은 피드 설명이 들어가는 영역입니다.</span>
+              <a id="userNickname" href="#" class="user-nickname" style="padding-top: 3px; text-decoration: none; color: inherit;">username</a>
+            </div>
+            <div class="detail-modal-options">
+              <span class="fa-solid fa-ellipsis"></span>
+            </div>
+          </div>
+
+          <!-- 댓글 및 내용 -->
+          <div class="detail-modal-content">
+            <!-- 피드 내용 -->
+            <div class="feed-description">
+              <div class="user-info">
+                <span class="user-avatar">
+                  <img id="feedUserAvatar" src="/images/default-avatar.png" alt="User Avatar">
                 </span>
-                <span id="feedTime" class="feed-time">하루 전</span>
+                <div class="feed-info">
+                  <span class="feed-text">
+                    <a id="feedUserNickname" href="#" class="user-nickname"></a> 
+                    <span id="feedDescription">이곳은 피드 설명이 들어가는 영역입니다.</span>
+                  </span>
+                  <span id="feedTime" class="detail-feed-time">하루 전</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- 댓글 리스트 -->
-          <div class="comments">
-            <ul id="commentList">
-              <li class="comment">
-                <span class="user-nickname">comment_user</span>
-                <span class="comment-text">댓글 내용이 여기에 표시됩니다.</span>
-              </li>
-              <li class="comment">
-                <span class="user-nickname">another_user</span>
-                <span class="comment-text">다른 댓글 내용이 여기에 표시됩니다.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- 좋아요 및 입력 -->
-        <div class="modal-footer">
-          <div class="like-section">
-            <div class="like-icons">
-              <span class="fa-regular fa-heart"></span>
-              <span class="fa-regular fa-comment"></span>
-            </div>
-            <div class="save-icons">
-              <span class="fa-regular fa-flag"></span>
+            <!-- 댓글 리스트 -->
+            <div class="comments">
+              <ul id="commentList">
+                <li class="comment">
+                  <span class="user-nickname">comment_user</span>
+                  <span class="comment-text">댓글 내용이 여기에 표시됩니다.</span>
+                </li>
+                <li class="comment">
+                  <span class="user-nickname">another_user</span>
+                  <span class="comment-text">다른 댓글 내용이 여기에 표시됩니다.</span>
+                </li>
+              </ul>
             </div>
           </div>
-          <div class="likes-count">
-            <span id="likesCount" class="like-count"></span>
-            <span id="feedCreatedTime" class="feed-time"></span>
-          </div>
-          <div class="comment-input">
-            <span class="fa-regular fa-face-smile"></span>
-            <textarea id="commentInput" rows="4" cols="50" placeholder="댓글 달기..."></textarea>
-            <button id="commentSubmit">게시</button>
+
+          <!-- 좋아요 및 입력 -->
+          <div class="detail-modal-footer">
+            <div class="detail-like-section">
+              <div class="detail-like-icons">
+                <span class="fa-regular fa-heart" id="likeButton"></span>
+                <span class="fa-regular fa-comment"></span>
+              </div>
+              <div class="detail-save-icons">
+                <span class="fa-regular fa-flag"></span>
+              </div>
+            </div>
+            <div class="detail-likes-count">
+              <span id="likesCount" class="detail-like-count"></span>
+              <span id="feedCreatedTime" class="detail-feed-time"></span>
+            </div>
+            <div class="comment-input">
+              <span class="fa-regular fa-face-smile"></span>
+              <textarea id="commentInput" rows="4" cols="50" placeholder="댓글 달기..."></textarea>
+              <button id="commentSubmit">게시</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="detail-modal-overlay hidden" id="modalOverlay2">
+    <!-- 옵션 모달 -->
+    <div class="detail-options-modal hidden" id="optionsModal">
+      <div class="detail-options-modal-container">
+        <ul class="detail-options-list">
+          <li><button class="detail-options-button report">신고</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="detail-modal-overlay hidden" id="modalOverlay3">
+    <!-- 수정/삭제 모달 -->
+    <div class="detail-edit-delete-modal hidden" id="editDeleteModal">
+      <div class="detail-edit-delete-modal-container">
+        <ul class="detail-edit-delete-list">
+          <li><button class="detail-edit-delete-button edit">수정</button></li>
+          <li><button class="detail-edit-delete-button delete">삭제</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 좋아요 목록 모달 -->
+  <div class="detail-modal-overlay hidden" id="likesModalOverlay">
+    <div class="detail-modal" id="likesModal">
+      <div class="detail-modal-container2">
+        <div class="detail-like-modal-header">
+          <h4>좋아요</h4>
+          <span id="closeLikesModal">&times;</span>
+        </div>
+        <ul id="likesList" class="detail-likes-list">
+          <!-- AJAX로 좋아요 목록 렌더링 -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 신고 모달 오버레이 -->
+  <div class="detail-modal-overlay hidden" id="reportModalOverlay">
+    <div class="detail-modal" id="reportModal">
+      <div class="detail-modal-container2">
+        <div class="detail-report-modal-header">
+          <h4>신고하기</h4>
+          <span id="closeReportModal">&times;</span>
+        </div>
+        <ul id="reportReasonList" class="detail-report-reason-list">
+          <!-- 신고 사유 항목 -->
+           <li><button class="report-reason1">마음에 들지 않습니다</button></li>
+           <li><button class="report-reason2">자살, 자해 및 섭식 장애</button></li>
+           <li><button class="report-reason3">따돌림 또는 원치 않는 연락</button></li>
+           <li><button class="report-reason4">폭력, 혐오 또는 학대</button></li>
+           <li><button class="report-reason5">제한된 품목을 판매하거나 홍보함</button></li>
+           <li><button class="report-reason6">나체 이미지 또는 성적 행위</button></li>
+           <li><button class="report-reason7">스캠, 사기 또는 스팸</button></li>
+           <li><button class="report-reason8">거짓 정보</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <script src="/js/feed/feedDetail.js"></script>
-</body>
-</html>
+<!-- </body>
+</html> -->
