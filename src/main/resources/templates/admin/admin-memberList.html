@@ -148,6 +148,13 @@
         <div id="commentReportPaginationBox" class="pagination"></div>
       </section>
     </div>
+    
+    <script th:inline="javascript">
+      
+      const notificationLoginCheck
+      = /*[[${session.loginMember} ? true : false]]*/ false;
+    </script>
+    <script src="/js/header.js"></script>
     <script src="/js/admin/admin-memberList.js"></script>
     <script src="https://kit.fontawesome.com/f0ba7b5612.js" crossorigin="anonymous"></script>
 </body>

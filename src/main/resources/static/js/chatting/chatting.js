@@ -136,7 +136,12 @@ const sendMessagePartner = async (imagePath) => {
 
     const url = location.pathname + "?chat-no=" + selectChattingNo;
     console.log("// 상대방에게 알림 보내기");
-    sendNoti("chatting", url, selectPartnerNo, content);
+    sendNoti(
+      "chatting", 
+      url, 
+      selectPartnerNo, 
+      content
+    );
   }
 
   inputChatting.value = ""; // 보낸 채팅 내용 삭제
