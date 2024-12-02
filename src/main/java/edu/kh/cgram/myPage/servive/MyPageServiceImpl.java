@@ -106,6 +106,11 @@ public class MyPageServiceImpl implements MyPageService {
   	    return mapper.findMemberByNickname(nickname);
   	}
   	
+  	@Override
+  	public List<BoardImg> getMemberSaved(int memberNo) {
+  		return mapper.selectMemberSaved(memberNo);
+  	}
+  	
 
 
 }

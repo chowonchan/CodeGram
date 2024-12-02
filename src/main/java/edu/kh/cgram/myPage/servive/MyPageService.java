@@ -44,6 +44,8 @@ public interface MyPageService {
 
 		Member getMemberByNickname(String nickname);
 
+		List<BoardImg> getMemberSaved(int memberNo);
+
 
 
 
