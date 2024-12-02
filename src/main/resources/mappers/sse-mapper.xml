@@ -53,6 +53,29 @@
  				<when test="notificationType == 'follow'">
 					#{pkNo}
 				</when>
+				
+				<when test="notificationType == 'warning'">
+					(SELECT 
+						CASE
+							WHEN CONTENT_CATEGORY = 1
+							THEN 
+								(SELECT MEMBER_NO
+								 FROM 	"BOARD" SUB1
+								 WHERE SUB1.BOARD_NO = MAIN.CONTENT_NO)
+							
+							ELSE 
+								(SELECT MEMBER_NO
+								 FROM 	"COMMENT" SUB2
+								 WHERE SUB2.COMMENT_NO = MAIN.CONTENT_NO)
+						END AS MEMBER_NO
+					
+					FROM 
+						(SELECT *
+						FROM "REPORT"
+						WHERE REPORT_NO = #{pkNo}) MAIN)
+				</when>
+				
+				
 			
 			</choose>
 		)
@@ -95,13 +118,6 @@
 		ORDER BY NOTIFICATION_NO DESC
 	
 	</select>
-	
-<!-- 	SELECT *
-	FROM FOLLOW
-	WHERE FOLLOWING_NO = 내 번호
-	AND FOLLOWED_NO = 상대 번호
-	== 조회 되면 팔로우 된 상태
-	!= 조회가 안 되면 팔로우 X 상태  -->
 	
 	
 	
