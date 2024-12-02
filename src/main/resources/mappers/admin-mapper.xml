@@ -56,15 +56,25 @@
         OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
     
-    <update id="updateFeedStatus">
-    	UPDATE BOARD
-    	SET BOARD_DEL_FL = CASE
-    		WHEN BOARD_DEL_FL = 'N' THEN 'Y'
-    		WHEN BOARD_DEL_FL = 'Y' THEN 'N'
-    		ELSE BOARD_DEL_FL
-    	END
-    	WHERE BOARD_NO = #{boardNo}
-    </update>
+	<update id="updateFeedStatusBoard">
+	    UPDATE BOARD
+	    SET BOARD_DEL_FL = CASE
+	        WHEN BOARD_DEL_FL = 'N' THEN 'Y'
+	        WHEN BOARD_DEL_FL = 'Y' THEN 'N'
+	        ELSE BOARD_DEL_FL
+	    END
+	    WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateFeedStatusReport">
+	    UPDATE REPORT
+	    SET REPORT_VIEW = CASE
+	        WHEN REPORT_VIEW = 'N' THEN 'Y'
+	        WHEN REPORT_VIEW = 'Y' THEN 'N'
+	        ELSE REPORT_VIEW
+	    END
+	    WHERE BOARD_NO = #{boardNo}
+	</update>
     
     <!-- 피드 신고 수 조회 -->
     <select id="getFeedReportCount" resultType="int">
