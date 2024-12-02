@@ -1,5 +1,6 @@
 package edu.kh.cgram.follow.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -141,6 +142,18 @@ public class FollowController {
       ));
   }
 
+  @GetMapping("/followList")
+  public ResponseEntity<List<Map<String, Object>>> getFollowList(@SessionAttribute("loginMember") Member loginMember) {
+      int memberNo = loginMember.getMemberNo();
+      List<Map<String, Object>> followList = service.getFollowingList(memberNo);
+      return ResponseEntity.ok(followList);
+  }
 
+  @GetMapping("/followerList")
+  public ResponseEntity<List<Map<String, Object>>> getFollowerList(@SessionAttribute("loginMember") Member loginMember) {
+      int memberNo = loginMember.getMemberNo();
+      List<Map<String, Object>> followerList = service.getFollowerList(memberNo);
+      return ResponseEntity.ok(followerList);
+  }
 	
 }

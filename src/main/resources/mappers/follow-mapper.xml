@@ -26,6 +26,32 @@
 	    WHERE FOLLOWER_MEMBER = #{profileMemberNo}
 	      AND FOLLOWING_MEMBER = #{loggedInMemberNo}
 	</select>
+	
+	<select id="getFollowingList" resultType="map">
+    SELECT 
+        m.MEMBER_NO AS memberNo,
+        m.MEMBER_NICKNAME AS nickname,
+        m.PROFILE_IMG AS profileImg
+    FROM 
+        FOLLOW f
+    JOIN 
+        MEMBER m ON f.FOLLOWER_MEMBER = m.MEMBER_NO
+    WHERE 
+        f.FOLLOWING_MEMBER = #{memberNo}
+</select>
+
+<select id="getFollowerList" resultType="map">
+    SELECT 
+        m.MEMBER_NO AS memberNo,
+        m.MEMBER_NICKNAME AS nickname,
+        m.PROFILE_IMG AS profileImg
+    FROM 
+        FOLLOW f
+    JOIN 
+        MEMBER m ON f.FOLLOWING_MEMBER = m.MEMBER_NO
+    WHERE 
+        f.FOLLOWER_MEMBER = #{memberNo}
+</select>
 
 
 

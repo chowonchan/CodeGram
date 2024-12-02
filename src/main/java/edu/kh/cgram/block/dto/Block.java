@@ -15,6 +15,8 @@ import lombok.ToString;
 @Builder
 public class Block {
 
+	private String profileImg;
+	private String memberNickname;
 	private int blockMember;
 	private int blockedMember;
 	private String 	createdAt;

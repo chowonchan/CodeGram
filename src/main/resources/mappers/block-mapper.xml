@@ -12,6 +12,26 @@
 		INSERT INTO BLOCK (BLOCK_MEMBER, BLOCKED_MEMBER, CREATED_AT )
 		VALUES (#{loggedInMemberNo}, #{profileMemberNo}, DEFAULT)
 	</insert>
+	
+	<select id="selectBlockedList" resultType="map">
+    SELECT 
+        m.MEMBER_NO AS memberNo, 
+        m.MEMBER_NICKNAME, 
+        m.PROFILE_IMG
+    FROM 
+        BLOCK b
+    JOIN 
+        MEMBER m ON b.BLOCKED_MEMBER = m.MEMBER_NO
+    WHERE 
+        b.BLOCK_MEMBER = #{memberNo}
+	</select>
+	
+	<delete id="deleteBlock">
+    DELETE FROM BLOCK
+    WHERE BLOCK_MEMBER = #{loggedInMemberNo}
+      AND BLOCKED_MEMBER = #{blockedMemberNo}
+	</delete>
+	
 
 
 
