@@ -42,4 +42,10 @@ int getFollowerCount(@Param("memberNo") int memberNo);
 
 int getFollowCount(@Param("memberNo") int memberNo);
 
+//int isBlocked(int loginMemberNo, int targetMemberNo);
+
+public int isBlocked(@Param("loginMemberNo") int loginMemberNo, 
+    @Param("targetMemberNo") int targetMemberNo);
+
+
 }
