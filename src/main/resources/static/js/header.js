@@ -556,6 +556,8 @@ const selectNotiList = () => {
                 followAlarmBtn.classList.toggle("follow", !isFollowing);
                 followAlarmBtn.classList.toggle("notFollow", isFollowing);
                 followAlarmBtn.disabled = isFollowing;
+
+                document.querySelector(".profile-follow-button").innerText = isFollowing ? "팔로우 취소" : "팔로우";
               };
           
               // 버튼 초기화
