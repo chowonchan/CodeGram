@@ -103,4 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
       shortContentEl.textContent = boardContent;
       moreBtnEl.style.display = 'none';
   }
+
 });
+

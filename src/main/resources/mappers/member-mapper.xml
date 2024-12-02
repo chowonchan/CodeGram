@@ -108,6 +108,14 @@
 	    FROM BOARD
 	    WHERE MEMBER_NO = #{memberNo}
 	</select>
+	
+	<select id="isBlocked" resultType="int">
+	    SELECT COUNT(*)
+	    FROM BLOCK
+	    WHERE BLOCK_MEMBER = #{targetMemberNo}
+	      AND BLOCKED_MEMBER = #{loginMemberNo}
+	</select>
+	
     
 	
 	

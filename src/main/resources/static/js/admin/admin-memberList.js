@@ -58,13 +58,12 @@ const selectMemberList = (cp = 1) => {
           <td>${member.followCount}</td>
           <td>${member.followerCount}</td>
           <td>
-            ${
-              member.memberDelBanFl === 1
-                ? `<button class="status-btn red">탈퇴</button>`
-                : member.memberDelBanFl === 2
-                ? `<button class="status-btn blue">복구</button>`
-                : `<span class="status-text">정지</span>`
-            }
+            ${member.memberDelBanFl === 1
+            ? `<button class="status-btn red">탈퇴</button>`
+            : member.memberDelBanFl === 2
+              ? `<button class="status-btn blue">복구</button>`
+              : `<span class="status-text">정지</span>`
+          }
           </td>
         `;
 
@@ -98,17 +97,17 @@ const updateMemberStatus = (memberNickname) => {
     .then(response => {
       if (response.ok) return response.text();
       throw new Error("회원 상태 변경 실패");
-  }).then(result => {
-    if (result == 1) {
-      alert("회원 상태가 변경되었습니다.");
-      selectMemberList();
-      selectFeedList();
-      selectFeedReportList();
-      selectCommentReportList();
-    } else {
-      alert("회원 상태 변경에 실패했습니다.");
-    }
-  })
+    }).then(result => {
+      if (result == 1) {
+        alert("회원 상태가 변경되었습니다.");
+        selectMemberList();
+        selectFeedList();
+        selectFeedReportList();
+        selectCommentReportList();
+      } else {
+        alert("회원 상태 변경에 실패했습니다.");
+      }
+    })
     .catch(err => console.error(err));
 };
 
@@ -186,13 +185,12 @@ const selectFeedList = (cp = 1) => {
           <td>${feed.createdAt}</td>
           <td>${feed.readCount}</td>
           <td>
-            ${
-              feed.boardDelFl === 'N'
-                ? `<button class="status-btn red">삭제</button>`
-                : feed.boardDelFl === 'Y'
-                ? `<button class="status-btn blue">복구</button>`
-                : `<span class="status-text">정지</span>`
-            }
+            ${feed.boardDelFl === 'N'
+            ? `<button class="status-btn red">삭제</button>`
+            : feed.boardDelFl === 'Y'
+              ? `<button class="status-btn blue">복구</button>`
+              : `<span class="status-text">정지</span>`
+          }
           </td>
         `;
 
@@ -226,17 +224,17 @@ const updateFeedStatus = (boardNo) => {
     .then(response => {
       if (response.ok) return response.text();
       throw new Error("피드 상태 변경 실패");
-  }).then(result => {
-    if (result == 1) {
-      alert("요청이 처리되었습니다.");
-      selectMemberList();
-      selectFeedList();
-      selectFeedReportList();
-      selectCommentReportList();
-    } else {
-      alert("요청 처리가 실패했습니다.");
-    }
-  })
+    }).then(result => {
+      if (result == 1) {
+        alert("요청이 처리되었습니다.");
+        selectMemberList();
+        selectFeedList();
+        selectFeedReportList();
+        selectCommentReportList();
+      } else {
+        alert("요청 처리가 실패했습니다.");
+      }
+    })
     .catch(err => console.error(err));
 };
 
@@ -287,11 +285,11 @@ const selectFeedReportList = (query) => {
   const cp = 1;
   let url = `/admin/selectFeedReportList?cp=${cp}`;
 
-  if(query) url += `&category=${queryParam}`;
+  if (query) url += `&category=${queryParam}`;
 
   fetch(url)
     .then(response => {
-    
+
       if (response.ok) {
         console.log("피드 신고 목록 조회 성공");
         return response.json();
@@ -333,16 +331,14 @@ const selectFeedReportList = (query) => {
           <td>${feedReport.reportCategory}</td>
           <td>${feedReport.createdAt}</td>
           <td>
-            ${
-              feedReport.boardDelFl === 'N'
-                ? `<button class="status-btn red">처리</button>`
-                : `<div class="status-text">처리 완료</div>`
-            }
-            ${
-              feedReport.boardDelFl === 'N'
-                ? `<button class="status-btn blue">삭제</button>`
-                : ``
-            }
+            ${feedReport.boardDelFl === 'N'
+            ? `<button class="status-btn red">처리</button>`
+            : `<div class="status-text">처리 완료</div>`
+          }
+            ${feedReport.boardDelFl === 'N'
+            ? `<button class="status-btn blue">삭제</button>`
+            : ``
+          }
           </td>
         `;
 
@@ -355,6 +351,29 @@ const selectFeedReportList = (query) => {
         const statusButton1 = tr.querySelector(".status-btn.blue");
         if (statusButton) {
           statusButton.addEventListener("click", e => {
+
+            const clickCounts = {};
+            // 닉네임별 클릭 횟수 증가
+            if (!clickCounts[feedReport.memberNickname]) {
+              clickCounts[feedReport.memberNickname] = 0;
+            }
+            clickCounts[feedReport.memberNickname] += 1;
+
+            // 알림 내용
+            const count = clickCounts[feedReport.memberNickname];
+            const content = `부적절한 피드로 인해 경고 ${count}회 알림을 <br> 보냅니다.`;
+            console.log("// 상대방에게 알림 보내기");
+
+            // 알림 전송
+            sendNoti(
+              "warning",
+              location.pathname,
+              feedReport.reportNo,
+              content
+            );
+
+
+
             updateFeedStatus(feedReport.contentNo);
             e.stopPropagation();
           });
@@ -385,15 +404,15 @@ const deleteReport = (reportNo) => {
     .then(response => {
       if (response.ok) return response.text();
       throw new Error("신고 삭제 실패");
-  }).then(result => {
-    if (result == 1) {
-      alert("신고가 삭제처리되었습니다.");
-      selectFeedReportList();
-      selectCommentReportList();
-    } else {
-      alert("신고 삭제가 실패했습니다.");
-    }
-  })
+    }).then(result => {
+      if (result == 1) {
+        alert("신고가 삭제처리되었습니다.");
+        selectFeedReportList();
+        selectCommentReportList();
+      } else {
+        alert("신고 삭제가 실패했습니다.");
+      }
+    })
     .catch(err => console.error(err));
 };
 
@@ -443,7 +462,7 @@ const selectCommentReportList = (query) => {
   const queryParam = encodeURIComponent(query);
   const cp = 1;
   let url = `/admin/selectCommentReportList?cp=${cp}`;
-  if(query) url += `&category=${queryParam}`;
+  if (query) url += `&category=${queryParam}`;
   fetch(url)
     .then(response => {
       if (response.ok) return response.json();
@@ -483,16 +502,14 @@ const selectCommentReportList = (query) => {
           <td>${commentReport.reportCategory}</td>
           <td>${commentReport.createdAt}</td>
           <td>
-            ${
-              commentReport.commentDelFl === 'N'
-                ? `<button class="status-btn red">처리</button>`
-                : `<div class="status-text">처리 완료</div>`
-            }
-            ${
-              commentReport.commentDelFl === 'N'
-                ? `<button class="status-btn blue">삭제</button>`
-                : ``
-            }
+            ${commentReport.commentDelFl === 'N'
+            ? `<button class="status-btn red">처리</button>`
+            : `<div class="status-text">처리 완료</div>`
+          }
+            ${commentReport.commentDelFl === 'N'
+            ? `<button class="status-btn blue">삭제</button>`
+            : ``
+          }
           </td>
         `;
         tr.addEventListener("click", () => {
@@ -504,8 +521,32 @@ const selectCommentReportList = (query) => {
         const statusButton1 = tr.querySelector(".status-btn.blue");
         if (statusButton) {
           statusButton.addEventListener("click", e => {
+
+
+            // 닉네임별 클릭 횟수 증가
+            if (!clickCounts[commentReport.memberNickname]) {
+              clickCounts[commentReport.memberNickname] = 0;
+            }
+            clickCounts[commentReport.memberNickname] += 1;
+
+            // 알림 내용
+            const count = clickCounts[commentReport.memberNickname];
+            const content = `부적절한 댓글로 인해 경고 ${count}회 알림을 보냅니다.`;
+            console.log("// 상대방에게 알림 보내기");
+
+            // 알림 전송
+            sendNoti(
+              "warning",
+              location.pathname,
+              feedReport.reportNo,
+              content
+            );
+
+            // 상태 업데이트
             updateCommentStatus(commentReport.contentNo);
             e.stopPropagation();
+
+
           });
         }
 
@@ -533,14 +574,14 @@ const updateCommentStatus = (commentNo) => {
     .then(response => {
       if (response.ok) return response.text();
       throw new Error("댓글 상태 변경 실패");
-  }).then(result => {
-    if (result == 1) {
-      alert("요청이 처리되었습니다.");
-      selectCommentReportList();
-    } else {
-      alert("요청 처리가 실패했습니다.");
-    }
-  })
+    }).then(result => {
+      if (result == 1) {
+        alert("요청이 처리되었습니다.");
+        selectCommentReportList();
+      } else {
+        alert("요청 처리가 실패했습니다.");
+      }
+    })
     .catch(err => console.error(err));
 };
 
@@ -594,38 +635,38 @@ document.querySelector(".dropbtn2").addEventListener("click", () => {
 })
 document.querySelectorAll("#feedReportDropdown a").forEach(item => {
   item.addEventListener("click", (e) => {
-      e.preventDefault();
-      const selectedValue = item.getAttribute("data-value");
-      document.querySelector("#feedReportTable .dropbtn").textContent = selectedValue;
-      if (selectedValue == "전체") {
-        selectFeedReportList("");
-        document.getElementById("feedReportDropdown").style.display = "none";
-        return;
-      }
-      // 선택한 정렬 기준으로 목록을 갱신
-      selectFeedReportList(selectedValue);
+    e.preventDefault();
+    const selectedValue = item.getAttribute("data-value");
+    document.querySelector("#feedReportTable .dropbtn").textContent = selectedValue;
+    if (selectedValue == "전체") {
+      selectFeedReportList("");
       document.getElementById("feedReportDropdown").style.display = "none";
+      return;
+    }
+    // 선택한 정렬 기준으로 목록을 갱신
+    selectFeedReportList(selectedValue);
+    document.getElementById("feedReportDropdown").style.display = "none";
   });
 });
 
 // 드롭다운 클릭 이벤트 (Comment Report)
 document.querySelectorAll("#commentReportDropdown a").forEach(item => {
   item.addEventListener("click", (e) => {
-      e.preventDefault();
-      const selectedValue = item.getAttribute("data-value");
-      document.querySelector("#commentReportTable .dropbtn2").textContent = selectedValue;
-      if (selectedValue == "전체") {
-        selectCommentReportList("");
-        document.getElementById("commentReportDropdown").style.display = "none";
-        return;
-      }
-      // 선택한 정렬 기준으로 목록을 갱신
-      selectCommentReportList(selectedValue);
+    e.preventDefault();
+    const selectedValue = item.getAttribute("data-value");
+    document.querySelector("#commentReportTable .dropbtn2").textContent = selectedValue;
+    if (selectedValue == "전체") {
+      selectCommentReportList("");
       document.getElementById("commentReportDropdown").style.display = "none";
+      return;
+    }
+    // 선택한 정렬 기준으로 목록을 갱신
+    selectCommentReportList(selectedValue);
+    document.getElementById("commentReportDropdown").style.display = "none";
   });
 });
 
-/* 검색창 */ 
+/* 검색창 */
 (() => {
 
   // 쿼리스트링 모두 얻어와 관리하는 객체

@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.cgram.admin.service.AdminService;
 import edu.kh.cgram.common.dto.Pagination;
+import edu.kh.cgram.member.dto.Member;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -22,8 +25,19 @@ public class AdminController {
 	private final AdminService service;
 	
 	@GetMapping("admin-memberList")
-	public String adminPage() {
-		return "/admin/admin-memberList";
+	public String adminPage(
+	        @SessionAttribute("loginMember") Member loginMember,
+	        HttpServletRequest request) {
+	    
+	    if (loginMember.getAdmin() != 2) {
+	        String referer = request.getHeader("Referer"); // 이전 페이지 URL 가져오기
+	        if (referer == null || referer.isEmpty()) {
+	            referer = "/main2"; // Referer가 없을 경우 기본 경로 설정
+	        }
+	        return "redirect:" + referer;
+	    }
+	    
+	    return "/admin/admin-memberList";
 	}
 	
 	

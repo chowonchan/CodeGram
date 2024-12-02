@@ -76,17 +76,17 @@ function showPanel(type) {
 }
 
 // 검색 및 알림 탭 클릭 이벤트
-searchTab.addEventListener('click', () => {
+searchTab?.addEventListener('click', () => {
   showPanel('search');
 });
 
-notificationTab.addEventListener('click', () => {
+notificationTab?.addEventListener('click', () => {
   showPanel('notification');
 });
 
 
 // X 버튼 클릭 이벤트
-clearButton.addEventListener('click', () => {
+clearButton?.addEventListener('click', () => {
   searchInput.value = ''; // 입력 필드 비우기
   clearButton.style.display = 'none'; // X 버튼 숨기기
   recentSearch.style.display = 'block'; // 최근 검색 항목 표시
@@ -95,19 +95,47 @@ clearButton.addEventListener('click', () => {
 });
 
 // 더보기 버튼 클릭 이벤트
-moreButton.addEventListener('click', (event) => {
+moreButton?.addEventListener('click', (event) => {
   event.stopPropagation(); // 이벤트 전파 중지
   moreMenu.style.display = moreMenu.style.display === 'flex' ? 'none' : 'flex';
   moreButton.classList.toggle('active');
 });
 
+
+
+
+// -------------------밑에 코드 수정전 코드------------------
+// document.addEventListener('click', (event) => {
+//   if (!moreButton?.contains(event.target) && !moreMenu?.contains(event.target)) {
+//     moreMenu?.style.display = 'none';
+//     moreButton.classList.remove('active');
+//   }
+//   if (!sidebar.contains(event.target) && !sidePanel.contains(event.target)) {
+//     if (sidebar.classList.contains('narrow')) {
+//       toggleSidebar();
+//       searchPanel.classList.remove('active'); // `active` 클래스 제거
+//       notificationPanel.classList.remove('active'); // `active` 클래스 제거
+//     }
+//   }
+// });
+// -------------------밑에 코드 수정전 코드------------------
+
+
+
 // 문서 전체 클릭 이벤트 (더보기 메뉴 닫기)
 document.addEventListener('click', (event) => {
-  if (!moreButton.contains(event.target) && !moreMenu.contains(event.target)) {
-    moreMenu.style.display = 'none';
-    moreButton.classList.remove('active');
+  // moreButton이나 moreMenu 외부를 클릭하면 메뉴를 닫고 active 클래스를 제거
+  if (moreButton && !moreButton?.contains(event.target) && !moreMenu?.contains(event.target)) {
+    if (moreMenu) {
+      moreMenu.style.display = 'none';
+    }
+    if (moreButton) {
+      moreButton.classList.remove('active');
+    }
   }
-  if (!sidebar.contains(event.target) && !sidePanel.contains(event.target)) {
+
+  // sidebar나 sidePanel 외부를 클릭하면 사이드바를 토글하고 active 클래스를 제거
+  if (sidebar && sidePanel && !sidebar.contains(event.target) && !sidePanel.contains(event.target)) {
     if (sidebar.classList.contains('narrow')) {
       toggleSidebar();
       searchPanel.classList.remove('active'); // `active` 클래스 제거
@@ -123,7 +151,7 @@ function isKorean(text) {
 }
 
 // 검색 입력 필드 이벤트 리스너
-searchInput.addEventListener('input', () => {
+searchInput?.addEventListener('input', () => {
   const query = searchInput.value.trim();
   if (query) {
     clearButton.style.display = 'block'; // 입력값이 있을 때 X 버튼 표시
@@ -201,9 +229,67 @@ function toggleDeleteBtn() {
   deleteBtn.style.display = hasSearchItems ? 'inline' : 'none'; // a 태그가 있으면 표시, 없으면 숨김
 }
 
+// -------------------밑에 코드 수정전 코드------------------
+// if (!searchResults?.hasListener) { // 이벤트 리스너가 이미 등록되었는지 확인
+//   searchResults?.addEventListener('click', (event) => {
+//     if (event.target.tagName === 'A' || event.target.closest('a')) {
+//       event.preventDefault(); // 기본 링크 이동 방지
+
+//       const clickedLink = event.target.closest('a');
+//       const href = clickedLink.getAttribute('href');
+//       const memberNickname = clickedLink.querySelector('.member-nickname').textContent;
+//       const memberName = clickedLink.querySelector('.member-name').textContent;
+//       const profileImgSrc = clickedLink.querySelector('.profile-img img').src;
+
+//       // 중복 여부 확인
+//       const existingItems = Array.from(recentSearch.querySelectorAll('a'));
+//       const isDuplicate = existingItems.some(item => item.href === href);
+
+//       if (!isDuplicate) { // 중복이 아닐 때만 추가
+//         const newSearchItem = document.createElement('a');
+//         newSearchItem.href = href;
+//         newSearchItem.classList.add('member-info');
+//         newSearchItem.innerHTML = `
+//                   <div class="profile-img">
+//                       <img src="${profileImgSrc}">
+//                   </div>
+//                   <div class="member-text">
+//                       <div class="member-nickname">${memberNickname}</div>
+//                       <div class="member-name">${memberName}</div>
+//                   </div>
+//                   <button class="remove-button">&times;</button> <!-- X 버튼 추가 -->
+//                   `;
+
+//         // X 버튼 이벤트 리스너
+//         newSearchItem.querySelector('.remove-button').addEventListener('click', (e) => {
+//           e.preventDefault(); // 이벤트 전파 중지
+//           e.stopPropagation(); // 이벤트 전파 중지
+//           newSearchItem.remove(); // a 태그 삭제
+//           if (recentSearch.querySelectorAll('a').length === 0) {
+//             toggleDeleteBtn(); // 버튼 상태 업데이트
+//           }
+//         })
+
+//         recentSearch.appendChild(newSearchItem); // 최근 검색 항목에 추가
+//         toggleDeleteBtn(); // 버튼 상태 업데이트
+//       }
+
+//       // 링크 이동
+//       window.location.href = href;
+//     }
+//   });
+
+//   searchResults?.hasListener = true; // 이벤트 리스너가 등록되었을을 표시
+// }
+// -------------------밑에 코드 수정전 코드------------------
+
+
+
 // 검색 결과 클릭 이벤트 리스너 (한 번만 등록)
-if (!searchResults.hasListener) { // 이벤트 리스너가 이미 등록되었는지 확인
-  searchResults.addEventListener('click', (event) => {
+let searchResultsHasListener = false; // 전역 변수로 리스너 상태 추적
+
+if (!searchResultsHasListener) {
+  searchResults?.addEventListener('click', (event) => {
     if (event.target.tagName === 'A' || event.target.closest('a')) {
       event.preventDefault(); // 기본 링크 이동 방지
 
@@ -251,17 +337,19 @@ if (!searchResults.hasListener) { // 이벤트 리스너가 이미 등록되었�
     }
   });
 
-  searchResults.hasListener = true; // 이벤트 리스너가 등록되었을을 표시
+  searchResultsHasListener = true; // 전역 변수로 리스너 상태 변경
 }
 
+
+
 // 모두 지우기 버튼 클릭 이벤트
-deleteBtn.addEventListener('click', () => {
+deleteBtn?.addEventListener('click', () => {
   clearAllModal.classList.remove('hidden');
   clearAllModal.style.display = 'flex'; // 모달 창 표시
 });
 
 // "Clear all" 버튼 클릭 시 모든 검색 내역 삭제 및 모달 닫기
-clearAllConfirm.addEventListener('click', () => {
+clearAllConfirm?.addEventListener('click', () => {
   recentSearch.querySelectorAll('a').forEach(item => item.remove()); // 모든 a 태그 삭제
   toggleDeleteBtn(); // 버튼 상태 업데이트
   clearAllModal.classList.add('hidden');
@@ -269,7 +357,7 @@ clearAllConfirm.addEventListener('click', () => {
 });
 
 // "나중에 하기" 버튼 클릭 시 모달 닫기
-clearAllCancel.addEventListener('click', () => {
+clearAllCancel?.addEventListener('click', () => {
   clearAllModal.classList.add('hidden');
   clearAllModal.style.display = 'none'; // 모달 창 숨김
 });
@@ -447,51 +535,56 @@ const selectNotiList = () => {
 
           (async () => {
             try {
-              // 팔로우 상태 가져오기
-              let response = await fetch(`/follow/${targetNickname}/status`, {
+              // 초기 상태 API 요청
+              const response = await fetch(`/follow/status/${targetNickname}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
               });
-
+          
               const data = await response.json();
-
+          
               if (!data.success) {
                 console.error("팔로우 상태를 확인할 수 없습니다:", data.message);
                 return;
               }
+          
+              let isFollowing = data.isFollowing === true || data.isFollowing === "1";
+          
+              // 버튼 상태 업데이트 함수
+              const updateButton = (isFollowing) => {
+                followAlarmBtn.innerText = isFollowing ? "팔로잉" : "팔로우";
+                followAlarmBtn.classList.toggle("follow", !isFollowing);
+                followAlarmBtn.classList.toggle("notFollow", isFollowing);
+                followAlarmBtn.disabled = isFollowing;
 
-              const isFollowing = data.isFollowing === true || data.isFollowing === "1";
-
-              // followAlarmBtn 초기화
-              followAlarmBtn.innerText = isFollowing ? "팔로잉" : "팔로우";
-              followAlarmBtn.classList.toggle("follow", !isFollowing);
-              followAlarmBtn.classList.toggle("notFollow", isFollowing);
-              followAlarmBtn.disabled = isFollowing;
-
-              // 팔로우 상태에 따른 이벤트 설정
-              if (isFollowing) {
-                followAlarmBtn.addEventListener("click", () => {
+                document.querySelector(".profile-follow-button").innerText = isFollowing ? "팔로우 취소" : "팔로우";
+              };
+          
+              // 버튼 초기화
+              updateButton(isFollowing);
+          
+              // 버튼 클릭 이벤트
+              followAlarmBtn.addEventListener("click", async () => {
+                if (isFollowing) {
+                  // 팔로우 취소 로직
                   const modal = document.getElementById("followCancelModal");
                   const followCancel = document.querySelector(".followCancelModal-cancelText");
                   const followClose = document.querySelector(".followCancelModal-closeText");
-              
+          
                   modal.classList.remove("cancel-hidden");
-              
+          
+                  // 팔로우 취소 확인
                   followCancel.addEventListener("click", async () => {
                     try {
                       const response = await fetch(`/follow/${targetNickname}`, {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                       });
-              
+          
                       if (response.ok) {
-                        followAlarmBtn.innerText = "팔로우";
-                        followAlarmBtn.classList.add("follow");
-                        followAlarmBtn.classList.remove("notFollow");
-                        followAlarmBtn.disabled = false;
-              
-                        // 버튼 초기화
-                        followAlarmBtn.replaceWith(followAlarmBtn.cloneNode(true));
+                        isFollowing = false; // 상태 변경
+                        updateButton(isFollowing); // 버튼 업데이트
+                        alert("팔로우 취소 되었습니다."); // 확인 메시지
                       }
                     } catch (error) {
                       console.error("팔로우 취소 중 오류 발생:", error);
@@ -499,37 +592,34 @@ const selectNotiList = () => {
                       modal.classList.add("cancel-hidden");
                     }
                   });
-              
+          
+                  // 모달 닫기
                   followClose.addEventListener("click", () => {
                     modal.classList.add("cancel-hidden");
                   });
-                });
-              } else {
-                followAlarmBtn.addEventListener("click", async () => {
+                } else {
+                  // 팔로우 요청 로직
                   try {
-                    const followResponse = await fetch(`/follow/${targetNickname}`, {
+                    const response = await fetch(`/follow/${targetNickname}`, {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                     });
-              
-                    if (followResponse.ok) {
-                      followAlarmBtn.innerText = "팔로잉";
-                      followAlarmBtn.classList.remove("follow");
-                      followAlarmBtn.classList.add("notFollow");
-                      followAlarmBtn.disabled = true;
-              
-                      // 버튼 초기화
-                      followAlarmBtn.replaceWith(followAlarmBtn.cloneNode(true));
+          
+                    if (response.ok) {
+                      isFollowing = true; // 상태 변경
+                      updateButton(isFollowing); // 버튼 업데이트
+                      alert("팔로우 되었습니다."); // 확인 메시지
                     }
                   } catch (error) {
                     console.error("팔로우 요청 중 오류 발생:", error);
                   }
-                });
-              }
-
+                }
+              });
+          
               // followDiv 및 contentContainer에 버튼 추가
               followDiv.appendChild(followAlarmBtn);
               contentContainer.appendChild(followDiv);
+
             } catch (error) {
               console.error("팔로우 상태를 가져오는 중 오류 발생:", error);
             }

@@ -1,49 +1,48 @@
-const followTabs = {
-  followTab: null,
-  followerTab: null,
-  followListContent: null,
-  followerListContent: null,
-  followList: null,
-  followerList: null,
-};
-
 document.addEventListener("DOMContentLoaded", async() => {
 
   const defaultImageUrl = "/images/defaultImg.png";
 
   
-    // 모달 및 요소 관련 추가
-    const followModals = {
-      followListModal: document.getElementById("followListModal"),
-    };
-    const followTabs = {
-      followTab: document.getElementById("followTab"),
-      followerTab: document.getElementById("followerTab"),
-      followListContent: document.getElementById("followListContent"),
-      followerListContent: document.getElementById("followerListContent"),
-      followList: document.getElementById("followList"),
-      followerList: document.getElementById("followerList"),
-    };
-    
+  // 모달 및 요소 관련 추가
+  const followModals = {
+    followListModal: document.getElementById("followListModal"),
+    closeFollowListButton: document.getElementById("closeFollowList")
+  };
 
-    followTabs.followList = document.getElementById("followList");
-    if (!followTabs.followList) {
-      console.error("팔로우 리스트 요소를 찾을 수 없습니다.");
-      return; // 함수 실행 중단
-    }
-    
+  const followTabs = {
+    followTab: document.getElementById("followTab"),
+    followerTab: document.getElementById("followerTab"),
+    followingListContent: document.getElementById("followingListContent"),
+    followerListContent: document.getElementById("followerListContent"),
+    followingList: document.getElementById("followingList"),
+    followerList: document.getElementById("followerList")
+  };
+// 로그 추가
+console.log("팔로우 탭 요소:", followTabs.followTab);
+console.log("팔로워 탭 요소:", followTabs.followerTab);
+console.log("팔로우 리스트 컨텐츠:", followTabs.followingListContent);
+console.log("팔로워 리스트 컨텐츠:", followTabs.followerListContent);
+console.log("팔로우 리스트:", followTabs.followingList);
+console.log("팔로워 리스트:", followTabs.followerList);
 
-  // 팔로우 리스트 모달 열기
-  document.getElementById("followList")?.addEventListener("click", () => {
-    followModals.followListModal.style.display = "flex";
-    loadFollowList(); // 기본적으로 팔로우 리스트 로드
+
+// 팔로우 목록 버튼 클릭 이벤트 추가
+const followListButton = document.getElementById("followList");
+followListButton?.addEventListener("click", () => {
+  followModals.followListModal.style.display = "flex"; // 모달 열기
+  loadFollowList(); // 팔로우 리스트 로드
+});
+
+  // 팔로우 리스트 모달 닫기
+  document.getElementById("closeFollowList")?.addEventListener("click", () => {
+    followModals.followListModal.style.display = "none"; // 모달 닫기
   });
 
   // 탭 전환
   followTabs.followTab.addEventListener("click", () => {
     followTabs.followTab.classList.add("active");
     followTabs.followerTab.classList.remove("active");
-    followTabs.followListContent.style.display = "block";
+    followTabs.followingListContent.style.display = "block";
     followTabs.followerListContent.style.display = "none";
     loadFollowList();
   });
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async() => {
   followTabs.followerTab.addEventListener("click", () => {
     followTabs.followTab.classList.remove("active");
     followTabs.followerTab.classList.add("active");
-    followTabs.followListContent.style.display = "none";
+    followTabs.followingListContent.style.display = "none";
     followTabs.followerListContent.style.display = "block";
     loadFollowerList();
   });
@@ -135,12 +134,6 @@ document.addEventListener("DOMContentLoaded", async() => {
     buttons.blockUser?.addEventListener("click", () => {
       modals.profileBlockModal.style.display = "flex"; // 프로필 차단 모달 열기
     });
-
-  // // 신고 버튼 클릭 시 profileBlockModal 열기
-  // buttons.blocktUserButton?.addEventListener("click", () => {
-  //   modals.profileBlockModal.style.display = "flex"; // 차단 모달 열기
-  //   modals.profileMoreModal.style.display = "none"; // 더보기 모달 닫기
-  // });
   
 
 
@@ -362,7 +355,7 @@ buttons.optionBlock?.addEventListener("click", async () => {
 
   // 탭 초기화 및 클릭 이벤트
   initTabs(tabs);
-});
+
 
 // 닉네임 추출
 function extractNicknameFromURL() {
@@ -417,7 +410,7 @@ document.getElementById("blockList")?.addEventListener("click", async () => {
         const userItem = document.createElement("li");
         userItem.className = "user-item";
         userItem.innerHTML = `
-          <img src="${user.PROFILE_IMG}" class="profile-img">
+          <img src="${user.PROFILE_IMG ||'/images/defaultImg.png'}" class="profile-img">
           <span class="nickname">${user.MEMBER_NICKNAME || '알 수 없음'}</span>
           <button class="unblock-btn" data-user-id="${user.MEMBERNO}">차단 취소</button>
         `;
@@ -479,26 +472,33 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
   }
 });
 
-  // 팔로우 목록 로드
+  // 팔로잉 목록 로드
   async function loadFollowList() {
+    console.log("[loadFollowList] 팔로우 목록 로드 시작");
     try {
       const response = await fetch("/follow/followList");
+      console.log("[loadFollowList] 서버 요청 완료");
+      if (!response.ok) throw new Error("팔로우 리스트를 가져오는 데 실패했습니다.");
+
       const data = await response.json();
-      followTabs.followList.innerHTML = "";
-      console.log("followTabs.followList:", followTabs.followList);
+      console.log("팔로우 리스트 데이터:", data); // 콘솔에 출력
+
+      followTabs.followingList.innerHTML = "";
+      console.log("[loadFollowList] 기존 팔로우 리스트 초기화");
+      // console.log("followTabs.followingList:", followTabs.followingList);
 
       if (data.length === 0) {
-        followTabs.followList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
+        followTabs.followingList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
       } else {
         data.forEach(user => {
           const userItem = document.createElement("li");
           userItem.className = "user-item";
           userItem.innerHTML = `
-            <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
-            <span class="nickname">${user.MEMBER_NICKNAME}</span>
-            <button class="unfollow-btn" data-user-id="${user.MEMBERNO}">팔로우 취소</button>
-          `;
-          followTabs.followList.appendChild(userItem);
+            <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
+            <span class="nickname">${user.NICKNAME}</span>
+            <button class="unfollow-btn" data-user-nick="${user.NICKNAME}">언팔로우</button>
+        `;
+          followTabs.followingList.appendChild(userItem);
         });
       }
     } catch (error) {
@@ -507,38 +507,69 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
   }
 
   // 팔로워 목록 로드
-  async function loadFollowerList() {
-    try {
-      const response = await fetch("/follow/followerList");
-      const data = await response.json();
-      followTabs.followerList.innerHTML = "";
+async function loadFollowerList() {
+  console.log("[loadFollowerList] 팔로워 목록 로드 시작");
+  try {
+    const response = await fetch("/follow/followerList");
+    console.log("[loadFollowerList] 서버 요청 완료");
+    if (!response.ok) throw new Error("팔로워 리스트를 가져오는 데 실패했습니다.");
 
-      if (data.length === 0) {
-        followTabs.followerList.innerHTML = "<p class='empty-message'>팔로워가 없습니다.</p>";
-      } else {
-        data.forEach(user => {
-          const userItem = document.createElement("li");
-          userItem.className = "user-item";
-          userItem.innerHTML = `
-            <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
-            <span class="nickname">${user.MEMBER_NICKNAME}</span>
-            <button class="follow-back-btn" data-user-id="${user.MEMBERNO}">맞팔로우</button>
-          `;
-          followTabs.followerList.appendChild(userItem);
-        });
+    const data = await response.json();
+    console.log("팔로워 리스트 데이터:", data);
+
+    followTabs.followerList.innerHTML = "";
+    console.log("[loadFollowerList] 기존 팔로워 리스트 초기화");
+
+    if (data.length === 0) {
+      followTabs.followerList.innerHTML = "<p class='empty-message'>팔로워가 없습니다.</p>";
+    } else {
+      for (const user of data) {
+        const userItem = document.createElement("li");
+        userItem.className = "user-item";
+
+        // 서버로 해당 사용자의 팔로우 상태 확인
+        let isFollowing = false;
+        try {
+          const followStatusResponse = await fetch(`/follow/status/${user.NICKNAME}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (followStatusResponse.ok) {
+            const followStatusData = await followStatusResponse.json();
+            isFollowing = followStatusData.isFollowing;
+            console.log(`[loadFollowerList] ${user.NICKNAME} 팔로우 상태: ${isFollowing}`);
+          } else {
+            console.error(`[loadFollowerList] 팔로우 상태 확인 실패: ${user.NICKNAME}`);
+          }
+        } catch (error) {
+          console.error(`[loadFollowerList] 팔로우 상태 확인 중 오류: ${user.NICKNAME}`, error);
+        }
+
+        // 팔로워 항목 생성
+        userItem.innerHTML = `
+          <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
+          <span class="nickname">${user.NICKNAME}</span>
+          <button class="follow-back-btn" data-user-nick="${user.NICKNAME}">
+            ${isFollowing ? "언팔로우" : "맞팔로우"}
+          </button>
+        `;
+
+        followTabs.followerList.appendChild(userItem);
       }
-    } catch (error) {
-      console.error("팔로워 목록 로드 실패:", error);
     }
+  } catch (error) {
+    console.error("[loadFollowerList] 팔로워 목록 로드 실패:", error);
   }
+}
 
-  // 팔로우 취소 버튼 이벤트
-  followTabs.followList.addEventListener("click", async (event) => {
+
+  // 언팔로우 버튼 이벤트
+  followTabs.followingList.addEventListener("click", async (event) => {
     if (event.target.classList.contains("unfollow-btn")) {
-      const userId = event.target.dataset.userId;
+      const userNick = event.target.dataset.userNick;
 
       try {
-        const response = await fetch(`/follow/unfollow/${userId}`, { method: "DELETE" });
+        const response = await fetch(`/follow/${userNick}`, { method: "DELETE" });
 
         if (response.ok) {
           event.target.closest(".user-item").remove();
@@ -555,21 +586,44 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
   // 맞팔로우 버튼 이벤트
   followTabs.followerList.addEventListener("click", async (event) => {
     if (event.target.classList.contains("follow-back-btn")) {
-      const userId = event.target.dataset.userId;
-
+      const userNick = event.target.dataset.userNick;
+      const action = event.target.textContent.trim();//추가
       try {
-        const response = await fetch(`/follow/follow/${userId}`, { method: "POST" });
+        let response;
+        if (action === "맞팔로우") {
+          console.log(`[${action}] 요청 시작: /follow/${userNick} (POST)`);
+          response = await fetch(`/follow/${userNick}`, { method: "POST" });
+        } else if (action === "언팔로우") {
+          console.log(`[${action}] 요청 시작: /follow/${userNick} (DELETE)`);
+          response = await fetch(`/follow/${userNick}`, { method: "DELETE" });
+        }
 
+        // 응답 객체 확인
+        if (!response) {
+          console.error(`[${action}] 응답 객체가 정의되지 않음.`);
+          alert("서버 요청에 실패했습니다. 잠시 후 다시 시도해주세요.");
+          return;
+        }
+        // 요청 결과 확인
         if (response.ok) {
-          event.target.textContent = "팔로우 완료";
-          event.target.disabled = true;
+          const result = await response.json(); // 응답 데이터를 JSON으로 변환
+          console.log(`[${action}] 요청 성공:`, result);
+  
+          // 버튼 상태 업데이트
+          event.target.textContent = action === "맞팔로우" ? "언팔로우" : "맞팔로우";
+          console.log(`[${action}] 버튼 상태 업데이트 완료: ${event.target.textContent}`);
         } else {
-          alert("맞팔로우 실패.");
+          console.error(`[${action}] 요청 실패: HTTP 상태 코드 ${response.status}`);
+          alert(`${action} 실패. 잠시 후 다시 시도해주세요.`);
         }
       } catch (error) {
-        console.error("맞팔로우 중 오류:", error);
+        console.error(`[${action}] 요청 중 오류:`, error);
+        alert(`네트워크 오류가 발생했습니다. (${error.message})`);
       }
     }
+
+
+
   });
 
 
@@ -619,4 +673,8 @@ function renderPosts(posts, type) {
       </a>`;
     postsContent.appendChild(postItem);
   });
+
+
 }
+
+});

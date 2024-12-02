@@ -2,6 +2,8 @@ package edu.kh.cgram.member.service;
 
 import java.util.List;
 
+import org.springframework.data.repository.query.Param;
+
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
 
@@ -36,5 +38,8 @@ public interface MemberService {
 	int getFollowerCount(int memberNo);
 
 	int getFollowCount(int memberNo);
+
+	public boolean isUserBlocked(@Param("loginMemberNo") int loginMemberNo,@Param("targetMemberNo") int targetMemberNo);
+
 
 }

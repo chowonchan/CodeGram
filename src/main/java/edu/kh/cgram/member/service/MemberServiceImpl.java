@@ -195,4 +195,12 @@ public class MemberServiceImpl implements MemberService{
 	  int followerCount = mapper.getFollowerCount(memberNo);
 		return followerCount;
 	}
+	
+	@Override
+	public boolean isUserBlocked(int loginMemberNo, int targetMemberNo) {
+	    return mapper.isBlocked(loginMemberNo, targetMemberNo) > 0;
+	}
+
+	
+	
 }

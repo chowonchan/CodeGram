@@ -14,10 +14,22 @@ public interface BoardService {
 
 	List<BoardImg> getRandomPosts(int memberNo);
     
-    // 게시글 수정 모달에 필요한 부분 로딩
-    int selectDetail(int boardNo);
+  // 게시글 수정 모달에 필요한 부분 로딩
+  int selectDetail(int boardNo);
 
 	Board selectBoardDetail(int boardNo);
+	
+	boolean isLiked(int boardNo, int memberNo);
 
 	List<Comment> selectBoardComments(int boardNo);
+
+	int likeBoard(int memberNo, int boardNo);
+
+	int unlikeBoard(int memberNo, int boardNo);
+
+	boolean isAuthor(int boardNo, int memberNo);
+
+	List<Member> getLikes(int boardNo);
+
+	int reportBoard(int boardNo, int memberNo, String reportReason);
 }
