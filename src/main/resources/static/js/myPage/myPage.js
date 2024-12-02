@@ -496,7 +496,7 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
           userItem.innerHTML = `
             <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
             <span class="nickname">${user.NICKNAME}</span>
-            <button class="unfollow-btn" data-user-id="${user.NICKNAME}">팔로우 취소</button>
+            <button class="unfollow-btn" data-user-nick="${user.NICKNAME}">언팔로우</button>
         `;
           followTabs.followingList.appendChild(userItem);
         });
@@ -532,13 +532,13 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
     }
   }
 
-  // 팔로우 취소 버튼 이벤트
+  // 언팔로우 버튼 이벤트
   followTabs.followingList.addEventListener("click", async (event) => {
     if (event.target.classList.contains("unfollow-btn")) {
-      const nickname = event.target.dataset.user.data-user-nick;
+      const userNick = event.target.dataset.userNick;
 
       try {
-        const response = await fetch(`/follow/${user.NICKNAME}`, { method: "DELETE" });
+        const response = await fetch(`/follow/${userNick}`, { method: "DELETE" });
 
         if (response.ok) {
           event.target.closest(".user-item").remove();
@@ -555,10 +555,10 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
   // 맞팔로우 버튼 이벤트
   followTabs.followerList.addEventListener("click", async (event) => {
     if (event.target.classList.contains("follow-back-btn")) {
-      const userId = event.target.dataset.userId;
+      const userNick = event.target.dataset.userNick;
 
       try {
-        const response = await fetch(`/follow/follow/${userId}`, { method: "POST" });
+        const response = await fetch(`/follow/${userNick}`, { method: "POST" });
 
         if (response.ok) {
           event.target.textContent = "팔로우 완료";

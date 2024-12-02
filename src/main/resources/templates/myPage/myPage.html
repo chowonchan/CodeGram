@@ -136,7 +136,6 @@
       <!-- 모달 옵션 목록 -->
       <ul class="modal-options">
         <li id="blockUser" class="option block">차단</li>
-        <li id="reportUser" class="option report">신고</li>
         <li id="infoUser" class="option info ">이 계정 정보</li>
         <li id="cancleModal" class="option cancle">취소</li>
       </ul>
@@ -177,39 +176,39 @@
   </div>
 
   <!-- 차단 목록 모달 -->
-<div id="blockListModal" class="modal hidden">
-  <div class="modal-content">
-    <h2>차단 목록</h2>
-    <ul id="blockedUsers" class="user-list">
-      <!-- 차단된 사용자 목록이 여기에 추가됩니다 -->
-    </ul>
-    <button id="closeBlockList" class="close-button">닫기</button>
+  <div id="blockListModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>차단 목록</h2>
+      <ul id="blockedUsers" class="user-list">
+        <!-- 차단된 사용자 목록이 여기에 추가됩니다 -->
+      </ul>
+      <button id="closeBlockList" class="close-button">닫기</button>
+    </div>
   </div>
-</div>
 
-<!-- 팔로우 리스트 모달 -->
-<div id="followListModal" class="modal">
-  <div class="modal-content">
-    <!-- 탭 메뉴 -->
-    <div class="tabs">
-      <button id="followTab" class="tab active">팔로우</button>
-      <button id="followerTab" class="tab">팔로워</button>
+  <!-- 팔로우 리스트 모달 -->
+  <div id="followListModal" class="modal">
+    <div class="modal-content">
+      <!-- 탭 메뉴 -->
+      <div class="tabs">
+        <button id="followTab" class="tab active">팔로우</button>
+        <button id="followerTab" class="tab">팔로워</button>
+      </div>
+
+      <!-- 팔로우 목록 -->
+      <div id="followingListContent" class="list-content">
+        <ul id="followingList" class="user-list"></ul>
+      </div>
+
+      <!-- 팔로워 목록 -->
+      <div id="followerListContent" class="list-content hidden">
+        <ul id="followerList" class="user-list"></ul>
+      </div>
+
+      <!-- 모달 닫기 버튼 -->
+      <button id="closeFollowList" class="close-button">닫기</button>
     </div>
-
-    <!-- 팔로우 목록 -->
-    <div id="followingListContent" class="list-content">
-      <ul id="followingList" class="user-list"></ul>
-    </div>
-
-    <!-- 팔로워 목록 -->
-    <div id="followerListContent" class="list-content hidden">
-      <ul id="followerList" class="user-list"></ul>
-    </div>
-
-    <!-- 모달 닫기 버튼 -->
-    <button id="closeFollowList" class="close-button">닫기</button>
   </div>
-</div>
 
 
   
