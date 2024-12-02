@@ -6,40 +6,37 @@ document.addEventListener("DOMContentLoaded", async() => {
   // 모달 및 요소 관련 추가
   const followModals = {
     followListModal: document.getElementById("followListModal"),
+    closeFollowListButton: document.getElementById("closeFollowList")
   };
 
   const followTabs = {
     followTab: document.getElementById("followTab"),
     followerTab: document.getElementById("followerTab"),
-    followListContent: document.getElementById("followListContent"),
+    followingListContent: document.getElementById("followingListContent"),
     followerListContent: document.getElementById("followerListContent"),
     followingList: document.getElementById("followingList"),
-    followerList: document.getElementById("followerList"),
+    followerList: document.getElementById("followerList")
   };
+// 로그 추가
+console.log("팔로우 탭 요소:", followTabs.followTab);
+console.log("팔로워 탭 요소:", followTabs.followerTab);
+console.log("팔로우 리스트 컨텐츠:", followTabs.followingListContent);
+console.log("팔로워 리스트 컨텐츠:", followTabs.followerListContent);
+console.log("팔로우 리스트:", followTabs.followingList);
+console.log("팔로워 리스트:", followTabs.followerList);
 
-  // 팔로우 목록 버튼 클릭 이벤트 추가
-  const followListButton = document.getElementById("followList");
-  followListButton?.addEventListener("click", () => {
-    followModals.followListModal.style.display = "flex"; // 모달 열기
-    loadFollowList(); // 팔로우 리스트 로드
-  });
+
+// 팔로우 목록 버튼 클릭 이벤트 추가
+const followListButton = document.getElementById("followList");
+followListButton?.addEventListener("click", () => {
+  followModals.followListModal.style.display = "flex"; // 모달 열기
+  loadFollowList(); // 팔로우 리스트 로드
+});
 
   // 팔로우 리스트 모달 닫기
   document.getElementById("closeFollowList")?.addEventListener("click", () => {
     followModals.followListModal.style.display = "none"; // 모달 닫기
   });
-
-  // followTabs.followingList = document.getElementById("followingList");
-  // if (!followTabs.followingList) {
-  //   console.error("팔로우 리스트 요소를 찾을 수 없습니다.");
-  //   return; // 함수 실행 중단
-  // }
-    
-  // // 팔로우 리스트 모달 열기
-  // document.getElementById("followingList")?.addEventListener("click", () => {
-  //   followModals.followListModal.style.display = "flex";
-  //   loadFollowList(); // 기본적으로 팔로우 리스트 로드
-  // });
 
   // 탭 전환
   followTabs.followTab.addEventListener("click", () => {
@@ -477,15 +474,18 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
 
   // 팔로잉 목록 로드
   async function loadFollowList() {
+    console.log("[loadFollowList] 팔로우 목록 로드 시작");
     try {
       const response = await fetch("/follow/followList");
+      console.log("[loadFollowList] 서버 요청 완료");
       if (!response.ok) throw new Error("팔로우 리스트를 가져오는 데 실패했습니다.");
 
       const data = await response.json();
       console.log("팔로우 리스트 데이터:", data); // 콘솔에 출력
 
       followTabs.followingList.innerHTML = "";
-      console.log("followTabs.followingList:", followTabs.followingList);
+      console.log("[loadFollowList] 기존 팔로우 리스트 초기화");
+      // console.log("followTabs.followingList:", followTabs.followingList);
 
       if (data.length === 0) {
         followTabs.followingList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
@@ -494,9 +494,9 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
           const userItem = document.createElement("li");
           userItem.className = "user-item";
           userItem.innerHTML = `
-            <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
-            <span class="nickname">${user.MEMBER_NICKNAME}</span>
-            <button class="unfollow-btn" data-user-id="${user.MEMBERNO}">팔로우 취소</button>
+            <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
+            <span class="nickname">${user.NICKNAME}</span>
+            <button class="unfollow-btn" data-user-id="${user.NICKNAME}">팔로우 취소</button>
         `;
           followTabs.followingList.appendChild(userItem);
         });
@@ -520,9 +520,9 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
           const userItem = document.createElement("li");
           userItem.className = "user-item";
           userItem.innerHTML = `
-            <img src="${user.PROFILE_IMG || '/images/default-profile.png'}">
-            <span class="nickname">${user.MEMBER_NICKNAME}</span>
-            <button class="follow-back-btn" data-user-id="${user.MEMBERNO}">맞팔로우</button>
+            <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
+            <span class="nickname">${user.NICKNAME}</span>
+            <button class="follow-back-btn" data-user-nick="${user.NICKNAME}">맞팔로우</button>
           `;
           followTabs.followerList.appendChild(userItem);
         });
@@ -533,12 +533,12 @@ document.getElementById("blockedUsers").addEventListener("click", async (event) 
   }
 
   // 팔로우 취소 버튼 이벤트
-  followTabs.followList.addEventListener("click", async (event) => {
+  followTabs.followingList.addEventListener("click", async (event) => {
     if (event.target.classList.contains("unfollow-btn")) {
-      const userId = event.target.dataset.userId;
+      const nickname = event.target.dataset.user.data-user-nick;
 
       try {
-        const response = await fetch(`/follow/unfollow/${userId}`, { method: "DELETE" });
+        const response = await fetch(`/follow/${user.NICKNAME}`, { method: "DELETE" });
 
         if (response.ok) {
           event.target.closest(".user-item").remove();

@@ -449,3 +449,133 @@ main {
   width: 400px;
   max-width: 90%;
 }
+
+/* 팔로우 리스트 모달 스타일 */
+#followListModal {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* 콘텐츠가 길어져도 배경 스크롤 방지 */
+}
+
+#followListModal .modal-content {
+  background-color: #fff; /* 하얀 배경 */
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80%;
+  overflow-y: auto; /* 긴 콘텐츠는 스크롤 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  animation: fadeIn 0.3s ease; /* 나타나는 애니메이션 */
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 15px;
+}
+
+/* 모달 헤더 */
+#followListModal .modal-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 사용자 목록 */
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 각 사용자 항목 */
+.user-item {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: space-between; /* 사용자 정보와 버튼 배치 */
+  padding: 10px;
+  border: 1px solid #ddd; /* 외곽선 */
+  border-radius: 8px; /* 둥근 모서리 */
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-item:hover {
+  background-color: #f1f1f1; /* 호버 시 배경색 변경 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 효과 */
+}
+
+/* 프로필 이미지 */
+.user-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* 원형 이미지 */
+  object-fit: cover;
+  border: 2px solid #ccc;
+  margin-right: 10px;
+}
+
+/* 닉네임 */
+.user-item .nickname {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  flex-grow: 1; /* 남은 공간 차지 */
+}
+
+/* 버튼 */
+.user-item button {
+  padding: 6px 12px;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-item button:hover {
+  background-color: #0056b3; /* 호버 시 색상 변경 */
+}
+
+/* 빈 메시지 스타일 */
+.user-list .empty-message {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+/* 닫기 버튼 */
+#followListModal .close-button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: center;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#followListModal .close-button:hover {
+  background-color: #c9302c;
+}
+
+.hidden {
+  display: none;
+}
