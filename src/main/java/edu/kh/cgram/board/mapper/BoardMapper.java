@@ -1,12 +1,14 @@
 package edu.kh.cgram.board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.dto.Comment;
+import edu.kh.cgram.member.dto.Member;
 import io.lettuce.core.dynamic.annotation.Param;
 
 
@@ -35,4 +37,16 @@ public interface BoardMapper {
 
     // 게시글 댓글 조회
     List<Comment> selectBoardComments(int boardNo);
+
+		int checkLike(Map<String, Object> paramMap);
+
+		int insertLike(Map<String, Object> paramMap);
+
+		int deleteBoardLike(Map<String, Object> paramMap);
+
+		int checkAuthor(Map<String, Object> paramMap);
+
+		List<Member> selectLikesByBoardNo(int boardNo);
+
+		int insertReport(Map<String, Object> paramMap);
 }

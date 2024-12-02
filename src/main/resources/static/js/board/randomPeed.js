@@ -25,10 +25,17 @@ function renderRandomPosts(posts) {
     postItem.classList.add("post-item");
     postItem.setAttribute("data-board-no", post.boardNo);
     postItem.innerHTML = `
-      <a href="/board/${post.boardNo}">
+      <a>
         <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
       </a>
     `;
     postsGrid.appendChild(postItem);
+
+    postItem.addEventListener("click", (e) => {
+      const boardNo = postItem.getAttribute("data-board-no");
+      e.preventDefault();
+      e.stopPropagation();
+      openDetail(boardNo);
+    });
   });
 }
