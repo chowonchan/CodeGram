@@ -110,7 +110,7 @@ body {
   text-align: center;
   font-size: 16px;
 }
-.comment-list {
+.comment-list1 {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -167,36 +167,36 @@ footer {
   padding: 10px 0;
   position: relative;
 }
-.post-info {
+.post-info1 {
   display: flex;
   height: 80px;
   padding-bottom: 20px;
   align-items: center;
   margin-bottom: 5px;
 }
-.comment-info {
+.comment-info1 {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
   padding-left: 40px;
 }
-.profile-img {
+.profile-img1 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
 }
-.user-profile-img {
+.user-profile-img1 {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
 }
-.member-nickname, .user-nickname {
+.member-nickname1, .user-nickname1 {
   font-weight: bold;
   margin-right: 10px;
 }
-.board-content, .comment-content {
+.board-content1, .comment-content1 {
   font-size: 14px;
   color: #333;
 }
@@ -205,8 +205,8 @@ footer {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3; /* 세 줄까지만 표시 */
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal; /* 여러 줄 허용 */
+  word-break: break-all;
+  white-space: pre-wrap; /* 여러 줄 허용 */
 }
 .post-image {
   display: flex;
