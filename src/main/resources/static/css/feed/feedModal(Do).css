@@ -1,99 +1,304 @@
-
 /* 게시물 모달창 */
+
 /* 모달창 배경 */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    /* 어두운 반투명 배경 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.feed-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* 어두운 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 숨김 클래스 */
+.hidden {
+  display: none;
+}
+
+/* 모달 콘텐츠 */
+.feed-modal-content {
+  background-color: #fff;
+  width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  /* 애니메이션 */
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  /* 숨김 클래스 */
-  .hidden {
-    display: none;
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  /* 모달 콘텐츠 */
-  .modal-content {
-    background-color: #fff;
-    width: 320px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease;
-    /* 애니메이션 */
-  }
-  
-  /* 애니메이션 효과 */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-  
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  /* 모달 옵션 리스트 */
-  .modal-options {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* 모달 옵션 기본 스타일 */
-  .modal-option {
-    border-bottom: 1px solid #efefef;
-  }
-  
-  .modal-option button {
-    width: 100%;
-    padding: 15px 20px;
-    background: none;
-    border: none;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-  
-  /* 버튼 호버 효과 */
-  .modal-option button:hover {
-    background-color: #f9f9f9;
-  }
-  
-  /* 버튼 강조 스타일 (신고 버튼) */
-  .modal-option button:first-child {
-    color: #ed4956;
-    /* 빨간색 강조 */
-    font-weight: bold;
-  }
-  
-  /* 취소 버튼 스타일 */
-  .modal-option.cancel button {
-    color: #555;
-    font-weight: bold;
-  }
-  
-  /* 취소 버튼 호버 스타일 */
-  .modal-option.cancel button:hover {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  /* 버튼 간격 조정 */
-  .modal-options .modal-option:last-child {
-    border-bottom: none;
-  }
+}
+
+/* 모달 옵션 리스트 */
+.feed-modal-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 모달 옵션 기본 스타일 */
+.feed-modal-option {
+  border-bottom: 1px solid #efefef;
+}
+
+.feed-modal-option button {
+  width: 100%;
+  padding: 15px 20px;
+  background: none;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 버튼 호버 효과 */
+.feed-modal-option button:hover {
+  background-color: #f9f9f9;
+}
+
+/* 버튼 강조 스타일 (신고 버튼) */
+.feed-modal-option button:first-child {
+  color: #ed4956;
+  /* 빨간색 강조 */
+  font-weight: bold;
+}
+
+/* 취소 버튼 스타일 */
+.feed-modal-option.feed-cancel button {
+  color: #555;
+  font-weight: bold;
+}
+
+/* 취소 버튼 호버 스타일 */
+.feed-modal-option.feed-cancel button:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* 버튼 간격 조정 */
+.feed-modal-options .feed-modal-option:last-child {
+  border-bottom: none;
+}
+
+
+
+
+/* ----------------------------------------------------- */
+
+/* 신고 모달창 */
+
+.report-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+
+}
+
+.report-modal-container {
+  background-color: white;
+  width: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 모달 헤더 스타일 */
+.report-modal-header {
+  position: relative;
+  text-align: center;
+  padding: 15px;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.report-modal-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.report-close-btn {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #8e8e8e;
+  cursor: pointer;
+}
+
+/* 신고 이유 섹션 스타일 */
+.report-modal-content {
+  padding: 15px;
+}
+
+.report-modal-content h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.report-reasons {
+  list-style-type: none;
+}
+
+.report-reason {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #dbdbdb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.report-reason:last-child {
+  border-bottom: none;
+}
+
+.report-reason:hover {
+  background-color: #f5f5f5;
+}
+
+.report-reason span:first-child {
+  font-size: 14px;
+}
+
+.report-chevron {
+  color: #8e8e8e;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+/* 신고 완료 섹션 스타일 */
+.report-complete {
+  text-align: center;
+  padding: 30px 15px;
+}
+
+.report-complete h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.report-complete p {
+  color: #8e8e8e;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.report-close-complete-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+
+/* ----------------------------------------------------- */
+
+/* 이 계정 정보 모달창 */
+
+.member-im-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.member-im-modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.member-im-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.member-im-modal-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #262626;
+}
+
+.member-im-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #8e8e8e;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.member-im-modal-content {
+  padding: 15px;
+}
+
+.member-im-account-info-section {
+  margin-bottom: 15px;
+}
+
+.member-im-account-details p {
+  margin: 10px 0;
+  color: #262626;
+}
+
+.member-im-account-details strong {
+  color: #8e8e8e;
+  margin-right: 10px;
+}
+

@@ -1,14 +1,119 @@
-    <!-- ... 모달창(게시물옵션) -->
-    <div id="modal" class="modal hidden">
-        <div class="modal-content">
-          <ul class="modal-options">
-            <li class="modal-option"><button onclick="handleOption('report')">신고</button></li>
-            <li class="modal-option"><button onclick="handleOption('unfollow')">팔로우 취소</button></li>
-            <li class="modal-option"><button onclick="handleOption('goToPage')">회원 페이지로 이동</button></li>
-            <li class="modal-option"><button onclick="handleOption('accountInfo')">이 계정 정보</button></li>
-            <li class="modal-option cancel"><button onclick="closeModal()">취소</button></li>
-          </ul>
+<!-- ... 모달창(게시물옵션) -->
+<div id="feed-modal" class="feed-modal hidden">
+  <div class="feed-modal-content">
+    <ul class="feed-modal-options">
+      <li class="feed-modal-option" id="report-modal"><span>신고</span></li>
+      <li class="feed-modal-option"><span>팔로우 취소</span></li>
+      <li class="feed-modal-option"><a th:href="|/member/${board.memberNickname}|"><span>회원 페이지로 이동</span></a></li>
+      <li class="feed-modal-option" id="member-im-modal"> <span>이 계정 정보</span> </li>
+      <li class="feed-modal-option feed-cancel"><span>취소</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 팔로우 안 된 Feed에 모달창 들어가면 팔로우 취소 안 뜨게 해야됨 -->
+
+
+<!-- 신고 모달창 -->
+<div class="report-modal-overlay" id="report-modal">
+  <div class="report-modal-container">
+    <form action="/report/insert" method="POST" id="firmTag">
+
+      <!-- 모달 헤더 -->
+      <div class="report-modal-header">
+        <h2>신고하기</h2>
+        <button class="report-close-btn">&times;</button>
+      </div>
+      <!-- 신고 이유 섹션 -->
+      <div class="report-modal-content">
+        <h3>이 게시물을 신고하는 이유</h3>
+        <div class="report-reasons" id="reportReason">
+          <div class="report-reason" value="0">
+            <button>
+              <span>마음에 들지 않습니다</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="1">
+            <button>
+              <span>자살, 자해 및 섭식 장애</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="2">
+            <button>
+              <span>따돌림 또는 원치 않는 연락</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="3">
+            <button>
+              <span>폭력, 혐오 또는 학대</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="4">
+            <button>
+              <span>제한된 품목을 판매하거나 홍보함</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="5">
+            <button>
+              <span>나체 이미지 또는 성적 행위</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="6">
+            <button>
+              <span>스캠, 사기 또는 스팸</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
+          <div class="report-reason" value="7">
+            <button>
+              <span>거짓 정보</span>
+              <span class="report-chevron">›</span>
+            </button>
+          </div>
         </div>
       </div>
-  
-  
+    </form>
+    <!-- 신고 완료 섹션 (초기에는 숨김) -->
+    <div class="report-complete hidden">
+      <h3>신고가 접수되었습니다</h3>
+      <p>Instagram 커뮤니티 가이드라인을 위반하는 것으로 의심되는 콘텐츠를 검토하겠습니다.</p>
+      <button class="report-close-complete-btn">닫기</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- 이 계정 정보 모달창 -->
+
+<div class="member-im-modal-overlay" id="member-im-modal">
+  <div class="member-im-modal">
+    <div class="member-im-modal-header">
+      <h2>이 계정 정보</h2>
+      <button class="member-im-close-btn">&times;</button>
+    </div>
+    <div class="member-im-modal-content">
+      <div class="member-im-account-info-section">
+        <div class="member-im-account-details">
+          <p><strong>사용자명:</strong> <span th:text="${board.memberNickname}">닉</span></p>
+        </div>
+      </div>
+      <div>
+        <h4>가입한 날짜</h4> <br>
+        <!-- 가입한 날짜 타임리프로 받아와야됨 -->
+        <p>0000년 00월</p>
+      </div>
+      <div>
+        <p>닫기</p>
+      </div>
+    </div>
+  </div>
+</div>

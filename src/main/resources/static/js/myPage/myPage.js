@@ -766,18 +766,57 @@ async function loadFollowerList() {
 
 let currentPage = 1; // 현재 페이지, fetch 수행 시 마다 증가
 
-document.addEventListener('DOMContentLoaded',  function () {
-  // IntersectionObserver : 보고있는 화면에 요소가 나타나는지 감지
-  let intersectionObserver = new IntersectionObserver(async function (entries) {
-    // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
-    // 아무것도 하지 않음
-    if (entries[0].intersectionRatio <= 0) return;
+// document.addEventListener('DOMContentLoaded',  function () {
+//   // IntersectionObserver : 보고있는 화면에 요소가 나타나는지 감지
+//   let intersectionObserver = new IntersectionObserver(async function (entries) {
+//     // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
+//     // 아무것도 하지 않음
+//     if (entries[0].intersectionRatio <= 0) return;
 
-    // console.log("새 항목 불러옴");
-    await fetchMoreFeedItems();
-  });
-  // 주시 시작
-  intersectionObserver.observe(document.querySelector("#SCmainFooter"));
+//     // console.log("새 항목 불러옴");
+//     await fetchMoreFeedItems();
+//   });
+//   // 주시 시작
+//   intersectionObserver.observe(document.querySelector("#SCmainFooter"));
+// =======
+// // 게시물 렌더링
+// function renderPosts(posts, type) {
+//   const postsContent = document.getElementById("postsContent");
+//   postsContent.innerHTML = "";
+//   if (posts.length === 0) {
+//     const noPostsContainer = document.createElement("div");
+//     noPostsContainer.className = "no-posts-container"; // 컨테이너 클래스 추가
+  
+//     const noPostsMessage = document.createElement("p");
+//     noPostsMessage.className = "no-posts-message"; // 메시지 클래스 추가
+//     noPostsMessage.textContent = type === "uploads"
+//       ? "회원님이 작성한 게시물이 존재하지 않습니다."
+//       : "회원님이 저장한 게시물이 존재하지 않습니다.";
+  
+//     noPostsContainer.appendChild(noPostsMessage);
+//     postsContent.appendChild(noPostsContainer); // 컨테이너를 추가
+//     return;
+//   }
+//     // 게시물이 있는 경우 클래스 제거
+//     postsContent.classList.remove("no-posts");
+    
+//     posts.forEach(post => {
+//       const postItem = document.createElement("div");
+//       postItem.className = "post-item"; // 클래스 추가
+    
+//       // 게시물 항목의 이미지 추가
+//       const postImage = document.createElement("img");
+//       postImage.className = "post-image";
+//       postImage.src = `${post.imgPath}${post.imgRename}`;
+//       postImage.alt = "Post Image";
+    
+//       // 클릭 이벤트로 상세 모달 열기
+//       postItem.addEventListener("click", () => openDetail(post.boardNo));
+    
+//       // post-item에 이미지 추가
+//       postItem.appendChild(postImage);
+//       postsContent.appendChild(postItem);
+//     }); 여기 옛 코드
 
 
 

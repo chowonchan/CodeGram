@@ -30,10 +30,18 @@
 
     <!-- 댓글 삭제 -->
     <update id="commentDelete">
-        UPDATE	"COMMENT"
+        UPDATE	COMMENT
         SET		COMMENT_DEL_FL = 'Y'
         WHERE	COMMENT_NO = #{commentNo}
-          AND		MEMBER_NO = #{memberNo}
+        AND		MEMBER_NO = #{memberNo}
+    </update>
+
+    <!-- 댓글 수정 -->
+    <update id="commentUpdate">
+        UPDATE  COMMENT
+        SET     COMMENT_CONTENT = #{commentContent}
+        WHERE   COMMENT_NO = #{commentNo}
+        AND     MEMBER_NO  = #{memberNo}
     </update>
 
 
