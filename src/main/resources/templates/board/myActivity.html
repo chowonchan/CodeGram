@@ -12,6 +12,7 @@
 <body>
   <!-- 헤더 조각 포함 -->
   <div class="header-container" th:replace="~{fragments/header :: header}"></div>
+  <div th:replace= "~{feed/feedDetail}"></div>
 
   <!-- 메인 콘텐츠 영역 -->
   <div class="main-content">
@@ -53,7 +54,7 @@
             <!-- 게시물 예제 -->
             <div class="post-item"></div>
         </div>
-        <ul class="comment-list" id="commentList" style="display: none;">
+        <ul class="comment-list1" id="commentList1" style="display: none;">
           <li>댓글 1</li>
           <li>댓글 2</li>
           <li>댓글 3</li>

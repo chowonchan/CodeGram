@@ -5,7 +5,7 @@ const postsContent = document.getElementById("postsContent");
 const likeLink = document.getElementById("likeLink");
 const postLink = document.getElementById("postLink");
 const commentLink = document.getElementById("commentLink");
-const commentList = document.getElementById("commentList");
+const commentList1 = document.getElementById("commentList1");
 const selectButton = document.querySelector(".selected");
 const postSort = document.querySelector(".post-sort");
 let deleteButton, cancelButton;
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   reactionTab.classList.add("active");
   postsContent.style.display = "grid";
   activateTab(likeLink);
-  commentList.style.display = "none";
+  commentList1.style.display = "none";
   postLink.style.display = "none";
 
   // 기본 설정: 좋아요한 게시물 로드
@@ -51,6 +51,13 @@ function renderLikedPosts(posts) {
       </a>
     `;
     postsGrid.appendChild(postItem);
+
+    postItem.addEventListener("click", (e) => {
+      const boardNo = postItem.getAttribute("data-board-no");
+      e.preventDefault();
+      e.stopPropagation();
+      openDetail(boardNo);
+    });
   });
 }
 
@@ -67,13 +74,13 @@ function activateTab(activeLink) {
   // 탭에 따른 콘텐츠 표시/숨기기
   if (activeLink === likeLink) {
     postsContent.style.display = "grid";
-    commentList.style.display = "none";
+    commentList1.style.display = "none";
   } else if (activeLink === commentLink) {
     postsContent.style.display = "none";
-    commentList.style.display = "block";
+    commentList1.style.display = "block";
   } else if (activeLink === postLink) {
     postsContent.style.display = "grid";
-    commentList.style.display = "none";
+    commentList1.style.display = "none";
   }
 }
 
@@ -86,7 +93,7 @@ function activateTab(activeLink) {
   activateTab(likeLink);
   commentLink.style.display = "block";
   postsContent.style.display = "grid";
-  commentList.style.display = "none";
+  commentList1.style.display = "none";
   handleCancel();
 
   // 기본 설정: 좋아요한 게시물 로드
@@ -105,7 +112,7 @@ function activateTab(activeLink) {
   activateTab(postLink);
   commentLink.style.display = "none";
   postsContent.style.display = "grid";
-  commentList.style.display = "none";
+  commentList1.style.display = "none";
   handleCancel();
 
   // 서버에서 회원의 게시물을 가져오기
@@ -137,6 +144,12 @@ function renderMemberPosts(posts) {
       </a>
     `;
     postsGrid.appendChild(postItem);
+    postItem.addEventListener("click", (e) => {
+      const boardNo = postItem.getAttribute("data-board-no");
+      e.preventDefault();
+      e.stopPropagation();
+      openDetail(boardNo);
+    });
   });
 }
 
@@ -152,7 +165,7 @@ function renderMemberPosts(posts) {
   event.preventDefault();
   activateTab(commentLink);
   handleCancel();
-  commentList.style.display = "block";
+  commentList1.style.display = "block";
 
   // 서버에서 댓글 데이터를 가져오기
   fetch("/myActivity/comments")
@@ -166,13 +179,13 @@ function renderMemberPosts(posts) {
 
 // 댓글 데이터를 렌더링하는 함수
 function renderComments(comments) {
-  commentList.innerHTML = ""; // 기존 댓글을 초기화
+  commentList1.innerHTML = ""; // 기존 댓글을 초기화
 
   if (comments.length === 0) {
     const noCommentsMessage = document.createElement("p");
     noCommentsMessage.classList.add("no-comments-message");
     noCommentsMessage.textContent = "회원님이 작성한 댓글이 존재하지 않습니다.";
-    commentList.appendChild(noCommentsMessage);
+    commentList1.appendChild(noCommentsMessage);
     return;
   }
 
@@ -183,24 +196,24 @@ function renderComments(comments) {
     
     // 게시물 정보 (작성자 프로필 이미지, 닉네임, 게시물 내용)
     const postInfo = `
-      <li class="post-info">
-        <img src="${comment.profileImg}" alt="Profile Image" class="profile-img">
-        <span class="member-nickname">${comment.memberNickname}</span>
-        <p class="board-content truncate-text">${comment.boardContent}</p>
+      <li class="post-info1">
+        <img src="${comment.profileImg}" alt="Profile Image" class="profile-img1">
+        <span class="member-nickname1">${comment.memberNickname}</span>
+        <p class="board-content1 truncate-text">${comment.boardContent}</p>
       </li>
     `;
 
     // 댓글 정보 (로그인 회원의 프로필 이미지, 닉네임, 댓글 내용)
     const commentInfo = `
-      <li class="comment-info">
-        <img src="${comment.userProfileImg}" alt="User Profile Image" class="user-profile-img">
-        <span class="user-nickname">${comment.userNickname}</span>
-        <p class="comment-content truncate-text">${comment.commentContent}</p>
+      <li class="comment-info1">
+        <img src="${comment.userProfileImg}" alt="User Profile Image" class="user-profile-img1">
+        <span class="user-nickname1">${comment.userNickname}</span>
+        <p class="comment-content1 truncate-text">${comment.commentContent}</p>
       </li>
     `;
 
     commentItem.innerHTML = `${postInfo}${commentInfo}`;
-    commentList.appendChild(commentItem);
+    commentList1.appendChild(commentItem);
   });
 }
 

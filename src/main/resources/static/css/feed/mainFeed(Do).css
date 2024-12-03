@@ -83,7 +83,7 @@ body {
 
 /* 메인 컨테이너 */
 .main-container {
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   gap: 32px;
   margin-top: 20px;
@@ -93,33 +93,40 @@ body {
   flex-direction: column;
 }
 
+
+
+
+
 /* 피드 영역 */
-.feed-margin {
-  max-width: 935px;
-  margin: 0 auto;
-  padding-top: 30px;
-}
-
-.feed {
-  width: 100%;
-  max-width: 614px;
-  margin: 0 auto;
-}
-
 .main_plus_right {
   display: flex;
   margin: 0px;
 }
+
+.post {
+  background-color: #ffffff;
+  border-bottom: 1px solid #DBDBDB;
+  max-width: 470px;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+
 
 
 
 /* 게시물 아티클 */
 .board-article {
   background-color: #fff;
-  border: 1px solid #dbdbdb;
   border-radius: 8px;
+  border-bottom: 1px solid #DBDBDB;
   margin-bottom: 24px;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* 게시물 헤더 */
@@ -128,6 +135,10 @@ body {
   align-items: center;
   padding: 14px 16px;
 }
+/* .post-header {
+  padding: 14px 4px 12px;
+  width: 100%;
+} */
 
 .post-header-padding {
   border-bottom: 1px solid #efefef;
@@ -161,11 +172,12 @@ body {
 }
 
 .more-options {
+  margin-left: auto;
   padding: 8px;
 }
 
 /* 게시물 이미지 */
-.post-image {
+/* .post-image {
   width: 100%;
   max-height: 767px;
   object-fit: cover;
@@ -173,11 +185,13 @@ body {
   width: 468px;
   height: 468px;
   object-fit: cover;
-}
+} */
 
 /* 중요 박스 (좋아요, 댓글 등) */
 .important-box {
-  padding: 0 16px 16px;
+  height: 100%;
+  width: 470px;
+  font-size: 14px;
 }
 
 .section-1 {
@@ -201,28 +215,22 @@ body {
 
 /* 게시물 캡션 */
 .post-caption {
-  font-size: 14px;
   margin-bottom: 8px;
   line-height: 1.5;
+  padding: 0px;
+  font-size: 14px;
 }
 
 .post-caption span:first-child {
   font-weight: 600;
   margin-right: 4px;
+  font-weight: bold;
 }
 
 .detailBtn {
   color: #8e8e8e;
 }
 
-/* 댓글 영역 */
-.comment-box {
-  color: #8e8e8e;
-  font-size: 14px;
-  border-top: 1px solid #efefef;
-  margin-top: 8px;
-  padding-top: 16px;
-}
 
 /* 유틸리티 클래스 */
 .inline-block {
@@ -232,6 +240,8 @@ body {
 .pointer {
   cursor: pointer;
 }
+
+
 
 /* 액션 버튼 기본 스타일 */
 .action-button {
@@ -248,10 +258,6 @@ body {
   opacity: 0.7;
 }
 
-.action-button svg {
-  fill: currentColor;
-}
-
 /* 좋아요 버튼 스타일 */
 .like-button {
   position: relative;
@@ -265,11 +271,14 @@ body {
   transform: scale(1.1);
 }
 
-.like-button.active svg {
+
+
+
+/* .like-button.active svg {
   fill: #ed4956;
   stroke: #ed4956;
   animation: like-button-animation 0.45s ease-in-out;
-}
+} */
 
 /* 좋아요 버튼 애니메이션 */
 @keyframes like-button-animation {
@@ -308,10 +317,10 @@ body {
   transform: scale(1.1);
 }
 
-.mark-button.active svg {
+/* .mark-button.active svg {
   fill: #262626;
   animation: save-button-animation 0.45s ease-in-out;
-}
+} */
 
 /* 저장 버튼 애니메이션 */
 @keyframes mark-button-animation {
@@ -350,16 +359,6 @@ body {
   display: flex;
   transition: transform 0.3s ease-in-out;
   width: 100%;
-}
-
-.post-image {
-  flex-shrink: 0;
-  width: 468px;
-  height: 468px;
-  object-fit: cover;
-    width: 100%;
-  max-height: 767px;
-  object-fit: cover;
 }
 
 .slider-button {

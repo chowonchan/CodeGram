@@ -843,3 +843,31 @@ document.addEventListener("DOMContentLoaded", e => {
   })
 
 });
+
+
+const chatArea = document.getElementById('inputChatting');
+
+const {createPopup: createPopupChat} = window.picmoPopup;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const trigger = document.querySelector('#emojiButton');
+
+  const picker = createPopupChat({}, {
+    referenceElement: trigger,
+    triggerElement  : trigger,
+    position        : 'left-start',
+    zIndex : 1
+  });
+
+  trigger.addEventListener('click', () => {
+    picker.toggle();
+  });
+
+  picker.addEventListener('emoji:select', (selection) => {
+    console.log(byteLength(selection.emoji));
+    if (byteLength(chatArea.innerText) + byteLength(selection.emoji) <= MAX_BYTES)
+      chatArea.value += selection.emoji;
+
+    chatArea.focus();
+  });
+});
