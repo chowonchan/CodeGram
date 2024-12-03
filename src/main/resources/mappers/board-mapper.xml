@@ -91,7 +91,7 @@
 				   FROM 	"BOARD_LIKE"
 				   WHERE	BOARD_NO  = #{boardNo}
 					 AND		MEMBER_NO = #{memberNo}
-				) AS LIKE_CHECK
+				) AS LIKE_COUNT
 		FROM	"BOARD" B
 		JOIN	"MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
 		WHERE	BOARD_NO = #{boardNo}
@@ -113,7 +113,7 @@
             BOARD_CONTENT AS boardContent,
             READ_COUNT AS readCount,
             CREATED_AT AS createdAt,
-            (SELECT NICKNAME FROM MEMBER WHERE MEMBER_NO = b.MEMBER_NO) AS memberNickname,
+            (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_NO = b.MEMBER_NO) AS memberNickname,
             (SELECT IMG_PATH FROM BOARD_IMG WHERE BOARD_NO = b.BOARD_NO AND IMG_ORDER = 1) AS imagePath,
             (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = b.BOARD_NO) AS likeCount
         FROM BOARD b
@@ -128,7 +128,7 @@
             MEMBER_NO AS memberNo,
             COMMENT_CONTENT AS commentContent,
             CREATED_AT AS createdAt,
-            (SELECT NICKNAME FROM MEMBER WHERE MEMBER_NO = c.MEMBER_NO) AS memberNickname
+            (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_NO = c.MEMBER_NO) AS memberNickname
         FROM COMMENT c
         WHERE BOARD_NO = #{boardNo}
         ORDER BY CREATED_AT ASC
