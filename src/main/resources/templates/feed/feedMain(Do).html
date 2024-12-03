@@ -235,11 +235,11 @@
             </div>
             <div class="recommend-user-info">
               <div class="recommend-user-nickname pointer">
-                <span th:text="${recommend.memberNickname}">해당 회원 닉네임</span>
+                <span th:text="${recommend.memberNickname}" class="recommend-memberNickname">해당 회원 닉네임</span>
               </div>
             </div>
             <div class="recommend-follow pointer">
-              <span>팔로우</span>
+              <span th:text="'팔로우'" class="main-follow-btn" data-nickname="${recommend.memberNickname}">팔로우</span>
               <!-- 팔로우 누르면 바뀐 버튼이 나와야됨. 추후 수정 -->
             </div>
           </article>
