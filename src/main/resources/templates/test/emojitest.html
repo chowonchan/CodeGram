@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 글 작성부분 -->
+  <div style="padding: 0px 16px;">
+    <div contenteditable="true" style="width: 100%; height: 400px; padding: 0px; resize: none; border: none; outline: none;" id="emojiTextArea" spellcheck="false" placeholder="내용을 입력하세요..."></div>
+  </div>
+  <div style="width: 319px; height: 34px; display: flex; justify-content: space-between; padding: 5px; align-items: center;">
+    <div style="cursor: pointer;" id="trigger">🙂</div>
+    <p style="padding: 5px"><span id="byteCount">0</span>/2000</p>
+  </div>
+
+<script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
+<script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
+<script>
+  // 글쓰기 부분
+  const {createPopup: createPopupChat} = window.picmoPopup;
+  const MAX_BYTES = 2000; // 최대 바이트 제한
+  const textArea = document.getElementById('emojiTextArea');
+  const insertEmoji = document.getElementById('byteCount');
+  let lastCaretPosition = null; // 마지막 커서 위치
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.querySelector('#trigger');
+
+    const picker = createPopupChat({}, {
+      referenceElement: trigger,
+      triggerElement: trigger,
+      position: 'right-end',
+      zIndex: 1
+    });
+
+    trigger.addEventListener('click', () => {
+      picker.toggle();
+    });
+
+    picker.addEventListener('emoji:select', (selection) => {
+      // 이모지 삽입
+      const emoji = selection.emoji;
+
+      // 바이트 카운트 업데이트
+      insertEmoji.textContent = textArea.innerText + emoji
+      
+      // 커서 위치에 이모지 삽입
+      if (lastCaretPosition) {
+        insertAtCaret(emoji);
+      } else {
+        // 커서 위치가 없다면 그냥 마지막에 추가
+        textArea.innerText += emoji;
+      }
+      
+      // 텍스트 영역에 포커스
+      textArea.focus();
+    });
+
+    // 커서 위치 추적
+    textArea.addEventListener('focus', () => {
+      setTimeout(() => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          lastCaretPosition = selection.getRangeAt(0);
+        }
+      }, 0);
+    });
+  });
+
+  // 커서 위치에 이모지 삽입
+  function insertAtCaret(emoji) {
+    if (!lastCaretPosition) return;
+
+    const range = lastCaretPosition;
+    range.deleteContents(); // 현재 선택된 텍스트 삭제
+
+    // 새로운 텍스트 노드 (이모지)를 생성
+    const textNode = document.createTextNode(emoji);
+    range.insertNode(textNode);
+
+    // 삽입된 이모지 뒤로 커서를 이동
+    const newRange = document.createRange();
+    newRange.setStartAfter(textNode);
+    newRange.setEndAfter(textNode);
+
+    // 새로 생성된 range를 선택 영역으로 설정
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    
+    // 마지막 커서 위치 갱신
+    lastCaretPosition = newRange;
+  }
+</script>
+</body>
+</html>

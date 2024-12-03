@@ -845,7 +845,7 @@ document.addEventListener("DOMContentLoaded", e => {
 });
 
 
-const commentArea = document.getElementById('inputChatting');
+const chatArea = document.getElementById('inputChatting');
 
 const {createPopup: createPopupChat} = window.picmoPopup;
 
@@ -865,9 +865,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   picker.addEventListener('emoji:select', (selection) => {
     console.log(byteLength(selection.emoji));
-    if (byteLength(commentArea.innerText) + byteLength(selection.emoji) <= MAX_BYTES)
-      commentArea.value += selection.emoji;
+    if (byteLength(chatArea.innerText) + byteLength(selection.emoji) <= MAX_BYTES)
+      chatArea.value += selection.emoji;
 
-    commentArea.focus();
+    chatArea.focus();
   });
 });
