@@ -71,7 +71,7 @@ public class BoardController {
       }
 
       // 댓글 데이터 조회
-      List<Comment> comments = service.selectBoardComments(boardNo);
+      List<Comment> comments = service.selectBoardComments(boardNo, memberNo);
 
       // 데이터 저장
 			result.put("boardNo", board.getBoardNo());
@@ -136,20 +136,54 @@ public class BoardController {
 	    @SessionAttribute("loginMember") Member loginMember) {
 	    
 	    int memberNo = loginMember.getMemberNo();
-	    int boardNo = Integer.parseInt((String) requestData.get("boardNo"));
+	    int contentType =  Integer.parseInt((String) requestData.get("contentType"));
+	    int boardNo = Integer.parseInt((String) requestData.get("contentNo"));
 	    String reportReason = (String) requestData.get("reportReason");
 	    
 	    
-	    return service.reportBoard(boardNo, memberNo, reportReason);
+	    return service.reportBoard(boardNo, memberNo, reportReason, contentType);
+	}
+
+	@PostMapping("/postComment")
+	@ResponseBody
+	public int postComment(
+			@RequestBody Map<String, String> commentData,
+	    @SessionAttribute("loginMember") Member loginMember) {
+		
+		  int memberNo = loginMember.getMemberNo();
+	    int boardNo = Integer.parseInt(commentData.get("boardNo"));
+	    String commentContent = commentData.get("commentContent");
+	    
+	    return service.postComment(boardNo, memberNo, commentContent);
 	}
 	
-//	@GetMapping("/getMemberNickName")
-//	@ResponseBody
-//	public String getMemberNickNameByBoardNo(
-//			@RequestParam("boardNo") int boardNo, 
-//			@RequestParam("memberNo") int memberNo) {
-//		return service.getMemberNickNameByBoardNo(boardNo, memberNo);
-//	}
+	@PostMapping("/comment/like")
+	@ResponseBody
+  public int likeComment(
+  		@RequestBody Map<String, String> likeData,
+      @SessionAttribute("loginMember") Member loginMember) {
+		
+      int commentNo = Integer.parseInt(likeData.get("commentNo"));
+      
+      int memberNo = loginMember.getMemberNo();
+
+      return service.likeComment(commentNo, memberNo);
+  }
+
+  @DeleteMapping("/comment/unlike")
+  @ResponseBody
+  public int unlikeComment(
+  		@RequestBody Map<String, String> unlikeData,
+      @SessionAttribute("loginMember") Member loginMember) {
+  	
+      int commentNo = Integer.parseInt(unlikeData.get("commentNo"));
+      
+      int memberNo = loginMember.getMemberNo();
+
+      return service.unlikeComment(commentNo, memberNo);
+  }
+
+
 
 
 }

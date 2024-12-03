@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.dto.Comment;
 import edu.kh.cgram.member.dto.Member;
-import io.lettuce.core.dynamic.annotation.Param;
 
 
 @Mapper
@@ -36,7 +36,7 @@ public interface BoardMapper {
     Board selectBoardDetail(int boardNo);
 
     // 게시글 댓글 조회
-    List<Comment> selectBoardComments(int boardNo);
+    List<Comment> selectBoardComments(@Param("boardNo") int boardNo, @Param("memberNo") int memberNo);
 
 		int checkLike(Map<String, Object> paramMap);
 
@@ -50,5 +50,10 @@ public interface BoardMapper {
 
 		int insertReport(Map<String, Object> paramMap);
 
-//		String getMemberNickNameByBoardNo(int boardNo, int memberNo);
+		int insertComment(Map<String, Object> paramMap);
+
+		int insertCommentLike(Map<String, Object> paramMap);
+
+		int deleteCommentLike(Map<String, Object> paramMap);
+
 }
