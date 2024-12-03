@@ -13,10 +13,12 @@ import edu.kh.cgram.board.dto.Comment;
 import edu.kh.cgram.board.mapper.BoardMapper;
 import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardServiceImpl implements BoardService {
 
 	private final BoardMapper mapper;
@@ -47,12 +49,12 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
     public Board selectBoardDetail(int boardNo) {
-        return mapper.selectBoardDetail(boardNo);
+		return mapper.selectBoardDetail(boardNo);
   }
 
   @Override
-  public List<Comment> selectBoardComments(int boardNo) {
-      return mapper.selectBoardComments(boardNo);
+  public List<Comment> selectBoardComments(int boardNo, int memberNo) {
+  	return mapper.selectBoardComments(boardNo, memberNo);
   }
   
   @Override
@@ -105,11 +107,39 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public int reportBoard(int boardNo, int memberNo, String reportReason) {
+	public int reportBoard(int boardNo, int memberNo, String reportReason, int contentType) {
 		Map<String, Object> paramMap = new HashMap<>();
   	paramMap.put("memberNo", memberNo);
 		paramMap.put("boardNo", boardNo);
 		paramMap.put("reportReason", reportReason);
+		paramMap.put("contentType", contentType);
 		return mapper.insertReport(paramMap);
+	}
+	
+	@Override
+	public int postComment(int boardNo, int memberNo, String commentContent) {
+		Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("boardNo", boardNo);
+		paramMap.put("commentContent", commentContent);
+		return mapper.insertComment(paramMap);
+	}
+	
+	@Override
+	public int likeComment(int commentNo, int memberNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("commentNo", commentNo);
+		log.debug("memberNo: {}, commentNo: {}", memberNo, commentNo);
+		return mapper.insertCommentLike(paramMap);
+	}
+	
+	@Override
+	public int unlikeComment(int commentNo, int memberNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("commentNo", commentNo);
+		log.debug("memberNo: {}, commentNo: {}", memberNo, commentNo);
+		return mapper.deleteCommentLike(paramMap);
 	}
 }

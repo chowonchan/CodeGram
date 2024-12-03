@@ -21,7 +21,7 @@ public interface BoardService {
 	
 	boolean isLiked(int boardNo, int memberNo);
 
-	List<Comment> selectBoardComments(int boardNo);
+	List<Comment> selectBoardComments(int boardNo, int memberNo);
 
 	int likeBoard(int memberNo, int boardNo);
 
@@ -31,5 +31,11 @@ public interface BoardService {
 
 	List<Member> getLikes(int boardNo);
 
-	int reportBoard(int boardNo, int memberNo, String reportReason);
+	int reportBoard(int boardNo, int memberNo, String reportReason, int contentType);
+
+	int postComment(int boardNo, int memberNo, String commentContent);
+
+	int likeComment(int commentNo, int memberNo);
+
+	int unlikeComment(int commentNo, int memberNo);
 }
