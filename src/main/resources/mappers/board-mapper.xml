@@ -85,7 +85,7 @@
 				(	SELECT	IMG_PATH || IMG_RENAME
 				   FROM	BOARD_IMG I
 				   WHERE	I.BOARD_NO = #{boardNo}
-					 AND		IMG_ORDER = 0
+					 AND		IMG_ORDER = 1
 				) AS THUMBNAIL,
 				(	SELECT	COUNT(*)
 				   FROM 	"BOARD_LIKE"

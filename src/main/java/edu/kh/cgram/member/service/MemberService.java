@@ -41,5 +41,7 @@ public interface MemberService {
 
 	public boolean isUserBlocked(@Param("loginMemberNo") int loginMemberNo,@Param("targetMemberNo") int targetMemberNo);
 
+	
+	List<BoardImg> getMemberPosts(String nickname, int cp);
 
 }

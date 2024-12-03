@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.servive.MyPageService;
+import edu.kh.cgram.story.dto.Story;
 import jakarta.servlet.http.HttpSession;
 
 @SessionAttributes("loginMember") // 세션에서 "loginMember" 속성을 관리하도록 설정
@@ -153,6 +155,7 @@ public class MyPageController {
      * @param loginMember 세션에서 가져온 로그인 사용자 정보
      * @return 프로필 편집 페이지 템플릿 이름
      */
+    
     @GetMapping("/editProfile")
     public String showEditProfilePage(Model model, @SessionAttribute("loginMember") Member loginMember) {
         // 로그인된 사용자 정보를 모델에 추가
@@ -162,17 +165,24 @@ public class MyPageController {
         return "myPage/editProfile";
     }
     
-  	@GetMapping("/posts")
-  	@ResponseBody
-  	public List<BoardImg> getMemberPosts(
-  		@SessionAttribute("loginMember") Member loginMember) {
-  		// 로그인된 회원의 번호 가져오기
-  		int memberNo = loginMember.getMemberNo();
-  		
-  		List<BoardImg> memberPosts = service.getMemberPosts(memberNo);
-  		
-  		return memberPosts;
-  	}
+    @GetMapping("/savedStory")
+    public String showSavedStoryPage(Model model, @SessionAttribute("loginMember") Member loginMember) {
+        // 로그인된 사용자의 MEMBER_NO를 가져옴
+        int memberNo = loginMember.getMemberNo();
+
+        // 해당 MEMBER_NO에 해당하는 STORY 리스트를 조회
+        List<Story> stories = service.getStoriesByMemberNo(memberNo);
+
+        // 조회한 데이터를 모델에 추가
+        model.addAttribute("stories", stories);
+        model.addAttribute("loginMember", loginMember);
+
+        // "myPage/saveStory.html" 템플릿을 렌더링
+        return "myPage/saveStory";
+    }
+
+
+
   	
   	@GetMapping("/saved")
   	@ResponseBody

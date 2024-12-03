@@ -159,10 +159,10 @@ document.getElementById("modalContentLeftInnerImg").addEventListener("change", (
     // 파일 업로드 성공
     console.log("File uploaded:", file.name);
     console.log("File:", file);
-    modalWithImg();
+    modalStoryWithImg();
   } else if(file && !isSupportedFile(file)) {
     filename = file.name;
-    modalError();
+    modalStoryError();
   }
 });
 
