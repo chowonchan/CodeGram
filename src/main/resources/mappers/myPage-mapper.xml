@@ -26,8 +26,8 @@
 	<select id="selectMemberSaved" resultType="BoardImg">
         SELECT B.*
         FROM BOARD B
-        INNER JOIN BOARD_LIKE BL ON B.BOARD_NO = BL.BOARD_NO
-        WHERE BL.MEMBER_NO = #{memberNo}
+        JOIN MARK M ON B.BOARD_NO = M.BOARD_NO
+        WHERE M.MEMBER_NO = #{memberNo}
     </select>
 	
 	
