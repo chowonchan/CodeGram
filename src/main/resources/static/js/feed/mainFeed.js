@@ -1,6 +1,6 @@
 
 /* 좋아요 클릭 시 */
-const boardLike = document.querySelector("#boardLike");
+const boardLike = document.querySelector(".boardLike");
 boardLike.addEventListener("click", e => {
 
   if (loginCheck === false) {
@@ -40,7 +40,7 @@ boardLike.addEventListener("click", e => {
       }
       // 좋아요 하트 카운트 내용을 
       // result.count로 변경
-      const likeCount = document.querySelector("#likeCount");
+      const likeCount = document.querySelector(".likeCount");
       likeCount.innerText = result.count;
     })
     .catch(err => console.error(err));
@@ -49,7 +49,7 @@ boardLike.addEventListener("click", e => {
 
 
 /* MARK 클릭 시 */
-const boardMark = document.querySelector("#boardMark");
+const boardMark = document.querySelector(".boardMark");
 boardMark.addEventListener("click", e => {
 
   if (loginCheck === false) {

@@ -26,10 +26,11 @@ boardLike?.addEventListener("click", e => {
         `<strong>${loginMemberName}</strong>
         님이 좋아요를 누르셨습니다<br>`;
 
+        const url = `/member/${memberNickname}`
         // type, url, pkNo, content
         sendNoti(
           "boardLike",  // type
-          location.pathname,  // 게시글 상세 조회 페이지 주소
+          url,  // 게시글 상세 조회 페이지 주소
           board.boardNo,  // 게시글 번호
           content
         );

@@ -27,6 +27,8 @@ const closeLikesModalButton = document.getElementById("closeLikesModal");
 const reportModalOverlay = document.getElementById("reportModalOverlay");
 const reportModal = document.getElementById("reportModal");
 const reportReasonList = document.getElementById("reportReasonList");
+const commentInput = document.getElementById("commentInput");
+const commentSubmit = document.getElementById("commentSubmit");
 
 // 신고 사유 목록
 const reportReasons = [
@@ -65,11 +67,33 @@ const openDetail = (boardNo) => {
       data.comments.forEach(comment => {
         const li = document.createElement("li");
         li.classList.add("comment");
+        li.dataset.commentNo = comment.commentNo;
         li.innerHTML = `
-          <span class="user-nickname">${comment.memberNickname}</span>
-          <span class="comment-text">${comment.commentContent}</span>
-        `;
+          <span class="user-avatar"><img src="${comment.profileImg}" alt="User Avatar"></span>
+          <div class="comment-info">
+            <span class="user-nickname">${comment.memberNickname}</span>
+            <span class="comment-text">${comment.commentContent}</span>
+            <div class="comment-time-section">
+              <span class="comment-time">${comment.createdAt}</span>
+              <span class="comment-option-button"><div class="fa-solid fa-ellipsis comment-option"></div></span>
+            </div>
+          </div>
+          <div class="comment-like-section">
+            <span class="${comment.likeCheck == 1 ? "fa-solid" : "fa-regular"} fa-heart comment-like-button ${comment.likeCheck == 1 ? "liked" : ""}" 
+                data-comment-no="${comment.commentNo}"></span>
+          </div>
+          `;
         commentList.appendChild(li);
+
+        li.addEventListener("mouseenter", () => {
+          li.querySelector(".comment-option-button").style.display = "flex";
+        });
+        li.addEventListener("mouseleave", () => {
+          li.querySelector(".comment-option-button").style.display = "none";
+        });
+        li.querySelector(".comment-option").addEventListener("click", () => {
+          openOptionsModal(comment.commentNo, 2);
+        });
       });
 
       // 좋아요 상태 확인 및 설정
@@ -85,6 +109,13 @@ const openDetail = (boardNo) => {
       const feedModal = document.getElementById("feedModal");
       feedModal.style.display = "flex";
       modalOverlay.style.display = "block";
+      
+      document.documentElement.style.overflowY = "hidden";
+
+      // 모달창에 스크롤을 주겠다 == 스크롤바가 존재는 하지만 비활성 상태로 존재
+      modalOverlay.style.overflowY = "scroll";
+      modalOverlay.style.overflowX = "hidden";
+
     })
     .catch(err => {
       console.error(err);
@@ -96,11 +127,14 @@ document.addEventListener("click", (event) => {
   if (event.target === modalOverlay && optionsModal.style.display !== "flex" && editDeleteModal.style.display !== "flex" && likesModal.style.display !== "flex") {
     feedModal.style.display = "none";
     modalOverlay.style.display = "none";
+    document.documentElement.style.overflowY = "auto";
   }
 });
 
 // 옵션 모달 열기 함수
-const openOptionsModal = () => {
+const openOptionsModal = (contentNo, contentType) => {
+  optionsModal.dataset.contentNo = contentNo;
+  optionsModal.dataset.contentType = contentType;
   optionsModal.style.display = "flex";
   modalOverlay2.style.display = "block";
 };
@@ -128,7 +162,7 @@ ellipsisButton.addEventListener("click", (event) => {
         modalOverlay3.style.display = "block";
       } else {
         // 로그인된 사용자가 작성자가 아니라면 기존 옵션 모달 열기
-        openOptionsModal();
+        openOptionsModal(boardNo, 1);
       }
     })
     .catch((err) => console.error(err));
@@ -208,6 +242,30 @@ const likeFunction = (boardNo) => {
         if (result === 1) {
           likeButton.classList.remove("fa-regular");
           likeButton.classList.add("fa-solid", "liked");
+
+
+
+          const content =
+          `<strong>${loginMemberName}</strong>
+          님이 좋아요를 누르셨습니다<br>`;
+
+          const memberNickname = document.querySelector("#userNickname").innerText;
+  
+          const url = `/member/${memberNickname}` + `/board/${boardNo}`;
+
+          // type, url, pkNo, content
+          sendNoti(
+            "boardLike",  // type
+            url,  // 게시글 상세 조회 페이지 주소
+            boardNo,  // 게시글 번호
+            content
+          );
+
+
+
+
+
+
           openDetail(boardNo); // 좋아요 상태 갱신
         } else {
           alert('이미 좋아요를 눌렀거나 오류가 발생했습니다.');
@@ -273,7 +331,9 @@ likesModalOverlay.addEventListener("click", (event) => {
 });
 
 // 신고 모달 열기
-const openReportModal = () => {
+const openReportModal = (contentNo, contentType) => {
+  reportModal.dataset.contentNo = contentNo;
+  reportModal.dataset.contentType = contentType;
   reportReasonList.innerHTML = ""; // 기존 목록 초기화
 
   reportReasons.forEach((reason, index) => {
@@ -298,12 +358,13 @@ const closeReportModal = () => {
 
 // 신고 제출
 const submitReport = (reason) => {
-  const boardNo = feedModal.dataset.boardNo;
+  const contentNo = reportModal.dataset.contentNo;
+  const contentType = reportModal.dataset.contentType;
   const reportReason = reason;
   fetch("/board/report", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ boardNo, reportReason })
+    body: JSON.stringify({ contentNo, reportReason, contentType })
   })
     .then((response) => {
       if (!response.ok) throw new Error("신고 제출 실패");
@@ -322,9 +383,87 @@ reportModalOverlay.addEventListener("click", (event) => {
 
 // 신고 버튼과 연결
 document.querySelector(".detail-options-button.report").addEventListener("click", () => {
+  const contentNo = optionsModal.dataset.contentNo;
+  const contentType = optionsModal.dataset.contentType;
   closeOptionsModal(); // 옵션 모달 닫기
-  openReportModal(); // 신고 모달 열기
+  openReportModal(contentNo, contentType); // 신고 모달 열기
 });
 
 // 신고 모달 닫기 버튼 클릭 이벤트
 document.getElementById("closeReportModal").addEventListener("click", closeReportModal);
+
+// 댓글 등록 함수
+const postComment = (boardNo) => {
+  const commentContent = commentInput.value.trim();
+  if (!commentContent) {
+      alert("댓글을 입력해주세요.");
+      return;
+  }
+
+  fetch("/board/postComment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ boardNo, commentContent }) // 서버에 댓글 내용과 게시글 번호 전달
+  })
+      .then(response => {
+          if (response.ok) return response.json();
+          else throw new Error("댓글 등록 실패");
+      })
+      .then(result => {
+          if (result) {
+              alert("댓글이 등록되었습니다.");
+              commentInput.value = ""; // 입력 필드 초기화
+              openDetail(boardNo); // 모달 갱신 (댓글 포함)
+          } else {
+              alert("댓글 등록에 실패했습니다.");
+          }
+      })
+      .catch(err => console.error(err));
+};
+
+// 댓글 등록 버튼 이벤트
+commentSubmit.addEventListener("click", () => {
+  const boardNo = feedModal.dataset.boardNo; // 현재 모달에 열린 게시글 번호 가져오기
+  postComment(boardNo);
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("comment-like-button")) {
+      const commentNo = e.target.dataset.commentNo;
+      const isLiked = e.target.classList.contains("liked");
+
+      if (isLiked) {
+          // 좋아요 취소
+          fetch("/board/comment/unlike", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ commentNo })
+          })
+          .then(response => {
+              if (response.ok) {
+                  e.target.classList.remove("liked");
+                  e.target.classList.replace("fa-solid", "fa-regular");
+              } else {
+                  throw new Error("댓글 좋아요 취소 실패");
+              }
+          })
+          .catch(err => console.error(err));
+      } else {
+          // 좋아요
+          fetch("/board/comment/like", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ commentNo })
+          })
+          .then(response => {
+              if (response.ok) {
+                  e.target.classList.add("liked");
+                  e.target.classList.replace("fa-regular", "fa-solid");
+              } else {
+                  throw new Error("댓글 좋아요 실패");
+              }
+          })
+          .catch(err => console.error(err));
+      }
+  }
+});

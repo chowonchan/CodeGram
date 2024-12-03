@@ -31,47 +31,54 @@ function toggleLogo() {
 
 // 사이드바 및 패널 토글 함수
 function toggleSidebar() {
-  sidebar.classList.toggle('narrow'); // `narrow` 클래스를 추가하거나 제거
-  sidePanel.classList.toggle('hidden'); // `hidden` 클래스를 추가하거나 제거
-  toggleLogo(); // 로고 변경 함수 호출
+  // 메시지 페이지에서는 narrow를 강제로 유지
+  if (window.location.pathname.includes('/chatting')) {
+    sidebar.classList.add('narrow');
+    return; // sidePanel은 숨기지 않음, 자유롭게 토글되도록 유지
+  }
+
+  // 메시지 페이지가 아닌 경우에만 일반적인 토글 동작
+  sidebar.classList.toggle('narrow'); 
+  sidePanel.classList.toggle('hidden');
+  toggleLogo();
 }
 
 // 패널 표시 함수
 function showPanel(type) {
-  // 동일한 탭을 다시 클릭한 경우 사이드바와 패널 닫기
-  if ((type === 'search' && searchPanel.classList.contains('active')) ||
-    (type === 'notification' && notificationPanel.classList.contains('active'))) {
-    sidebar.classList.remove('narrow'); // `narrow` 클래스 제거
-    sidePanel.classList.add('hidden'); // `sidePanel` 숨기기
-
-    searchPanel.classList.remove('active'); // `active` 클래스 제거
-    notificationPanel.classList.remove('active'); // `active` 클래스 제거
-    toggleLogo(); // 로고 변경 함수 호출
-    return; // 함수 종료
-  }
-
-  // 사이드 패널이 숨겨져 있는 경우에만 토글
-  if (sidePanel.classList.contains('hidden')) {
-    toggleSidebar();
-  }
-
-  // 패널 내용 변경
-  if (type === 'search') {
-    searchPanel.classList.add('active');
-    notificationPanel.classList.remove('active');
-    searchInput.value = ''; // 검색 입력 필드 비우기
-    searchResults.style.display = 'none'; // 검색 결과 숨기기
-    recentSearch.style.display = 'block'; // 최근 검색 항목 표시
-    searchInput.focus(); // 검색 입력 필드에 포커스 설정
-  } else if (type === 'notification') {
-    notificationPanel.classList.add('active');
-    searchPanel.classList.remove('active');
-  }
-
-  // 메시지 페이지로 이동한 경우 사이드바에 narrow 클래스 추가
+  // 메시지 페이지에서는 narrow 유지하고 sidePanel을 자유롭게 토글
   if (window.location.pathname.includes('/chatting')) {
-    sidebar.classList.add('narrow'); // 사이드바에 narrow 클래스 추가
-    sidePanel.classList.add('hidden'); // 사이드 패널 숨기기 (필요 시)
+    sidebar.classList.add('narrow');
+    // sidePanel의 숨김/표시는 자유롭게 처리
+  } else {
+    // 동일한 탭을 다시 클릭한 경우 사이드바와 패널 닫기
+    if ((type === 'search' && searchPanel.classList.contains('active')) ||
+        (type === 'notification' && notificationPanel.classList.contains('active'))) {
+      sidebar.classList.remove('narrow'); // `narrow` 클래스 제거
+      sidePanel.classList.add('hidden'); // `sidePanel` 숨기기
+
+      searchPanel.classList.remove('active'); // `active` 클래스 제거
+      notificationPanel.classList.remove('active'); // `active` 클래스 제거
+      toggleLogo(); // 로고 변경 함수 호출
+      return; // 함수 종료
+    }
+
+    // 사이드 패널이 숨겨져 있는 경우에만 토글
+    if (sidePanel.classList.contains('hidden')) {
+      toggleSidebar();
+    }
+
+    // 패널 내용 변경
+    if (type === 'search') {
+      searchPanel.classList.add('active');
+      notificationPanel.classList.remove('active');
+      searchInput.value = ''; // 검색 입력 필드 비우기
+      searchResults.style.display = 'none'; // 검색 결과 숨기기
+      recentSearch.style.display = 'block'; // 최근 검색 항목 표시
+      searchInput.focus(); // 검색 입력 필드에 포커스 설정
+    } else if (type === 'notification') {
+      notificationPanel.classList.add('active');
+      searchPanel.classList.remove('active');
+    }
   }
 }
 

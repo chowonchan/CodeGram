@@ -674,15 +674,24 @@ function renderPosts(posts, type) {
     // 게시물이 있는 경우 클래스 제거
     postsContent.classList.remove("no-posts");
     
-  posts.forEach(post => {
-    const postItem = document.createElement("div");
-    postItem.className = "post-item"; // 클래스 추가
-    postItem.innerHTML = `
-      <a href="/board/${post.boardNo}">
-        <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
-      </a>`;
-    postsContent.appendChild(postItem);
-  });
+    posts.forEach(post => {
+      const postItem = document.createElement("div");
+      postItem.className = "post-item"; // 클래스 추가
+    
+      // 게시물 항목의 이미지 추가
+      const postImage = document.createElement("img");
+      postImage.className = "post-image";
+      postImage.src = `${post.imgPath}${post.imgRename}`;
+      postImage.alt = "Post Image";
+    
+      // 클릭 이벤트로 상세 모달 열기
+      postItem.addEventListener("click", () => openDetail(post.boardNo));
+    
+      // post-item에 이미지 추가
+      postItem.appendChild(postImage);
+      postsContent.appendChild(postItem);
+    });
+
 
 
 }

@@ -132,6 +132,39 @@
   cursor: pointer;
   border-radius: 5px;
 }
+
+.more-menu #moreTab1 {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.more-menu #moreTab2 {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.more-menu #moreTab3 {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 .more-menu a:hover {
   background-color: #f0f0f0;
 }

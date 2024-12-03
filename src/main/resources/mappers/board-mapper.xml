@@ -129,8 +129,10 @@
             MEMBER_NO AS memberNo,
             COMMENT_CONTENT AS commentContent,
             CREATED_AT AS createdAt,
-            (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_NO = c.MEMBER_NO) AS memberNickname
-        FROM "COMMENT" c
+            (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_NO = C.MEMBER_NO) AS memberNickname,
+            (SELECT PROFILE_IMG FROM MEMBER WHERE MEMBER_NO = C.MEMBER_NO) AS profileImg,
+            (SELECT COUNT(*) FROM COMMENT_LIKE CL WHERE CL.MEMBER_NO = #{memberNo} AND CL.COMMENT_NO = C.COMMENT_NO) AS likeCheck
+        FROM "COMMENT" C
         WHERE BOARD_NO = #{boardNo}
         ORDER BY CREATED_AT ASC
     </select>
@@ -174,13 +176,28 @@
 	        SEQ_REPORT_NO.NEXTVAL,
 	        #{memberNo}, 
 	        #{boardNo}, 
-	        '1', 
+	        #{contentType}, 
 	        #{reportReason}, 
 	        SYSDATE
 	    )
 	</insert>
+
+	<insert id="insertComment" parameterType="map">
+	    INSERT INTO "COMMENT" (COMMENT_NO, COMMENT_CONTENT, MEMBER_NO, BOARD_NO, CREATED_AT)
+	    VALUES (SEQ_COMMENT_NO.NEXTVAL, #{commentContent}, #{memberNo}, #{boardNo}, SYSDATE)
+	</insert>
 	
-	
+	<insert id="insertCommentLike" parameterType="map">
+	    INSERT INTO COMMENT_LIKE (COMMENT_NO, MEMBER_NO)
+	    VALUES (#{commentNo}, #{memberNo})
+	</insert>
+
+	<delete id="deleteCommentLike" parameterType="map">
+	    DELETE FROM COMMENT_LIKE
+	    WHERE COMMENT_NO = #{commentNo}
+	    AND MEMBER_NO = #{memberNo}
+	</delete>
+
     
 
     <!-- 좋아요 여부 확인 -->
@@ -227,7 +244,6 @@
 	        SYSDATE
 	    )
 	</insert>
-
 
 
 
