@@ -133,5 +133,22 @@
 
 
 
+    <!-- 로그인한 사람이 팔로우한 회원 번호 조회 -->
+    <select id="selectMyFollowerList" resultType="Member">
+        SELECT FOLLOWER_MEMBER, MEMBER_NICKNAME, PROFILE_IMG
+        FROM FOLLOW
+             JOIN MEMBER ON(FOLLOWER_MEMBER = MEMBER_NO)
+        WHERE FOLLOWING_MEMBER = #{memberNo}        
+    </select>
+
+    <!-- 특정 회원이 24시간 이내에 작성한 스토리만 조회 -->
+    <select id="selectTodayStoryList" resultType="Story">
+        SELECT *
+        FROM STORY
+        WHERE MEMBER_NO = #{memberNo}
+        AND  CREATED_AT > CURRENT_DATE - 1
+        AND STORY_DEL_FL = 'N'
+    </select>
+
 
 </mapper>

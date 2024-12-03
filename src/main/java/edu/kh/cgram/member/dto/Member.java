@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.kh.cgram.follow.dto.Follow;
 
+import edu.kh.cgram.story.dto.Story;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +41,7 @@ public class Member {
 
   // 특정 회원의 팔로우 목록을 저장할 필드
   private List<Follow> followList;
+  
+  private List<Story> storyList;
   
 }
