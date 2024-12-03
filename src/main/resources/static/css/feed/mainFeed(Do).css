@@ -212,7 +212,7 @@ body {
 
 .box-1 {
   display: flex;
-  gap: 16px;
+  /* gap: 16px; */
 }
 
 /* 좋아요 수 */
@@ -256,7 +256,7 @@ body {
 .action-button {
   background: none;
   border: none;
-  padding: 8px;
+  padding-left: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -267,27 +267,19 @@ body {
   opacity: 0.7;
 }
 
+.action-button-div{
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  margin: 0px;
+}
+
+
 /* 좋아요 버튼 스타일 */
 .like-button {
-  position: relative;
+  width: "24";
+  height: "24";
 }
-
-.like-button svg {
-  transition: all 0.2s ease;
-}
-
-.like-button:hover svg {
-  transform: scale(1.1);
-}
-
-
-
-
-/* .like-button.active svg {
-  fill: #ed4956;
-  stroke: #ed4956;
-  animation: like-button-animation 0.45s ease-in-out;
-} */
 
 /* 좋아요 버튼 애니메이션 */
 @keyframes like-button-animation {
@@ -308,28 +300,40 @@ body {
   }
 }
 
-/* 댓글 버튼 스타일 */
-.comment-button svg {
-  transition: all 0.2s ease;
+
+
+.comment-button{
+  width: "24";
+  height: "24";
 }
 
-.comment-button:hover svg {
-  transform: scale(1.1);
+@keyframes comment-button-animation {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
+
 
 /* 저장 버튼 스타일 */
-.mark-button svg {
+.mark-button {
   transition: all 0.2s ease;
 }
 
-.mark-button:hover svg {
+.mark-button:hover {
   transform: scale(1.1);
 }
-
-/* .mark-button.active svg {
-  fill: #262626;
-  animation: save-button-animation 0.45s ease-in-out;
-} */
 
 /* 저장 버튼 애니메이션 */
 @keyframes mark-button-animation {

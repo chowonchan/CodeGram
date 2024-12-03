@@ -1,109 +1,79 @@
 
 /* 좋아요 클릭 시 */
-// const boardLike = document.querySelector(".boardLike");
-// boardLike?.addEventListener("click", e => {
+/* ----------------------------------------------------- */
 
-//   if (loginCheck === false) {
-//     alert("로그인 후 이용해 주세요");
-//     return;
-//   }
-
-//   // 2. 비동기로 좋아요 요청 
-//   fetch("/board/like", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: boardNo
-//   })
-//     .then(response => response.json())
-//     .then(result => {
-//       // 좋아요 결과가 담긴 result 객체의 check 값에 따라
-//       // 하트 아이콘을 비우기/채우기 지정
-//       if (result.check === 1) {
-//         boardLike.classList.add("fill: red;");
-//         // boardLike.classList.remove("fill: none;");
-
-//         const content =
-//           `<strong>${loginMemberName}</strong>
-//         님이 좋아요를 누르셨습니다<br>`;
-
-//         const url = `/member/${memberNickname}`
-//         // type, url, pkNo, content
-//         sendNoti(
-//           "boardLike",  // type
-//           url,  // 게시글 상세 조회 페이지 주소
-//           board.boardNo,  // 게시글 번호
-//           content
-//         );
-
-//       } else {
-//         boardLike.classList.add("fill: none;");
-//         // boardLike.classList.remove("fill: red;");
-//       }
-//       // 좋아요 하트 카운트 내용을 
-//       // result.count로 변경
-//       const likeCount = document.querySelector(".likeCount");
-//       likeCount.innerText = result.count;
-//     })
-//     .catch(err => console.error(err));
-// });
-/* const openopen = document.getElementsByClassName(".important-box a");
-
-for(let i = 0; i < openopen.length; i++) {
-  openopen[i].addEventListener("click", e => {
-    const boardNo = e.target.href.split("/").pop();
-    e.preventDefault();
-    e.stopPropagation();
-    openDetail(boardNo);
-  })
-}
- */
 
 const boardLike = document.querySelector(".boardLike");
 boardLike?.addEventListener("click", e => {
+
+  // 1. 로그인 여부 검사
   if (loginCheck === false) {
     alert("로그인 후 이용해 주세요");
     return;
   }
 
-  // 2. 비동기로 좋아요 요청 
+
+  // 2. 비동기로 좋아요 요청
   fetch("/board/like", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ boardNo: boardNo }) // JSON 형식으로 데이터 전송
+    body: boardNo
   })
-    .then(response => response.json())
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error("좋아요 실패");
+    })
     .then(result => {
-      // 좋아요 결과에 따라 'red' 클래스 토글
-      if (result.check === 1) {
-        boardLike.classList.add("red");
-        boardLike.classList.remove("none");
+      //console.log("result : ", result);
+
+      // 좋아요 결과가 담긴 result 객체의 check 값에 따라
+      // 하트 아이콘을 비우기/채우기 지정
+      if (result.check === 'insert') { // 채우기
+        boardLike.classList.add("fa-solid");
+        boardLike.classList.remove("fa-regular");
 
         const content =
           `<strong>${loginMemberName}</strong>
         님이 좋아요를 누르셨습니다<br>`;
 
-        // const memberNickname = document.querySelector("#userNickname").innerText;
-
-        const url = `/member/${board.memberNickname}`
+        const url = `/member/${memberNickname}`
         // type, url, pkNo, content
         sendNoti(
           "boardLike",  // type
           url,  // 게시글 상세 조회 페이지 주소
-          boardNo,  // 게시글 번호
+          board.boardNo,  // 게시글 번호
           content
         );
 
-      } else {
-        boardLike.classList.remove("red");
-        boardLike.classList.add("none");
+      } else { // 비우기
+        boardLike.classList.add("fa-regular");
+        boardLike.classList.remove("fa-solid");
       }
 
-      // 좋아요 카운트 업데이트
-      const likeCount = document.querySelector(".likeCount");
-      likeCount.innerText = result.count;
+      // 좋아요 하트 다음 형제 요소의 내용을 
+      // result.count로 변경
+      boardLike.nextElementSibling.innerText = result.count;
+
     })
     .catch(err => console.error(err));
-});
+
+
+})
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------- */
+
+
+
+
+
+
 
 
 
@@ -222,21 +192,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // 게시판 데이터로 기사 채우기(원래 HTML과 동일한 구조 사용)
       articleElement.innerHTML = `
-            <div class="post">
+    <div class="post">
       <div class="post-header post-header-padding">
         <div class="board-profile">
           <div class="user-profile inline-block">
-            <a href="${board.memberNickname}">
+            <a href="member/${board.memberNickname}">
               <div class="user-profile-img pointer radius">
-                ${board.profileImg
-          ? `<img src="${board.profileImg}">`
-          : `<img src="https://via.placeholder.com/50">`
-        }
+                <img src="${board.profileImg ? board.profileImg : 'https://via.placeholder.com/50'}" />
               </div>
             </a>
           </div>
         </div>
-        <a href="${board.memberNickname}">
+        <a href="member/${board.memberNickname}">
           <div class="board-n-a pointer inline-block">
             <span>${board.memberNickname}</span>
           </div>
@@ -245,10 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
           </div>
         </a>
         <div class="post-options">
-          <button class="more-options options-button" onclick="openModal()">...</button>
+          <span class="more-options options-button feed-open-modal pointer">
+            <input type="hidden" class="boardNo" value="${board.boardNo}" />
+            ...
+          </span>
         </div>
       </div>
-      
       <div class="post-images-container">
         <div class="image-slider">
           <button class="slider-button prev-button">
@@ -260,39 +229,38 @@ document.addEventListener('DOMContentLoaded', function () {
           <button class="slider-button next-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
               fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 18l6-6-6-6"/>
+              <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
           <div class="image-track">
             ${board.imageList.map((img, index) => `
-              <img src="${img.imgPath}${img.imgRename}" class="post-image">
+              <img src="${img.imgPath + img.imgRename}" class="post-image" />
             `).join('')}
           </div>
-          <div class="slider-dots">
-          </div>
+          <div class="slider-dots"></div>
         </div>
       </div>
       <div class="important-box">
         <section class="section-1">
           <div class="box-1">
             <button class="action-button like-button pointer" data-board-no="${board.boardNo}">
-              <svg class="like-icon boardLike ${board.likeCheck === 1 ? 'fa-solid' : 'fa-regular'}" 
-                   height="24" width="24" viewBox="0 0 24 24">
+              <svg class="like-icon boardLike" class="${board.likeCheck == 1 ? 'red' : 'none'}" height="24" width="24"
+                viewBox="0 0 24 24">
                 <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z" />
               </svg>
             </button>
             <button class="action-button comment-button pointer">
               <svg class="comment-icon" height="24" width="24" viewBox="0 0 24 24">
-                <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none"
-                  stroke="currentColor" stroke-linejoin="round" stroke-width="2" />
+                <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none" stroke="currentColor"
+                  stroke-linejoin="round" stroke-width="2" />
               </svg>
             </button>
           </div>
           <div class="box-2">
-            <button class="action-button mark-button pointer boardMark" 
-                    data-member-no="${board.boardNo}">
-              <svg class="mark-icon ${board.markCheck === 1 ? 'fa-solid' : 'fa-regular'}" 
-                   height="24" width="24" viewBox="0 0 24 24">
+            <button class="action-button mark-button pointer boardMark" data-member-no="${board.boardNo}">
+              <svg class="mark-icon" class="${board.markCheck == 1 ? 'black' : 'none'}" fill="none"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="black" stroke-width="2" height="24"
+                width="24">
                 <path d="M20 22a.999.999 0 0 1-.687-.273L12 14.815l-7.313 6.912A1 1 0 0 1 3 21V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1Z" />
               </svg>
             </button>
@@ -300,19 +268,20 @@ document.addEventListener('DOMContentLoaded', function () {
         </section>
         <div>좋아요 <span class="likeCount">${board.likeCount}</span>개</div>
         <div class="post-caption contentContainer">
-          <p class="shortContent"></p>
-          <span class="fullContent hidden-content">${board.boardContent}</span>
-          <span class="more-btn">더보기</span>
+          <span class="feed-imp-Nick">${board.memberNickname}</span>
+          ${board.boardContent.length > 200 ? `
+            <span class="fullContent hidden-content">${board.boardContent}</span><br>
+            <span class="more-btn pointer">더 보기</span>
+          ` : `
+            <span class="shortContent">${board.boardContent}</span>
+          `}
         </div>
         <a href="${board.boardNo}">
-          댓글 <span>[${board.commentCount}]</span>개 보기...
+          댓글 <span>${board.commentCount}</span>개 보기...
         </a>
-        <div class="comment-box pointer">
-          <span>댓글 달기...</span>
-        </div>
       </div>
     </div>
-    
+
   `;
 
       wrapper.append(articleElement);
@@ -334,30 +303,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const mainFollowBtnList = document.querySelectorAll(".main-follow-btn");
 
-mainFollowBtnList.forEach((mainFollowBtn,index) => {
-  
+mainFollowBtnList.forEach((mainFollowBtn, index) => {
+
   mainFollowBtn.addEventListener("click", async () => {
     if (mainFollowBtn.disabled) {
       console.warn("[팔로우 버튼] 이미 요청 처리 중입니다.");
       return;
     }
-  
+
     mainFollowBtn.disabled = true; // 요청 시작 시 버튼 비활성화
     console.log("[팔로우 버튼] 클릭 이벤트 발생");
-  
+
     const nickname = document.querySelectorAll(".recommend-user-nickname")[index].innerText
     console.log(nickname);
-  
+
     try {
-      
+
       if (!nickname) {
         console.error("[팔로우 버튼] 닉네임을 URL에서 추출할 수 없습니다.");
         return;
       }
-  
+
       let response;
       let actionType;
-  
+
       if (mainFollowBtn.textContent === "팔로우") {
         response = await fetch(`/follow/${nickname}`, {
           method: "POST",
@@ -371,17 +340,17 @@ mainFollowBtnList.forEach((mainFollowBtn,index) => {
         });
         actionType = "UNFOLLOW";
       }
-  
+
       if (response.ok) {
         const result = await response.json();
         alert(result.message);
-  
+
         if (actionType === "FOLLOW") {
           mainFollowBtn.textContent = "팔로잉";
           mainFollowBtn.classList.add("main-following");
-  
+
           console.log(`[팔로우 버튼] 팔로우 성공: ${result.message}`);
-  
+
           sendNoti(
             "follow",
             `/member/${loginMemberNickname}`,
@@ -390,7 +359,7 @@ mainFollowBtnList.forEach((mainFollowBtn,index) => {
             <br>
             팔로우하기 시작했습니다.`
           );
-  
+
         } else {
           mainFollowBtn.textContent = "팔로우";
           mainFollowBtn.classList.remove("main-following");
