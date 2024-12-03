@@ -112,7 +112,9 @@ public class MyPageServiceImpl implements MyPageService {
   	
     @Override
     public List<Story> getStoriesByMemberNo(int memberNo) {
-        return mapper.selectStoriesByMemberNo(memberNo);
+        return mapper.getStoriesByMemberNo(memberNo);
     }
+  	
+  	
 
 }
