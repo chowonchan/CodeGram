@@ -56,4 +56,6 @@ public interface BoardMapper {
 
 		int deleteCommentLike(Map<String, Object> paramMap);
 
+		List<Map<String, Object>> selectBoardImages(int boardNo);
+
 }
