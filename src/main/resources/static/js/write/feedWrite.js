@@ -171,7 +171,6 @@ function clearProgress() {
 
   document.getElementById("modalContentLeftInnerImg").value = "";
 
-
   textArea.innerText = "";
   // 가로 세로 hide hidden, 버튼, 텍스트 등 싹 초기화
 }
@@ -205,7 +204,8 @@ document.getElementById("modalContentTopNext").addEventListener("click", () => {
 //========================================================================
     case 4 :
       modalSubmit();
-      submitForm();
+      submitStory();
+      // submitForm();
       break;
 
     default :
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   picker.addEventListener('emoji:select', (selection) => {
     console.log(byteLength(selection.emoji));
-    if (byteLength(textAreaContent) + byteLength(selection.emoji) <= MAX_BYTES)
+    if (byteLength(textArea.innerText) + byteLength(selection.emoji) <= MAX_BYTES)
       textArea.innerText += selection.emoji;
 
     byteCount.textContent = byteLength(textArea.innerText);
@@ -510,10 +510,44 @@ async function submitForm() {
   }
 }
 
+
 // ====================================================================================================
+async function submitStory() {
+
+  const formData = new FormData();
+  const textAreaContent = document.getElementById("emojiTextArea").innerText;
+  const files = document.getElementById("modalContentLeftInnerImg").files;
 
 
-//  + 공유하기 눌렀을 때 나올 모달창 두개만 만들어서 header에 넣으면 진진짜 끝끝
+  formData.append("image", files[0]);
+
+
+  try {
+    const response = await fetch("/story/submit", {
+      method : "POST",
+      body   : formData,
+      headers: {}
+    });
+
+    let timeout = Math.floor(Math.random() * 200) + 500;
+
+    if (response.ok) {
+      const result = await response.text();
+      if (result > 0) {
+        setTimeout(() => {
+          document.getElementById("submit").src = "/images/check.gif";
+          modalTopText.innerText = "스토리가 공유되었습니다";
+          document.getElementById("submitText").innerText = "스토리가 공유되었습니다"
+        }, timeout);
+      }
+      // 모달 닫기, 화면 초기화 등 추가 작업
+      else alert("스토리 등록에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("폼 제출 오류:", error);
+    alert("서버와의 통신에 실패했습니다.");
+  }
+}
 
 
 // 검색 입력 필드 이벤트 리스너
@@ -553,40 +587,40 @@ async function submitForm() {
 // });
 
 // 검색 결과 업데이트 함수
-function updateSearchResults(results, isHashtag = false) {
-  searchResults.innerHTML = ''; // 이전 결과 지우기
-  if (results.length === 0) {
-    searchResults.innerHTML = '<div style="padding-right: 20px; text-align: center;"><p>검색 결과가 없습니다.</p></div>';
-    return;
-  }
-
-  // 검색 결과 렌더링
-  results.forEach(result => {
-    const resultItem = document.createElement('div');
-    resultItem.classList.add('result-item');
-    if (isHashtag) {
-      // 해시태그 결과 랜더링
-      resultItem.innerHTML = `
-        <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
-          <div class="hashtag-name">${result.tagName}</div>
-          <div class="hashtag-count">게시물 수: ${result.postCount}</div>
-        </a>
-      `;
-    } else {
-      resultItem.innerHTML = `
-          <a href="/member/${result.memberNickname}" class="member-info">
-            <div class="profile-img">
-              <img src="${result.profileImg}">
-            </div>
-            <div class="member-text">
-              <div class="member-nickname">${result.memberNickname}</div>
-              <div class="member-name">${result.memberName}</div>
-            </div>
-          </a>
-      `;
-    }
-    searchResults.appendChild(resultItem);
-  });
-}
+// function updateSearchResults(results, isHashtag = false) {
+//   searchResults.innerHTML = ''; // 이전 결과 지우기
+//   if (results.length === 0) {
+//     searchResults.innerHTML = '<div style="padding-right: 20px; text-align: center;"><p>검색 결과가 없습니다.</p></div>';
+//     return;
+//   }
+//
+//   // 검색 결과 렌더링
+//   results.forEach(result => {
+//     const resultItem = document.createElement('div');
+//     resultItem.classList.add('result-item');
+//     if (isHashtag) {
+//       // 해시태그 결과 랜더링
+//       resultItem.innerHTML = `
+//         <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
+//           <div class="hashtag-name">${result.tagName}</div>
+//           <div class="hashtag-count">게시물 수: ${result.postCount}</div>
+//         </a>
+//       `;
+//     } else {
+//       resultItem.innerHTML = `
+//           <a href="/member/${result.memberNickname}" class="member-info">
+//             <div class="profile-img">
+//               <img src="${result.profileImg}">
+//             </div>
+//             <div class="member-text">
+//               <div class="member-nickname">${result.memberNickname}</div>
+//               <div class="member-name">${result.memberName}</div>
+//             </div>
+//           </a>
+//       `;
+//     }
+//     searchResults.appendChild(resultItem);
+//   });
+// }
 
 // 모달창 이벤트 전부 분리

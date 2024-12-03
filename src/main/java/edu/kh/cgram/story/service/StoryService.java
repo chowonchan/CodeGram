@@ -3,6 +3,7 @@ package edu.kh.cgram.story.service;
 import java.util.List;
 
 import edu.kh.cgram.story.dto.Story;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface StoryService {
 
@@ -11,7 +12,13 @@ public interface StoryService {
 	Story getStoryDetail(Long storyNo);
 
 	void updateStoryCheck(Long storyNo, String memberNickname);
-
+	
+	
+	
+	Story storyDetail(String memberNickname, int storyNo);
+	
+	int storyInsert(Story story, MultipartFile image);
+	
 	/*
 	 * void insertStoryLike(Long storyNo, String username);
 	 * 
