@@ -143,7 +143,7 @@ public class BoardController {
 	    
 	    return service.reportBoard(boardNo, memberNo, reportReason, contentType);
 	}
-	
+
 	@PostMapping("/postComment")
 	@ResponseBody
 	public int postComment(
@@ -182,6 +182,7 @@ public class BoardController {
 
       return service.unlikeComment(commentNo, memberNo);
   }
+
 
 
 

@@ -76,17 +76,17 @@ function showPanel(type) {
 }
 
 // 검색 및 알림 탭 클릭 이벤트
-searchTab.addEventListener('click', () => {
+searchTab?.addEventListener('click', () => {
   showPanel('search');
 });
 
-notificationTab.addEventListener('click', () => {
+notificationTab?.addEventListener('click', () => {
   showPanel('notification');
 });
 
 
 // X 버튼 클릭 이벤트
-clearButton.addEventListener('click', () => {
+clearButton?.addEventListener('click', () => {
   searchInput.value = ''; // 입력 필드 비우기
   clearButton.style.display = 'none'; // X 버튼 숨기기
   recentSearch.style.display = 'block'; // 최근 검색 항목 표시
@@ -95,7 +95,7 @@ clearButton.addEventListener('click', () => {
 });
 
 // 더보기 버튼 클릭 이벤트
-moreButton.addEventListener('click', (event) => {
+moreButton?.addEventListener('click', (event) => {
   event.stopPropagation(); // 이벤트 전파 중지
   moreMenu.style.display = moreMenu.style.display === 'flex' ? 'none' : 'flex';
   moreButton.classList.toggle('active');

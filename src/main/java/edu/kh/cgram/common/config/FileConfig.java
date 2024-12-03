@@ -53,10 +53,18 @@ public class FileConfig implements WebMvcConfigurer{
 	private String profileResourceLocation;
 	
 	@Value("${my.board.resource-handler}")
-  private String boardResourceHandler;
-  
-  @Value("${my.board.resource-location}")
-  private String boardResourceLocation;
+	private String boardResourceHandler;
+	
+	@Value("${my.board.resource-location}")
+	private String boardResourceLocation;
+	
+	@Value("${my.story.resource-handler}")
+	private String storyResourceHandler;
+	
+	@Value("${my.story.resource-location}")
+	private String storyResourceLocation;
+	
+	
 	
 	/* MultipartResolver 설정 */
 	@Bean
@@ -108,6 +116,10 @@ public class FileConfig implements WebMvcConfigurer{
 		registry
 		.addResourceHandler(boardResourceHandler)
 		.addResourceLocations(boardResourceLocation);
+		
+		registry
+		.addResourceHandler(storyResourceHandler)
+		.addResourceLocations(storyResourceLocation);
 		
 	}
 	

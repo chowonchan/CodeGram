@@ -55,4 +55,5 @@ public interface BoardMapper {
 		int insertCommentLike(Map<String, Object> paramMap);
 
 		int deleteCommentLike(Map<String, Object> paramMap);
+
 }

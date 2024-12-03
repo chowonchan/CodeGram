@@ -242,6 +242,30 @@ const likeFunction = (boardNo) => {
         if (result === 1) {
           likeButton.classList.remove("fa-regular");
           likeButton.classList.add("fa-solid", "liked");
+
+
+
+          const content =
+          `<strong>${loginMemberName}</strong>
+          님이 좋아요를 누르셨습니다<br>`;
+
+          const memberNickname = document.querySelector("#userNickname").innerText;
+  
+          const url = `/member/${memberNickname}` + `/board/${boardNo}`;
+
+          // type, url, pkNo, content
+          sendNoti(
+            "boardLike",  // type
+            url,  // 게시글 상세 조회 페이지 주소
+            boardNo,  // 게시글 번호
+            content
+          );
+
+
+
+
+
+
           openDetail(boardNo); // 좋아요 상태 갱신
         } else {
           alert('이미 좋아요를 눌렀거나 오류가 발생했습니다.');

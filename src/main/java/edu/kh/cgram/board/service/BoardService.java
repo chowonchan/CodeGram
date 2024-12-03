@@ -38,4 +38,7 @@ public interface BoardService {
 	int likeComment(int commentNo, int memberNo);
 
 	int unlikeComment(int commentNo, int memberNo);
+
+	int reportBoard(int boardNo, int memberNo, String reportReason);
+
 }

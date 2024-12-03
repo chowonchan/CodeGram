@@ -181,7 +181,7 @@
 	        SYSDATE
 	    )
 	</insert>
-	
+
 	<insert id="insertComment" parameterType="map">
 	    INSERT INTO "COMMENT" (COMMENT_NO, COMMENT_CONTENT, MEMBER_NO, BOARD_NO, CREATED_AT)
 	    VALUES (SEQ_COMMENT_NO.NEXTVAL, #{commentContent}, #{memberNo}, #{boardNo}, SYSDATE)
@@ -197,6 +197,54 @@
 	    WHERE COMMENT_NO = #{commentNo}
 	    AND MEMBER_NO = #{memberNo}
 	</delete>
-	
-	
+
+    
+
+    <!-- 좋아요 여부 확인 -->
+    <select id="checkLike" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_LIKE
+        WHERE MEMBER_NO = #{memberNo}
+        AND BOARD_NO = #{boardNo}
+    </select>
+
+    <delete id="deleteBoardLike">
+	    DELETE FROM BOARD_LIKE
+	    WHERE MEMBER_NO = #{memberNo} AND BOARD_NO = #{boardNo}
+	</delete>
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertLike">
+        INSERT INTO BOARD_LIKE (MEMBER_NO, BOARD_NO)
+        VALUES (#{memberNo}, #{boardNo})
+    </insert>
+
+    <select id="checkAuthor" resultType="int">
+	    SELECT COUNT(*)
+	    FROM BOARD
+	    WHERE BOARD_NO = #{boardNo}
+	    AND MEMBER_NO = #{memberNo}
+	</select>
+
+	<select id="selectLikesByBoardNo" resultType="Member">
+	    SELECT M.MEMBER_NO, M.MEMBER_NAME, M.MEMBER_NICKNAME, M.PROFILE_IMG
+	    FROM BOARD_LIKE BL
+	    JOIN MEMBER M ON BL.MEMBER_NO = M.MEMBER_NO
+	    WHERE BL.BOARD_NO = #{boardNo}
+	</select>
+
+	<insert id="insertReport">
+	    INSERT INTO REPORT (REPORT_NO, MEMBER_NO, CONTENT_NO, CONTENT_CATEGORY, REPORT_CATEGORY, CREATED_AT)
+	    VALUES (
+	        SEQ_REPORT_NO.NEXTVAL,
+	        #{memberNo},
+	        #{boardNo},
+	        '1',
+	        #{reportReason},
+	        SYSDATE
+	    )
+	</insert>
+
+
+
 </mapper>

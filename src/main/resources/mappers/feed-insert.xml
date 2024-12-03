@@ -60,8 +60,7 @@
     <!-- 1. 게시글 부분만 삭제(제목/내용) -->
     <update id="boardUpdate">
         UPDATE	BOARD
-        SET		BOARD_TITLE   = #{boardTitle},
-                BOARD_CONTENT = #{boardContent}
+        SET     BOARD_CONTENT = #{boardContent}
         WHERE	BOARD_NO      = #{boardNo}
         AND	    MEMBER_NO     = #{memberNo}
     </update>

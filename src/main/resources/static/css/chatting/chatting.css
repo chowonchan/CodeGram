@@ -488,7 +488,7 @@ body {
   display: none;
 }
 
-.modal-overlay {
+.modal-overlaySearch {
   position: fixed;
   top: 0;
   left: 0;
@@ -527,7 +527,7 @@ body {
   text-align: center;
 }
 
-.close-button {
+.close-button2 {
   border: none;
   background: none;
   cursor: pointer;
@@ -561,7 +561,7 @@ body {
   border-color: #a8a8a8;
 }
 
-.modal-container> .modal-content{
+.modal-containerSearchMember> .modal-content{
   width: 100%;
 }
 

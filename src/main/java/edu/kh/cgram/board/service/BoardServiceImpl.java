@@ -142,4 +142,5 @@ public class BoardServiceImpl implements BoardService {
 		log.debug("memberNo: {}, commentNo: {}", memberNo, commentNo);
 		return mapper.deleteCommentLike(paramMap);
 	}
+
 }

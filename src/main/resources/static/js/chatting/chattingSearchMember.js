@@ -1,11 +1,4 @@
-const members = [
-  { memberId: 1, memberName: 'member01', memberNickName: '홍길동', profileImg: '/api/placeholder/36/36' },
-  { memberId: 2, memberName: 'member02', memberNickName: '김철수', profileImg: '/api/placeholder/36/36' },
-  { memberId: 3, memberName: 'member03', memberNickName: '박지영', profileImg: '/api/placeholder/36/36' },
-  { memberId: 4, memberName: 'member04', memberNickName: '최예림', profileImg: '/api/placeholder/36/36' },
-];
-
-document.querySelector('.close-button').addEventListener('click', () => {
+document.querySelector('.close-button2').addEventListener('click', () => {
   document.querySelector('.modal-overlay').style.display = 'none';
 });
 
