@@ -647,7 +647,7 @@ function initTabs(tabs) {
 function activateTab(activeTab, type) {
   document.querySelectorAll(".tab-button").forEach(tab => tab.classList.remove("active"));
   activeTab.classList.add("active");
-  fetch(type === "uploads" ? "/myPage/posts" : "/member/saved")
+  fetch(type === "uploads" ? "/myPage/posts" : "/myPage/saved")
     .then(response => response.json())
     .then(data => renderPosts(data, type))
     .catch(error => console.error(`Error fetching ${type} posts:`, error));
@@ -658,18 +658,28 @@ function renderPosts(posts, type) {
   const postsContent = document.getElementById("postsContent");
   postsContent.innerHTML = "";
   if (posts.length === 0) {
+    const noPostsContainer = document.createElement("div");
+    noPostsContainer.className = "no-posts-container"; // 컨테이너 클래스 추가
+  
     const noPostsMessage = document.createElement("p");
+    noPostsMessage.className = "no-posts-message"; // 메시지 클래스 추가
     noPostsMessage.textContent = type === "uploads"
       ? "회원님이 작성한 게시물이 존재하지 않습니다."
       : "회원님이 저장한 게시물이 존재하지 않습니다.";
-    postsContent.appendChild(noPostsMessage);
+  
+    noPostsContainer.appendChild(noPostsMessage);
+    postsContent.appendChild(noPostsContainer); // 컨테이너를 추가
     return;
   }
+    // 게시물이 있는 경우 클래스 제거
+    postsContent.classList.remove("no-posts");
+    
   posts.forEach(post => {
     const postItem = document.createElement("div");
+    postItem.className = "post-item"; // 클래스 추가
     postItem.innerHTML = `
       <a href="/board/${post.boardNo}">
-        <img src="${post.imgPath}${post.imgRename}" alt="Post Image" />
+        <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
       </a>`;
     postsContent.appendChild(postItem);
   });
