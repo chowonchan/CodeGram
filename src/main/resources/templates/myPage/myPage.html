@@ -73,15 +73,20 @@
         </div>
           <!-- 이름 -->
           <p th:text="${member.memberName}">member_name</p>
+
+          <!-- 프로필 소개글 영역 -->
+          <div class="profile-bio">
+            <span th:text="${member.selfIntroduction}"></span>
+          </div>
       </div>
       
 
       </section>
 
       <!-- 프로필 소개글 영역 -->
-      <div class="profile-bio">
+      <!-- <div class="profile-bio">
         <span th:text="${member.selfIntroduction}"></span>
-      </div>
+      </div> -->
 
 
       <!-- 탭 메뉴: 게시물/저장됨 -->
