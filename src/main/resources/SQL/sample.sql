@@ -98,16 +98,24 @@ END;
 
 SELECT * FROM "COMMENT";
 
+UPDATE "COMMENT"
+SET PARENT_COMMENT_NO = NULL
+WHERE PARENT_COMMENT_NO IS NOT NULL;
+
+COMMIT;
+
+
+
 -- 20% 확률로 부모 댓글을 지정
-BEGIN
-    FOR I IN 1..100 LOOP
-        IF DBMS_RANDOM.VALUE(0, 1) <= 0.2 THEN
-            UPDATE "COMMENT"
-            SET PARENT_COMMENT_NO = CEIL(DBMS_RANDOM.VALUE(5, 107))
-            WHERE COMMENT_NO = I+4;
-        END IF;
-    END LOOP;
-END;
+-- BEGIN
+--     FOR I IN 1..100 LOOP
+--         IF DBMS_RANDOM.VALUE(0, 1) <= 0.2 THEN
+--             UPDATE "COMMENT"
+--             SET PARENT_COMMENT_NO = CEIL(DBMS_RANDOM.VALUE(5, 107))
+--             WHERE COMMENT_NO = I+4;
+--         END IF;
+--     END LOOP;
+-- END;
 
 
 
