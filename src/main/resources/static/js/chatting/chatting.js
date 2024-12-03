@@ -252,9 +252,9 @@ if (chattingSock != undefined) {
 
 
 /* ---------------------- 메시지 보내기 버튼 js ------------------ */
-document.querySelector('.close-button').addEventListener('click', () => {
+document.querySelector('.close-button2').addEventListener('click', () => {
 
-  document.querySelector('.modal-overlay').style.display = 'none';
+  document.querySelector('.modal-overlaySearch').style.display = 'none';
 });
 
 
