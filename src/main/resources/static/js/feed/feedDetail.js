@@ -254,25 +254,28 @@ const likeFunction = (boardNo) => {
                         `<strong>${loginMemberName}</strong>
           님이 좋아요를 누르셨습니다<br>`;
 
-                    const memberNickname = document.querySelector("#userNickname").innerText;
 
-                    const url = `/member/${memberNickname}` /* + `/board/${boardNo}` */;
+          const memberNickname = document.querySelector("#userNickname").innerText;
+          // t == type  / b == board(feed) / c == comment
+          // no == boardNo 또는 commentNo
+          const url = `/member/${memberNickname}?bNo=${boardNo}` /* + `/board/${boardNo}` */;
 
-                    // type, url, pkNo, content
-                    sendNoti(
-                        "boardLike",  // type
-                        url,  // 게시글 상세 조회 페이지 주소
-                        boardNo,  // 게시글 번호
-                        content
-                    );
+          // type, url, pkNo, content
+          sendNoti(
+            "boardLike",  // type
+            url,  // 게시글 상세 조회 페이지 주소
+            boardNo,  // 게시글 번호
+            content
+          );
 
-                    openDetail(boardNo); // 좋아요 상태 갱신
-                } else {
-                    alert('이미 좋아요를 눌렀거나 오류가 발생했습니다.');
-                }
-            })
-            .catch(err => console.error(err));
-    }
+          openDetail(boardNo); // 좋아요 상태 갱신
+        } else {
+          alert('이미 좋아요를 눌렀거나 오류가 발생했습니다.');
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
 };
 
 // 좋아요 버튼 클릭 이벤트
@@ -422,25 +425,25 @@ const postComment = (boardNo) => {
                     `<strong>${loginMemberName}</strong>님이 
               회원님의 게시글에 <br>
               댓글을 남기셨습니다`;
+    
+              const memberNickname = document.querySelector("#userNickname").innerText;
+      
+              const url = `/member/${memberNickname}?bNo=${boardNo}`;
+    
+              // type, url, pkNo, content
+              sendNoti(
+                "insertComment",  // type
+                url,  // 게시글 상세 조회 페이지 주소
+                boardNo,  // 게시글 번호
+                content
+              );
 
-                const memberNickname = document.querySelector("#userNickname").innerText;
-
-                const url = `/member/${memberNickname}` /* + `/board/${boardNo}` */;
-
-                // type, url, pkNo, content
-                sendNoti(
-                    "insertComment",  // type
-                    url,  // 게시글 상세 조회 페이지 주소
-                    boardNo,  // 게시글 번호
-                    content
-                );
-
-                openDetail(boardNo); // 모달 갱신 (댓글 포함)
-            } else {
-                alert("댓글 등록에 실패했습니다.");
-            }
-        })
-        .catch(err => console.error(err));
+              openDetail(boardNo); // 모달 갱신 (댓글 포함)
+          } else {
+              alert("댓글 등록에 실패했습니다.");
+          }
+      })
+      .catch(err => console.error(err));
 };
 
 // 댓글 등록 버튼 이벤트
@@ -452,44 +455,58 @@ commentSubmit.addEventListener("click", () => {
 });
 
 document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("comment-like-button")) {
-        const commentNo = e.target.dataset.commentNo;
-        const isLiked = e.target.classList.contains("liked");
 
-        if (isLiked) {
-            // 좋아요 취소
-            fetch("/board/comment/unlike", {
-                method : "DELETE",
-                headers: {"Content-Type": "application/json"},
-                body   : JSON.stringify({commentNo})
-            })
-                .then(response => {
-                    if (response.ok) {
-                        e.target.classList.remove("liked");
-                        e.target.classList.replace("fa-solid", "fa-regular");
-                    } else {
-                        throw new Error("댓글 좋아요 취소 실패");
-                    }
-                })
-                .catch(err => console.error(err));
-        } else {
-            // 좋아요
-            fetch("/board/comment/like", {
-                method : "POST",
-                headers: {"Content-Type": "application/json"},
-                body   : JSON.stringify({commentNo})
-            })
-                .then(response => {
-                    if (response.ok) {
-                        e.target.classList.add("liked");
-                        e.target.classList.replace("fa-regular", "fa-solid");
-                    } else {
-                        throw new Error("댓글 좋아요 실패");
-                    }
-                })
-                .catch(err => console.error(err));
-        }
-    }
+  if (e.target.classList.contains("comment-like-button")) {
+      const commentNo = e.target.dataset.commentNo;
+      const isLiked = e.target.classList.contains("liked");
+
+      if (isLiked) {
+          // 좋아요 취소
+          fetch("/board/comment/unlike", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ commentNo })
+          })
+          .then(response => {
+              if (response.ok) {
+                  e.target.classList.remove("liked");
+                  e.target.classList.replace("fa-solid", "fa-regular");
+              } else {
+                  throw new Error("댓글 좋아요 취소 실패");
+              }
+          })
+          .catch(err => console.error(err));
+      } else {
+          // 좋아요
+          fetch("/board/comment/like", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ commentNo })
+          })
+          .then(response => {
+              if (response.ok) {
+                  e.target.classList.add("liked");
+                  e.target.classList.replace("fa-regular", "fa-solid");
+
+
+                  const memberNickname = document.querySelector("#userNickname").innerText;
+      
+                  const url = `/member/${memberNickname}?bNo=${boardNo}`;
+        
+                  // type, url, pkNo, content
+                  sendNoti(
+                    "commentLike",  // type
+                    url,  // 게시글 상세 조회 페이지 주소
+                    boardNo,  // 게시글 번호
+                    content
+                  );
+              } else {
+                  throw new Error("댓글 좋아요 실패");
+              }
+          })
+          .catch(err => console.error(err));
+      }
+  }
 });
 
 // 캐러셀 이미지 업데이트 함수

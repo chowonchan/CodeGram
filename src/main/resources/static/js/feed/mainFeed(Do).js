@@ -310,6 +310,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// document.querySelectorAll('.recommend-user-img').forEach(element => {
+//   element.addEventListener('click', function() {
+//     const memberNickname = this.getAttribute('data-nickname');
+//     // 닉네임을 이용해 /member/${nickname}으로 이동
+//     window.location.href = `/member/${memberNickname}`;
+//   });
+// });
+
+
+
+
+
 const mainFollowBtnList = document.querySelectorAll(".main-follow-btn");
 
 mainFollowBtnList.forEach((mainFollowBtn,index) => {

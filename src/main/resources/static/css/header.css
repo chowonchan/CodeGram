@@ -457,6 +457,8 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  text-decoration: none;
+
 }
 
 
@@ -505,10 +507,6 @@
 
 .notification-delete:hover{
   color: red;
-}
-
-.notification-item:hover > .notification-text{
-  text-decoration: underline;
 }
 
 .chat-preview{
