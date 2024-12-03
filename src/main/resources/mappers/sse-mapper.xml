@@ -40,11 +40,11 @@
 				</when>
 				
 				<!-- 알림 종류가 답글인 경우 -->
-				<when test="notificationType == 'insertChildComment'">
+<!-- 			<when test="notificationType == 'insertChildComment'">
 					(SELECT MEMBER_NO 
 					 FROM "COMMENT"
 					 WHERE COMMENT_NO = #{pkNo})
-				</when>
+				</when> -->
 				
 				<when test="notificationType == 'chatting'">
 					#{pkNo}

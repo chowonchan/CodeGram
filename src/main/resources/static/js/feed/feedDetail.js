@@ -243,15 +243,13 @@ const likeFunction = (boardNo) => {
           likeButton.classList.remove("fa-regular");
           likeButton.classList.add("fa-solid", "liked");
 
-
-
           const content =
           `<strong>${loginMemberName}</strong>
           님이 좋아요를 누르셨습니다<br>`;
 
           const memberNickname = document.querySelector("#userNickname").innerText;
   
-          const url = `/member/${memberNickname}` + `/board/${boardNo}`;
+          const url = `/member/${memberNickname}` /* + `/board/${boardNo}` */;
 
           // type, url, pkNo, content
           sendNoti(
@@ -260,11 +258,6 @@ const likeFunction = (boardNo) => {
             boardNo,  // 게시글 번호
             content
           );
-
-
-
-
-
 
           openDetail(boardNo); // 좋아요 상태 갱신
         } else {
@@ -413,6 +406,24 @@ const postComment = (boardNo) => {
           if (result) {
               alert("댓글이 등록되었습니다.");
               commentInput.value = ""; // 입력 필드 초기화
+
+              const content =
+              `<strong>${loginMemberName}</strong>님이 
+              회원님의 게시글에 <br>
+              댓글을 남기셨습니다`;
+    
+              const memberNickname = document.querySelector("#userNickname").innerText;
+      
+              const url = `/member/${memberNickname}` /* + `/board/${boardNo}` */;
+    
+              // type, url, pkNo, content
+              sendNoti(
+                "insertComment",  // type
+                url,  // 게시글 상세 조회 페이지 주소
+                boardNo,  // 게시글 번호
+                content
+              );
+
               openDetail(boardNo); // 모달 갱신 (댓글 포함)
           } else {
               alert("댓글 등록에 실패했습니다.");

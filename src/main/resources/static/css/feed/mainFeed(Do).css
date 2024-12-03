@@ -38,7 +38,7 @@ body {
   /* 화면 상단에 고정 */
   top: 0;
   /* 화면의 상단에 고정 */
-  right: 0;
+  right: 10px;
   /* 화면의 오른쪽 끝에 배치 */
   width: 300px;
   /* section-right의 너비 설정 */
@@ -46,7 +46,7 @@ body {
   /* 화면의 전체 높이를 차지하도록 설정 */
   background-color: #fff;
   /* 배경색 */
-  z-index: 10;
+  z-index: 0;
   /* 다른 요소 위에 표시 */
   padding-left: 64px;
   /* section-right의 왼쪽에 64px 패딩 추가 */
@@ -419,4 +419,9 @@ body {
 
 .dot.active {
   background-color: #0095f6;
+}
+
+
+.main-following {
+  color: gray;
 }
