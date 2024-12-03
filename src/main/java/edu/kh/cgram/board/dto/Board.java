@@ -25,6 +25,7 @@ public class Board {
     private String boardContent;
     private int    readCount;
     private String imagePath;
+    private String imageRename;
     
     // 작성일 수정일
     private String createdAt;
@@ -46,12 +47,13 @@ public class Board {
     private String thumbnail;	// 썸네일 이미지 (경로와 이름)
     private String profileImg;	// 작성자 프로필 이미지
     
-    // 특정 게시글의 이미지 목록을 저장할 필드
+    // 특정 Feed의 이미지 목록을 저장할 필드
     private List<BoardImg> imageList;
     
-    // 특정 게시글의 댓글 목록을 저장할 필드
+    // 특정 Feed의 댓글 목록을 저장할 필드
     private List<Comment> commentList;
     
+    // 특정 회원의 팔로우하지 않은 회원 추천 목록
     private List<Recommend> recommendList;
     
     // 좋아요 체크 여부를 저장할 필드( 1 == 누른적 있음)

@@ -85,23 +85,6 @@
   background: #0095f6;
 }
 
-/* 터치 이벤트를 위한 스타일 */
-.image-track {
-  touch-action: pan-y pinch-zoom;
-}
-
-/* 모바일 반응형, 작은 화면에서도 적당하게 조정 */
-@media (max-width: 768px) {
-  .image-slider {
-    height: 55%; /* 모바일 화면에서는 슬라이더 크기를 더 키워도 좋음 */
-  }
-
-  .slider-button {
-    width: 5%; /* 모바일에서 버튼 크기 조정 */
-    height: 5%;
-  }
-}
-
 /* 상세보기용으로 화면이 커졌을 때 (좀 더 큰 화면에서) */
 @media (min-width: 1200px) {
   .image-slider {

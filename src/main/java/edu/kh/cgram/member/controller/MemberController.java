@@ -243,6 +243,18 @@ public class MemberController {
 	        model.addAttribute("message", "사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
 	        return "redirect:/";
 	    }
+	    
+	    int loginMemberNo = loginMember.getMemberNo();
+	    int targetMemberNo = member.getMemberNo();
+
+	    // 차단 여부 확인
+	    boolean isBlocked = service.isUserBlocked(loginMemberNo, targetMemberNo);
+
+	    if (isBlocked) {
+	        log.warn("차단된 계정에 접근 시도: {}", member.getMemberNickname());
+	        model.addAttribute("message", "차단당한 계정입니다.");
+	        return "error/accessDenied"; // 접근 차단 페이지로 리다이렉트
+	    }
 
 	    // 추가 데이터 조회
 	    int postCount = service.getPostCountByMemberNo(member.getMemberNo());

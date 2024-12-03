@@ -13,7 +13,8 @@
 <body>
 
   <!-- 헤더 조각 포함 -->
-  <th:block class="header-container" th:replace="fragments/chattingHeader :: header"></th:block>
+  <!-- <th:block class="header-container" th:replace="fragments/chattingheader :: header"></th:block> -->
+  <th:block class="header-container" th:replace="fragments/header :: header"></th:block>
 
 
   <div class="chatting-area">
@@ -128,7 +129,7 @@
 
 
   <div class="modal-overlay" id="chattingSearchMember">
-    <div class="modal-container">
+    <div class="modal-containerSearchMember">
       <div class="modal-header">
         <div class="modal-title">새로운 메시지</div>
         <div style="width: 24px;"></div>

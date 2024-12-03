@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="edu.kh.cgram.report.mapper.ReportMapper">
+
+	    <!-- 신고 등록 쿼리 -->
+    <insert id="insertReport" parameterType="Report">
+        INSERT INTO REPORT (
+            REPORT_NO,
+            MEMBER_NO, 
+            REPORT_CATEGORY, 
+            CONTENT_NO, 
+            CONTENT_CATEGORY
+        ) VALUES (
+            SEQ_REPORT_NO.NEXTVAL,
+            #{memberNo},
+            #{reportCategory},
+            #{contentNo},
+            #{contentCategory}
+        )
+	</insert>
+
+</mapper>

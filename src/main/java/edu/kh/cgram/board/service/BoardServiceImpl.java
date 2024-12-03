@@ -11,6 +11,7 @@ import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.board.dto.Comment;
 import edu.kh.cgram.board.mapper.BoardMapper;
+import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -47,10 +48,68 @@ public class BoardServiceImpl implements BoardService {
 	@Override
     public Board selectBoardDetail(int boardNo) {
         return mapper.selectBoardDetail(boardNo);
-    }
+  }
 
-    @Override
-    public List<Comment> selectBoardComments(int boardNo) {
-        return mapper.selectBoardComments(boardNo);
+  @Override
+  public List<Comment> selectBoardComments(int boardNo) {
+      return mapper.selectBoardComments(boardNo);
+  }
+  
+  @Override
+  public boolean isLiked(int boardNo, int memberNo) {
+  	Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("boardNo", boardNo);
+  	return mapper.checkLike(paramMap) > 0;
+  }
+  
+  @Override
+  public int unlikeBoard(int memberNo, int boardNo) {
+  	Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("boardNo", boardNo);
+  	return mapper.deleteBoardLike(paramMap);
+  }
+    
+  @Override
+  public int likeBoard(int memberNo, int boardNo) {
+  	Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("boardNo", boardNo);
+  	// 이미 좋아요를 누른 상태인지 확인
+    int check = mapper.checkLike(paramMap);
+
+    if (check > 0) {
+        return 0; // 이미 좋아요 상태
+    } else {
+    	int result = mapper.insertLike(paramMap);
+    	if (result > 0) {
+			return result; // 좋아요 상태
+    	} else {
+			return 0;
+    	}
     }
+  }
+  
+  @Override
+  public boolean isAuthor(int boardNo, int memberNo) {
+  	Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("boardNo", boardNo);
+  	return mapper.checkAuthor(paramMap) > 0;
+  }
+  
+	@Override
+	public List<Member> getLikes(int boardNo) {
+	   return mapper.selectLikesByBoardNo(boardNo);
+	}
+	
+	@Override
+	public int reportBoard(int boardNo, int memberNo, String reportReason) {
+		Map<String, Object> paramMap = new HashMap<>();
+  	paramMap.put("memberNo", memberNo);
+		paramMap.put("boardNo", boardNo);
+		paramMap.put("reportReason", reportReason);
+		return mapper.insertReport(paramMap);
+	}
 }

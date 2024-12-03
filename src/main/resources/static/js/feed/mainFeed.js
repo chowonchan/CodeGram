@@ -21,6 +21,10 @@ boardLike.addEventListener("click", e => {
       if (result.check === 1) {
         boardLike.classList.add("fa-solid");
         boardLike.classList.remove("fa-regular");
+        
+        const content =
+        `<strong>${loginMemberName}</strong>
+        님이 좋아요를 누르셨습니다<br>`;
 
         // type, url, pkNo, content
         sendNoti(
@@ -99,5 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
       shortContentEl.textContent = boardContent;
       moreBtnEl.style.display = 'none';
   }
+
 });
 

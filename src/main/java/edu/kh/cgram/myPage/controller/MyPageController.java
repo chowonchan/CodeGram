@@ -173,7 +173,18 @@ public class MyPageController {
   		
   		return memberPosts;
   	}
-
+  	
+  	@GetMapping("/saved")
+  	@ResponseBody
+  	public List<BoardImg> getMemberSaved(
+  		@SessionAttribute("loginMember") Member loginMember) {
+  		// 로그인된 회원의 번호 가져오기
+  		int memberNo = loginMember.getMemberNo();
+  		
+  		List<BoardImg> memberSaved = service.getMemberSaved(memberNo);
+  		
+  		return memberSaved;
+  	}
 
     
     /**
@@ -224,4 +235,6 @@ public class MyPageController {
             return ResponseEntity.status(500).body("{\"status\": \"error\", \"message\": \"서버 오류 발생\"}");
         }
     }
+    
+    
 }

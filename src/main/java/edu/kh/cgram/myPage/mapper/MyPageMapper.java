@@ -48,6 +48,8 @@ public interface MyPageMapper {
 
 		Member findMemberByNickname(@Param("nickname") String nickname);
 
+		List<BoardImg> selectMemberSaved(int memberNo);
+
 
     
     
