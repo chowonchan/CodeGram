@@ -165,7 +165,7 @@ public class MyPageController {
         return "myPage/editProfile";
     }
     
-    @GetMapping("/savedStory")
+    @GetMapping("/saveStory")
     public String showSavedStoryPage(Model model, @SessionAttribute("loginMember") Member loginMember) {
         // 로그인된 사용자의 MEMBER_NO를 가져옴
         int memberNo = loginMember.getMemberNo();
