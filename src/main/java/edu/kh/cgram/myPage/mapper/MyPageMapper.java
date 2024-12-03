@@ -45,7 +45,6 @@ public interface MyPageMapper {
             @Param("memberDisclosureScope") int memberDisclosureScope
     );
 
-		List<BoardImg> selectMemberPosts(@Param("memberNo") int memberNo,@Param("cp") int cp);
 
 		Member findMemberByNickname(@Param("nickname") String nickname);
 

@@ -98,12 +98,7 @@ public class MyPageServiceImpl implements MyPageService {
       // 업데이트된 행의 개수가 1 이상이면 성공
       return result > 0;
   }
-  	@Override
-  	public List<BoardImg> getMemberPosts(int memberNo, int cp) {
-  		
-  		
-  		return mapper.selectMemberPosts(memberNo, cp);
-  	}
+ 
   	
   	@Override
   	public Member getMemberByNickname(String nickname) {

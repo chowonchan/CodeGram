@@ -652,10 +652,11 @@ async function loadFollowerList() {
     activeTab.classList.add("active");
   
     // 서버에서 데이터 로드 (AJAX)
-    fetch(type === "uploads" ? "/myPage/posts" : "/myPage/saved")
+    fetch(type === "uploads" ? `/member/${location.pathname.split("/")[2]}/posts` : "/myPage/saved")
       .then(response => response.json())
       .then(data => {
-        setupPagination(data, type); // 페이지네이션 설정
+        // setupPagination(data, type); // 페이지네이션 설정
+        renderPosts(data, type); // post 렌더링
       })
       .catch(error => console.error(`Error fetching ${type} posts:`, error));
   }
@@ -669,35 +670,35 @@ async function loadFollowerList() {
   }
   
   // 페이지네이션 설정
-  function setupPagination(posts, type) {
-    const itemsPerPage = 9; // 가로 3개, 세로 3개씩 표시
-    const totalPages = Math.ceil(posts.length / itemsPerPage);
-    let currentPage = 1;
+  // function setupPagination(posts, type) {
+  //   const itemsPerPage = 9; // 가로 3개, 세로 3개씩 표시
+  //   const totalPages = Math.ceil(posts.length / itemsPerPage);
+  //   let currentPage = 1;
 
-    // 페이지네이션 컨테이너 초기화
-    const paginationContainer = document.getElementById("pagination");
-    paginationContainer.innerHTML = "";
+  //   // 페이지네이션 컨테이너 초기화
+  //   const paginationContainer = document.getElementById("pagination");
+  //   paginationContainer.innerHTML = "";
 
-    // 페이지네이션 버튼 생성
-    for (let i = 1; i <= totalPages; i++) {
-      const pageButton = document.createElement("button");
-      pageButton.className = "page-button";
-      pageButton.textContent = i;
-      if (i === currentPage) pageButton.classList.add("active");
+  //   // 페이지네이션 버튼 생성
+  //   for (let i = 1; i <= totalPages; i++) {
+  //     const pageButton = document.createElement("button");
+  //     pageButton.className = "page-button";
+  //     pageButton.textContent = i;
+  //     if (i === currentPage) pageButton.classList.add("active");
 
-      pageButton.addEventListener("click", () => {
-        currentPage = i;
-        document.querySelectorAll(".page-button").forEach(btn => btn.classList.remove("active"));
-        pageButton.classList.add("active");
-        renderPosts(posts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage), type);
-      });
+  //     pageButton.addEventListener("click", () => {
+  //       currentPage = i;
+  //       document.querySelectorAll(".page-button").forEach(btn => btn.classList.remove("active"));
+  //       pageButton.classList.add("active");
+  //       renderPosts(posts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage), type);
+  //     });
 
-      paginationContainer.appendChild(pageButton);
-    }
+  //     paginationContainer.appendChild(pageButton);
+  //   }
 
-    // 초기 렌더링
-    renderPosts(posts.slice(0, itemsPerPage), type);
-  }
+  //   // 초기 렌더링
+  //   renderPosts(posts.slice(0, itemsPerPage), type);
+  // }
 
 
   // 게시물 렌더링
@@ -765,15 +766,15 @@ async function loadFollowerList() {
 
 let currentPage = 1; // 현재 페이지, fetch 수행 시 마다 증가
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded',  function () {
   // IntersectionObserver : 보고있는 화면에 요소가 나타나는지 감지
-  let intersectionObserver = new IntersectionObserver(function (entries) {
+  let intersectionObserver = new IntersectionObserver(async function (entries) {
     // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
     // 아무것도 하지 않음
     if (entries[0].intersectionRatio <= 0) return;
 
     // console.log("새 항목 불러옴");
-    fetchMoreFeedItems()
+    await fetchMoreFeedItems();
   });
   // 주시 시작
   intersectionObserver.observe(document.querySelector("#SCmainFooter"));
@@ -782,40 +783,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function fetchMoreFeedItems() {
     try {
+      const nickname = location.pathname.split("/")[2];
+
       // 피드 항목을 가져올 때 이 URL을 실제 백엔드 엔드포인트로 대체합니다
-      const response = await fetch(`/api/feed?cp=${++currentPage}`);
+      const response = await fetch(`/member/${nickname}/posts?cp=${++currentPage}`);
 
       if (!response.ok) {
         throw new Error('오류가 발생했습니다');
       }
 
-      const data = await response.json();
+      const posts = await response.json();
 
       // 새 피드 항목 렌더링
-      renderFeedItems(data.feedList);
+      // renderFeedItems(posts);
 
-      return data;
+      const type = document.querySelector(".tab.active").innerText === '게시물' ? 'uploads' : 'saved';
+      // renderPosts(posts, type);
+
+      const postsContent = document.getElementById("postsContent");
+      posts.forEach(post => {
+        const postItem = document.createElement("div");
+        postItem.className = "post-item"; // 클래스 추가
+      
+        // 게시물 항목의 이미지 추가
+        const postImage = document.createElement("img");
+        postImage.className = "post-image";
+        postImage.src = `${post.imgPath}${post.imgRename}`;
+        postImage.alt = "Post Image";
+      
+        // 클릭 이벤트로 상세 모달 열기
+        postItem.addEventListener("click", () => {
+          console.log(post.boardNo);
+          openDetail(post.boardNo)});
+      
+        // post-item에 이미지 추가
+        postItem.appendChild(postImage);
+        postsContent.appendChild(postItem);
+      });
+      
+
+      // return posts;
     } catch (error) {
       console.error('Feed를 가져올 수 없습니다 :', error);
       return { hasMore: false };
     }
   }
 
-  // 새 피드 항목 렌더링 기능
-  function renderFeedItems(feedList) {
-    const wrapper = document.querySelector('.infinite-scroll-wrapper');
-
-    feedList.forEach(board => {
-      // 각 보드 항목에 대한 새 기사 요소 만들기
-      const articleElement = document.createElement('article');
-      articleElement.className = 'board-article';
-
-      // 게시판 데이터로 기사 채우기(원래 HTML과 동일한 구조 사용)
-      articleElement.innerHTML = `
-    
-  `;
-
-      wrapper.append(articleElement);
-    });  
-  }
 });

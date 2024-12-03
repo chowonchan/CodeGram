@@ -41,8 +41,6 @@ public interface MyPageService {
 
 		boolean updateProfile(int memberNo, String selfIntroduction, int memberDisclosureScope);
 
-		List<BoardImg> getMemberPosts(int memberNo, int cp);
-
 		Member getMemberByNickname(String nickname);
 
 		List<BoardImg> getMemberSaved(int memberNo);

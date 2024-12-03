@@ -211,26 +211,7 @@ public class MyPageController {
 //    }
 
 
-  	@GetMapping("/posts")
-  	@ResponseBody
-  	public List<BoardImg> getMemberPosts(
-  			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-  			@SessionAttribute("loginMember") Member loginMember,
-  			Model model) {
-  		// 로그인된 회원의 번호 가져오기
-  		int memberNo = loginMember.getMemberNo();
-  		
-  		Map<String, Object> map = null;
-  		
-  		List<BoardImg> memberPosts = service.getMemberPosts(memberNo, cp);
-  		Pagination pagination = (Pagination) map.get("pagination");
-  		
-  		model.addAttribute("memberPosts", memberPosts);
-  		model.addAttribute("pagination", pagination);
-  		
-  		
-  		return memberPosts;
-  	}
+
   	
   	@GetMapping("/saved")
   	@ResponseBody

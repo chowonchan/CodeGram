@@ -19,18 +19,14 @@ main {
 
 
  .profile-container{
-  position: absolute; /* 화면에 고정 */
-  top: 50%; /* 수직 가운데 정렬 */
-  left: 55%; /* 수평 가운데 정렬 */
-  transform: translate(-50%, -50%); /* 실제 가운데로 이동 */
    /*background-color: #ffffff; 배경색 */
   width: 50%; /* 적절한 너비 설정 */
-  /* padding: 20px; */
+  padding: 20px;
   border-radius: 8px;
-  /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  그림자 효과 */
   text-align: center;
-  margin-left: 140px;
- } 
+  margin-left: 22%;
+  margin-top: 20px;
+}
 
 
 
@@ -583,7 +579,6 @@ main {
   gap: 15px;
   margin-top: 20px;
   padding: 10px;
-  max-height: 200px; /* 최대 높이 설정 */
   overflow-y: auto; /* 세로 스크롤바 추가 */
   border: 1px solid #ddd; /* 컨테이너 경계선 */
   border-radius: 10px; /* 컨테이너 경계선 둥글게 */
