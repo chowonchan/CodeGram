@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.story.dto.Story;
 
 /**
  * MyPageService 인터페이스
@@ -40,11 +41,17 @@ public interface MyPageService {
 
 		boolean updateProfile(int memberNo, String selfIntroduction, int memberDisclosureScope);
 
-		List<BoardImg> getMemberPosts(int memberNo);
+		List<BoardImg> getMemberPosts(int memberNo, int cp);
 
 		Member getMemberByNickname(String nickname);
 
 		List<BoardImg> getMemberSaved(int memberNo);
+
+		List<Story> getStoriesByMemberNo(int memberNo);
+		
+		
+		
+		
 
 
 

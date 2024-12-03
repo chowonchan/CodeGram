@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>보관된 스토리</title>
+</head>
+<body>
+  <main>
+    <th:block class="header-container" th:replace="~{fragments/header :: header}"></th:block>
+
+    <h1>Saved Stories</h1>
+    <p>Welcome, <span th:text="${loginMember.nickname}">Nickname</span>!</p>
+    
+    <ul>
+        <!-- 반복문으로 stories 데이터를 출력 -->
+        <li th:each="story : ${stories}">
+            <h3 th:text="${story.title}">Story Title</h3>
+            <p th:text="${story.content}">Story Content</p>
+            <p>작성일: <span th:text="${story.createdAt}"></span></p>
+        </li>
+    </ul>
+  </main>
+  <div class="footer-container">
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+  </div>
+</body>
+</html>

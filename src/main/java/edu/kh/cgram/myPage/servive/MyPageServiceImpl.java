@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.mapper.MyPageMapper;
+import edu.kh.cgram.story.dto.Story;
 
 /**
  * MyPageServiceImpl
@@ -97,8 +99,10 @@ public class MyPageServiceImpl implements MyPageService {
       return result > 0;
   }
   	@Override
-  	public List<BoardImg> getMemberPosts(int memberNo) {
-  		return mapper.selectMemberPosts(memberNo);
+  	public List<BoardImg> getMemberPosts(int memberNo, int cp) {
+  		
+  		
+  		return mapper.selectMemberPosts(memberNo, cp);
   	}
   	
   	@Override
@@ -111,6 +115,9 @@ public class MyPageServiceImpl implements MyPageService {
   		return mapper.selectMemberSaved(memberNo);
   	}
   	
-
+    @Override
+    public List<Story> getStoriesByMemberNo(int memberNo) {
+        return mapper.selectStoriesByMemberNo(memberNo);
+    }
 
 }

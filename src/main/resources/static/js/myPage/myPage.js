@@ -80,6 +80,7 @@ followListButton?.addEventListener("click", () => {
     profileMoreButton: document.querySelector(".profile-more-button"),
     profileFollowButton: document.querySelector(".profile-follow-button"),
     startMessageButton: document.querySelector(".start-message-button"),
+    savedStoryButton: document.querySelector(".saved-story-button"),
     blockUser: document.getElementById("blockUser"),
     optionBlock: document.getElementById("modal-option-block")
   };
@@ -344,6 +345,11 @@ buttons.optionBlock?.addEventListener("click", async () => {
   // 프로필 편집
   buttons.profileEditButton?.addEventListener("click", () => {
     window.location.href = "/myPage/editProfile";
+  });
+
+  // 스토리 보기
+  buttons.savedStoryButton?.addEventListener("click", () => {
+    window.location.href = "/myPage/savedStory";
   });
 
   // 채팅 시작
@@ -661,7 +667,7 @@ async function loadFollowerList() {
     tabs.myUploadsTab?.addEventListener("click", () => activateTab(tabs.myUploadsTab, "uploads"));
     tabs.savedTab?.addEventListener("click", () => activateTab(tabs.savedTab, "saved"));
   }
-
+  
   // 페이지네이션 설정
   function setupPagination(posts, type) {
     const itemsPerPage = 9; // 가로 3개, 세로 3개씩 표시
@@ -701,7 +707,6 @@ async function loadFollowerList() {
     if (posts.length === 0) {
       const noPostsContainer = document.createElement("div");
       noPostsContainer.className = "no-posts-container"; // 컨테이너 클래스 추가
-    
       const noPostsMessage = document.createElement("p");
       noPostsMessage.className = "no-posts-message"; // 메시지 클래스 추가
       noPostsMessage.textContent = type === "uploads"
@@ -713,19 +718,104 @@ async function loadFollowerList() {
       return;
     }
       // 게시물이 있는 경우 클래스 제거
-      postsContent.classList.remove("no-posts");
+      postsContent.classList.remove("no-posts-container");
+      postsContent.classList.remove("no-posts-message");
       
+    // posts.forEach(post => {
+    //   const postItem = document.createElement("div");
+    //   postItem.className = "post-item"; // 클래스 추가
+    //   postItem.innerHTML = `
+    //     <a href="/board/${post.boardNo}">
+    //       <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
+    //     </a>`;
+    //   postsContent.appendChild(postItem);
+    // });
+
     posts.forEach(post => {
       const postItem = document.createElement("div");
       postItem.className = "post-item"; // 클래스 추가
-      postItem.innerHTML = `
-        <a href="/board/${post.boardNo}">
-          <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
-        </a>`;
+    
+      // 게시물 항목의 이미지 추가
+      const postImage = document.createElement("img");
+      postImage.className = "post-image";
+      postImage.src = `${post.imgPath}${post.imgRename}`;
+      postImage.alt = "Post Image";
+    
+      // 클릭 이벤트로 상세 모달 열기
+      postItem.addEventListener("click", () => {
+        console.log(post.boardNo);
+        openDetail(post.boardNo)});
+    
+      // post-item에 이미지 추가
+      postItem.appendChild(postImage);
       postsContent.appendChild(postItem);
     });
+    
 
 
   }
 
+});
+
+
+
+
+// -------------------------------------------------------------------------
+// 무한스크롤
+
+let currentPage = 1; // 현재 페이지, fetch 수행 시 마다 증가
+
+document.addEventListener('DOMContentLoaded', function () {
+  // IntersectionObserver : 보고있는 화면에 요소가 나타나는지 감지
+  let intersectionObserver = new IntersectionObserver(function (entries) {
+    // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
+    // 아무것도 하지 않음
+    if (entries[0].intersectionRatio <= 0) return;
+
+    // console.log("새 항목 불러옴");
+    fetchMoreFeedItems()
+  });
+  // 주시 시작
+  intersectionObserver.observe(document.querySelector("#SCmainFooter"));
+
+
+
+  async function fetchMoreFeedItems() {
+    try {
+      // 피드 항목을 가져올 때 이 URL을 실제 백엔드 엔드포인트로 대체합니다
+      const response = await fetch(`/api/feed?cp=${++currentPage}`);
+
+      if (!response.ok) {
+        throw new Error('오류가 발생했습니다');
+      }
+
+      const data = await response.json();
+
+      // 새 피드 항목 렌더링
+      renderFeedItems(data.feedList);
+
+      return data;
+    } catch (error) {
+      console.error('Feed를 가져올 수 없습니다 :', error);
+      return { hasMore: false };
+    }
+  }
+
+  // 새 피드 항목 렌더링 기능
+  function renderFeedItems(feedList) {
+    const wrapper = document.querySelector('.infinite-scroll-wrapper');
+
+    feedList.forEach(board => {
+      // 각 보드 항목에 대한 새 기사 요소 만들기
+      const articleElement = document.createElement('article');
+      articleElement.className = 'board-article';
+
+      // 게시판 데이터로 기사 채우기(원래 HTML과 동일한 구조 사용)
+      articleElement.innerHTML = `
+    
+  `;
+
+      wrapper.append(articleElement);
+    });  
+  }
 });

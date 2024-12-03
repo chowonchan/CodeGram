@@ -15,6 +15,12 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
+	<select id="selectStoriesByMemberNo" resultType="Story">
+	    SELECT * 
+	    FROM STORY
+	    WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
 	<select id="selectMemberPosts" resultType="BoardImg">
 		SELECT BI.BOARD_NO, BI.IMG_NO, BI.IMG_PATH, BI.IMG_RENAME
 		FROM BOARD B

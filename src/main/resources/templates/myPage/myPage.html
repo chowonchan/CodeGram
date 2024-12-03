@@ -90,10 +90,14 @@
       </div>
 
       <!-- 게시물 그리드: 사용자가 업로드한 게시물 미리보기 -->
-      <div id="postsContent" class="post-grid" style="height: 300px; overflow-y: auto;"></div>
+      <div id="postsContent" class="post-grid"></div>
+      <!-- <div id="postsContent" class="post-grid" style="height: 300px; overflow-y: auto;"></div> -->
       <div id="pagination" class="pagination"></div>
-
+      <!--주시 관련 코드 이 부분 관측시 다음 페이지네이션 로딩-->
+      <div id="SCmainFooter" style="height: 50px; width: 100%;"></div>
     </section>
+
+
     
     
   </main>
@@ -211,9 +215,64 @@
     </div>
   </div>
 
+<!-- 모달 전체 컨테이너 -->
+<div id="feedModal" style="display: none;" class="modal">
+  <!-- 모달 오버레이 -->
+  <div id="modalOverlay" class="modal-overlay"></div>
+
+  <!-- 모달 콘텐츠 -->
+  <div class="modal-content">
+    <img id="feedImage" src="" alt="Post Image" class="modal-image">
+    <div class="modal-header">
+      <a id="userNickname" href="#" class="user-nickname">작성자 닉네임</a>
+      <i class="fas fa-ellipsis" id="ellipsisButton"></i>
+    </div>
+    <div class="modal-body">
+      <p id="feedDescription" class="feed-description">게시물 내용</p>
+      <p id="feedTime" class="feed-time">게시 시간</p>
+      <p id="likesCount" class="likes-count">좋아요 0개</p>
+    </div>
+    <ul id="commentList" class="comment-list"></ul>
+    <i id="likeButton" class="far fa-heart like-button"></i>
+  </div>
+</div>
+
+<!-- 옵션 모달 -->
+<div id="optionsModal" style="display: none;">
+  <ul>
+    <li class="detail-options-button edit">수정</li>
+    <li class="detail-options-button delete">삭제</li>
+  </ul>
+</div>
+
+<!-- 수정/삭제 모달 -->
+<div id="editDeleteModal" style="display: none;">
+  <button class="detail-edit-delete-button edit">수정</button>
+  <button class="detail-edit-delete-button delete">삭제</button>
+</div>
+
+<!-- 좋아요 목록 모달 -->
+<div id="likesModal" style="display: none;">
+  <div id="likesModalOverlay" class="modal-overlay"></div>
+  <ul id="likesList" class="likes-list"></ul>
+  <button id="closeLikesModal" class="close-modal-button">닫기</button>
+</div>
+
+<!-- 신고 모달 -->
+<div id="reportModal" style="display: none;">
+  <div id="reportModalOverlay" class="modal-overlay"></div>
+  <h2>신고 사유를 선택해주세요</h2>
+  <ul id="reportReasonList" class="report-reason-list"></ul>
+  <button id="closeReportModal" class="close-modal-button">닫기</button>
+</div>
+
+
+
+  
 
   
   <!-- JavaScript 파일을 연결합니다 (페이지의 동작 제어). -->
+  <script src="/js/feed/feedDetail.js"></script>
   <script src="/js/myPage/myPage.js"></script>
 </body>
 </html>
