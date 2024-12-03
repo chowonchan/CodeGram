@@ -180,35 +180,6 @@ public class MyPageController {
         // "myPage/saveStory.html" 템플릿을 렌더링
         return "myPage/saveStory";
     }
-//    
-//    @GetMapping("/posts")
-//    @ResponseBody
-//    public ResponseEntity<Map<String, Object>> getMemberPosts(
-//            @SessionAttribute("loginMember") Member loginMember,
-//            @RequestParam(value = "page", defaultValue = "1") int page,
-//            @RequestParam(value = "size", defaultValue = "9") int size) {
-//
-//        // 로그인된 회원 번호 가져오기
-//        int memberNo = loginMember.getMemberNo();
-//
-//        // 서비스 계층에서 해당 페이지의 게시물 데이터 가져오기
-//        List<BoardImg> posts = service.getMemberPosts(memberNo, page, size);
-//
-//        // 총 게시물 개수 가져오기
-//        int totalPostCount = service.getTotalPostCount(memberNo);
-//
-//        // 페이지네이션 정보 계산
-//        int totalPages = (int) Math.ceil((double) totalPostCount / size);
-//
-//        // 응답 데이터 구성
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("posts", posts);
-//        response.put("currentPage", page);
-//        response.put("totalPages", totalPages);
-//        response.put("totalPostCount", totalPostCount);
-//
-//        return ResponseEntity.ok(response);
-//    }
 
 
 

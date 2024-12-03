@@ -1,8 +1,55 @@
 
 /* 좋아요 클릭 시 */
-const boardLike = document.querySelector("#boardLike");
-boardLike?.addEventListener("click", e => {
+// const boardLike = document.querySelector(".boardLike");
+// boardLike?.addEventListener("click", e => {
 
+//   if (loginCheck === false) {
+//     alert("로그인 후 이용해 주세요");
+//     return;
+//   }
+
+//   // 2. 비동기로 좋아요 요청 
+//   fetch("/board/like", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: boardNo
+//   })
+//     .then(response => response.json())
+//     .then(result => {
+//       // 좋아요 결과가 담긴 result 객체의 check 값에 따라
+//       // 하트 아이콘을 비우기/채우기 지정
+//       if (result.check === 1) {
+//         boardLike.classList.add("fill: red;");
+//         // boardLike.classList.remove("fill: none;");
+
+//         const content =
+//           `<strong>${loginMemberName}</strong>
+//         님이 좋아요를 누르셨습니다<br>`;
+
+//         const url = `/member/${memberNickname}`
+//         // type, url, pkNo, content
+//         sendNoti(
+//           "boardLike",  // type
+//           url,  // 게시글 상세 조회 페이지 주소
+//           board.boardNo,  // 게시글 번호
+//           content
+//         );
+
+//       } else {
+//         boardLike.classList.add("fill: none;");
+//         // boardLike.classList.remove("fill: red;");
+//       }
+//       // 좋아요 하트 카운트 내용을 
+//       // result.count로 변경
+//       const likeCount = document.querySelector(".likeCount");
+//       likeCount.innerText = result.count;
+//     })
+//     .catch(err => console.error(err));
+// });
+
+
+const boardLike = document.querySelector(".boardLike");
+boardLike?.addEventListener("click", e => {
   if (loginCheck === false) {
     alert("로그인 후 이용해 주세요");
     return;
@@ -12,36 +59,37 @@ boardLike?.addEventListener("click", e => {
   fetch("/board/like", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: boardNo
+    body: JSON.stringify({ boardNo: boardNo }) // JSON 형식으로 데이터 전송
   })
     .then(response => response.json())
     .then(result => {
-      // 좋아요 결과가 담긴 result 객체의 check 값에 따라
-      // 하트 아이콘을 비우기/채우기 지정
+      // 좋아요 결과에 따라 'red' 클래스 토글
       if (result.check === 1) {
-        boardLike.classList.add("fa-solid");
-        boardLike.classList.remove("fa-regular");
+        boardLike.classList.add("red");
+        boardLike.classList.remove("none");
 
         const content =
-        `<strong>${loginMemberName}</strong>
+          `<strong>${loginMemberName}</strong>
         님이 좋아요를 누르셨습니다<br>`;
 
-        const url = `/member/${memberNickname}`
+        // const memberNickname = document.querySelector("#userNickname").innerText;
+
+        const url = `/member/${board.memberNickname}`
         // type, url, pkNo, content
         sendNoti(
           "boardLike",  // type
           url,  // 게시글 상세 조회 페이지 주소
-          board.boardNo,  // 게시글 번호
+          boardNo,  // 게시글 번호
           content
         );
 
       } else {
-        boardLike.classList.add("fa-regular");
-        boardLike.classList.remove("fa-solid");
+        boardLike.classList.remove("red");
+        boardLike.classList.add("none");
       }
-      // 좋아요 하트 카운트 내용을 
-      // result.count로 변경
-      const likeCount = document.querySelector("#likeCount");
+
+      // 좋아요 카운트 업데이트
+      const likeCount = document.querySelector(".likeCount");
       likeCount.innerText = result.count;
     })
     .catch(err => console.error(err));
@@ -50,7 +98,7 @@ boardLike?.addEventListener("click", e => {
 
 
 /* MARK 클릭 시 */
-const boardMark = document.querySelector("#boardMark");
+const boardMark = document.querySelector(".boardMark");
 boardMark?.addEventListener("click", e => {
 
   if (loginCheck === false) {
@@ -91,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 타임리프에서 받아온 content (예시)
   const boardContent = /*[[${content}]]*/ null;
 
-  if(boardContent?.length < CONTENT_MAX_LENGTH) {
+  if (boardContent?.length < CONTENT_MAX_LENGTH) {
     moreBtnEl.style.display = 'none';
   }
 
@@ -259,30 +307,83 @@ document.addEventListener('DOMContentLoaded', function () {
 
       wrapper.append(articleElement);
     });
-
-    // 필요한 경우 새로 추가된 항목에 대한 이벤트 청취자 다시 연결
-    // attachEventListeners();
   }
-
-  // 이벤트 청취자를 동적 콘텐츠에 연결하는 기능
-  // function attachEventListeners() {
-  //   // 예: '더 보기' 버튼에 클릭 청취자 추가
-  //   document.querySelectorAll('#moreBtn').forEach(btn => {
-  //     btn.addEventListener('click', function() {
-  //       const contentContainer = this.closest('#contentContainer');
-  //       const shortContent = contentContainer.querySelector('#shortContent');
-  //       const fullContent = contentContainer.querySelector('#fullContent');
-
-  //       shortContent.style.display = 'none';
-  //       fullContent.classList.remove('hidden-content');
-  //       this.style.display = 'none';
-  //     });
-  //   });
-
-  //   // 필요에 따라 동적 이벤트 청취자 추가
-  // }
-
 });
 
+const mainFollowBtnList = document.querySelectorAll(".main-follow-btn");
 
-
+mainFollowBtnList.forEach((mainFollowBtn,index) => {
+  
+  mainFollowBtn.addEventListener("click", async () => {
+    if (mainFollowBtn.disabled) {
+      console.warn("[팔로우 버튼] 이미 요청 처리 중입니다.");
+      return;
+    }
+  
+    mainFollowBtn.disabled = true; // 요청 시작 시 버튼 비활성화
+    console.log("[팔로우 버튼] 클릭 이벤트 발생");
+  
+    const nickname = document.querySelectorAll(".recommend-user-nickname")[index].innerText
+    console.log(nickname);
+  
+    try {
+      
+      if (!nickname) {
+        console.error("[팔로우 버튼] 닉네임을 URL에서 추출할 수 없습니다.");
+        return;
+      }
+  
+      let response;
+      let actionType;
+  
+      if (mainFollowBtn.textContent === "팔로우") {
+        response = await fetch(`/follow/${nickname}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+        actionType = "FOLLOW";
+      } else {
+        response = await fetch(`/follow/${nickname}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        });
+        actionType = "UNFOLLOW";
+      }
+  
+      if (response.ok) {
+        const result = await response.json();
+        alert(result.message);
+  
+        if (actionType === "FOLLOW") {
+          mainFollowBtn.textContent = "팔로잉";
+          mainFollowBtn.classList.add("main-following");
+  
+          console.log(`[팔로우 버튼] 팔로우 성공: ${result.message}`);
+  
+          sendNoti(
+            "follow",
+            `/member/${loginMemberNickname}`,
+            result.followerMemberNo,
+            `<strong>${loginMemberNickname}</strong>님이 회원님을 
+            <br>
+            팔로우하기 시작했습니다.`
+          );
+  
+        } else {
+          mainFollowBtn.textContent = "팔로우";
+          mainFollowBtn.classList.remove("main-following");
+          console.log(`[팔로우 버튼] 팔로우 취소 성공: ${result.message}`);
+        }
+      } else {
+        console.error("[팔로우 버튼] 요청 실패:", response.statusText);
+        alert("요청 처리 중 문제가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("[팔로우 버튼] 요청 중 오류 발생:", error);
+      alert("요청 처리 중 문제가 발생했습니다. 네트워크 상태를 확인하세요.");
+    } finally {
+      mainFollowBtn.disabled = false; // 요청 완료 후 버튼 활성화
+      console.log("[팔로우 버튼] 요청 처리 완료");
+    }
+  });
+})

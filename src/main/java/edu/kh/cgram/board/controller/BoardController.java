@@ -69,6 +69,8 @@ public class BoardController {
       if (board == null) {
            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
       }
+      
+      List<Map<String, Object>> images = service.selectBoardImages(boardNo);
 
       // 댓글 데이터 조회
       List<Comment> comments = service.selectBoardComments(boardNo, memberNo);
@@ -83,6 +85,7 @@ public class BoardController {
       result.put("imageRename", board.getImageRename());
       result.put("comments", comments);
 			result.put("isLiked", isLiked);
+			result.put("images", images);
 
       return result;
   }
