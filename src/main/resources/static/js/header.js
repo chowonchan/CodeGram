@@ -540,29 +540,36 @@ const selectNotiList = () => {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
               });
-          
+        
               const data = await response.json();
-          
+        
               if (!data.success) {
                 console.error("팔로우 상태를 확인할 수 없습니다:", data.message);
                 return;
               }
-          
+        
               let isFollowing = data.isFollowing === true || data.isFollowing === "1";
-          
+        
               // 버튼 상태 업데이트 함수
               const updateButton = (isFollowing) => {
-                followAlarmBtn.innerText = isFollowing ? "팔로잉" : "팔로우";
-                followAlarmBtn.classList.toggle("follow", !isFollowing);
-                followAlarmBtn.classList.toggle("notFollow", isFollowing);
-                followAlarmBtn.disabled = isFollowing;
-
-                document.querySelector(".profile-follow-button").innerText = isFollowing ? "팔로우 취소" : "팔로우";
+                if (followAlarmBtn) {
+                  followAlarmBtn.innerText = isFollowing ? "팔로잉" : "팔로우";
+                  followAlarmBtn.classList.toggle("follow", !isFollowing);
+                  followAlarmBtn.classList.toggle("notFollow", isFollowing);
+                  followAlarmBtn.disabled = isFollowing;
+                }
+        
+                const buttonElement = document.querySelector(".profile-follow-button");
+                if (buttonElement) {
+                  buttonElement.innerText = isFollowing ? "팔로우 취소" : "팔로우";
+                } else {
+                  console.error("프로필 팔로우 버튼을 찾을 수 없습니다.");
+                }
               };
-          
+        
               // 버튼 초기화
               updateButton(isFollowing);
-          
+        
               // 버튼 클릭 이벤트
               followAlarmBtn.addEventListener("click", async () => {
                 if (isFollowing) {
@@ -570,9 +577,9 @@ const selectNotiList = () => {
                   const modal = document.getElementById("followCancelModal");
                   const followCancel = document.querySelector(".followCancelModal-cancelText");
                   const followClose = document.querySelector(".followCancelModal-closeText");
-          
+        
                   modal.classList.remove("cancel-hidden");
-          
+        
                   // 팔로우 취소 확인
                   followCancel.addEventListener("click", async () => {
                     try {
@@ -580,7 +587,7 @@ const selectNotiList = () => {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                       });
-          
+        
                       if (response.ok) {
                         isFollowing = false; // 상태 변경
                         updateButton(isFollowing); // 버튼 업데이트
@@ -592,7 +599,7 @@ const selectNotiList = () => {
                       modal.classList.add("cancel-hidden");
                     }
                   });
-          
+        
                   // 모달 닫기
                   followClose.addEventListener("click", () => {
                     modal.classList.add("cancel-hidden");
@@ -604,7 +611,7 @@ const selectNotiList = () => {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                     });
-          
+        
                     if (response.ok) {
                       isFollowing = true; // 상태 변경
                       updateButton(isFollowing); // 버튼 업데이트
@@ -615,11 +622,11 @@ const selectNotiList = () => {
                   }
                 }
               });
-          
+        
               // followDiv 및 contentContainer에 버튼 추가
               followDiv.appendChild(followAlarmBtn);
               contentContainer.appendChild(followDiv);
-
+        
             } catch (error) {
               console.error("팔로우 상태를 가져오는 중 오류 발생:", error);
             }
