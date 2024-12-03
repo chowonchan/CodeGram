@@ -135,14 +135,14 @@
   </div>
 
   <div id="b" class="story-container">
-   <div id="aa" class="inner out"></div>
-   <div id="bb" class="inner out"></div>
+<!--   <div id="aa" class="inner out"></div>-->
+<!--   <div id="bb" class="inner out"></div>-->
     <div id="cc" class="inner in" th:object="${story}">
       <div>
         <!-- 프로필 이미지 없을 경우 -->
-        <img th:unless="*{profileImg}" th:src="#{user.default.image}">
+        <img th:unless="*{profileImg}" th:src="#{user.default.image}" class="profile">
         <!-- 프로필 이미지 있을 경우 -->
-        <img th:if="*{profileImg}" th:src="*{profileImg}">
+        <img th:if="*{profileImg}" th:src="*{profileImg}" class="profile">
         <div th:text="*{memberNickname}">닉네임</div>
       </div>
 
@@ -158,8 +158,8 @@
       </div>
 
     </div>
-   <div id="dd" class="inner out"></div>
-   <div id="ee" class="inner out"></div>
+<!--   <div id="dd" class="inner out"></div>-->
+<!--   <div id="ee" class="inner out"></div>-->
   </div>
 
 

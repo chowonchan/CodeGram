@@ -2,18 +2,15 @@ package edu.kh.cgram.board.controller;
 
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.service.BoardService;
-import edu.kh.cgram.board.service.BoardServiceImpl;
 import edu.kh.cgram.board.service.EditBoardService;
 import edu.kh.cgram.member.dto.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("board")
@@ -25,12 +22,7 @@ public class EditBoardController {
     
     @GetMapping("insert")
     public String insertBoard() {
-        return "write/modal-feed-write";
-    }
-    
-    @GetMapping("update")
-    public String updateBoard() {
-        return "write/modal-feed-update";
+        return "modal/feed-new-post";
     }
     
     @ResponseBody
