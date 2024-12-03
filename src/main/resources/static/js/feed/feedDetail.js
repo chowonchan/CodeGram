@@ -255,8 +255,9 @@ const likeFunction = (boardNo) => {
           님이 좋아요를 누르셨습니다<br>`;
 
           const memberNickname = document.querySelector("#userNickname").innerText;
-  
-          const url = `/member/${memberNickname}` /* + `/board/${boardNo}` */;
+          // t == type  / b == board(feed) / c == comment
+          // no == boardNo 또는 commentNo
+          const url = `/member/${memberNickname}?bNo=${boardNo}` /* + `/board/${boardNo}` */;
 
           // type, url, pkNo, content
           sendNoti(
@@ -425,7 +426,7 @@ const postComment = (boardNo) => {
     
               const memberNickname = document.querySelector("#userNickname").innerText;
       
-              const url = `/member/${memberNickname}` /* + `/board/${boardNo}` */;
+              const url = `/member/${memberNickname}?bNo=${boardNo}`;
     
               // type, url, pkNo, content
               sendNoti(
@@ -483,6 +484,19 @@ document.addEventListener("click", (e) => {
               if (response.ok) {
                   e.target.classList.add("liked");
                   e.target.classList.replace("fa-regular", "fa-solid");
+
+
+                  const memberNickname = document.querySelector("#userNickname").innerText;
+      
+                  const url = `/member/${memberNickname}?bNo=${boardNo}`;
+        
+                  // type, url, pkNo, content
+                  sendNoti(
+                    "commentLike",  // type
+                    url,  // 게시글 상세 조회 페이지 주소
+                    boardNo,  // 게시글 번호
+                    content
+                  );
               } else {
                   throw new Error("댓글 좋아요 실패");
               }
