@@ -49,4 +49,6 @@ public interface BoardMapper {
 		List<Member> selectLikesByBoardNo(int boardNo);
 
 		int insertReport(Map<String, Object> paramMap);
+
+//		String getMemberNickNameByBoardNo(int boardNo, int memberNo);
 }

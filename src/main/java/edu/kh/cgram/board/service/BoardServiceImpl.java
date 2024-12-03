@@ -112,4 +112,11 @@ public class BoardServiceImpl implements BoardService {
 		paramMap.put("reportReason", reportReason);
 		return mapper.insertReport(paramMap);
 	}
+//	
+//	@Override
+//	public String getMemberNickNameByBoardNo(int boardNo, int memberNo) {
+//		return mapper.getMemberNickNameByBoardNo(boardNo, memberNo);
+//	}
+	
+	
 }

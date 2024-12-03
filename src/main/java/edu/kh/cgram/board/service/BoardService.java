@@ -32,4 +32,6 @@ public interface BoardService {
 	List<Member> getLikes(int boardNo);
 
 	int reportBoard(int boardNo, int memberNo, String reportReason);
+
+//	String getMemberNickNameByBoardNo(int boardNo, int memberNo);
 }

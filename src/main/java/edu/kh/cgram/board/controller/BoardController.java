@@ -142,6 +142,14 @@ public class BoardController {
 	    
 	    return service.reportBoard(boardNo, memberNo, reportReason);
 	}
+	
+//	@GetMapping("/getMemberNickName")
+//	@ResponseBody
+//	public String getMemberNickNameByBoardNo(
+//			@RequestParam("boardNo") int boardNo, 
+//			@RequestParam("memberNo") int memberNo) {
+//		return service.getMemberNickNameByBoardNo(boardNo, memberNo);
+//	}
 
 
 }
