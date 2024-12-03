@@ -165,31 +165,31 @@
   /* display: flex */
 }
 
-.my-profile {
+.recommend-my-profile {
   display: flex;
   align-items: center;
   margin-bottom: 24px;
   padding: 4px 16px;
 }
 
-.profile-img img {
+.recommend-profile-img img {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   margin-right: 12px;
 }
 
-.profile-info {
+.recommend-profile-info {
   flex-grow: 1;
 }
 
-.profile-nickname {
+.recommend-profile-nickname {
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 4px;
 }
 
-.profile-name {
+.recommend-profile-name {
   color: var(--text-secondary);
   font-size: 14px;
 }
@@ -250,26 +250,6 @@
 
 .inline-block {
   display: inline-block;
-}
-
-/* 푸터 스타일 */
-.footer {
-  display: flex;
-  justify-content: center;
-  background-color: #ffffff;
-  padding: 10px 0;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.footer-item {
-  margin: 0 15px;
-  color: #999;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.footer-item:hover {
-  color: #333;
 }
 
 /* 반응형 처리 */

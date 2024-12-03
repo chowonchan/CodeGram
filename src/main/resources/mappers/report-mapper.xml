@@ -3,21 +3,25 @@
 
 <mapper namespace="edu.kh.cgram.report.mapper.ReportMapper">
 
-	    <!-- 신고 등록 쿼리 -->
+	<!-- 피드 신고 삽입 -->
     <insert id="insertReport" parameterType="Report">
         INSERT INTO REPORT (
-            REPORT_NO,
+            REPORT_NO, 
             MEMBER_NO, 
+            CREATED_AT, 
             REPORT_CATEGORY, 
+            REPORT_VIEW, 
             CONTENT_NO, 
             CONTENT_CATEGORY
         ) VALUES (
-            SEQ_REPORT_NO.NEXTVAL,
-            #{memberNo},
-            #{reportCategory},
-            #{contentNo},
-            #{contentCategory}
+            SEQ_REPORT.NEXTVAL, 
+            #{memberNo}, 
+            DEFAULT, 
+            #{reson}, 
+            DEFAULT, 
+            1, 
+            
         )
-	</insert>
+    </insert>
 
 </mapper>

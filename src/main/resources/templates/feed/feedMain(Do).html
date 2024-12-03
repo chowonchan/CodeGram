@@ -19,6 +19,7 @@
 
 
 <div class="header-container" th:replace="~{fragments/header :: header}"></div>
+
 <body>
   <!-- 사이드바 조각 -->
 
@@ -83,7 +84,7 @@
                       <div class="post-header post-header-padding">
                         <div class="board-profile">
                           <div class="user-profile inline-block">
-                            <a th:href="${board.memberNickname}">
+                            <a th:href="|member/${board.memberNickname}|">
                               <div class="user-profile-img pointer radius">
                                 <img th:unless="${board.profileImg}" src="https://via.placeholder.com/50">
                                 <img th:if="${board.profileImg}" th:src="${board.profileImg}">
@@ -91,7 +92,7 @@
                             </a>
                           </div>
                         </div>
-                        <a th:href="${board.memberNickname}">
+                        <a th:href="|member/${board.memberNickname}|">
                           <div class="board-n-a pointer inline-block">
                             <span th:text="${board.memberNickname}">작성자닉네임</span>
                           </div>
@@ -101,7 +102,10 @@
                         </a>
                         <!-- 옵션 모달창이 떠야돼 -->
                         <div class="post-options">
-                          <button class="more-options options-button" onclick="openModal()">...</button>
+                          <span class="more-options options-button feed-open-modal">
+                            <input type="hidden" class="boardNo" value="${boardNo}">
+                            ...
+                          </span>
                         </div>
                       </div>
                       <!-- 이미지 슬라이드 영역 -->
@@ -166,9 +170,15 @@
                         <div class="post-caption contentContainer">
                           <span class="feed-imp-Nick" th:text="${board.memberNickname}">닉</span>
                           <!-- 타임리프에서 넘어온 content를 여기에 삽입 -->
-                          <span class="shortContent" th:text="${board.boardContent}">(짧내용)</span>
-                          <span class="fullContent hidden-content" th:text="${board.boardContent}">(긴내용)</span>
-                          <span class="more-btn pointer">더 보기</span>
+                          <th:block th:unless="${board.boardContent.length() > 200}">
+                            <span class="shortContent" th:text="${board.boardContent}">(짧내용)</span>
+                          </th:block>
+
+                          <th:block th:if="${board.boardContent.length() > 200}">
+                            <span class="fullContent hidden-content" th:text="${board.boardContent}">(긴내용)</span>
+                            <br>
+                            <span class="more-btn pointer">더 보기</span>
+                          </th:block>
                         </div>
                         <a th:href="${board.boardNo}">
                           댓글 <span th:text="|[${board.commentCount}]|">0</span>개 보기...
@@ -199,7 +209,7 @@
           </div>
           <div class="recommend-profile-info">
             <div class="recommend-profile-nickname pointer">
-              <a th:href="#{/myPage/${session.loginMember.memberNickname}}">
+              <a th:href="|member/${session.loginMember.memberNickname}|">
                 <span th:text="${session.loginMember.memberNickname}">내 닉네임</span>
               </a>
             </div>
