@@ -215,14 +215,6 @@ body {
   color: #8e8e8e;
 }
 
-/* 댓글 영역 */
-.comment-box {
-  color: #8e8e8e;
-  font-size: 14px;
-  border-top: 1px solid #efefef;
-  margin-top: 8px;
-  padding-top: 16px;
-}
 
 /* 유틸리티 클래스 */
 .inline-block {
@@ -232,6 +224,8 @@ body {
 .pointer {
   cursor: pointer;
 }
+
+
 
 /* 액션 버튼 기본 스타일 */
 .action-button {
@@ -308,10 +302,10 @@ body {
   transform: scale(1.1);
 }
 
-.mark-button.active svg {
+/* .mark-button.active svg {
   fill: #262626;
   animation: save-button-animation 0.45s ease-in-out;
-}
+} */
 
 /* 저장 버튼 애니메이션 */
 @keyframes mark-button-animation {
