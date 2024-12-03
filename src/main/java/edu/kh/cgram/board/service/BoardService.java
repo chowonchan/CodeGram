@@ -39,6 +39,4 @@ public interface BoardService {
 
 	int unlikeComment(int commentNo, int memberNo);
 
-	int reportBoard(int boardNo, int memberNo, String reportReason);
-
 }
