@@ -46,7 +46,17 @@
 //     })
 //     .catch(err => console.error(err));
 // });
+/* const openopen = document.getElementsByClassName(".important-box a");
 
+for(let i = 0; i < openopen.length; i++) {
+  openopen[i].addEventListener("click", e => {
+    const boardNo = e.target.href.split("/").pop();
+    e.preventDefault();
+    e.stopPropagation();
+    openDetail(boardNo);
+  })
+}
+ */
 
 const boardLike = document.querySelector(".boardLike");
 boardLike?.addEventListener("click", e => {
