@@ -349,7 +349,7 @@ buttons.optionBlock?.addEventListener("click", async () => {
 
   // 스토리 보기
   buttons.savedStoryButton?.addEventListener("click", () => {
-    window.location.href = "/myPage/savedStory";
+    window.location.href = "/myPage/myStory";
   });
 
   // 채팅 시작

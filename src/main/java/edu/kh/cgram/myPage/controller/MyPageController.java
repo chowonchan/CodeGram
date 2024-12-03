@@ -165,20 +165,26 @@ public class MyPageController {
         return "myPage/editProfile";
     }
     
-    @GetMapping("/savedStory")
+    @GetMapping("/myStory")
     public String showSavedStoryPage(Model model, @SessionAttribute("loginMember") Member loginMember) {
         // 로그인된 사용자의 MEMBER_NO를 가져옴
         int memberNo = loginMember.getMemberNo();
 
         // 해당 MEMBER_NO에 해당하는 STORY 리스트를 조회
         List<Story> stories = service.getStoriesByMemberNo(memberNo);
-
+        
+        // 콘솔 로그로 조회 결과 출력
+        System.out.println("로그인된 사용자 MEMBER_NO: " + memberNo);
+        System.out.println("보관된 스토리 리스트: ");
+        for (Story story : stories) {
+            System.out.println(story);
+        }
         // 조회한 데이터를 모델에 추가
         model.addAttribute("stories", stories);
         model.addAttribute("loginMember", loginMember);
 
         // "myPage/saveStory.html" 템플릿을 렌더링
-        return "myPage/saveStory";
+        return "myPage/myStory";
     }
 
 

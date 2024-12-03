@@ -15,10 +15,10 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
-	<select id="selectStoriesByMemberNo" resultType="Story">
-	    SELECT * 
-	    FROM STORY
-	    WHERE MEMBER_NO = #{memberNo}
+	<select id="getStoriesByMemberNo" resultType="Story">
+	    SELECT S.* 
+	    FROM STORY S
+	    WHERE S.MEMBER_NO = #{memberNo}
 	</select>
 	
 	
