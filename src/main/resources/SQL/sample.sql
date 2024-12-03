@@ -1,4 +1,11 @@
-/* PL/SQL을 이용해서 맴버 샘플 데이터 삽입 */
+SELECT  * FROM MEMBER ORDER BY MEMBER_NO;
+SELECT  * FROM BOARD ORDER BY BOARD_NO DESC;
+SELECT  * FROM BOARD_IMG ORDER BY BOARD_NO DESC;
+SELECT  * FROM BOARD_IMG ORDER BY IMG_NO DESC;
+SELECT  * FROM HASHTAG ORDER BY TAG_NAME DESC;
+SELECT  * FROM STORY;
+
+/* PL/SQL을 이용해서 맴버 샘플 데이터 삽입 (PW는 pass01!) */
 BEGIN
     FOR I IN 1..10 LOOP
             INSERT INTO "MEMBER"
@@ -13,17 +20,6 @@ BEGIN
                   );
         END LOOP;
 END;
-
-SELECT  * FROM MEMBER ORDER BY MEMBER_NO;
-SELECT  * FROM BOARD ORDER BY BOARD_NO DESC;
-SELECT  * FROM BOARD_IMG ORDER BY BOARD_NO DESC;
-SELECT  * FROM BOARD_IMG ORDER BY IMG_NO DESC;
-SELECT  * FROM HASHTAG ORDER BY TAG_NAME DESC;
-SELECT  * FROM STORY;
-
-UPDATE BOARD_IMG
-SET IMG_PATH = '/images/board/'
-WHERE IMG_NO > 0;
 
 -- 게시글 샘플 데이터
 BEGIN
@@ -63,6 +59,8 @@ END;
 -- 현재 시퀀스 번호 확인용
 -- SELECT SEQ_IMG_NO.CURRVAL FROM DUAL;
 
+
+
 BEGIN
     FOR I IN 1..100 LOOP
             INSERT INTO "STORY"
@@ -71,17 +69,46 @@ BEGIN
                    '/images/story/',
                    CURRENT_DATE,
                    'N',
-                   '22',
+                   0,
                    CEIL(DBMS_RANDOM.VALUE(1,6)),
                    'dev-jeans1.png'
                   );
         END LOOP;
 END;
 
-INSERT INTO STORY (STORY_NO, IMG_PATH, CREATED_AT, STORY_DEL_FL, READ_COUNT, MEMBER_NO, IMG_RENAME)
-VALUES           (#{storyNo}, #{imgPath}, DEFAULT, DEFAULT, DEFAULT, #{memberNo}, #{imgRename} )
+SELECT * FROM "COMMENT";
+SELECT * FROM BOARD ORDER BY BOARD_NO DESC ;
 
-select * from story join MEMBER using (MEMBER_NO);
+-- 댓글 생성
+BEGIN
+    FOR I IN 1..100 LOOP
+            INSERT INTO "COMMENT"
+            VALUES(
+                    SEQ_COMMENT_NO.NEXTVAL,
+                    SEQ_COMMENT_NO.CURRVAL || '번째 댓글입니다',
+                    CURRENT_DATE,
+                    NULL,
+                    DEFAULT,
+                    CEIL(DBMS_RANDOM.VALUE(140,157)),
+                    CEIL(DBMS_RANDOM.VALUE(1,6)),
+                    NULL
+                  );
+        END LOOP;
+END;
+
+SELECT * FROM "COMMENT";
+
+-- 20% 확률로 부모 댓글을 지정
+BEGIN
+    FOR I IN 1..100 LOOP
+        IF DBMS_RANDOM.VALUE(0, 1) <= 0.2 THEN
+            UPDATE "COMMENT"
+            SET PARENT_COMMENT_NO = CEIL(DBMS_RANDOM.VALUE(5, 107))
+            WHERE COMMENT_NO = I+4;
+        END IF;
+    END LOOP;
+END;
+
 
 
 SELECT
