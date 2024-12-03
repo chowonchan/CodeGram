@@ -29,6 +29,9 @@ const reportModal = document.getElementById("reportModal");
 const reportReasonList = document.getElementById("reportReasonList");
 const commentInput = document.getElementById("commentInput");
 const commentSubmit = document.getElementById("commentSubmit");
+const carouselImages = document.getElementById("carouselImages");
+const leftArrow = document.querySelector(".left-arrow");
+const rightArrow = document.querySelector(".right-arrow");
 
 // 신고 사유 목록
 const reportReasons = [
@@ -42,6 +45,8 @@ const reportReasons = [
   "거짓 정보",
 ];
 
+let currentImageIndex = 0; // 현재 이미지 인덱스
+
 // 모달 열기 함수
 const openDetail = (boardNo) => {
   fetch(`/board/detail?boardNo=${boardNo}`)
@@ -50,9 +55,11 @@ const openDetail = (boardNo) => {
       return response.json();
     })
     .then(data => {
+      // 게시글 이미지 설정
+      updateCarousel(data.images);
+
       // 데이터 설정
       document.getElementById("feedModal").dataset.boardNo = data.boardNo;
-      document.getElementById("feedImage").src = data.imagePath + data.imageRename;
       document.getElementById("userNickname").innerHTML = data.memberNickname;
       document.getElementById("userNickname").href = `/member/${data.memberNickname}`;
       document.getElementById("feedUserNickname").textContent = data.memberNickname;
@@ -71,7 +78,7 @@ const openDetail = (boardNo) => {
         li.innerHTML = `
           <span class="user-avatar"><img src="${comment.profileImg}" alt="User Avatar"></span>
           <div class="comment-info">
-            <span class="user-nickname">${comment.memberNickname}</span>
+            <a href="/member/${comment.memberNickname}" class="user-nickname">${comment.memberNickname}</a>
             <span class="comment-text">${comment.commentContent}</span>
             <div class="comment-time-section">
               <span class="comment-time">${comment.createdAt}</span>
@@ -243,8 +250,6 @@ const likeFunction = (boardNo) => {
           likeButton.classList.remove("fa-regular");
           likeButton.classList.add("fa-solid", "liked");
 
-
-
           const content =
           `<strong>${loginMemberName}</strong>
           님이 좋아요를 누르셨습니다<br>`;
@@ -260,12 +265,6 @@ const likeFunction = (boardNo) => {
             boardNo,  // 게시글 번호
             content
           );
-
-
-
-
-
-
           openDetail(boardNo); // 좋아요 상태 갱신
         } else {
           alert('이미 좋아요를 눌렀거나 오류가 발생했습니다.');
@@ -392,6 +391,10 @@ document.querySelector(".detail-options-button.report").addEventListener("click"
 // 신고 모달 닫기 버튼 클릭 이벤트
 document.getElementById("closeReportModal").addEventListener("click", closeReportModal);
 
+commentInput.addEventListener("input", () => {
+  document.getElementById("commentSubmit").style.display = commentInput.value.trim() ? "block" : "none";
+})
+
 // 댓글 등록 함수
 const postComment = (boardNo) => {
   const commentContent = commentInput.value.trim();
@@ -425,6 +428,8 @@ const postComment = (boardNo) => {
 commentSubmit.addEventListener("click", () => {
   const boardNo = feedModal.dataset.boardNo; // 현재 모달에 열린 게시글 번호 가져오기
   postComment(boardNo);
+  commentInput.value = "";
+  document.getElementById("commentSubmit").style.display = "none";
 });
 
 document.addEventListener("click", (e) => {
@@ -465,5 +470,48 @@ document.addEventListener("click", (e) => {
           })
           .catch(err => console.error(err));
       }
+  }
+});
+
+// 캐러셀 이미지 업데이트 함수
+const updateCarousel = (images) => {
+  carouselImages.innerHTML = ""; // 캐러셀 이미지 초기화
+
+  images.forEach((image) => {
+    console.log(image)
+    const imgElement = document.createElement("img");
+    imgElement.src = image.IMG_PATH + image.IMG_RENAME; // 이미지 경로 설정
+    imgElement.alt = "Feed Image";
+    // carouselImages.appendChild(imgElement);
+
+    const imgWrapper = document.createElement("div");
+    imgWrapper.classList.add("img-wrapper");
+    imgWrapper.appendChild(imgElement);
+
+    carouselImages.appendChild(imgWrapper);
+  });
+
+  currentImageIndex = 0; // 초기화
+  updateCarouselPosition(); // 첫 번째 이미지로 설정
+};
+
+// 캐러셀 위치 업데이트 함수
+const updateCarouselPosition = () => {
+  const offset = -currentImageIndex * 100; // 현재 인덱스에 따라 이동
+  carouselImages.style.transform = `translateX(${offset}%)`;
+};
+
+// 좌우 화살표 클릭 이벤트
+leftArrow.addEventListener("click", () => {
+  if (currentImageIndex > 0) {
+    currentImageIndex--;
+    updateCarouselPosition();
+  }
+});
+
+rightArrow.addEventListener("click", () => {
+  if (currentImageIndex < carouselImages.children.length - 1) {
+    currentImageIndex++;
+    updateCarouselPosition();
   }
 });

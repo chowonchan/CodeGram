@@ -51,6 +51,11 @@ public class BoardServiceImpl implements BoardService {
     public Board selectBoardDetail(int boardNo) {
 		return mapper.selectBoardDetail(boardNo);
   }
+	
+	@Override
+	public List<Map<String, Object>> selectBoardImages(int boardNo) {
+		return mapper.selectBoardImages(boardNo);
+	}
 
   @Override
   public List<Comment> selectBoardComments(int boardNo, int memberNo) {

@@ -39,4 +39,6 @@ public interface BoardService {
 
 	int unlikeComment(int commentNo, int memberNo);
 
+	List<Map<String, Object>> selectBoardImages(int boardNo);
+
 }

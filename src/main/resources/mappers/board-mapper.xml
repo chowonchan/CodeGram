@@ -97,15 +97,15 @@
 		WHERE	BOARD_NO = #{boardNo}
 	</select>
     
-  <!-- 특정 게시글의 이미지를 order 순서로 조회 -->
-  <select id="selectImageList" resultType="BoardImg">
-  	SELECT * 
-  	FROM BOARD_IMG
-  	WHERE BOARD_NO = #{boardNo}
-  	ORDER BY IMG_ORDER ASC
-  </select>
+	<!-- 특정 게시글의 이미지를 order 순서로 조회 -->
+	<select id="selectImageList" resultType="BoardImg">
+		SELECT * 
+		FROM BOARD_IMG
+		WHERE BOARD_NO = #{boardNo}
+		ORDER BY IMG_ORDER ASC
+	</select>
   
-  <!-- 게시글 상세 조회 -->
+  	<!-- 게시글 상세 조회 -->
     <select id="selectBoardDetail" resultType="Board">
         SELECT 
             BOARD_NO AS boardNo,
@@ -114,12 +114,18 @@
             READ_COUNT AS readCount,
             CREATED_AT AS createdAt,
             (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_NO = b.MEMBER_NO) AS memberNickname,
-            (SELECT IMG_PATH FROM BOARD_IMG WHERE BOARD_NO = b.BOARD_NO AND IMG_ORDER = 1) AS imagePath,
-            (SELECT IMG_RENAME FROM BOARD_IMG WHERE BOARD_NO = b.BOARD_NO AND IMG_ORDER = 1) AS imageRename,
             (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = b.BOARD_NO) AS likeCount
         FROM BOARD b
         WHERE BOARD_NO = #{boardNo}
     </select>
+
+	<select id="selectBoardImages" resultType="map">
+	    SELECT IMG_PATH, IMG_RENAME
+	    FROM BOARD_IMG
+	    WHERE BOARD_NO = #{boardNo}
+	    ORDER BY IMG_ORDER
+	</select>
+	
 
     <!-- 게시글 댓글 조회 -->
     <select id="selectBoardComments" resultType="Comment">

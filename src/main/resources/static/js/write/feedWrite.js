@@ -204,8 +204,8 @@ document.getElementById("modalContentTopNext").addEventListener("click", () => {
 //========================================================================
     case 4 :
       modalSubmit();
-      submitStory();
-      // submitForm();
+      // submitStory();
+      submitForm();
       break;
 
     default :
