@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.servive.MyPageService;
+import edu.kh.cgram.story.dto.Story;
 import jakarta.servlet.http.HttpSession;
 
 @SessionAttributes("loginMember") // 세션에서 "loginMember" 속성을 관리하도록 설정
@@ -153,6 +155,7 @@ public class MyPageController {
      * @param loginMember 세션에서 가져온 로그인 사용자 정보
      * @return 프로필 편집 페이지 템플릿 이름
      */
+    
     @GetMapping("/editProfile")
     public String showEditProfilePage(Model model, @SessionAttribute("loginMember") Member loginMember) {
         // 로그인된 사용자 정보를 모델에 추가
@@ -162,17 +165,53 @@ public class MyPageController {
         return "myPage/editProfile";
     }
     
-  	@GetMapping("/posts")
-  	@ResponseBody
-  	public List<BoardImg> getMemberPosts(
-  		@SessionAttribute("loginMember") Member loginMember) {
-  		// 로그인된 회원의 번호 가져오기
-  		int memberNo = loginMember.getMemberNo();
-  		
-  		List<BoardImg> memberPosts = service.getMemberPosts(memberNo);
-  		
-  		return memberPosts;
-  	}
+    @GetMapping("/savedStory")
+    public String showSavedStoryPage(Model model, @SessionAttribute("loginMember") Member loginMember) {
+        // 로그인된 사용자의 MEMBER_NO를 가져옴
+        int memberNo = loginMember.getMemberNo();
+
+        // 해당 MEMBER_NO에 해당하는 STORY 리스트를 조회
+        List<Story> stories = service.getStoriesByMemberNo(memberNo);
+
+        // 조회한 데이터를 모델에 추가
+        model.addAttribute("stories", stories);
+        model.addAttribute("loginMember", loginMember);
+
+        // "myPage/saveStory.html" 템플릿을 렌더링
+        return "myPage/saveStory";
+    }
+//    
+//    @GetMapping("/posts")
+//    @ResponseBody
+//    public ResponseEntity<Map<String, Object>> getMemberPosts(
+//            @SessionAttribute("loginMember") Member loginMember,
+//            @RequestParam(value = "page", defaultValue = "1") int page,
+//            @RequestParam(value = "size", defaultValue = "9") int size) {
+//
+//        // 로그인된 회원 번호 가져오기
+//        int memberNo = loginMember.getMemberNo();
+//
+//        // 서비스 계층에서 해당 페이지의 게시물 데이터 가져오기
+//        List<BoardImg> posts = service.getMemberPosts(memberNo, page, size);
+//
+//        // 총 게시물 개수 가져오기
+//        int totalPostCount = service.getTotalPostCount(memberNo);
+//
+//        // 페이지네이션 정보 계산
+//        int totalPages = (int) Math.ceil((double) totalPostCount / size);
+//
+//        // 응답 데이터 구성
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("posts", posts);
+//        response.put("currentPage", page);
+//        response.put("totalPages", totalPages);
+//        response.put("totalPostCount", totalPostCount);
+//
+//        return ResponseEntity.ok(response);
+//    }
+
+
+
   	
   	@GetMapping("/saved")
   	@ResponseBody

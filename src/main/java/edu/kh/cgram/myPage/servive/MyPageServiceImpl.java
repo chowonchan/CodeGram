@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
+import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.member.dto.Member;
 import edu.kh.cgram.myPage.mapper.MyPageMapper;
+import edu.kh.cgram.story.dto.Story;
 
 /**
  * MyPageServiceImpl
@@ -96,10 +98,7 @@ public class MyPageServiceImpl implements MyPageService {
       // 업데이트된 행의 개수가 1 이상이면 성공
       return result > 0;
   }
-  	@Override
-  	public List<BoardImg> getMemberPosts(int memberNo) {
-  		return mapper.selectMemberPosts(memberNo);
-  	}
+ 
   	
   	@Override
   	public Member getMemberByNickname(String nickname) {
@@ -111,6 +110,9 @@ public class MyPageServiceImpl implements MyPageService {
   		return mapper.selectMemberSaved(memberNo);
   	}
   	
-
+    @Override
+    public List<Story> getStoriesByMemberNo(int memberNo) {
+        return mapper.selectStoriesByMemberNo(memberNo);
+    }
 
 }

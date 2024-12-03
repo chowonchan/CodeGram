@@ -202,5 +202,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	
+ 	@Override
+	public List<BoardImg> getMemberPosts(String nickname, int cp) {
+		
+		return mapper.selectMemberPosts(nickname, cp);
+	}
 	
 }
