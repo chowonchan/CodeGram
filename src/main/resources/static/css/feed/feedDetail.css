@@ -602,3 +602,7 @@ textarea:focus {
 .detail-report-reason-list li:hover {
   background-color: #efefef;
 }
+
+.picmo__popupContainer {
+  z-index: 1005;
+}

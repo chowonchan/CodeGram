@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>보관된 스토리</title>
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/mypage/myStory.css">
+</head>
+<body>
+  <main>
+    <th:block class="header-container" th:replace="~{fragments/header :: header}"></th:block>
+          
+          <!-- 스토리 목록 -->
+          <div id="myStoryListContent" class="list-content">
+            <ul id="myStoryList" class="myStory-list"></ul>
+          </div>
+
+  </main>
+  <div class="footer-container">
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+  </div>
+  <script src="/js/myPage/myStory.js"></script>
+</body>
+</html>

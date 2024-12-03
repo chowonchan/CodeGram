@@ -32,7 +32,8 @@
 			
 			<choose>
 				<when test="notificationType == 'insertComment'
-							or notificationType == 'boardLike'">
+							or notificationType == 'boardLike'
+							or notificationType == 'commentLike'">
 							
 					(SELECT MEMBER_NO
 					 FROM "BOARD"
@@ -122,16 +123,14 @@
 	
 	
 	<select id="notReadCheck" resultType="boolean">
-	    SELECT CASE 
-	        WHEN EXISTS (
-	            SELECT 1
-	            FROM "NOTIFICATION"
-	            WHERE RECEIVE_MEMBER_NO = #{memberNo}
-	            AND NOTIFICATION_CHECK = 'N'
-	        ) THEN 'true'
-	        ELSE 'false'
-	    END AS hasUnread
-	    FROM DUAL
+		SELECT CASE 
+		    WHEN EXISTS (
+		        SELECT 1
+		        FROM "NOTIFICATION"
+		        WHERE NOTIFICATION_CHECK = 'N'
+		    ) THEN 'true'
+		    ELSE 'false'
+		END AS hasUnread
 	</select>
 	
 	

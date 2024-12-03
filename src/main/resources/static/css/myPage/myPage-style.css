@@ -57,7 +57,6 @@ main {
   display: flex;
   align-items: center;
   gap: 20px;
-  border-bottom: 1px solid #ddd;
   padding-bottom: 20px;
   /*position: relative;*/
 }
@@ -418,8 +417,8 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100%; /* 가로 폭을 부모 컨테이너에 맞춤 */
-  /* max-width: 600px; 최대 가로 폭을 제한 */
+  width: 80%; /* 가로 폭을 부모 컨테이너에 맞춤 */
+  max-width: 600px; /* 최대 가로 폭을 제한 */
 }
 
 /* .user-list {
@@ -515,6 +514,23 @@ main {
 }
 
 #followListModal .close-button:hover {
+  background-color: #c9302c;
+}
+/* 닫기 버튼 */
+#blockListModal .close-button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: center;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#blockListModal .close-button:hover {
   background-color: #c9302c;
 }
 

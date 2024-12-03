@@ -19,7 +19,8 @@
 </head>
 
 
-<div class="header-container" th:replace="~{fragments/header :: header}"></div>
+<div class="header-container" th:replace="~{fragments/header}"></div>
+<div th:replace= "~{feed/feedDetail}"></div>
 
 <body>
   <!-- 사이드바 조각 -->
@@ -223,10 +224,10 @@
         <div class="recommend-list">
           <!-- 걍 동기로 할래.. -->
           <article th:each="recommend : ${recommendList.subList(0, 5)}" class="recommend-user">
-            <div class="recommend-user-img">
+            <span class="recommend-user-img">
               <img th:unless="${recommend.profileImg}" src="https://via.placeholder.com/32">
               <img th:if="${recommend.profileImg}" th:src="${recommend.profileImg}">
-            </div>
+            </span>
             <div class="recommend-user-info">
               <div class="recommend-user-nickname pointer">
                 <span th:text="${recommend.memberNickname}" class="recommend-memberNickname">해당 회원 닉네임</span>

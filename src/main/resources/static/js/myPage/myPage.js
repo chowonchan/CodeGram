@@ -349,7 +349,7 @@ buttons.optionBlock?.addEventListener("click", async () => {
 
   // 스토리 보기
   buttons.savedStoryButton?.addEventListener("click", () => {
-    window.location.href = "/myPage/savedStory";
+    window.location.href = "/myPage/myStory";
   });
 
   // 채팅 시작
@@ -866,6 +866,29 @@ document.addEventListener('DOMContentLoaded',  function () {
       console.error('Feed를 가져올 수 없습니다 :', error);
       return { hasMore: false };
     }
+  }
+
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 쿼리 스트링 얻어오기
+  const params = new URLSearchParams(location.search);
+  
+  // 알림으로 들어온게 아니면
+  if(!params.get("bNo")) return; 
+
+  const bNo = params.get("bNo"); // 게시글 번호
+  const cNo = params.get("cNo"); // 댓글 번호
+
+  openDetail(bNo);
+
+  // cNo가 있을 경우 == (댓글 알림인 경우)
+  // -> 해당 댓글 위치로 스크롤
+  if(cNo) {
+    
   }
 
 });

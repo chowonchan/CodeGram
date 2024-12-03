@@ -685,9 +685,11 @@ const notReadCheck = () => {
   fetch("/notification/notReadCheck")
     .then(response => {
       if (!response.ok) throw new Error("알림 확인 실패");
-      return response.json(); // 서버에서 boolean 값 반환
+      return response.json(); // 서버에서 JSON 값 반환
     })
-    .then(hasUnread => {
+    .then(data => {
+      // 서버에서 반환되는 값이 "true" 또는 "false" 문자열임을 가정
+      const hasUnread = (data.hasUnread === "true"); // 서버에서 'true'/'false' 문자열 반환 확인
 
       const notificationCountArea = document.querySelector(".notification-count-area");
 
@@ -696,17 +698,19 @@ const notReadCheck = () => {
         return;
       }
 
-      // 읽지 않은 알림이 있을 때
-      if (hasUnread === true) {
-        notificationCountArea.style.display = "block"; // 빨간 점 표시
+      console.log(hasUnread); // true 또는 false 출력
 
+      // 읽지 않은 알림이 있을 때
+      if (hasUnread) {
+        notificationCountArea.style.display = "flex"; // 빨간 점 표시
       } else {
         // 읽지 않은 알림이 없을 때
         notificationCountArea.style.display = "none"; // 빨간 점 숨김
-
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error("알림 확인 중 오류 발생:", err);
+    });
 };
 
 

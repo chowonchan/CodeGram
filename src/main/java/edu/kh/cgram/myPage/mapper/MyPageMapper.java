@@ -50,7 +50,7 @@ public interface MyPageMapper {
 
 		List<BoardImg> selectMemberSaved(int memberNo);
 
-		List<Story> selectStoriesByMemberNo(int memberNo);
+		List<Story> getStoriesByMemberNo(int memberNo);
 
 
     

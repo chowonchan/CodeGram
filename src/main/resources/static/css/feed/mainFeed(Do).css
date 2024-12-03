@@ -108,7 +108,7 @@ body {
   border-bottom: 1px solid #DBDBDB;
   max-width: 470px;
   width: 100%;
-  height: 100%;
+  height: 700px;
   padding-bottom: 16px;
   margin-bottom: 20px;
 }
@@ -139,6 +139,11 @@ body {
   padding: 14px 4px 12px;
   width: 100%;
 } */
+
+.post-header a {
+  text-decoration: none;
+  color: inherit;
+}
 
 .post-header-padding {
   border-bottom: 1px solid #efefef;
@@ -189,9 +194,13 @@ body {
 
 /* 중요 박스 (좋아요, 댓글 등) */
 .important-box {
-  height: 100%;
+  height: 170px;
   width: 470px;
   font-size: 14px;
+}
+.important-box a {
+  text-decoration: none;
+  color: gray;
 }
 
 .section-1 {
@@ -424,7 +433,11 @@ body {
   background-color: #0095f6;
 }
 
-
 .main-following {
   color: gray;
+}
+
+.recommend-profile-nickname a {
+  text-decoration: none;
+  color: inherit;
 }
