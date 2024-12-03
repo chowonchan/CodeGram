@@ -766,18 +766,18 @@ async function loadFollowerList() {
 
 let currentPage = 1; // 현재 페이지, fetch 수행 시 마다 증가
 
-// document.addEventListener('DOMContentLoaded',  function () {
-//   // IntersectionObserver : 보고있는 화면에 요소가 나타나는지 감지
-//   let intersectionObserver = new IntersectionObserver(async function (entries) {
-//     // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
-//     // 아무것도 하지 않음
-//     if (entries[0].intersectionRatio <= 0) return;
+document.addEventListener('DOMContentLoaded',  function () {
+  // IntersectionObserver : 보고있는 화면에 요소가 나타나는지 감지
+  let intersectionObserver = new IntersectionObserver(async function (entries) {
+    // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
+    // 아무것도 하지 않음
+    if (entries[0].intersectionRatio <= 0) return;
 
-//     // console.log("새 항목 불러옴");
-//     await fetchMoreFeedItems();
-//   });
-//   // 주시 시작
-//   intersectionObserver.observe(document.querySelector("#SCmainFooter"));
+    // console.log("새 항목 불러옴");
+    await fetchMoreFeedItems();
+  });
+  // 주시 시작
+  intersectionObserver.observe(document.querySelector("#SCmainFooter"));
 // =======
 // // 게시물 렌더링
 // function renderPosts(posts, type) {
