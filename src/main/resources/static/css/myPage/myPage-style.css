@@ -150,79 +150,149 @@ main {
   border: 1px solid #ddd;
 }*/
 
-/* 탭 메뉴 */
+/* 탭 컨테이너 스타일 */
 .tabs {
   display: flex;
-  gap: 20px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-  align-self: center;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center;
+  border-bottom: 2px solid #ddd; /* 아래쪽 경계선 */
+  /* padding: 10px 0; */
+  /* margin-bottom: 20px; */
 }
 
+/* 개별 탭 스타일 */
 .tab {
+  /* padding: 10px 20px; */
+  margin: 0 10px;
   font-size: 16px;
   font-weight: bold;
-  color: #666;
+  text-align: center;
   cursor: pointer;
-  transition: color 0.3s, border-bottom 0.3s;
+  color: #333; /* 기본 텍스트 색상 */
+  background-color: transparent; /* 기본 배경색 */
+  border: none;
+  border-bottom: 2px solid transparent; /* 기본 경계선 */
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.tab:hover {
-  color: #007bff;
-}
+/* 활성화된 탭 스타일 */
 .tab.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
-} 
+  color: #007bff; /* 파란색 텍스트 */
+  border-bottom: 2px solid #007bff; /* 파란색 경계선 */
+}
 
-/* 게시물 그리드 */
-.post-grid {
+/* 탭 호버 효과 */
+.tab:hover {
+  color: #0056b3; /* 어두운 파란색 텍스트 */
+}
+
+/* 반응형 조정 (필요 시) */
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+  }
+  .tab {
+    margin: 5px 0;
+  }
+}
+
+
+/* 탭 버튼 스타일 */
+.tab-button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.tab-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+/* 게시물 그리드 컨테이너 */
+#postsContent {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  overflow-y: auto;
-  max-height: 1000px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  padding: 10px;
 }
 
 .post-item {
   position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.post-item:hover {
+  transform: scale(1.05);
 }
 
 .post-image {
   width: 100%;
-  height: auto;
-  border-radius: 5px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* "게시물이 없습니다" 메시지 */
+.no-posts-container {
+  text-align: center;
+  padding: 30px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 10px;
 }
 
 .no-posts-message {
-  font-size: 16px;
-  color: #777;
-  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* 페이지네이션 버튼 */
+#pagination {
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
 }
-/* .post-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
 
-.post {
-  width: 100%;
-  padding-top: 100%;
-  position: relative;
-  background-color: #e0e0e0;
+.page-button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
   border-radius: 5px;
-  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.post-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-} */
+.page-button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.page-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
 
 
 .footer{

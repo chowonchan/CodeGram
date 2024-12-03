@@ -85,12 +85,13 @@
 
       <!-- 탭 메뉴: 게시물/저장됨 -->
       <div class="tabs">
-        <div class="tab active" id="myUploads">게시물</div>
+        <div class="tab" id="myUploads">게시물</div>
         <div class="tab" id="saved" th:if= "${session.loginMember != null and session.loginMember.memberNickname.equals(nickname)}">저장됨</div>
       </div>
 
       <!-- 게시물 그리드: 사용자가 업로드한 게시물 미리보기 -->
-      <div id="postsContent" class="post-grid" style="height: 400px; overflow-y: auto;"></div>
+      <div id="postsContent" class="post-grid" style="height: 300px; overflow-y: auto;"></div>
+      <div id="pagination" class="pagination"></div>
 
     </section>
     

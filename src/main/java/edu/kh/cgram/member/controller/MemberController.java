@@ -59,7 +59,8 @@ public class MemberController {
 	    	 return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/admin/admin-memberList"));
 	    } else {
 	    	session.setAttribute("loginMember", loginMember);
-	    	return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
+	    	return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/main"));
+//	    	return ResponseEntity.ok(Map.of("success", true, "message", "로그인 성공!", "url", "/board/randomPeed"));
 	    }
 	}
 

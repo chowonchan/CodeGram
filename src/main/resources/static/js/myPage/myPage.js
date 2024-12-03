@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", async() => {
 
   const defaultImageUrl = "/images/defaultImg.png";
-
   
   // 모달 및 요소 관련 추가
   const followModals = {
@@ -627,64 +626,106 @@ async function loadFollowerList() {
   });
 
 
-
-
-
-
-
-
-
-
-// 탭 초기화
-function initTabs(tabs) {
-  tabs.myUploadsTab?.classList.add("active");
-  activateTab(tabs.myUploadsTab, "uploads");
-  tabs.myUploadsTab?.addEventListener("click", () => activateTab(tabs.myUploadsTab, "uploads"));
-  tabs.savedTab?.addEventListener("click", () => activateTab(tabs.savedTab, "saved"));
-}
-
-// 탭 활성화
-function activateTab(activeTab, type) {
-  document.querySelectorAll(".tab-button").forEach(tab => tab.classList.remove("active"));
-  activeTab.classList.add("active");
-  fetch(type === "uploads" ? "/myPage/posts" : "/myPage/saved")
-    .then(response => response.json())
-    .then(data => renderPosts(data, type))
-    .catch(error => console.error(`Error fetching ${type} posts:`, error));
-}
-
-// 게시물 렌더링
-function renderPosts(posts, type) {
-  const postsContent = document.getElementById("postsContent");
-  postsContent.innerHTML = "";
-  if (posts.length === 0) {
-    const noPostsContainer = document.createElement("div");
-    noPostsContainer.className = "no-posts-container"; // 컨테이너 클래스 추가
+  document.addEventListener("DOMContentLoaded", () => {
+    const myUploadsTab = document.getElementById("myUploadsTab");
+    const savedTab = document.getElementById("savedTab");
   
-    const noPostsMessage = document.createElement("p");
-    noPostsMessage.className = "no-posts-message"; // 메시지 클래스 추가
-    noPostsMessage.textContent = type === "uploads"
-      ? "회원님이 작성한 게시물이 존재하지 않습니다."
-      : "회원님이 저장한 게시물이 존재하지 않습니다.";
+    // 초기 활성화 상태 설정
+    myUploadsTab.classList.add("active");
   
-    noPostsContainer.appendChild(noPostsMessage);
-    postsContent.appendChild(noPostsContainer); // 컨테이너를 추가
-    return;
-  }
-    // 게시물이 있는 경우 클래스 제거
-    postsContent.classList.remove("no-posts");
-    
-  posts.forEach(post => {
-    const postItem = document.createElement("div");
-    postItem.className = "post-item"; // 클래스 추가
-    postItem.innerHTML = `
-      <a href="/board/${post.boardNo}">
-        <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
-      </a>`;
-    postsContent.appendChild(postItem);
+    // 클릭 이벤트 리스너 추가
+    myUploadsTab.addEventListener("click", () => activateTab(myUploadsTab, "uploads"));
+    savedTab?.addEventListener("click", () => activateTab(savedTab, "saved"));
   });
+  
+  function activateTab(activeTab, type) {
+    // 모든 탭에서 'active' 클래스 제거
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+  
+    // 클릭된 탭에 'active' 클래스 추가
+    activeTab.classList.add("active");
+  
+    // 서버에서 데이터 로드 (AJAX)
+    fetch(type === "uploads" ? "/myPage/posts" : "/myPage/saved")
+      .then(response => response.json())
+      .then(data => {
+        setupPagination(data, type); // 페이지네이션 설정
+      })
+      .catch(error => console.error(`Error fetching ${type} posts:`, error));
+  }
+
+  // 탭 초기화 cp적용, 페이지네이션 설정은 백엔드에서 9개씩 불러오도록
+  function initTabs(tabs) {
+    tabs.myUploadsTab?.classList.add("active");
+    activateTab(tabs.myUploadsTab, "uploads");
+    tabs.myUploadsTab?.addEventListener("click", () => activateTab(tabs.myUploadsTab, "uploads"));
+    tabs.savedTab?.addEventListener("click", () => activateTab(tabs.savedTab, "saved"));
+  }
+
+  // 페이지네이션 설정
+  function setupPagination(posts, type) {
+    const itemsPerPage = 9; // 가로 3개, 세로 3개씩 표시
+    const totalPages = Math.ceil(posts.length / itemsPerPage);
+    let currentPage = 1;
+
+    // 페이지네이션 컨테이너 초기화
+    const paginationContainer = document.getElementById("pagination");
+    paginationContainer.innerHTML = "";
+
+    // 페이지네이션 버튼 생성
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.className = "page-button";
+      pageButton.textContent = i;
+      if (i === currentPage) pageButton.classList.add("active");
+
+      pageButton.addEventListener("click", () => {
+        currentPage = i;
+        document.querySelectorAll(".page-button").forEach(btn => btn.classList.remove("active"));
+        pageButton.classList.add("active");
+        renderPosts(posts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage), type);
+      });
+
+      paginationContainer.appendChild(pageButton);
+    }
+
+    // 초기 렌더링
+    renderPosts(posts.slice(0, itemsPerPage), type);
+  }
 
 
-}
+  // 게시물 렌더링
+  function renderPosts(posts, type) {
+    const postsContent = document.getElementById("postsContent");
+    postsContent.innerHTML = "";
+    if (posts.length === 0) {
+      const noPostsContainer = document.createElement("div");
+      noPostsContainer.className = "no-posts-container"; // 컨테이너 클래스 추가
+    
+      const noPostsMessage = document.createElement("p");
+      noPostsMessage.className = "no-posts-message"; // 메시지 클래스 추가
+      noPostsMessage.textContent = type === "uploads"
+        ? "회원님이 작성한 게시물이 존재하지 않습니다."
+        : "회원님이 저장한 게시물이 존재하지 않습니다.";
+    
+      noPostsContainer.appendChild(noPostsMessage);
+      postsContent.appendChild(noPostsContainer); // 컨테이너를 추가
+      return;
+    }
+      // 게시물이 있는 경우 클래스 제거
+      postsContent.classList.remove("no-posts");
+      
+    posts.forEach(post => {
+      const postItem = document.createElement("div");
+      postItem.className = "post-item"; // 클래스 추가
+      postItem.innerHTML = `
+        <a href="/board/${post.boardNo}">
+          <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
+        </a>`;
+      postsContent.appendChild(postItem);
+    });
+
+
+  }
 
 });
