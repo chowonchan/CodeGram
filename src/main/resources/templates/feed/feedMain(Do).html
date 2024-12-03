@@ -102,8 +102,8 @@
                         </a>
                         <!-- 옵션 모달창이 떠야돼 -->
                         <div class="post-options">
-                          <span class="more-options options-button feed-open-modal">
-                            <input type="hidden" class="boardNo" value="${boardNo}">
+                          <span class="more-options options-button feed-open-modal pointer">
+                            <input type="hidden" class="boardNo" value="${board.boardNo}">
                             ...
                           </span>
                         </div>
@@ -141,14 +141,16 @@
                           <div class="box-1">
                             <button class="action-button like-button pointer" data-board-no="${board.boardNo}">
                               <svg class="like-icon boardLike"
-                                th:class="${board.likeCheck == 1 ? 'fa-solid' : 'fa-regular'}" height="24" width="24"
+                                th:class="${board.likeCheck == 1 ? 'red' : 'none'}" 
+                                height="24" width="24"
                                 viewBox="0 0 24 24">
-                                <path
-                                  d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z" />
+                                <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z"
+                                 />
                               </svg>
                             </button>
                             <button class="action-button comment-button pointer">
-                              <svg class="comment-icon" height="24" width="24" viewBox="0 0 24 24">
+                              <svg class="comment-icon" 
+                                    height="24" width="24" viewBox="0 0 24 24">
                                 <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none"
                                   stroke="currentColor" stroke-linejoin="round" stroke-width="2" />
                               </svg>
@@ -157,10 +159,11 @@
                           <div class="box-2">
                             <button class="action-button mark-button pointer boardMark"
                               th:data-member-no="${board.boardNo}">
-                              <svg class="mark-icon" th:class="${board.markCheck == 1 ? 'fa-solid' : 'fa-regular'}"
-                                height="24" width="24" viewBox="0 0 24 24">
-                                <path
-                                  d="M20 22a.999.999 0 0 1-.687-.273L12 14.815l-7.313 6.912A1 1 0 0 1 3 21V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1Z" />
+                              <svg class="mark-icon" th:class="${board.markCheck == 1 ? 'black' : 'none'}" 
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" 
+                                    viewBox="0 0 24 24"  stroke="black" stroke-width="2" height="24" width="24">
+                                <path d="M20 22a.999.999 0 0 1-.687-.273L12 14.815l-7.313 6.912A1 1 0 0 1 3 21V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1Z"
+                                 />
                               </svg>
                             </button>
                           </div>
@@ -249,125 +252,6 @@
 
 
     <!-- ----------------------------- 모달창 ----------------------------------- -->
-
-    <!-- ... 모달창(게시물옵션) -->
-    <div id="feed-modal" class="feed-modal hidden">
-      <div class="feed-modal-content">
-        <ul class="feed-modal-options">
-          <li class="feed-modal-option" id="report-modal"><span>신고</span></li>
-          <li class="feed-modal-option"><span>팔로우 취소</span></li>
-          <li class="feed-modal-option"><a th:href="|/member/${board.memberNickname}|"><span>회원 페이지로 이동</span></a></li>
-          <li class="feed-modal-option" id="member-im-modal"> <span>이 계정 정보</span> </li>
-          <li class="feed-modal-option feed-cancel"><span>취소</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- 팔로우 안 된 Feed에 모달창 들어가면 팔로우 취소 안 뜨게 해야됨 -->
-
-    <!-- 신고 모달창 -->
-    <div class="report-modal-overlay hidden" id="report-modal">
-      <div class="report-modal-container">
-        <form action="/report/insert" method="POST" id="firmTag">
-
-          <!-- 모달 헤더 -->
-          <div class="report-modal-header">
-            <h2>신고하기</h2>
-            <button class="report-close-btn">&times;</button>
-          </div>
-          <!-- 신고 이유 섹션 -->
-          <div class="report-modal-content">
-            <h3>이 게시물을 신고하는 이유</h3>
-            <div class="report-reasons" id="reportReason">
-              <div class="report-reason" value="0">
-                <button>
-                  <span>마음에 들지 않습니다</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="1">
-                <button>
-                  <span>자살, 자해 및 섭식 장애</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="2">
-                <button>
-                  <span>따돌림 또는 원치 않는 연락</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="3">
-                <button>
-                  <span>폭력, 혐오 또는 학대</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="4">
-                <button>
-                  <span>제한된 품목을 판매하거나 홍보함</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="5">
-                <button>
-                  <span>나체 이미지 또는 성적 행위</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="6">
-                <button>
-                  <span>스캠, 사기 또는 스팸</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-              <div class="report-reason" value="7">
-                <button>
-                  <span>거짓 정보</span>
-                  <span class="report-chevron">›</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-        <!-- 신고 완료 섹션 (초기에는 숨김) -->
-        <div class="report-complete hidden">
-          <h3>신고가 접수되었습니다</h3>
-          <p>Instagram 커뮤니티 가이드라인을 위반하는 것으로 의심되는 콘텐츠를 검토하겠습니다.</p>
-          <button class="report-close-complete-btn">닫기</button>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-    <!-- 이 계정 정보 모달창 -->
-
-    <div class="member-im-modal-overlay hidden" id="member-im-modal">
-      <div class="member-im-modal">
-        <div class="member-im-modal-header">
-          <h2>이 계정 정보</h2>
-          <button class="member-im-close-btn">&times;</button>
-        </div>
-        <div class="member-im-modal-content">
-          <div class="member-im-account-info-section">
-            <div class="member-im-account-details">
-              <p><strong>사용자명:</strong> <span th:text="${board.memberNickname}">닉</span></p>
-            </div>
-          </div>
-          <div>
-            <h4>가입한 날짜</h4> <br>
-            <!-- 가입한 날짜 타임리프로 받아와야됨 -->
-            <p th:text="${member.createdAt}">0000년 00월</p>
-          </div>
-          <div>
-            <p>닫기</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- 모달창 end -->
 
