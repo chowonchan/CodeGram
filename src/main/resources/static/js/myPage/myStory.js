@@ -52,6 +52,8 @@
 // DOM 요소 가져오기
 const storyList = document.getElementById("myStoryList");
 const loadMoreButton = document.getElementById("loadMore");
+const backButton = document.getElementById("myStoryBackButton");
+const backButtonText = document.getElementById("myStoryBackButtonText");
 
 // 현재 페이지 및 페이지 크기
 let currentPage = 1;
@@ -68,6 +70,19 @@ function loadStories(page) {
         })
         .then(data => {
             const { stories, totalCount } = data;
+
+              // 스토리가 없는 경우 처리
+              if (stories.length === 0) {
+                // 이미 "스토리가 없습니다" 메시지가 표시된 경우 추가하지 않음
+                if (!document.querySelector(".no-story-message")) {
+                    const noStoryMessage = document.createElement("p");
+                    noStoryMessage.classList.add("no-story-message");
+                    noStoryMessage.textContent = "보관된 스토리가 없습니다.";
+                    storyList.appendChild(noStoryMessage);
+                }
+                loadMoreButton.style.display = "none"; // "더보기" 버튼 숨기기
+                return;
+            }
 
             // 스토리 목록 추가
             stories.forEach(story => {
@@ -99,6 +114,14 @@ loadStories(currentPage);
 
 // "더보기" 버튼 클릭 이벤트
 loadMoreButton.addEventListener("click", () => {
-    currentPage++;
-    loadStories(currentPage);
+  currentPage++;
+  loadStories(currentPage);
+});
+
+backButton.addEventListener("click", () => {
+  window.history.back();
+});
+
+backButtonText.addEventListener("click", () => {
+  window.location.reload();
 });
