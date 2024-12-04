@@ -2,7 +2,9 @@ package edu.kh.cgram.story.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.common.util.FileUtil;
@@ -27,22 +29,6 @@ public class StoryServiceImpl implements StoryService {
 
 	private final StoryMapper storyMapper;
 
-	@Override
-	public List<Story> getFollowingStories(String memberNickname) {
-		return storyMapper.getFollowingStories(memberNickname);
-	}
-
-	@Override
-	public Story getStoryDetail(Long storyNo) {
-		return storyMapper.getStoryDetail(storyNo);
-	}
-
-	@Override
-	public void updateStoryCheck(Long storyNo, String memberNickname) {
-		storyMapper.updateStoryCheck(storyNo, memberNickname);
-	}
-	
-	
 	
 	@Override
 	public Story storyDetail(String memberNickname, int storyNo) {
@@ -76,14 +62,38 @@ public class StoryServiceImpl implements StoryService {
 		return result;
 	}
 	
-	/*
-	 * @Override public void insertStoryLike(Long storyNo, String memberNickname) {
-	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
-	 * storyMapper.insertStoryLike(storyNo, memberNo); }
-	 * 
-	 * @Override public void deleteStoryLike(Long storyNo, String memberNickname) {
-	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
-	 * storyMapper.deleteStoryLike(storyNo, memberNo); }
-	 */
+	
+	// 작성 코드
+	
+	@Override
+	public Map<String, Object> updateStoryCheck1(int storyNo, int memberNo) {
+		
+		// 팔로우한 회원의 24시간 내 스토리 존재 여부 확인
+		int count = storyMapper.selectStoryHas(memberNo);
+		
+		// 로그인한 회원이 팔로우한 회원들의 24시간 이내 스토리 목록 조회
+		if(count > 0) {
+			int result3 = storyMapper.selectStoryList(memberNo);
+		}
+		
+		// 스토리를 이미 읽었는지 확인
+		int result = storyMapper.checkStory(storyNo, memberNo);
+		
+		// 읽지 않은 스토리를 읽을 경우 스토리 리드에 값 저장
+		int result2 = 0;
+		if(result == 0) {
+			result2 = storyMapper.insertStoryRead(storyNo, memberNo);
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("count", count); // 팔로우한 회원의 24시간 내 스토리 존재 여부 확인
+		
+		if(result == 0) map.put("check", "insert");
+		
+		
+		return map;
+	}
+	
 
 }

@@ -79,7 +79,7 @@ boardArticles.forEach(boardArticle => {
 /* MARK 클릭 시 */
 const boardMark = document.querySelector(".boardMark");
 boardMark?.addEventListener("click", e => {
-
+  const boardNo = this.dataset.boardNo;
   if (loginCheck === false) {
     alert("로그인 후 이용해 주세요");
     return;
@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const shortContentEl = document.getElementById('shortContent');
   const fullContentEl = document.getElementById('fullContent');
   const moreBtnEl = document.getElementById('moreBtn');
+  const boardNo = this.dataset.boardNo;
 
   // 타임리프에서 받아온 content (예시)
   const boardContent = /*[[${content}]]*/ null;
@@ -183,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 새 피드 항목 렌더링 기능
   function renderFeedItems(feedList) {
     const wrapper = document.querySelector('.infinite-scroll-wrapper');
+    const boardNo = this.dataset.boardNo;
 
     feedList.forEach(board => {
       // 각 보드 항목에 대한 새 기사 요소 만들기
