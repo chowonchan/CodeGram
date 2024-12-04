@@ -278,6 +278,7 @@ async function initFollowButton(button) {
               <br>
               팔로우하기 시작했습니다.`
             );
+            
 
           } else {
             buttons.profileFollowButton.textContent = "팔로우";
