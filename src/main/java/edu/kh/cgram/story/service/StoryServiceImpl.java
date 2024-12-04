@@ -71,8 +71,11 @@ public class StoryServiceImpl implements StoryService {
 	// 작성 코드
 	
 	@Override
-	public Map<String, Object> updateStoryCheck1(int storyNo, int memberNo) {
+	public Map<String, Object> updateStoryCheck1(String memberNickname, int memberNo) {
 		
+		// memberNickname으로 24시간 내 스토리 갯수 조회하기
+		int storyNo2 = storyMapper.selectStoryNo(memberNickname, memberNo);
+
 		// 팔로우한 회원의 24시간 내 스토리 존재 여부 확인
 		int count = storyMapper.selectStoryHas(memberNo);
 		
@@ -82,17 +85,25 @@ public class StoryServiceImpl implements StoryService {
 		}
 		
 		// 스토리를 이미 읽었는지 확인
-		int result = storyMapper.checkStory(storyNo, memberNo);
+		int result = storyMapper.checkStory(memberNickname, memberNo);
+		
+		if(result > 0) {
+			// 안 읽은 스토리 존재
+		} else {
+			// 스토리 다 읽음
+		}
+		
 		
 		// 읽지 않은 스토리를 읽을 경우 스토리 리드에 값 저장
 		int result2 = 0;
 		if(result == 0) {
-			result2 = storyMapper.insertStoryRead(storyNo, memberNo);
+			result2 = storyMapper.insertStoryRead(memberNickname, memberNo);
 		}
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("count", count); // 팔로우한 회원의 24시간 내 스토리 존재 여부 확인
+		map.put("result", result); // 스토리를 이미 읽었는지 확인( 0 초과일때 읽지 않은 스토리 존재)
 		
 		if(result == 0) map.put("check", "insert");
 		

@@ -1,6 +1,5 @@
 package edu.kh.cgram.story.service;
 
-import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.story.dto.Story;
@@ -18,7 +17,7 @@ public interface StoryService {
 	int storyInsert(Story story, MultipartFile image);
 
 	// 메인피드에서 스토리 처리
-	Map<String, Object> updateStoryCheck1(int storyNo, int memberNo);
+	Map<String, Object> updateStoryCheck1(String memberNickname, int memberNo);
 	
 	int storyDelete(int storyNo, int memberNo);
 	
