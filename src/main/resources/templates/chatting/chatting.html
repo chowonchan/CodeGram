@@ -7,14 +7,15 @@
   <title>Document</title>
 
   <link rel="stylesheet" href="/css/chatting/chatting.css">
-  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/chattingHeader.css">
+  <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 </head>
 
 <body>
 
   <!-- 헤더 조각 포함 -->
   <!-- <th:block class="header-container" th:replace="fragments/chattingheader :: header"></th:block> -->
-  <th:block class="header-container" th:replace="~{fragments/header}"></th:block>
+  <th:block class="header-container" th:replace="~{fragments/chattingHeader}"></th:block>
 
 
   <div class="chatting-area">
@@ -98,19 +99,6 @@
       </ul>
 
 
-
-      
-      
-      <!-- 이모지 선택창 -->
-      <!-- <div id="emojiPicker" class="emoji-picker" style="display: none;">
-        <button class="emoji" data-emoji="😊">😊</button>
-        <button class="emoji" data-emoji="😂">😂</button>
-        <button class="emoji" data-emoji="❤️">❤️</button>
-        <button class="emoji" data-emoji="👍">👍</button>
-        <button class="emoji" data-emoji="😎">😎</button>
-      </div> -->
-      <!-- 더 많은 이모지 추가 가능 -->
-
       <div class="chat-input">
         <label class="upload-label" for="imageUpload">📷</label>
         <input type="file" id="imageUpload" class="image-upload" accept="image/*">
@@ -118,12 +106,11 @@
         
         <input type="text" class="message-input" id="inputChatting" placeholder="메시지 보내기...">
         <!-- 이모지 버튼 추가 -->
-         <div type="button" class="emoji-button fa-regular fa-face-smile" id="emojiButton">😎</div>
+         <div type="button" class="emoji-button fa-regular fa-face-smile" id="emojiButton"></div>
       </div>
 
     </div>
   </div>
-
 
 
 

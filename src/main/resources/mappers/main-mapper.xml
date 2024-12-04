@@ -117,7 +117,7 @@
 		WHERE 
 			MEMBER_NO = #{memberNo}
 		AND   
-			MEMBER_NO = #{boardNo}
+			BOARD_NO = #{boardNo}
 	</delete>
 
 	 <!-- Keep 개수 -->
