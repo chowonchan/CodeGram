@@ -39,7 +39,7 @@ public class StoryController {
 		  Model model) {
 		
 		Story story = storyService.storyDetail(memberNickname, storyNo);
-	  	log.debug("스토리 값 : {}", story);
+//	  	log.debug("스토리 값 : {}", story);
 		
 		story.setImgPath(story.getImgPath() + story.getImgRename());
 	  
@@ -60,6 +60,15 @@ public class StoryController {
 	  int result = storyService.storyInsert(story, image);
 	  
 	  return result;
+  }
+  
+  @PutMapping("/story")
+  @ResponseBody
+  public int storyDelete(
+		@RequestBody int storyNo,
+		@SessionAttribute("loginMember") Member loginMember
+  ) {
+		return storyService.storyDelete(storyNo, loginMember.getMemberNo());
   }
   
   

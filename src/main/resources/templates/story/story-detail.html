@@ -118,12 +118,17 @@
       height: 32px;
     }
 
+    .story-delete {
+      cursor: pointer;
+    }
+
   </style>
 
 </head>
 <body>
 
   [[${story}]]
+  [[${session.loginMember}]]
   <div class="logo">codegram</div>
 
   <div class="story-close-button">
@@ -135,8 +140,6 @@
   </div>
 
   <div id="b" class="story-container">
-<!--   <div id="aa" class="inner out"></div>-->
-<!--   <div id="bb" class="inner out"></div>-->
     <div id="cc" class="inner in" th:object="${story}">
       <div>
         <!-- 프로필 이미지 없을 경우 -->
@@ -144,6 +147,7 @@
         <!-- 프로필 이미지 있을 경우 -->
         <img th:if="*{profileImg}" th:src="*{profileImg}" class="profile">
         <div th:text="*{memberNickname}">닉네임</div>
+        <div th:if="${session.loginMember.memberNo == story.memberNo}" id="storyDeleteBtn" class="story-delete">삭제</div>
       </div>
 
       <div class="full">
@@ -153,13 +157,20 @@
       </div>
 
       <div>
+        <ul>
+          <li class="story-visitor"
+              th:each="visitor : ${visitorList}"
+              th:object="${visitor}"
+              th:id="|visitor${visitor.memberNo}|"
+          >
+
+          </li>
+        </ul>
         <div th:text="*{memberNickname + '에게 답장하기'}"></div>
         <div th:text="*{'StoryLikeCheck : ' + storyLiked}">좋아요 체크</div>
       </div>
 
     </div>
-<!--   <div id="dd" class="inner out"></div>-->
-<!--   <div id="ee" class="inner out"></div>-->
   </div>
 
 
@@ -168,26 +179,6 @@
 
 
 
-  <script>
-    // document.addEventListener('wheel', preventScroll, { passive: false });
-    //
-    // window.addEventListener('resize', () => {
-    //   aaa();
-    // });
-    //
-    //
-    // function aaa() {
-    //   const viewportWidth = window.innerWidth;
-    //   // 17px을 vw로 변환
-    //   const pxValue = 17;
-    //   const vwValue = (pxValue * 100) / viewportWidth;
-    //
-    //   console.log(`${pxValue}px is approximately ${vwValue}vw`);
-    //   // document.getElementById("b").style.paddingRight = vwValue + "vw";
-    // }
-
-
-
-  </script>
+  <script src="/js/story/story.js"></script>
 </body>
 </html>

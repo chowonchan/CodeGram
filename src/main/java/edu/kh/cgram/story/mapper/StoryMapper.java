@@ -11,12 +11,17 @@ import io.lettuce.core.dynamic.annotation.Param;
 public interface StoryMapper {
 
 	
+	
 	// 회원 번호로 memberNo 조회
 	int getMemberNo(String memberNickname);
 	
 	Story storyDetail(@Param("memberNo") int memberNo, @Param("storyNo") int storyNo);
 	
 	int storyInsert(Story story);
+
+	// 스토리 삭제
+	int storyDelete(int storyNo, int memberNo);
+
 
 	
 	// 새로 작성 코드들
@@ -32,4 +37,5 @@ public interface StoryMapper {
 
 	//팔로우한 회원의 24시간 내 스토리 존재 여부 확인
 	int selectStoryHas(int memberNo);
+
 }

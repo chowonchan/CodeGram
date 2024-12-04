@@ -778,6 +778,8 @@ document.addEventListener('DOMContentLoaded',  function () {
         // post-item에 이미지 추가
         postItem.appendChild(postImage);
         postsContent.appendChild(postItem);
+
+        history.pushState({}, "", "/new-url");
       });
       
 

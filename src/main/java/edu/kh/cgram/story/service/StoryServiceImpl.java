@@ -30,6 +30,8 @@ public class StoryServiceImpl implements StoryService {
 	private final StoryMapper storyMapper;
 
 	
+	
+	
 	@Override
 	public Story storyDetail(String memberNickname, int storyNo) {
 		
@@ -50,8 +52,6 @@ public class StoryServiceImpl implements StoryService {
 		
 		int result = storyMapper.storyInsert(story);
 		
-		
-		
 		try {
 			image.transferTo(new File(folderPath + rename));
 		} catch (Exception e) {
@@ -62,6 +62,21 @@ public class StoryServiceImpl implements StoryService {
 		return result;
 	}
 	
+	@Override
+	public int storyDelete(int storyNo, int memberNo) {
+		return storyMapper.storyDelete(storyNo, memberNo);
+	}
+	
+	/*
+	 * @Override public void insertStoryLike(Long storyNo, String memberNickname) {
+	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
+	 * storyMapper.insertStoryLike(storyNo, memberNo); }
+	 * 
+	 * @Override public void deleteStoryLike(Long storyNo, String memberNickname) {
+	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
+	 * storyMapper.deleteStoryLike(storyNo, memberNo); }
+	 */
+
 	
 	// 작성 코드
 	
@@ -95,5 +110,6 @@ public class StoryServiceImpl implements StoryService {
 		return map;
 	}
 	
+
 
 }

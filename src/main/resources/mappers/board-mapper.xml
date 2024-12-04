@@ -126,6 +126,15 @@
 	    ORDER BY IMG_ORDER
 	</select>
 	
+	<!-- 게시글 삭제 -->
+	<update id="feedDelete">
+		UPDATE BOARD
+		SET BOARD_DEL_FL = 'Y', MODIFIED_AT = CURRENT_DATE
+		WHERE BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	
 
     <!-- 게시글 댓글 조회 -->
     <select id="selectBoardComments" resultType="Comment">

@@ -1,5 +1,6 @@
 package edu.kh.cgram.story.dto;
 
+import edu.kh.cgram.member.dto.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,4 +35,13 @@ public class Story {
 
 	private String 	storyCheck; // 'Y' or 'N'
 	private String 	storyLiked; // 'Y' or 'N'
+
+	
+	private List<Member> visitorList;
 }
+
+/*
+	storyNo;	imgPath;		createdAt;			modifiedAt;		storyDelFl;		readCount;
+	memberNo;	profileImg;		memberNickname;		likeCount;		storyCheck;		storyLiked;
+	imgRename;
+ */

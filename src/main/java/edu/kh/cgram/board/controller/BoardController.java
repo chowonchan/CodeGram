@@ -185,7 +185,16 @@ public class BoardController {
 
       return service.unlikeComment(commentNo, memberNo);
   }
-
+	
+	
+	@PutMapping("delete")
+	@ResponseBody
+	public int feedDelete(
+			@RequestBody int boardNo,
+			@SessionAttribute("loginMember") Member loginMember
+	) {
+		return service.feedDelete(boardNo, loginMember.getMemberNo());
+	}
 
 
 
