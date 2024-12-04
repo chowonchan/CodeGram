@@ -13,16 +13,21 @@ public interface StoryService {
 
 	void updateStoryCheck(Long storyNo, String memberNickname);
 	
+	/*
+	 * void insertStoryLike(Long storyNo, String username);
+	 *
+	 * void deleteStoryLike(Long storyNo, String username);
+	 */
+	
+	
 	
 	
 	Story storyDetail(String memberNickname, int storyNo);
 	
 	int storyInsert(Story story, MultipartFile image);
 	
-	/*
-	 * void insertStoryLike(Long storyNo, String username);
-	 * 
-	 * void deleteStoryLike(Long storyNo, String username);
-	 */
+	int storyDelete(int storyNo, int memberNo);
+	
+
 
 }

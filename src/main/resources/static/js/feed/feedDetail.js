@@ -193,25 +193,44 @@ window.addEventListener("click", (event) => {
 // 수정 버튼 클릭 이벤트
 document.querySelector(".detail-edit-delete-button.edit").addEventListener("click", () => {
     alert("수정 기능으로 이동합니다.");
-    // 수정 페이지 이동 코드 추가
+
+    editDeleteModal.style.display = "none";
+    modalOverlay3.style.display = "none";
+
+    //
 });
 
 // 삭제 버튼 클릭 이벤트
 document.querySelector(".detail-edit-delete-button.delete").addEventListener("click", () => {
     const boardNo = feedModal.dataset.boardNo; // 게시글 번호 가져오기
     if (confirm("정말 삭제하시겠습니까?")) {
-        fetch(`/board/delete?boardNo=${boardNo}`, {
-            method : "POST",
-            headers: {"Content-Type": "application/json"},
-            body   : JSON.stringify({boardNo})
+        fetch('/board/delete', {
+            method : 'PUT',
+            headers: {'Content-Type': 'application/json'},  // 잘못 작성되면 415 미디어타입 오류
+            body   : boardNo
         })
-            .then((response) => {
-                if (!response.ok) throw new Error("게시글 삭제 실패");
-                alert("게시글이 삭제되었습니다.");
-                window.location.reload(); // 페이지 새로고침
+            .then(response => {
+                if (response.ok) return response.text();
+                throw new Error("Story 삭제 실패");
+                alert("서버 통신 오류");
             })
-            .catch((err) => console.error(err));
+            .then(result => {
+                if (result > 0) {
+                    alert("피드가 삭제되었습니다");
+                    feedModal.style.display = "none";
+                    modalOverlay.style.display = "none";
+                    editDeleteModal.style.display = "none";
+                    modalOverlay3.style.display = "none";
+                    document.documentElement.style.overflowY = "auto";
+                } else {
+                    alert("피드 삭제 실패");
+                }
+            })
+            .catch(err => console.error(err));
     }
+
+
+
 });
 
 const likeFunction = (boardNo) => {
@@ -568,8 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    trigger.addEventListener('click', () => {
-        console.log("클릭됨");
+    trigger.addEventListener('mouseenter', () => {
         picker.toggle();
     });
 

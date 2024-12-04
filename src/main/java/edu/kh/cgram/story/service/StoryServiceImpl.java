@@ -44,6 +44,8 @@ public class StoryServiceImpl implements StoryService {
 	
 	
 	
+	
+	
 	@Override
 	public Story storyDetail(String memberNickname, int storyNo) {
 		
@@ -64,8 +66,6 @@ public class StoryServiceImpl implements StoryService {
 		
 		int result = storyMapper.storyInsert(story);
 		
-		
-		
 		try {
 			image.transferTo(new File(folderPath + rename));
 		} catch (Exception e) {
@@ -74,6 +74,11 @@ public class StoryServiceImpl implements StoryService {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public int storyDelete(int storyNo, int memberNo) {
+		return storyMapper.storyDelete(storyNo, memberNo);
 	}
 	
 	/*

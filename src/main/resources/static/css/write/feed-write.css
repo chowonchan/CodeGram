@@ -188,7 +188,7 @@
 }
 
 .picmo__popupContainer {
-    z-index: 2001;
+    z-index: 2030 !important;
 }
 
 .modal-deep {

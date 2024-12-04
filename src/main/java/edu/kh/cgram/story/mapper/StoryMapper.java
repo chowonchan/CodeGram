@@ -27,10 +27,13 @@ public interface StoryMapper {
 	 */
 	
 	
+	
 	// 회원 번호로 memberNo 조회
 	int getMemberNo(String memberNickname);
 	
 	Story storyDetail(@Param("memberNo") int memberNo, @Param("storyNo") int storyNo);
 	
 	int storyInsert(Story story);
+	
+	int storyDelete(int storyNo, int memberNo);
 }

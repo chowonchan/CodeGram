@@ -859,7 +859,7 @@ document.addEventListener('DOMContentLoaded', () => {
     zIndex : 1
   });
 
-  trigger.addEventListener('click', () => {
+  trigger.addEventListener('mouseenter', () => {
     picker.toggle();
   });
 

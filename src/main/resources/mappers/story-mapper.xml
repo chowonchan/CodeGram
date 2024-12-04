@@ -14,7 +14,6 @@
         SELECT
             S.STORY_NO, S.IMG_PATH, S.IMG_RENAME, S.CREATED_AT,
             M.MEMBER_NO, M.MEMBER_NICKNAME, M.PROFILE_IMG,
-            S.READ_COUNT,
             (SELECT COUNT(*) FROM STORY_LIKE WHERE STORY_NO = S.STORY_NO) AS LIKE_COUNT,
             NVL2(
                     (SELECT 'Y' FROM STORY_LIKE
@@ -38,6 +37,14 @@
         INSERT INTO STORY (STORY_NO, IMG_PATH, CREATED_AT, STORY_DEL_FL, READ_COUNT, MEMBER_NO, IMG_RENAME)
         VALUES (#{storyNo}, #{imgPath}, DEFAULT, DEFAULT, DEFAULT, #{memberNo}, #{imgRename})
     </insert>
+
+    <update id="storyDelete">
+        UPDATE STORY
+        SET STORY_DEL_FL = 'Y'
+        WHERE STORY_NO = #{storyNo}
+        AND MEMBER_NO = #{memberNo}
+    </update>
+
 
 
 <!-- 팔로우한 사용자들의 24시간 이내 스토리 목록 조회 -->

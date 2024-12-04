@@ -147,5 +147,10 @@ public class BoardServiceImpl implements BoardService {
 		log.debug("memberNo: {}, commentNo: {}", memberNo, commentNo);
 		return mapper.deleteCommentLike(paramMap);
 	}
-
+	
+	
+	@Override
+	public int feedDelete(int boardNo, int memberNo) {
+		return mapper.feedDelete(boardNo, memberNo);
+	}
 }
