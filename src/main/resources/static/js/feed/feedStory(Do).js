@@ -41,8 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const storyNo = this.dataset.storyNo;
       const memberNickname = this.querySelector('.story-username').textContent;
 
+
       // 스토리 모달 URL 생성 및 이동
-      const storyUrl = `${window.location.href.split("/")[2]}/story/${memberNickname}/${storyNo}`;
+      const storyUrl = `${location.href.split("/")[2]}/story/${memberNickname}`;
 
       // AJAX를 통한 스토리 조회 상태 업데이트
       fetch(`/api/story/view/${storyNo}`, {
