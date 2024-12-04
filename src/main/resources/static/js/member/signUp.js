@@ -89,7 +89,7 @@ window.onload = function() {
   birthYear.addEventListener("change", validateBirthDate);
   birthMonth.addEventListener("change", validateBirthDate);
   birthDay.addEventListener("change", validateBirthDate);
-  };
+};
 
 /* 필수 입력 항목의 유효성검사 여부를 체크하기 위한 객체(체크리스트) */
 const checkObj = {
