@@ -199,6 +199,7 @@ footer {
 .board-content1, .comment-content1 {
   font-size: 14px;
   color: #333;
+  max-width: 500px;
 }
 .truncate-text {
   display: -webkit-box;
