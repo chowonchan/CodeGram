@@ -67,16 +67,6 @@ public class StoryServiceImpl implements StoryService {
 		return storyMapper.storyDelete(storyNo, memberNo);
 	}
 	
-	/*
-	 * @Override public void insertStoryLike(Long storyNo, String memberNickname) {
-	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
-	 * storyMapper.insertStoryLike(storyNo, memberNo); }
-	 * 
-	 * @Override public void deleteStoryLike(Long storyNo, String memberNickname) {
-	 * Long memberNo = storyMapper.getMemberNoByNickname(memberNickname);
-	 * storyMapper.deleteStoryLike(storyNo, memberNo); }
-	 */
-
 	
 	// 작성 코드
 	

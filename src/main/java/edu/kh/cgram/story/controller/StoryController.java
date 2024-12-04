@@ -1,13 +1,9 @@
 package edu.kh.cgram.story.controller;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.member.dto.Member;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
