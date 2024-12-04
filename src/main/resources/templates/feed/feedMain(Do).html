@@ -150,7 +150,7 @@
                             </button>
                             <button class="action-button comment-button pointer">
                               <div class="action-button-div">
-                                <div class="fa-regular fa-comment"></div>
+                                <div class="fa-regular fa-comment" th:data-board-no="${board.boardNo}"></div>
                               </div>
                             </button>
                           </div>
@@ -158,8 +158,8 @@
                             <div class="action-button mark-button pointer boardMark"
                               th:data-member-no="${board.boardNo}">
                               <div class="action-button-div">
-                                <i class="fa-bookmark"
-                                  th:classappend="${board.markCheck == 1} ? fa-solid : fa-regular"></i>
+                                <div class="fa-bookmark"
+                                  th:classappend="${board.markCheck == 1} ? fa-solid : fa-regular"></div>
                               </div>
                             </div>
                           </div>
@@ -218,7 +218,6 @@
         <!-- 추천 헤더 -->
         <div class="recommend-header">
           <span class="recommend-text">회원님을 위한 추천</span>
-          <span class="recommend-all pointer">새로고침</span>
         </div>
 
         <!-- 추천 목록 -->

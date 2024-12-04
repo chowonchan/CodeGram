@@ -128,14 +128,18 @@ footer {
   flex-direction: row;
 }
 .post-sort h4 {
+  width: 60px;
   margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .sorted {
   background: none;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 5px 10px;
-  margin-right: 450px;
+  width: 50px;
+  padding: 5px 5px;
+  margin-right: 430px;
   cursor: pointer;
   font-size: 15px;
   font-weight: bold;
@@ -143,7 +147,8 @@ footer {
 .selected {
   background: none;
   border: none;
-  margin-left: 50px;
+  margin-left: 70px;
+  width: 50px;
   color: #007bff; /* 파란색 글씨 */
   cursor: pointer;
   font-size: 14px;
