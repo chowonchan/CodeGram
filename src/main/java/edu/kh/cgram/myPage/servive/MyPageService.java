@@ -2,11 +2,14 @@ package edu.kh.cgram.myPage.servive;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myPage.dto.MyStory;
 import edu.kh.cgram.story.dto.Story;
 
 /**
@@ -45,7 +48,11 @@ public interface MyPageService {
 
 		List<BoardImg> getMemberSaved(int memberNo);
 
-		List<Story> getStoriesByMemberNo(int memberNo);
+		List<MyStory> getMyStory(int memberNo,int cp);
+
+		int getStoryCount(int memberNo);
+
+
 		
 		
 		
