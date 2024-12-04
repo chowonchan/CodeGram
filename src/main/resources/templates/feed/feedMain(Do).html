@@ -43,9 +43,9 @@
               </div>
 
               <div class="stories-container" th:if="${not #lists.isEmpty(storyList)}">
-                <div th:each="story : ${storyList}" class="story-item" th:data-story-id="${story.storyNo}">
-                  <!-- <div class="story-wrapper"   th:classappend="${story.storyCheck != null? 'viewed' : ''}"> -->
-                  <div class="story-wrapper">
+                <div th:each="story : ${storyList}" class="story-item" th:data-story-id="${story.memberNickname}">
+                  <div class="story-wrapper"   th:classappend="${story.storyCount > 0 ? 'viewed' : ''}">
+                  <!-- <div class="story-wrapper"> -->
                     <div class="story-border">
                       <img th:unless="${story.profileImg}" src="https://via.placeholder.com/50" class="story-profile-image">
                       <img th:if="${story.profileImg}"     th:src="${story.profileImg}"         class="story-profile-image">
