@@ -19,6 +19,7 @@
 	    SELECT S.* 
 	    FROM STORY S
 	    WHERE S.MEMBER_NO = #{memberNo}
+	   	AND S.STORY_DEL_FL = 'N'
 	    ORDER BY CREATED_AT DESC
     	OFFSET (#{cp}-1)*10 ROWS
     	FETCH NEXT 10 ROWS ONLY

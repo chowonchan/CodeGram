@@ -11,13 +11,14 @@
 <body>
   
   <main>
-    <th:block class="header-container" th:replace="~{fragments/header}"></th:block>  
-    <!-- 스토리 목록 -->
-    <div id="myStoryListContent" class="list-content">
-      <ul id="myStoryList" class="myStory-list"></ul>
-      <button id="loadMore" class="load-more">더보기</button>
-    </div>
-
+    <session>
+      <th:block class="header-container" th:replace="~{fragments/header}"></th:block>  
+      <!-- 스토리 목록 -->
+      <div id="myStoryListContent" class="list-content">
+        <ul id="myStoryList" class="myStory-list"></ul>
+        <button id="loadMore" class="load-more">더보기</button>
+      </div>
+  </session>
   </main>
   <div class="footer-container">
     <th:block th:replace="~{fragments/footer :: footer}"></th:block>

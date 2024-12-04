@@ -441,10 +441,13 @@ sendAuthKeyBtn.addEventListener("click",()=>{
   if(authTimer != undefined){
     clearInterval(authTimer); // 이전 인증 타이머 없애기
   }
+    // 이메일 입력 필드를 비활성화 (클릭 불가)
+    memberEmail.disabled = true;
 
   // 1) 작성된 이메일이 유효하지 않은 경우
   if(checkObj.memberEmail===false){
     alert("유효한 이메일 작성 후 클릭하세요");
+    memberEmail.disabled = false; // 이메일 다시 활성화
     return;
   }
 
@@ -486,6 +489,8 @@ sendAuthKeyBtn.addEventListener("click",()=>{
       clearInterval(authTimer); // 1초마다 동작하는 setInterval 멈춤
       authKeyMessage.classList.add("error"); // 빨간 글씨
       authKeyMessage.classList.remove("confirm");
+
+          memberEmail.disabled = false; // 이메일 다시 활성화
       return;
     }
 
@@ -522,9 +527,9 @@ checkAuthKeyBtn.addEventListener("click",()=>{
     return;
   }
 
-  // 1) 인증 번호 6자리가 입력이 되었는지 확인
-  if(authKey.value.trim().length < 6){
-    alert("인증 번호가 잘못 입력 되었습니다");
+    // 1) 인증 번호가 입력되었는지 확인
+  if (authKey.value.trim().length === 0) {
+    alert("인증 번호를 입력해 주세요.");
     return;
   }
 
@@ -542,25 +547,47 @@ checkAuthKeyBtn.addEventListener("click",()=>{
   
   // JSON.stringify(객체) : 객체 -> JSON 변환(문자열화)
 
-  fetch("/email/checkAuthKey", {
-    method  : "POST",
-    headers : {"Content-Type" : "application/json"},
-    body    :  JSON.stringify(obj)
-  })
-  .then(response=>{
-    if (response.ok) {
-      return response.text();
-    }throw new Error("인증 에러");
-  })
-  .then(result=>{
-    console.log("인증결과 : ", result);
+  // fetch("/email/checkAuthKey", {
+  //   method  : "POST",
+  //   headers : {"Content-Type" : "application/json"},
+  //   body    :  JSON.stringify(obj)
+  // })
+  // .then(response=>{
+  //   if (response.ok) {
+  //     return response.text();
+  //   }throw new Error("인증 에러");
+  // })
+  // .then(result=>{
+  //   console.log("인증결과 : ", result);
 
-    // 3) 일치하지 않는 경우
-    if (result === "false" || result === false) {
-      alert("인증번호가 일치하지 않습니다.");
-      checkObj.authKey=false;
-      return;
-    }
+  //   // 3) 일치하지 않는 경우
+  //   if (result === "false" || result === false) {
+  //     alert("인증번호가 일치하지 않습니다.");
+  //     checkObj.authKey=false;
+  //     return;
+  //   }
+  fetch("/email/checkAuthKey", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj) // JSON 데이터로 변환하여 전송
+  })
+    .then(response => {
+      if (!response.ok) {
+        // 에러 응답의 본문 메시지를 읽음
+        return response.text().then(errMessage => {
+          throw new Error(errMessage); // 에러 메시지를 Error 객체로 던짐
+        });
+      }
+      return response.json(); // 성공 응답 처리
+    })
+    .then(result => {
+      console.log("인증결과: ", result);
+  
+      if (!result.success) {
+        alert("인증번호가 일치하지 않습니다."); // 서버에서 success=false 응답 처리
+        checkObj.authKey = false;
+        return;
+      }
 
     // 4) 일치하는 경우
     // - 타이머 멈춤
@@ -573,8 +600,13 @@ checkAuthKeyBtn.addEventListener("click",()=>{
 
     checkObj.authKey = true; // 인증 완료 표시
   })
-  .catch(err => console.error(err));
+//   .catch(err => console.error(err));
 
+// });
+.catch(err => {
+  console.error("인증 오류:", err.message);
+  alert(err.message); // 서버에서 받은 에러 메시지 출력
+});
 });
 
 //---------------------------------------------------------------
