@@ -5,16 +5,16 @@
 const boardArticles = document.querySelectorAll(".board-article");
 
 boardArticles.forEach(boardArticle => {
+  const boardLikeCount = boardArticle.querySelector(".likeCount");
   const heart = boardArticle.querySelector(".fa-heart");
+  const bookMark = boardArticle.querySelector(".fa-bookmark");
   heart?.addEventListener("click", e => {
     const boardNo = boardArticle.dataset.boardNo;
-    console.log("boardNo : ", boardNo);
     // 1. 로그인 여부 검사
     if (loginCheck === false) {
       alert("로그인 후 이용해 주세요");
       return;
     }
-
 
     // 2. 비동기로 좋아요 요청
     fetch("/board/like", {
@@ -35,6 +35,8 @@ boardArticles.forEach(boardArticle => {
           heart.classList.add("fa-solid", "liked");
           heart.classList.remove("fa-regular");
 
+          boardLikeCount.textContent = parseInt(boardLikeCount.textContent) + 1;
+
           const content =
             `<strong>${loginMemberName}</strong>
           님이 좋아요를 누르셨습니다<br>`;
@@ -51,6 +53,8 @@ boardArticles.forEach(boardArticle => {
         } else { // 비우기
           heart.classList.add("fa-regular");
           heart.classList.remove("fa-solid", "liked");
+
+          boardLikeCount.textContent = parseInt(boardLikeCount.textContent) - 1;
         }
 
       })
@@ -58,55 +62,37 @@ boardArticles.forEach(boardArticle => {
 
 
   })
-});
 
+  bookMark?.addEventListener("click", () => {
+    const boardNo = boardArticle.dataset.boardNo;
+    // 1. 로그인 여부 검사
+    if (loginCheck === false) {
+      alert("로그인 후 이용해 주세요");
+      return;
+    }
 
-
-
-
-
-
-/* ----------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-/* MARK 클릭 시 */
-const boardMark = document.querySelector(".boardMark");
-boardMark?.addEventListener("click", e => {
-  const boardNo = this.dataset.boardNo;
-  if (loginCheck === false) {
-    alert("로그인 후 이용해 주세요");
-    return;
-  }
-
-  // 2. 비동기로 mark 요청 
-  fetch("/board/mark", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: boardNo
-  })
-    .then(response => response.json())
-    .then(result => {
-      // mark 결과가 담긴 result 객체의 check 값에 따라
-      // mark 아이콘을 비우기/채우기 지정
-      if (result.check === 1) {
-        boardMark.classList.add("fa-solid");
-        boardMark.classList.remove("fa-regular");
-      } else {
-        boardMark.classList.add("fa-regular");
-        boardMark.classList.remove("fa-solid");
-      }
+    // 2. 비동기로 mark 요청 
+    fetch("/board/mark", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: boardNo
     })
-    .catch(err => console.error(err));
+      .then(response => response.json())
+      .then(result => {
+        // mark 결과가 담긴 result 객체의 check 값에 따라
+        // mark 아이콘을 비우기/채우기 지정
+        if (result.check === "insert") {
+          bookMark.classList.add("fa-solid");
+          bookMark.classList.remove("fa-regular");
+        }
+        if (result.check === "delete") {
+          bookMark.classList.add("fa-regular");
+          bookMark.classList.remove("fa-solid");
+        }
+      })
+      .catch(err => console.error(err));
+  })
 });
-
-
 
 // 더 보기 버튼 클릭 이벤트
 document.addEventListener('DOMContentLoaded', function () {
@@ -263,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="action-button-div">
               <i class="fa-bookmark ${board.markCheck === 1 ? 'fa-solid' : 'fa-regular'}"></i>
             </div>
+
           </div>
         </div>
       </section>
@@ -288,8 +275,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const a = articleElement.querySelector(".important-box a");
       a.addEventListener("click", e => {
         e.preventDefault();
-
         const boardNo = a.href.split("/").pop();
+        openDetail(boardNo);
+      })
+      const mainCommentBtn = articleElement.querySelector(".comment-icon");
+      mainCommentBtn.addEventListener("click", e => {
+        e.preventDefault();
+        const boardNo = mainCommentBtn.dataset.boardNo;
         openDetail(boardNo);
       })
 
@@ -391,16 +383,21 @@ mainFollowBtnList.forEach((mainFollowBtn, index) => {
   });
 })
 
-document.addEventListener("DOMContentLoaded", () => {
-  const openopen = document.querySelectorAll(".important-box a");
-  
-  console.log(openopen);
 
+document.addEventListener("DOMContentLoaded", () => {
+  const mainCommentBtn = document.querySelectorAll(".fa-comment");
+  const openopen = document.querySelectorAll(".important-box a");
   openopen.forEach(a => {
     a.addEventListener("click", e => {
       e.preventDefault();
-
       const boardNo = a.href.split("/").pop();
+      openDetail(boardNo);
+    })
+  });
+  mainCommentBtn.forEach(mainCommentBtn => {
+    mainCommentBtn.addEventListener("click", e => {
+      e.preventDefault();
+      const boardNo = mainCommentBtn.dataset.boardNo;
       openDetail(boardNo);
     })
   });

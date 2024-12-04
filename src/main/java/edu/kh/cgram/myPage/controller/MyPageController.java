@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import edu.kh.cgram.board.dto.BoardImg;
-import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myPage.dto.MyStory;
 import edu.kh.cgram.myPage.servive.MyPageService;
-import edu.kh.cgram.story.dto.Story;
 import jakarta.servlet.http.HttpSession;
 
 @SessionAttributes("loginMember") // 세션에서 "loginMember" 속성을 관리하도록 설정
@@ -164,32 +163,58 @@ public class MyPageController {
         // "myPage/editProfile.html" 템플릿을 렌더링
         return "myPage/editProfile";
     }
+   
+//    @GetMapping("/myStory")
+//    public String getMyStory(
+//            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+//            @SessionAttribute("loginMember") Member loginMember,
+//            Model model) {
+//        
+//        int memberNo = loginMember.getMemberNo();
+//
+//        // 로그 출력
+//        System.out.println("현재 페이지(cp): " + cp);
+//        System.out.println("로그인한 사용자 번호(memberNo): " + memberNo);
+//
+//        // 스토리 데이터 조회
+//        List<MyStory> getMyStory = service.getMyStory(memberNo, cp);
+//
+//        // 데이터 모델에 추가
+//        model.addAttribute("stories", getMyStory);
+//        model.addAttribute("currentPage", cp);
+//
+//        // 로그 확인
+//        System.out.println("조회된 스토리 목록: " + getMyStory);
+//
+//        // HTML 파일 이름 반환
+//        return "myPage/myStory";
+//    }
     
+    // 보관된 스토리 조회 (JSON 반환)
     @GetMapping("/myStory")
-    public String showSavedStoryPage(Model model, @SessionAttribute("loginMember") Member loginMember) {
-        // 로그인된 사용자의 MEMBER_NO를 가져옴
+    public ResponseEntity<Map<String, Object>> getMyStory(
+            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+            @SessionAttribute("loginMember") Member loginMember) {
+
         int memberNo = loginMember.getMemberNo();
 
-        // 해당 MEMBER_NO에 해당하는 STORY 리스트를 조회
-        List<Story> stories = service.getStoriesByMemberNo(memberNo);
-        
-        // 콘솔 로그로 조회 결과 출력
-        System.out.println("로그인된 사용자 MEMBER_NO: " + memberNo);
-        System.out.println("보관된 스토리 리스트: ");
-        for (Story story : stories) {
-            System.out.println(story);
-        }
-        // 조회한 데이터를 모델에 추가
-        model.addAttribute("stories", stories);
-        model.addAttribute("loginMember", loginMember);
+        // 로그 출력
+        System.out.println("현재 페이지(cp): " + cp);
+        System.out.println("로그인한 사용자 번호(memberNo): " + memberNo);
 
-        // "myPage/saveStory.html" 템플릿을 렌더링
-        return "myPage/myStory";
+        // 스토리 데이터 조회
+        List<MyStory> stories = service.getMyStory(memberNo, cp);
+        int totalCount = service.getStoryCount(memberNo); // 전체 스토리 수
+
+        // 데이터 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("stories", stories);
+        response.put("currentPage", cp);
+        response.put("totalCount", totalCount);
+
+        return ResponseEntity.ok(response);
     }
 
-
-
-  	
   	@GetMapping("/saved")
   	@ResponseBody
   	public List<BoardImg> getMemberSaved(

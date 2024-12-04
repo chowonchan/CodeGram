@@ -181,7 +181,7 @@ const selectFeedList = (cp = 1) => {
         tr.innerHTML = `
           <td>${feed.boardNo}</td>
           <td>${feed.memberNickname}</td>
-          <td><a href="/board/${feed.boardNo}" title="${feed.boardContent}">${truncatedContent}</a></td>
+          <td><a href="/board/${feed.boardNo}" title="${feed.boardContent}">${truncatedContent || "내용 없음"}</a></td>
           <td>${feed.createdAt}</td>
           <td>${feed.readCount}</td>
           <td>
@@ -317,17 +317,17 @@ const selectFeedReportList = (query) => {
         // 피드 내용을 자르는 함수
         const truncateText = (text, maxLength) => {
           if (text === "") text = "내용 없음";
-          return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+          return text != null &&text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
         }
 
         // 글자수 제한
-        const truncatedContent = truncateText(feedReport.boardContent, 20);
+        // const truncatedContent = truncateText(feedReport.boardContent, 20);
 
         // 피드 정보 생성
         tr.innerHTML = `
           <td>${feedReport.reportNo}</td>
           <td>${feedReport.memberNickname}</td>
-          <td><a href="/board/${feedReport.contentNo}" title="${feedReport.boardContent}">${truncatedContent}</a></td>
+          <td><a href="/board/${feedReport.contentNo}" title="${feedReport.boardContent}">${feedReport.boardContent || "내용 없음"}</a></td>
           <td>${feedReport.reportCategory}</td>
           <td>${feedReport.createdAt}</td>
           <td>

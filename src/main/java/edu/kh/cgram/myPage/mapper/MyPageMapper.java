@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myPage.dto.MyStory;
 import edu.kh.cgram.story.dto.Story;
 
 /**
@@ -50,7 +51,11 @@ public interface MyPageMapper {
 
 		List<BoardImg> selectMemberSaved(int memberNo);
 
-		List<Story> getStoriesByMemberNo(int memberNo);
+		List<MyStory> selectMyStory(@Param("memberNo") int memberNo, @Param("cp") int cp);
+
+		int MyStoryCount(int memberNo);
+
+
 
 
     

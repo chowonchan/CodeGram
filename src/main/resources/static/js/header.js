@@ -766,9 +766,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  setInterval(notReadCheck, 5000);
 
 });
+
+
 
 
 
