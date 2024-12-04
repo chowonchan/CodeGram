@@ -47,8 +47,8 @@
                   <!-- <div class="story-wrapper"   th:classappend="${story.storyCheck != null? 'viewed' : ''}"> -->
                   <div class="story-wrapper">
                     <div class="story-border">
-                      <img th:src="${story.profileImg != null ? story.profileImg : '/path/to/default/image.jpg'}"
-                        class="story-profile-image">
+                      <img th:unless="${story.profileImg}" src="https://via.placeholder.com/50" class="story-profile-image">
+                      <img th:if="${story.profileImg}"     th:src="${story.profileImg}"         class="story-profile-image">
                     </div>
                   </div>
                   <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
