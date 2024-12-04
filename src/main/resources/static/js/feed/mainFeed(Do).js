@@ -1,7 +1,3 @@
-
-/* 좋아요 클릭 시 */
-/* ----------------------------------------------------- */
-
 const boardArticles = document.querySelectorAll(".board-article");
 
 boardArticles.forEach(boardArticle => {
@@ -100,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const shortContentEl = document.getElementById('shortContent');
   const fullContentEl = document.getElementById('fullContent');
   const moreBtnEl = document.getElementById('moreBtn');
-  
+
   // const boardNo = boardArticle.dataset.boardNo;
 
   // 타임리프에서 받아온 content (예시)
@@ -176,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
       // 각 보드 항목에 대한 새 기사 요소 만들기
       const articleElement = document.createElement('article');
       articleElement.className = 'board-article';
-
       articleElement.dataset.boardNo = board.boardNo;
 
       // 게시판 데이터로 기사 채우기(원래 HTML과 동일한 구조 사용)
@@ -187,10 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="user-profile inline-block">
           <a href="/member/${board.memberNickname}">
             <div class="user-profile-img pointer radius">
-              ${board.profileImg ? 
-                `<img src="${board.profileImg}">` : 
-                `<img src="https://via.placeholder.com/50">`
-              }
+              ${board.profileImg ?
+          `<img src="${board.profileImg}">` :
+          `<img src="https://via.placeholder.com/50">`
+        }
             </div>
           </a>
         </div>
@@ -233,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="important-box">
       <section class="section-1">
         <div class="box-1">
-          <button class="action-button like-button pointer">
+          <button class="action-button like-button pointer ">
             <div class="action-button-div">
               <span class="fa-heart ${board.likeCheck === 1 ? 'fa-solid liked' : 'fa-regular'}"></span>
             </div>
@@ -261,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <br>
           <span class="more-btn pointer">더 보기</span>
         ` : `
-          <span class="shortContent">${board.boardContent}</span>
+          <span class="shortContent">${board.boardContent || ''}</span>
         `}
       </div>
       <a href="/board/${board.boardNo}">
@@ -269,23 +264,114 @@ document.addEventListener('DOMContentLoaded', function () {
       </a>
     </div>
   </div>
-
   `;
-    
+
+  wrapper.append(articleElement);
+
+  const heart = articleElement.querySelector(".fa-heart");
+  const bookMark = articleElement.querySelector(".fa-bookmark");
+  const boardLikeCount = articleElement.querySelector(".likeCount");
+  
       const a = articleElement.querySelector(".important-box a");
       a.addEventListener("click", e => {
         e.preventDefault();
-        const boardNo = a.href.split("/").pop();
-        openDetail(boardNo);
+        // const boardNo = a.href.split("/").pop();
+        openDetail(board.boardNo);
       })
-      const mainCommentBtn = articleElement.querySelector(".comment-icon");
+      const mainCommentBtn = articleElement.querySelector(".fa-comment");
       mainCommentBtn.addEventListener("click", e => {
         e.preventDefault();
-        const boardNo = mainCommentBtn.dataset.boardNo;
-        openDetail(boardNo);
+        openDetail(board.boardNo);
       })
 
-      wrapper.append(articleElement);
+
+
+      heart?.addEventListener("click", e => {
+        const boardNo = articleElement.dataset.boardNo;
+        // 1. 로그인 여부 검사
+        if (loginCheck === false) {
+          alert("로그인 후 이용해 주세요");
+          return;
+        }
+
+        // 2. 비동기로 좋아요 요청
+        fetch("/board/like", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: boardNo
+        })
+          .then(response => {
+            if (response.ok) return response.json();
+            throw new Error("좋아요 실패");
+          })
+          .then(result => {
+            console.log("heart : ", heart);
+
+            // 좋아요 결과가 담긴 result 객체의 check 값에 따라
+            // 하트 아이콘을 비우기/채우기 지정
+            if (result.check === 'insert') { // 채우기
+              heart.classList.add("fa-solid", "liked");
+              heart.classList.remove("fa-regular");
+
+              boardLikeCount.textContent = parseInt(boardLikeCount.textContent) + 1;
+
+              const content =
+                `<strong>${loginMemberName}</strong>
+              님이 좋아요를 누르셨습니다<br>`;
+
+              const url = `/member/${memberNickname}`
+              // type, url, pkNo, content
+              sendNoti(
+                "boardLike",  // type
+                url,  // 게시글 상세 조회 페이지 주소
+                boardNo,  // 게시글 번호
+                content
+              );
+
+            } else { // 비우기
+              heart.classList.add("fa-regular");
+              heart.classList.remove("fa-solid", "liked");
+
+              boardLikeCount.textContent = parseInt(boardLikeCount.textContent) - 1;
+            }
+
+          })
+          .catch(err => console.error(err));
+
+
+      })
+
+      bookMark?.addEventListener("click", () => {
+        const boardNo = articleElement.dataset.boardNo;
+        // 1. 로그인 여부 검사
+        if (loginCheck === false) {
+          alert("로그인 후 이용해 주세요");
+          return;
+        }
+
+        // 2. 비동기로 mark 요청 
+        fetch("/board/mark", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: boardNo
+        })
+          .then(response => response.json())
+          .then(result => {
+            // mark 결과가 담긴 result 객체의 check 값에 따라
+            // mark 아이콘을 비우기/채우기 지정
+            if (result.check === "insert") {
+              bookMark.classList.add("fa-solid");
+              bookMark.classList.remove("fa-regular");
+            }
+            if (result.check === "delete") {
+              bookMark.classList.add("fa-regular");
+              bookMark.classList.remove("fa-solid");
+            }
+          })
+          .catch(err => console.error(err));
+      })
+
+    
     });
   }
 });
