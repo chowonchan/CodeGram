@@ -67,16 +67,13 @@ public class MainServiceImpl implements MainService {
 			result2 = mapper.deleteBoardMark(boardNo, memberNo);
 		}
 		
-		int count = 0;
-		if(result2 > 0) {
-			count = mapper.getMarkCount(boardNo);
-		} else {
-			return null;
-		}
-		
+//		int count = 0;
+//		if(result2 > 0) {
+//			count = mapper.getMarkCount(boardNo);
+//		}
 		Map<String, Object> map = new HashMap<>();
 		
-		map.put("count", count);
+//		map.put("count", count);
 		
 		if(result == 0) map.put("check", "insert");
 		else 						map.put("check", "delete");
