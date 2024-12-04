@@ -71,15 +71,15 @@ public class StoryController {
   
   
   // mainFeed에서 스토리 목록 처리
-  @PostMapping("/api/story/view/{memberNickname}")
+  @PostMapping("/api/story/view/{storyNo}")
   @ResponseBody
   public Map<String, Object> updateStoryCheck(
-  	@PathVariable String memberNickname,
+  	@PathVariable int storyNo,
 		@ModelAttribute("loginMember") Member loginMember) {
 		
   	int memberNo = loginMember.getMemberNo();
   	
-  	return storyService.updateStoryCheck1(memberNickname, memberNo);
+  	return storyService.updateStoryCheck1(storyNo, memberNo);
 	}
   
   
