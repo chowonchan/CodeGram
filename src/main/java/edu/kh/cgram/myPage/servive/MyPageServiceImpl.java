@@ -2,17 +2,21 @@ package edu.kh.cgram.myPage.servive;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.myPage.dto.MyStory;
 import edu.kh.cgram.myPage.mapper.MyPageMapper;
 import edu.kh.cgram.story.dto.Story;
 
@@ -110,11 +114,13 @@ public class MyPageServiceImpl implements MyPageService {
   		return mapper.selectMemberSaved(memberNo);
   	}
   	
-    @Override
-    public List<Story> getStoriesByMemberNo(int memberNo) {
-        return mapper.getStoriesByMemberNo(memberNo);
-    }
-  	
-  	
-
+	@Override
+	public List<MyStory> getMyStory(int memberNo,int cp) {
+		return mapper.selectMyStory(memberNo, cp);
+	}
+	
+@Override
+public int getStoryCount(int memberNo) {
+	return mapper.MyStoryCount(memberNo);
+}
 }

@@ -768,12 +768,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  notReadCheck(); // 알림 확인
+// document.addEventListener("DOMContentLoaded", () => {
+//   notReadCheck(); // 알림 확인
 
-  setInterval(notReadCheck, 100);
+//   setInterval(notReadCheck, 100);
 
-});
+// });
 
 
 /* -----------------알림 목록 창-------------------- */
