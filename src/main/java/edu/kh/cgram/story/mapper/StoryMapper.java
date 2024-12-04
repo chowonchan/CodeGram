@@ -39,3 +39,5 @@ public interface StoryMapper {
 	int selectStoryHas(int memberNo);
 
 }
+
+
