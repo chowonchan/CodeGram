@@ -374,6 +374,13 @@ clearAllCancel?.addEventListener('click', () => {
 
 /* -----------------알림 목록 창-------------------- */
 
+
+/**
+ * SSE(SERVER SENT EVENTS) 
+
+ * @author Jieun Park
+ * @since 2022. 11. 15.
+ */
 const SseConnect = () => {
 
   if (notificationLoginCheck === false) return;
@@ -404,7 +411,10 @@ const SseConnect = () => {
     if (notificationList.classList.contains("notification-show")) {
       selectNotiList(); // 알림 목록 비동기 조회
     }
+
+    notReadCheck();
   });
+
 
   /* 서버 연결이 종료된 경우( 타임 아웃 초과 ) */
   eventSource.addEventListener("error", () => {
@@ -436,7 +446,8 @@ const sendNoti = (type, url, pkNo, content) => {
         throw new Error("전송 실패");
       }
       console.log("전송 성공");
-    })
+      
+    }) 
     .catch(err => console.error(err));
 
 }
@@ -577,6 +588,8 @@ const selectNotiList = () => {
               // 버튼 초기화
               updateButton(isFollowing);
 
+
+
               // 버튼 클릭 이벤트
               followAlarmBtn.addEventListener("click", async () => {
                 if (isFollowing) {
@@ -621,6 +634,20 @@ const selectNotiList = () => {
 
                     if (response.ok) {
                       isFollowing = true; // 상태 변경
+
+                      const data = await response.json();
+
+                      const targetMemberNo = data.targetMemberNo;
+
+                      sendNoti(
+                        "follow",
+                        `/member/${loginMemberNickname}`,
+                        targetMemberNo,
+                        `<strong>${loginMemberNickname}</strong>님이 회원님을 
+                        <br>
+                        팔로우하기 시작했습니다.`
+                      );
+
                       updateButton(isFollowing); // 버튼 업데이트
                       alert("팔로우 되었습니다."); // 확인 메시지
                     }
@@ -658,7 +685,7 @@ const selectNotiList = () => {
               if (response.ok) { // 비동기 통신 실패
                 // 클릭된 x버튼이 포함된 알림 삭제
                 notiDelete.parentElement.remove();
-
+                notReadCheck();
                 return;
               }
               console.log("응답이 좋지 않습니다");
@@ -669,6 +696,7 @@ const selectNotiList = () => {
         // 조립
 
         notiItem.append(notiDelete);
+        
 
       }
     })
@@ -769,6 +797,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  notReadCheck(); // 알림 확인
+});
 
 
 

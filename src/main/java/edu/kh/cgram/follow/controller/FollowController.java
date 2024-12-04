@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -60,7 +62,8 @@ public class FollowController {
 	            "success", true,
 	            "message", nickname + "님을 성공적으로 팔로우했습니다.",
 	            "followingMemberNo", loggedInMemberNo,  // 팔로우를 한 회원 번호
-	            "followerMemberNo", profileMemberNo  // 팔로우를 당한 회원 번호
+	            "followerMemberNo", profileMemberNo, // 팔로우를 당한 회원 번호
+            	"targetMemberNo", profileMemberNo
 	        ));
 	    } else {
 	        log.error("팔로우 실패: {} -> {}", loggedInMemberNo, profileMemberNo);
@@ -97,13 +100,15 @@ public class FollowController {
           log.info("언팔로우 성공: {} -> {}", loggedInMemberNo, profileMemberNo);
           return ResponseEntity.ok(Map.of(
                   "success", true,
-                  "message", nickname + "님을 성공적으로 언팔로우했습니다."
+                  "message", nickname + "님을 성공적으로 언팔로우했습니다.",
+                	"targetMemberNo", profileMemberNo
           ));
       } else {
           log.error("언팔로우 실패: {} -> {}", loggedInMemberNo, profileMemberNo);
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                   "success", false,
-                  "message", "언팔로우 처리 중 문제가 발생했습니다."
+                  "message", "언팔로우 처리 중 문제가 발생했습니다.",
+                	"targetMemberNo", profileMemberNo
           ));
       }
   }
@@ -158,6 +163,12 @@ public class FollowController {
       int memberNo = loginMember.getMemberNo();
       List<Map<String, Object>> followerList = service.getFollowerList(memberNo);
       return ResponseEntity.ok(followerList);
+  }
+  
+  @GetMapping("/getMemberNo")
+  @ResponseBody
+  public int getMemberNoByNickname(@RequestParam("targetNickname") String targetNickname) {
+      return service.getMemberNoByNickname(targetNickname);
   }
 	
 }
