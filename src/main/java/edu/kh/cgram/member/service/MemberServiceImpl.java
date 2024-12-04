@@ -197,7 +197,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	public boolean isUserBlocked(int loginMemberNo, int targetMemberNo) {
+	public boolean isBlocked(int loginMemberNo, int targetMemberNo) {
 	    return mapper.isBlocked(loginMemberNo, targetMemberNo) > 0;
 	}
 
