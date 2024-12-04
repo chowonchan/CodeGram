@@ -164,14 +164,15 @@ public class MyPageController {
         return "myPage/editProfile";
     }
    
-//    @GetMapping("/myStory")
-//    public String getMyStory(
-//            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-//            @SessionAttribute("loginMember") Member loginMember,
-//            Model model) {
-//        
+    // 보관된 스토리 조회 (HTML 반환)
+    @GetMapping("/myStory")
+    public String getMyStory(
+            @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+            @SessionAttribute("loginMember") Member loginMember,
+            Model model) {
+        
 //        int memberNo = loginMember.getMemberNo();
-//
+
 //        // 로그 출력
 //        System.out.println("현재 페이지(cp): " + cp);
 //        System.out.println("로그인한 사용자 번호(memberNo): " + memberNo);
@@ -182,31 +183,26 @@ public class MyPageController {
 //        // 데이터 모델에 추가
 //        model.addAttribute("stories", getMyStory);
 //        model.addAttribute("currentPage", cp);
-//
-//        // 로그 확인
+
+        // 로그 확인
 //        System.out.println("조회된 스토리 목록: " + getMyStory);
-//
-//        // HTML 파일 이름 반환
-//        return "myPage/myStory";
-//    }
+
+        // HTML 파일 이름 반환
+        return "myPage/myStory";
+    }
     
-    // 보관된 스토리 조회 (JSON 반환)
-    @GetMapping("/myStory")
-    public ResponseEntity<Map<String, Object>> getMyStory(
+    @GetMapping("/myStory/data")
+    public ResponseEntity<Map<String, Object>> getMyStoryData(
             @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
             @SessionAttribute("loginMember") Member loginMember) {
 
         int memberNo = loginMember.getMemberNo();
 
-        // 로그 출력
-        System.out.println("현재 페이지(cp): " + cp);
-        System.out.println("로그인한 사용자 번호(memberNo): " + memberNo);
-
-        // 스토리 데이터 조회
+        // 스토리 데이터 가져오기
         List<MyStory> stories = service.getMyStory(memberNo, cp);
-        int totalCount = service.getStoryCount(memberNo); // 전체 스토리 수
+        int totalCount = service.getStoryCount(memberNo);
 
-        // 데이터 반환
+        // JSON 데이터 반환
         Map<String, Object> response = new HashMap<>();
         response.put("stories", stories);
         response.put("currentPage", cp);
