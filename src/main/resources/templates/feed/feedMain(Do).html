@@ -38,13 +38,14 @@
 
             <section class="stories-section">
 
-              <div th:if="${#lists.isEmpty(stories)}" class="empty-stories">
+              <div th:if="${#lists.isEmpty(storyList)}" class="empty-stories">
                 <p>새로운 스토리가 없습니다</p>
               </div>
 
-              <div class="stories-container" th:if="${not #lists.isEmpty(stories)}">
-                <div th:each="story : ${stories}" class="story-item" th:data-story-id="${story.storyNo}">
-                  <div class="story-wrapper" th:class="${board.storyCheck ? 'viewed' : ''}">
+              <div class="stories-container" th:if="${not #lists.isEmpty(storyList)}">
+                <div th:each="story : ${storyList}" class="story-item" th:data-story-id="${story.storyNo}">
+                  <!-- <div class="story-wrapper"   th:classappend="${story.storyCheck != null? 'viewed' : ''}"> -->
+                  <div class="story-wrapper">
                     <div class="story-border">
                       <img th:src="${story.profileImg != null ? story.profileImg : '/path/to/default/image.jpg'}"
                         class="story-profile-image">
@@ -81,7 +82,7 @@
 
                 <!-- 게시물이 존재할 때 -->
                 <th:block th:unless="${#lists.isEmpty(feedList)}">
-                  <article class="board-article" th:each="board : ${feedList}">
+                  <article class="board-article"  th:data-board-no="${board.boardNo}" th:each="board : ${feedList}">
                     <div class="post">
                       <div class="post-header post-header-padding">
                         <div class="board-profile">
@@ -141,15 +142,15 @@
                         <!-- 좋아요, 댓글, 북마크 버튼 등 -->
                         <section class="section-1">
                           <div class="box-1">
-                            <button class="action-button like-button pointer" data-board-no="${board.boardNo}">
+                            <button class="action-button like-button pointer">
                               <div class="action-button-div">
-                                <i class="fa-heart" th:classappend="${board.likeCheck == 1} ? fa-solid : fa-regular">
-                                </i>
+                                <span class="fa-heart" th:classappend="${board.likeCheck == 1} ? 'fa-solid liked': fa-regular">
+                                </span>
                               </div>
                             </button>
                             <button class="action-button comment-button pointer">
                               <div class="action-button-div">
-                                <i class="fa-comment"></i>
+                                <div class="fa-regular fa-comment"></div>
                               </div>
                             </button>
                           </div>
@@ -168,11 +169,11 @@
                         <div class="post-caption contentContainer">
                           <span class="feed-imp-Nick" th:text="${board.memberNickname}">닉</span>
                           <!-- 타임리프에서 넘어온 content를 여기에 삽입 -->
-                          <th:block th:unless="${board.boardContent.length() > 200}">
+                          <th:block th:unless="${board.boardContent != null && #strings.length(board.boardContent) > 200}">
                             <span class="shortContent" th:text="${board.boardContent}">(짧내용)</span>
                           </th:block>
 
-                          <th:block th:if="${board.boardContent.length() > 200}">
+                          <th:block th:if="${board.boardContent != null && #strings.length(board.boardContent) > 200}">
                             <span class="fullContent hidden-content" th:text="${board.boardContent}">(긴내용)</span>
                             <br>
                             <span class="more-btn pointer">더 보기</span>
@@ -217,7 +218,7 @@
         <!-- 추천 헤더 -->
         <div class="recommend-header">
           <span class="recommend-text">회원님을 위한 추천</span>
-          <span class="recommend-all pointer">모두 보기</span>
+          <span class="recommend-all pointer">새로고침</span>
         </div>
 
         <!-- 추천 목록 -->

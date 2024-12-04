@@ -13,6 +13,7 @@ import edu.kh.cgram.common.dto.Pagination;
 import edu.kh.cgram.follow.dto.Follow;
 import edu.kh.cgram.main.mapper.MainMapper;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.story.dto.Story;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -112,8 +113,11 @@ public class MainServiceImpl implements MainService {
 		// 팔로우 하지 않은 회원 추천 목록
 		List<Recommend> recommendList = mapper.selectRecommendList(memberNo);
 		
+		List<Story> storyList = mapper.selectStoryList(memberNo);
+		
 		// 5. 목록 조회 결과 + Pagination 객체를 Map으로 묶어서 반환
 		Map<String, Object> map = new HashMap<>();
+		map.put("storyList", storyList);
 		map.put("feedList", feedList);
 		map.put("pagination", pagination);
 		map.put("recommendList", recommendList);

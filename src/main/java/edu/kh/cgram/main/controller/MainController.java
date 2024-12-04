@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.cgram.main.service.MainService;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.story.dto.Story;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -75,10 +76,12 @@ public class MainController {
 		// Feed 목록 조회
 		map = mainService.selectFeedList(memberNo, cp);
 		
+		List<Story> storyList = (List<Story>) map.get("storyList");
 		List<Recommend> recommendList = (List<Recommend>) map.get("recommendList");
 		List<Board> feedList = (List<Board>) map.get("feedList");
 		Pagination pagination = (Pagination) map.get("pagination");
 		
+		model.addAttribute("storyList", storyList);
 		model.addAttribute("recommendList", recommendList);
 		model.addAttribute("feedList", feedList);
 		model.addAttribute("pagination", pagination);

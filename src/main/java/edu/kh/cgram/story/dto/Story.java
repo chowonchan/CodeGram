@@ -21,9 +21,7 @@ public class Story {
 	private String 	imgPath;
 	private String  imgRename;
 	private String 	createdAt;
-	private String 	modifiedAt;
 	private char 	storyDelFl;
-	private int 	readCount;
 	private int 	memberNo;
 	
 	
@@ -35,9 +33,3 @@ public class Story {
 	private String 	storyCheck; // 'Y' or 'N'
 	private String 	storyLiked; // 'Y' or 'N'
 }
-
-/*
-	storyNo;	imgPath;		createdAt;			modifiedAt;		storyDelFl;		readCount;
-	memberNo;	profileImg;		memberNickname;		likeCount;		storyCheck;		storyLiked;
-	imgRename;
- */

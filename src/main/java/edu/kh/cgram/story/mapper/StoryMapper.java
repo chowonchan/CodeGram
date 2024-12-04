@@ -10,22 +10,6 @@ import io.lettuce.core.dynamic.annotation.Param;
 @Mapper
 public interface StoryMapper {
 
-	List<Story> getFollowingStories(String memberNickname);
-
-	Story getStoryDetail(Long storyNo);
-
-	void updateStoryCheck(
-			@Param("storyNo") Long storyNo,
-			@Param("memberNickname") String memberNickname);
-	
-	/*
-	 * // 좋아요 추가 public int insertStoryLike(@Param("storyNo") Long
-	 * storyNo, @Param("memberNo") Long memberNo);
-	 * 
-	 * // 좋아요 삭제 public int deleteStoryLike(@Param("storyNo") Long
-	 * storyNo, @Param("memberNo") Long memberNo);
-	 */
-	
 	
 	// 회원 번호로 memberNo 조회
 	int getMemberNo(String memberNickname);
@@ -33,4 +17,19 @@ public interface StoryMapper {
 	Story storyDetail(@Param("memberNo") int memberNo, @Param("storyNo") int storyNo);
 	
 	int storyInsert(Story story);
+
+	
+	// 새로 작성 코드들
+	
+	// 스토리를 이미 읽었는지 확인
+	int checkStory(@Param("storyNo") int storyNo,@Param("memberNo") int memberNo);
+
+	// 스토리 리드 추가
+	int insertStoryRead(@Param("storyNo") int storyNo,@Param("memberNo") int memberNo);
+
+	// 로그인한 회원이 팔로우한 회원들의 24시간 이내 스토리 목록 조회
+	int selectStoryList(int memberNo);
+
+	//팔로우한 회원의 24시간 내 스토리 존재 여부 확인
+	int selectStoryHas(int memberNo);
 }
