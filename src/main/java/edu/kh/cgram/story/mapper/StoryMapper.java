@@ -33,3 +33,5 @@ public interface StoryMapper {
 	//팔로우한 회원의 24시간 내 스토리 존재 여부 확인
 	int selectStoryHas(int memberNo);
 }
+
+
