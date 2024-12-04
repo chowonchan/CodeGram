@@ -2,64 +2,63 @@
 /* 좋아요 클릭 시 */
 /* ----------------------------------------------------- */
 
+const boardArticles = document.querySelectorAll(".board-article");
 
-const boardLike = document.querySelector(".boardLike");
-boardLike?.addEventListener("click", e => {
+boardArticles.forEach(boardArticle => {
+  const heart = boardArticle.querySelector(".fa-heart");
+  heart?.addEventListener("click", e => {
+    const boardNo = boardArticle.dataset.boardNo;
+    console.log("boardNo : ", boardNo);
+    // 1. 로그인 여부 검사
+    if (loginCheck === false) {
+      alert("로그인 후 이용해 주세요");
+      return;
+    }
 
-  // 1. 로그인 여부 검사
-  if (loginCheck === false) {
-    alert("로그인 후 이용해 주세요");
-    return;
-  }
+
+    // 2. 비동기로 좋아요 요청
+    fetch("/board/like", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: boardNo
+    })
+      .then(response => {
+        if (response.ok) return response.json();
+        throw new Error("좋아요 실패");
+      })
+      .then(result => {
+        console.log("heart : ", heart);
+
+        // 좋아요 결과가 담긴 result 객체의 check 값에 따라
+        // 하트 아이콘을 비우기/채우기 지정
+        if (result.check === 'insert') { // 채우기
+          heart.classList.add("fa-solid", "liked");
+          heart.classList.remove("fa-regular");
+
+          const content =
+            `<strong>${loginMemberName}</strong>
+          님이 좋아요를 누르셨습니다<br>`;
+
+          const url = `/member/${memberNickname}`
+          // type, url, pkNo, content
+          sendNoti(
+            "boardLike",  // type
+            url,  // 게시글 상세 조회 페이지 주소
+            boardNo,  // 게시글 번호
+            content
+          );
+
+        } else { // 비우기
+          heart.classList.add("fa-regular");
+          heart.classList.remove("fa-solid", "liked");
+        }
+
+      })
+      .catch(err => console.error(err));
 
 
-  // 2. 비동기로 좋아요 요청
-  fetch("/board/like", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: boardNo
   })
-    .then(response => {
-      if (response.ok) return response.json();
-      throw new Error("좋아요 실패");
-    })
-    .then(result => {
-      //console.log("result : ", result);
-
-      // 좋아요 결과가 담긴 result 객체의 check 값에 따라
-      // 하트 아이콘을 비우기/채우기 지정
-      if (result.check === 'insert') { // 채우기
-        boardLike.classList.add("fa-solid");
-        boardLike.classList.remove("fa-regular");
-
-        const content =
-          `<strong>${loginMemberName}</strong>
-        님이 좋아요를 누르셨습니다<br>`;
-
-        const url = `/member/${memberNickname}`
-        // type, url, pkNo, content
-        sendNoti(
-          "boardLike",  // type
-          url,  // 게시글 상세 조회 페이지 주소
-          board.boardNo,  // 게시글 번호
-          content
-        );
-
-      } else { // 비우기
-        boardLike.classList.add("fa-regular");
-        boardLike.classList.remove("fa-solid");
-      }
-
-      // 좋아요 하트 다음 형제 요소의 내용을 
-      // result.count로 변경
-      boardLike.nextElementSibling.innerText = result.count;
-
-    })
-    .catch(err => console.error(err));
-
-
-})
-
+});
 
 
 
@@ -190,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const articleElement = document.createElement('article');
       articleElement.className = 'board-article';
 
+      articleElement.dataset.boardNo = board.boardNo;
+
       // 게시판 데이터로 기사 채우기(원래 HTML과 동일한 구조 사용)
       articleElement.innerHTML = `
     <div class="post">
@@ -244,10 +245,10 @@ document.addEventListener('DOMContentLoaded', function () {
         <section class="section-1">
           <div class="box-1">
             <button class="action-button like-button pointer" data-board-no="${board.boardNo}">
-              <svg class="like-icon boardLike" class="${board.likeCheck == 1 ? 'red' : 'none'}" height="24" width="24"
-                viewBox="0 0 24 24">
-                <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z" />
-              </svg>
+               <div class="action-button-div">
+                  <span class="fa-heart ${board.likeCheck == 1 ? 'fa-solid liked': 'fa-regular'}">
+                  </span>
+                </div>
             </button>
             <button class="action-button comment-button pointer">
               <svg class="comment-icon" height="24" width="24" viewBox="0 0 24 24">
@@ -283,6 +284,14 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 
   `;
+    
+      const a = articleElement.querySelector(".important-box a");
+      a.addEventListener("click", e => {
+        e.preventDefault();
+
+        const boardNo = a.href.split("/").pop();
+        openDetail(boardNo);
+      })
 
       wrapper.append(articleElement);
     });
@@ -381,3 +390,18 @@ mainFollowBtnList.forEach((mainFollowBtn, index) => {
     }
   });
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+  const openopen = document.querySelectorAll(".important-box a");
+  
+  console.log(openopen);
+
+  openopen.forEach(a => {
+    a.addEventListener("click", e => {
+      e.preventDefault();
+
+      const boardNo = a.href.split("/").pop();
+      openDetail(boardNo);
+    })
+  });
+});

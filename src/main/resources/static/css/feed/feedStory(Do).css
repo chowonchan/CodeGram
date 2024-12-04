@@ -81,7 +81,7 @@
 /* 스토리 섹션 컨테이너 */
 .stories-section {
   position: relative;
-  width: 100%;
+  width: 650px;
   background: #fff;
   border: 1px solid #dbdbdb;
   border-radius: 8px;

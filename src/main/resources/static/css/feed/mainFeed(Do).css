@@ -38,17 +38,15 @@ body {
   /* 화면 상단에 고정 */
   top: 0;
   /* 화면의 상단에 고정 */
-  right: 10px;
+  right: 300px;
   /* 화면의 오른쪽 끝에 배치 */
-  width: 300px;
+  width: 340px;
   /* section-right의 너비 설정 */
   height: 100%;
   /* 화면의 전체 높이를 차지하도록 설정 */
   background-color: #fff;
   /* 배경색 */
   z-index: 0;
-  /* 다른 요소 위에 표시 */
-  padding-left: 64px;
   /* section-right의 왼쪽에 64px 패딩 추가 */
   transition: right 0.3s ease;
   /* 숨길 때 부드럽게 이동 */
@@ -87,8 +85,7 @@ body {
   justify-content: center;
   gap: 32px;
   margin-top: 20px;
-  padding: 0 20px;
-  max-width: 935px;
+  width: 500px;
   margin: 0 auto;
   flex-direction: column;
 }
@@ -106,8 +103,7 @@ body {
 .post {
   background-color: #ffffff;
   border-bottom: 1px solid #DBDBDB;
-  max-width: 470px;
-  width: 100%;
+  width: 500px;
   height: 700px;
   padding-bottom: 16px;
   margin-bottom: 20px;
@@ -120,8 +116,6 @@ body {
 /* 게시물 아티클 */
 .board-article {
   background-color: #fff;
-  border-radius: 8px;
-  border-bottom: 1px solid #DBDBDB;
   margin-bottom: 24px;
   flex-direction: column;
   width: 100%;
@@ -143,10 +137,6 @@ body {
 .post-header a {
   text-decoration: none;
   color: inherit;
-}
-
-.post-header-padding {
-  border-bottom: 1px solid #efefef;
 }
 
 /* 프로필 영역 */
@@ -181,21 +171,10 @@ body {
   padding: 8px;
 }
 
-/* 게시물 이미지 */
-/* .post-image {
-  width: 100%;
-  max-height: 767px;
-  object-fit: cover;
-  flex-shrink: 0;
-  width: 468px;
-  height: 468px;
-  object-fit: cover;
-} */
-
 /* 중요 박스 (좋아요, 댓글 등) */
 .important-box {
   height: 170px;
-  width: 470px;
+  width: 500px;
   font-size: 14px;
 }
 .important-box a {
@@ -208,6 +187,9 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 6px 0 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 .box-1 {
@@ -239,7 +221,6 @@ body {
 .detailBtn {
   color: #8e8e8e;
 }
-
 
 /* 유틸리티 클래스 */
 .inline-block {
@@ -273,7 +254,6 @@ body {
   padding: 0px;
   margin: 0px;
 }
-
 
 /* 좋아요 버튼 스타일 */
 .like-button {

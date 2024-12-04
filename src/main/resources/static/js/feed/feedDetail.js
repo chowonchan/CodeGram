@@ -123,6 +123,17 @@ const openDetail = (boardNo) => {
             modalOverlay.style.overflowY = "scroll";
             modalOverlay.style.overflowX = "hidden";
 
+
+            
+            const articles = document.querySelectorAll(".board-article");
+
+            for(let article of articles) {
+                if(article.dataset.boardNo == boardNo) {
+                    article.querySelector(".likeCount").innerText = data.likeCount;
+                }
+            }
+
+
         })
         .catch(err => {
             console.error(err);
@@ -217,6 +228,14 @@ document.querySelector(".detail-edit-delete-button.delete").addEventListener("cl
 const likeFunction = (boardNo) => {
     const isLiked = likeButton.classList.contains('liked');
 
+    let mainLikeBtn;
+    document.querySelectorAll(".board-article").forEach(article => {
+        if(article.dataset.boardNo == boardNo) {
+            mainLikeBtn = article.querySelector(".fa-heart");
+        }
+    })
+
+
     if (isLiked) {
         // 좋아요 취소 요청
         fetch("/board/unlike", {
@@ -228,6 +247,11 @@ const likeFunction = (boardNo) => {
                 if (response.ok) {
                     likeButton.classList.remove("fa-solid", "liked");
                     likeButton.classList.add("fa-regular");
+
+                    mainLikeBtn.classList.remove("fa-solid", "liked");
+                    mainLikeBtn.classList.add("fa-regular");
+
+                    
                     openDetail(boardNo); // 좋아요 상태 갱신
                 } else {
                     throw new Error("좋아요 취소 실패");
@@ -249,6 +273,9 @@ const likeFunction = (boardNo) => {
                 if (result === 1) {
                     likeButton.classList.remove("fa-regular");
                     likeButton.classList.add("fa-solid", "liked");
+
+                    mainLikeBtn.classList.remove("fa-regular");
+                    mainLikeBtn.classList.add("fa-solid", "liked");
 
                     const content =
                         `<strong>${loginMemberName}</strong>
