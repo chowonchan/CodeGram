@@ -682,14 +682,14 @@ const notReadCheck = () => {
   // 로그인 여부 확인
   if (!notificationLoginCheck) return;
 
-  fetch("/notification/notReadCheck")
+  fetch("/sse/notification/notReadCheck")
     .then(response => {
       if (!response.ok) throw new Error("알림 확인 실패");
-      return response.json(); // 서버에서 JSON 값 반환
+      return response.text(); // 서버에서 JSON 값 반환
     })
     .then(data => {
       // 서버에서 반환되는 값이 "true" 또는 "false" 문자열임을 가정
-      const hasUnread = (data.hasUnread === "true"); // 서버에서 'true'/'false' 문자열 반환 확인
+      const hasUnread = (data === "true"); // 서버에서 'true'/'false' 문자열 반환 확인
 
       const notificationCountArea = document.querySelector(".notification-count-area");
 
@@ -697,6 +697,8 @@ const notReadCheck = () => {
         console.error("notification-count-area 요소를 찾을 수 없습니다.");
         return;
       }
+
+      
 
       console.log(hasUnread); // true 또는 false 출력
 
@@ -763,6 +765,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   }
+
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  notReadCheck(); // 알림 확인
+
+  setInterval(notReadCheck, 100);
 
 });
 
