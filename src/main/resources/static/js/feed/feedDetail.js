@@ -78,7 +78,7 @@ const openDetail = (boardNo) => {
                 li.innerHTML = `
           <span class="user-avatar"><img src="${comment.profileImg}" alt="User Avatar"></span>
           <div class="comment-info">
-            <a href="/member/${comment.memberNickname}" class="user-nickname">${comment.memberNickname}</a>
+            <a href="/member/${comment.memberNickname}" class="commentUser-nickname">${comment.memberNickname}</a>
             <span class="comment-text">${comment.commentContent}</span>
             <div class="comment-time-section">
               <span class="comment-time">${comment.createdAt}</span>
@@ -487,6 +487,9 @@ document.addEventListener("click", (e) => {
       const commentNo = e.target.dataset.commentNo;
       const isLiked = e.target.classList.contains("liked");
 
+      const commentLikeButtons = Array.from(document.querySelectorAll(".comment-like-button"));
+      const index = commentLikeButtons.indexOf(e.target)
+
       if (isLiked) {
           // 좋아요 취소
           fetch("/board/comment/unlike", {
@@ -516,15 +519,22 @@ document.addEventListener("click", (e) => {
                   e.target.classList.replace("fa-regular", "fa-solid");
 
 
-                  const memberNickname = document.querySelector("#userNickname").innerText;
+                  const commentNickname = document.querySelectorAll(".commentUser-nickname")[index].innerText;
+                  const boardNo = feedModal.dataset.boardNo;
+
       
-                  const url = `/member/${memberNickname}?bNo=${boardNo}`;
-        
+                  const url = `/member/${commentNickname}?bNo=${boardNo}`;
+
+                  const content =
+                  `<strong>${loginMemberName}</strong>님이 
+                    회원님의 게시글에 <br>
+                    좋아요를 눌렀습니다`;
+                
                   // type, url, pkNo, content
                   sendNoti(
-                    "commentLike",  // type
+                    "CommentLike",  // type
                     url,  // 게시글 상세 조회 페이지 주소
-                    boardNo,  // 게시글 번호
+                    commentNo,  // 게시글 번호
                     content
                   );
               } else {
