@@ -298,22 +298,24 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// document.querySelectorAll('.recommend-user-img').forEach(element => {
-//   element.addEventListener('click', function() {
-//     const memberNickname = this.getAttribute('data-nickname');
-//     // 닉네임을 이용해 /member/${nickname}으로 이동
-//     window.location.href = `/member/${memberNickname}`;
-//   });
-// });
-
-
-
-
 
 const mainFollowBtnList = document.querySelectorAll(".main-follow-btn");
-const recommendAll = document.querySelector(".recommend-all pointer");
+const recommendNicknames1 = document.querySelectorAll(".recommend-user-img");
+const recommendNicknames2 = document.querySelectorAll(".recommend-user-info");
+
 
 mainFollowBtnList.forEach((mainFollowBtn, index) => {
+
+  // 추천 팔로우 회원 프로필 페이지 이동
+  recommendNicknames1[index].addEventListener("click", () => {
+    const recommendNickname = document.querySelectorAll(".recommend-user-nickname")[index].innerText
+    window.location.href = `/member/${recommendNickname}`
+  })
+  recommendNicknames2[index].addEventListener("click", () => {
+    const recommendNickname = document.querySelectorAll(".recommend-user-nickname")[index].innerText
+    window.location.href = `/member/${recommendNickname}`
+  })
+
 
   mainFollowBtn.addEventListener("click", async () => {
     if (mainFollowBtn.disabled) {

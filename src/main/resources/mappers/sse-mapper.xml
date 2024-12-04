@@ -125,12 +125,16 @@
 	<select id="notReadCheck" resultType="boolean">
 		SELECT CASE 
 		    WHEN EXISTS (
+		    
 		        SELECT 1
 		        FROM "NOTIFICATION"
 		        WHERE NOTIFICATION_CHECK = 'N'
+		        AND RECEIVE_MEMBER_NO = #{receiveMemberNo}
+		        
 		    ) THEN 'true'
 		    ELSE 'false'
 		END AS hasUnread
+		FROM DUAL
 	</select>
 	
 	
