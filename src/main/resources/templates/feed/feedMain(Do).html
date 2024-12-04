@@ -44,7 +44,8 @@
 
               <div class="stories-container" th:if="${not #lists.isEmpty(storyList)}">
                 <div th:each="story : ${storyList}" class="story-item" th:data-story-id="${story.storyNo}">
-                  <div class="story-wrapper" th:class="${story.storyCheck ? 'viewed' : ''}">
+                  <!-- <div class="story-wrapper"   th:classappend="${story.storyCheck != null? 'viewed' : ''}"> -->
+                  <div class="story-wrapper">
                     <div class="story-border">
                       <img th:src="${story.profileImg != null ? story.profileImg : '/path/to/default/image.jpg'}"
                         class="story-profile-image">
@@ -149,7 +150,7 @@
                             </button>
                             <button class="action-button comment-button pointer">
                               <div class="action-button-div">
-                                <i class="fa-comment"></i>
+                                <div class="fa-regular fa-comment"></div>
                               </div>
                             </button>
                           </div>
