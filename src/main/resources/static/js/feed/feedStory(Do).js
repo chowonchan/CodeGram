@@ -1,57 +1,3 @@
-
-document.addEventListener('DOMContentLoaded', () => {
-  // 스토리 아이템 클릭 이벤트 처리
-  const storyItems = document.querySelectorAll('.story-item');
-
-  storyItems.forEach(item => {
-    item.addEventListener('click', function () {
-      const storyId = this.dataset.storyId;
-      const memberNickname = this.querySelector('.story-username').textContent;
-
-      // 스토리 모달 URL 생성 및 이동
-      const storyUrl = `${window.location.pathname}/stories/${memberNickname}/${storyId}`;
-
-      // AJAX를 통한 스토리 조회 상태 업데이트
-      fetch(`/api/story/view/${storyId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // 스토리 읽음 표시 업데이트
-            this.querySelector('.story-wrapper').classList.add('viewed');
-            // 모달 열기
-            window.location.href = storyUrl;
-          }
-        });
-    });
-  });
-
-  // 네비게이션 버튼 기능
-  let currentPosition = 0;
-  const storiesContainer = document.querySelector('.stories-container');
-
-  function navigateStories(direction) {
-    const storyWidth = 80; // 스토리 아이템 너비 + 마진
-    const visibleStories = 6;
-    const maxScroll = storiesContainer.scrollWidth - (storyWidth * visibleStories);
-
-    if (direction === 'next') {
-      currentPosition = Math.min(currentPosition + storyWidth, maxScroll);
-    } else {
-      currentPosition = Math.max(currentPosition - storyWidth, 0);
-    }
-
-    storiesContainer.scrollTo({
-      left: currentPosition,
-      behavior: 'smooth'
-    });
-  }
-});
-
 // mainFeed.js
 document.addEventListener('DOMContentLoaded', () => {
   const storiesContainer = document.querySelector('.stories-container');
@@ -82,19 +28,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+
+
+
+
   // 스토리 아이템 클릭 이벤트 처리
   const storyItems = document.querySelectorAll('.story-item');
 
   storyItems.forEach(item => {
     item.addEventListener('click', function () {
-      const storyId = this.dataset.storyId;
+      const storyNo = this.dataset.storyNo;
       const memberNickname = this.querySelector('.story-username').textContent;
 
+
       // 스토리 모달 URL 생성 및 이동
-      const storyUrl = `${window.location.pathname}/story/${memberNickname}/${storyId}`;
+      const storyUrl = `${location.href.split("/")[2]}/story/${memberNickname}`;
 
       // AJAX를 통한 스토리 조회 상태 업데이트
-      fetch(`/api/story/view/${storyId}`, {
+      fetch(`/api/story/view/${storyNo}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
   });
+
+
 
   // 네비게이션 버튼 기능
   function navigateStories(direction) {

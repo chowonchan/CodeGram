@@ -78,7 +78,7 @@ const openDetail = (boardNo) => {
                 li.innerHTML = `
           <span class="user-avatar"><img src="${comment.profileImg}" alt="User Avatar"></span>
           <div class="comment-info">
-            <a href="/member/${comment.memberNickname}" class="user-nickname">${comment.memberNickname}</a>
+            <a href="/member/${comment.memberNickname}" class="commentUser-nickname">${comment.memberNickname}</a>
             <span class="comment-text">${comment.commentContent}</span>
             <div class="comment-time-section">
               <span class="comment-time">${comment.createdAt}</span>
@@ -122,6 +122,17 @@ const openDetail = (boardNo) => {
             // 모달창에 스크롤을 주겠다 == 스크롤바가 존재는 하지만 비활성 상태로 존재
             modalOverlay.style.overflowY = "scroll";
             modalOverlay.style.overflowX = "hidden";
+
+
+            
+            const articles = document.querySelectorAll(".board-article");
+
+            for(let article of articles) {
+                if(article.dataset.boardNo == boardNo) {
+                    article.querySelector(".likeCount").innerText = data.likeCount;
+                }
+            }
+
 
         })
         .catch(err => {
@@ -236,6 +247,14 @@ document.querySelector(".detail-edit-delete-button.delete").addEventListener("cl
 const likeFunction = (boardNo) => {
     const isLiked = likeButton.classList.contains('liked');
 
+    let mainLikeBtn;
+    document.querySelectorAll(".board-article").forEach(article => {
+        if(article.dataset.boardNo == boardNo) {
+            mainLikeBtn = article.querySelector(".fa-heart");
+        }
+    })
+
+
     if (isLiked) {
         // 좋아요 취소 요청
         fetch("/board/unlike", {
@@ -247,6 +266,11 @@ const likeFunction = (boardNo) => {
                 if (response.ok) {
                     likeButton.classList.remove("fa-solid", "liked");
                     likeButton.classList.add("fa-regular");
+
+                    mainLikeBtn.classList.remove("fa-solid", "liked");
+                    mainLikeBtn.classList.add("fa-regular");
+
+                    
                     openDetail(boardNo); // 좋아요 상태 갱신
                 } else {
                     throw new Error("좋아요 취소 실패");
@@ -268,6 +292,9 @@ const likeFunction = (boardNo) => {
                 if (result === 1) {
                     likeButton.classList.remove("fa-regular");
                     likeButton.classList.add("fa-solid", "liked");
+
+                    mainLikeBtn.classList.remove("fa-regular");
+                    mainLikeBtn.classList.add("fa-solid", "liked");
 
                     const content =
                         `<strong>${loginMemberName}</strong>
@@ -479,6 +506,9 @@ document.addEventListener("click", (e) => {
       const commentNo = e.target.dataset.commentNo;
       const isLiked = e.target.classList.contains("liked");
 
+      const commentLikeButtons = Array.from(document.querySelectorAll(".comment-like-button"));
+      const index = commentLikeButtons.indexOf(e.target)
+
       if (isLiked) {
           // 좋아요 취소
           fetch("/board/comment/unlike", {
@@ -508,15 +538,22 @@ document.addEventListener("click", (e) => {
                   e.target.classList.replace("fa-regular", "fa-solid");
 
 
-                  const memberNickname = document.querySelector("#userNickname").innerText;
+                  const commentNickname = document.querySelectorAll(".commentUser-nickname")[index].innerText;
+                  const boardNo = feedModal.dataset.boardNo;
+
       
-                  const url = `/member/${memberNickname}?bNo=${boardNo}`;
-        
+                  const url = `/member/${commentNickname}?bNo=${boardNo}`;
+
+                  const content =
+                  `<strong>${loginMemberName}</strong>님이 
+                    회원님의 게시글에 <br>
+                    좋아요를 눌렀습니다`;
+                
                   // type, url, pkNo, content
                   sendNoti(
-                    "commentLike",  // type
+                    "CommentLike",  // type
                     url,  // 게시글 상세 조회 페이지 주소
-                    boardNo,  // 게시글 번호
+                    commentNo,  // 게시글 번호
                     content
                   );
               } else {

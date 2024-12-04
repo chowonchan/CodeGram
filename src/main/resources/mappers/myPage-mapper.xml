@@ -15,10 +15,13 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 	
-	<select id="getStoriesByMemberNo" resultType="Story">
+	<select id="selectMyStory" resultType="myStory">
 	    SELECT S.* 
 	    FROM STORY S
 	    WHERE S.MEMBER_NO = #{memberNo}
+	    ORDER BY CREATED_AT DESC
+    	OFFSET (#{cp}-1)*10 ROWS
+    	FETCH NEXT 10 ROWS ONLY
 	</select>
 	
 	
@@ -29,12 +32,17 @@
         WHERE M.MEMBER_NO = #{memberNo}
     </select>
 	
-	
-
 	<select id="findMemberByNickname" resultType="Member">
 	    SELECT * 
 	    FROM MEMBER 
 	    WHERE NICKNAME = #{nickname}
+	</select>
+	
+	<select id="MyStoryCount">
+		SELECT COUNT(*)
+		FROM STORY
+		WHERE MEMBER_NO = #{memberNo}
+		AND STORY_DEL_FL = 'N'
 	</select>
 
 	

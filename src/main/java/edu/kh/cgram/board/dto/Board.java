@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.List;
 
 import edu.kh.cgram.follow.dto.Follow;
+import edu.kh.cgram.story.dto.Story;
 
 @Getter
 @Setter
@@ -55,6 +56,8 @@ public class Board {
     
     // 특정 회원의 팔로우하지 않은 회원 추천 목록
     private List<Recommend> recommendList;
+    
+    private List<Story> storyList;
     
     // 좋아요 체크 여부를 저장할 필드( 1 == 누른적 있음)
     private int likeCheck;

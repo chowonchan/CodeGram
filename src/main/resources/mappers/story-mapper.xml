@@ -38,6 +38,7 @@
         VALUES (#{storyNo}, #{imgPath}, DEFAULT, DEFAULT, DEFAULT, #{memberNo}, #{imgRename})
     </insert>
 
+
     <update id="storyDelete">
         UPDATE STORY
         SET STORY_DEL_FL = 'Y'
@@ -68,94 +69,64 @@
         ORDER BY 
             CASE WHEN SR.STORY_NO IS NULL THEN 0 ELSE 1 END,
             S.CREATED_AT DESC
-    </select>
 
-    <!-- 특정 스토리 상세 조회 -->
-    <select id="getStoryDetail" resultType="Story">
-        SELECT 
-            S.STORY_NO, S.IMG_PATH, S.CREATED_AT,
-            M.MEMBER_NO, M.MEMBER_NICKNAME, M.PROFILE_IMG,
-            S.READ_COUNT,
-            (SELECT COUNT(*) FROM STORY_LIKE WHERE STORY_NO = S.STORY_NO) AS LIKE_COUNT,
-            NVL2(
-                (SELECT 'Y' FROM STORY_LIKE 
-                 WHERE STORY_NO = S.STORY_NO
-                 AND MEMBER_NO = #{memberNo}),
-                'Y', 'N'
-            ) AS STORY_LIKED
-        FROM STORY S
-        JOIN MEMBER M ON S.MEMBER_NO = M.MEMBER_NO
-        WHERE S.STORY_NO = #{storyNo}
-        AND S.STORY_DEL_FL = 'N'
-    </select>
+    
+    
+    
+    <!-- 아래는 수정이 필요할 수 있는 코드 -->
+    
+    <!-- 스토리를 이미 읽었는지 확인 -->
+    <select id="checkStory" resultType="_int">
+    	SELECT
+    		COUNT(*)
+    	FROM
+    		"STORY_READ"
+    	WHERE
+    		MEMBER_NO = #{memberNo}
+    	AND
+    		STORY_NO = #{storyNo}
 
-    <!-- 스토리 읽음 처리 -->
+    </select>
+    
+    
+    <!-- 스토리를 누르면 스토리 리드 추가 -->
     <insert id="insertStoryRead">
-        INSERT INTO STORY_READ (MEMBER_NO, STORY_NO)
-        VALUES (#{memberNo}, #{storyNo})
+    	INSERT INTO "STORY_READ" (MEMBER_NO, STORY_NO, CREATED_AT)
+    	VALUES(#{memberNo}, #{storyNo}, DEFAULT)
     </insert>
-
-    <!-- 스토리 조회수 증가 -->
-    <update id="updateReadCount">
-        UPDATE STORY
-        SET READ_COUNT = READ_COUNT + 1
-        WHERE STORY_NO = #{storyNo}
-    </update>
-
-<!-- 	
-	좋아요 추가
-	<insert id="insertStoryLike">
-	    INSERT INTO STORY_LIKE (MEMBER_NO, STORY_NO)
-	    VALUES (#{memberNo}, #{storyNo})
-	</insert>
-	
-	좋아요 취소
-	<delete id="deleteStoryLike">
-	    DELETE FROM STORY_LIKE
-	    WHERE MEMBER_NO = #{memberNo}
-	    AND STORY_NO = #{storyNo}
-	</delete>
-	 -->
-    <!-- 팔로우한 사용자의 스토리 존재 여부 확인 -->
-    <select id="hasNewStories" resultType="_int">
-        SELECT CASE 
-            WHEN COUNT(*) > 0 THEN 1 
-            ELSE 0 
-        END
-        FROM STORY S
-        WHERE S.MEMBER_NO IN (
-            SELECT FOLLOWING_NO 
-            FROM FOLLOW 
-            WHERE FOLLOWER_NO = #{memberNo}
-        )
-        AND S.STORY_DEL_FL = 'N'
-        AND S.CREATED_AT >= CURRENT_DATE - 1
-        AND NOT EXISTS (
-            SELECT 1 
-            FROM STORY_READ SR 
-            WHERE SR.STORY_NO = S.STORY_NO 
-            AND SR.MEMBER_NO = #{memberNo}
-        )
+    
+    <!-- 팔로우한 회원의 24시간 내 스토리 존재 여부 확인 -->
+    <select id="selectStoryHas">
+    	SELECT count(*)
+		FROM STORY S1
+		JOIN MEMBER M1 ON (S1.MEMBER_NO = M1.MEMBER_NO)
+		WHERE S1.STORY_DEL_FL = 'N'
+		AND S1.CREATED_AT > CURRENT_DATE - 1
+		AND	M1.MEMBER_NO IN (
+			SELECT FOLLOWER_MEMBER
+			FROM FOLLOW
+			WHERE FOLLOWING_MEMBER = #{memberNo})
     </select>
-
-
-
-    <!-- 로그인한 사람이 팔로우한 회원 번호 조회 -->
-    <select id="selectMyFollowerList" resultType="Member">
-        SELECT F.FOLLOWER_MEMBER, M.MEMBER_NICKNAME, M.PROFILE_IMG
-        FROM FOLLOW F
-             JOIN MEMBER M ON(F.FOLLOWER_MEMBER = M.MEMBER_NO)
-        WHERE F.FOLLOWING_MEMBER = #{memberNo}        
+    
+    <!-- 로그인한 회원이 팔로우한 회원들의 24시간 이내의 스토리 목록 조회 -->
+    <select id="selectStoryList" resultType="Story">
+		SELECT M1.MEMBER_NICKNAME,
+		       M1.PROFILE_IMG
+		FROM STORY S1
+		JOIN MEMBER M1 ON (S1.MEMBER_NO = M1.MEMBER_NO)
+		WHERE S1.STORY_DEL_FL = 'N'
+		  AND S1.CREATED_AT > CURRENT_DATE - 1
+		  AND M1.MEMBER_NO IN (
+		       SELECT FOLLOWER_MEMBER
+		       FROM FOLLOW
+		       WHERE FOLLOWING_MEMBER = #{memberNo}
+		  )
+		GROUP BY M1.MEMBER_NICKNAME, M1.PROFILE_IMG
+		ORDER BY M1.MEMBER_NICKNAME
     </select>
+    
+    
 
-    <!-- 특정 회원이 24시간 이내에 작성한 스토리만 조회 -->
-    <select id="selectTodayStoryList" resultType="Story">
-        SELECT *
-        FROM STORY
-        WHERE MEMBER_NO = #{memberNo}
-        AND  CREATED_AT > CURRENT_DATE - 1
-        AND STORY_DEL_FL = 'N'
-    </select>
 
 
 </mapper>

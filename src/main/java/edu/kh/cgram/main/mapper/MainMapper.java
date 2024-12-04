@@ -11,6 +11,7 @@ import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.dto.Recommend;
 import edu.kh.cgram.follow.dto.Follow;
 import edu.kh.cgram.member.dto.Member;
+import edu.kh.cgram.story.dto.Story;
 
 @Mapper
 public interface MainMapper {
@@ -62,5 +63,8 @@ public interface MainMapper {
 
 	// 팔로우하지 않은 회원 추천 목록
 	List<Recommend> selectRecommendList(int memberNo);
+	
+	// 팔로우 한 스토리 목록
+	List<Story> selectStoryList(int memberNo);
 
 }

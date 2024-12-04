@@ -668,37 +668,6 @@ async function loadFollowerList() {
     tabs.myUploadsTab?.addEventListener("click", () => activateTab(tabs.myUploadsTab, "uploads"));
     tabs.savedTab?.addEventListener("click", () => activateTab(tabs.savedTab, "saved"));
   }
-  
-  // 페이지네이션 설정
-  // function setupPagination(posts, type) {
-  //   const itemsPerPage = 9; // 가로 3개, 세로 3개씩 표시
-  //   const totalPages = Math.ceil(posts.length / itemsPerPage);
-  //   let currentPage = 1;
-
-  //   // 페이지네이션 컨테이너 초기화
-  //   const paginationContainer = document.getElementById("pagination");
-  //   paginationContainer.innerHTML = "";
-
-  //   // 페이지네이션 버튼 생성
-  //   for (let i = 1; i <= totalPages; i++) {
-  //     const pageButton = document.createElement("button");
-  //     pageButton.className = "page-button";
-  //     pageButton.textContent = i;
-  //     if (i === currentPage) pageButton.classList.add("active");
-
-  //     pageButton.addEventListener("click", () => {
-  //       currentPage = i;
-  //       document.querySelectorAll(".page-button").forEach(btn => btn.classList.remove("active"));
-  //       pageButton.classList.add("active");
-  //       renderPosts(posts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage), type);
-  //     });
-
-  //     paginationContainer.appendChild(pageButton);
-  //   }
-
-  //   // 초기 렌더링
-  //   renderPosts(posts.slice(0, itemsPerPage), type);
-  // }
 
 
   // 게시물 렌더링
@@ -721,16 +690,6 @@ async function loadFollowerList() {
       // 게시물이 있는 경우 클래스 제거
       postsContent.classList.remove("no-posts-container");
       postsContent.classList.remove("no-posts-message");
-      
-    // posts.forEach(post => {
-    //   const postItem = document.createElement("div");
-    //   postItem.className = "post-item"; // 클래스 추가
-    //   postItem.innerHTML = `
-    //     <a href="/board/${post.boardNo}">
-    //       <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
-    //     </a>`;
-    //   postsContent.appendChild(postItem);
-    // });
 
     posts.forEach(post => {
       const postItem = document.createElement("div");
@@ -778,45 +737,6 @@ document.addEventListener('DOMContentLoaded',  function () {
   });
   // 주시 시작
   intersectionObserver.observe(document.querySelector("#SCmainFooter"));
-// =======
-// // 게시물 렌더링
-// function renderPosts(posts, type) {
-//   const postsContent = document.getElementById("postsContent");
-//   postsContent.innerHTML = "";
-//   if (posts.length === 0) {
-//     const noPostsContainer = document.createElement("div");
-//     noPostsContainer.className = "no-posts-container"; // 컨테이너 클래스 추가
-  
-//     const noPostsMessage = document.createElement("p");
-//     noPostsMessage.className = "no-posts-message"; // 메시지 클래스 추가
-//     noPostsMessage.textContent = type === "uploads"
-//       ? "회원님이 작성한 게시물이 존재하지 않습니다."
-//       : "회원님이 저장한 게시물이 존재하지 않습니다.";
-  
-//     noPostsContainer.appendChild(noPostsMessage);
-//     postsContent.appendChild(noPostsContainer); // 컨테이너를 추가
-//     return;
-//   }
-//     // 게시물이 있는 경우 클래스 제거
-//     postsContent.classList.remove("no-posts");
-    
-//     posts.forEach(post => {
-//       const postItem = document.createElement("div");
-//       postItem.className = "post-item"; // 클래스 추가
-    
-//       // 게시물 항목의 이미지 추가
-//       const postImage = document.createElement("img");
-//       postImage.className = "post-image";
-//       postImage.src = `${post.imgPath}${post.imgRename}`;
-//       postImage.alt = "Post Image";
-    
-//       // 클릭 이벤트로 상세 모달 열기
-//       postItem.addEventListener("click", () => openDetail(post.boardNo));
-    
-//       // post-item에 이미지 추가
-//       postItem.appendChild(postImage);
-//       postsContent.appendChild(postItem);
-//     }); 여기 옛 코드
 
 
 

@@ -38,7 +38,7 @@ function toggleSidebar() {
   }
 
   // 메시지 페이지가 아닌 경우에만 일반적인 토글 동작
-  sidebar.classList.toggle('narrow'); 
+  sidebar.classList.toggle('narrow');
   sidePanel.classList.toggle('hidden');
   toggleLogo();
 }
@@ -52,7 +52,7 @@ function showPanel(type) {
   } else {
     // 동일한 탭을 다시 클릭한 경우 사이드바와 패널 닫기
     if ((type === 'search' && searchPanel.classList.contains('active')) ||
-        (type === 'notification' && notificationPanel.classList.contains('active'))) {
+      (type === 'notification' && notificationPanel.classList.contains('active'))) {
       sidebar.classList.remove('narrow'); // `narrow` 클래스 제거
       sidePanel.classList.add('hidden'); // `sidePanel` 숨기기
 
@@ -547,16 +547,16 @@ const selectNotiList = () => {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
               });
-        
+
               const data = await response.json();
-        
+
               if (!data.success) {
                 console.error("팔로우 상태를 확인할 수 없습니다:", data.message);
                 return;
               }
-        
+
               let isFollowing = data.isFollowing === true || data.isFollowing === "1";
-        
+
               // 버튼 상태 업데이트 함수
               const updateButton = (isFollowing) => {
                 if (followAlarmBtn) {
@@ -565,7 +565,7 @@ const selectNotiList = () => {
                   followAlarmBtn.classList.toggle("notFollow", isFollowing);
                   followAlarmBtn.disabled = isFollowing;
                 }
-        
+
                 const buttonElement = document.querySelector(".profile-follow-button");
                 if (buttonElement) {
                   buttonElement.innerText = isFollowing ? "팔로우 취소" : "팔로우";
@@ -573,10 +573,10 @@ const selectNotiList = () => {
                   console.error("프로필 팔로우 버튼을 찾을 수 없습니다.");
                 }
               };
-        
+
               // 버튼 초기화
               updateButton(isFollowing);
-        
+
               // 버튼 클릭 이벤트
               followAlarmBtn.addEventListener("click", async () => {
                 if (isFollowing) {
@@ -584,9 +584,9 @@ const selectNotiList = () => {
                   const modal = document.getElementById("followCancelModal");
                   const followCancel = document.querySelector(".followCancelModal-cancelText");
                   const followClose = document.querySelector(".followCancelModal-closeText");
-        
+
                   modal.classList.remove("cancel-hidden");
-        
+
                   // 팔로우 취소 확인
                   followCancel.addEventListener("click", async () => {
                     try {
@@ -594,7 +594,7 @@ const selectNotiList = () => {
                         method: "DELETE",
                         headers: { "Content-Type": "application/json" },
                       });
-        
+
                       if (response.ok) {
                         isFollowing = false; // 상태 변경
                         updateButton(isFollowing); // 버튼 업데이트
@@ -606,7 +606,7 @@ const selectNotiList = () => {
                       modal.classList.add("cancel-hidden");
                     }
                   });
-        
+
                   // 모달 닫기
                   followClose.addEventListener("click", () => {
                     modal.classList.add("cancel-hidden");
@@ -618,7 +618,7 @@ const selectNotiList = () => {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                     });
-        
+
                     if (response.ok) {
                       isFollowing = true; // 상태 변경
                       updateButton(isFollowing); // 버튼 업데이트
@@ -629,11 +629,11 @@ const selectNotiList = () => {
                   }
                 }
               });
-        
+
               // followDiv 및 contentContainer에 버튼 추가
               followDiv.appendChild(followAlarmBtn);
               contentContainer.appendChild(followDiv);
-        
+
             } catch (error) {
               console.error("팔로우 상태를 가져오는 중 오류 발생:", error);
             }
@@ -682,14 +682,14 @@ const notReadCheck = () => {
   // 로그인 여부 확인
   if (!notificationLoginCheck) return;
 
-  fetch("/notification/notReadCheck")
+  fetch("/sse/notification/notReadCheck")
     .then(response => {
       if (!response.ok) throw new Error("알림 확인 실패");
-      return response.json(); // 서버에서 JSON 값 반환
+      return response.text(); // 서버에서 JSON 값 반환
     })
     .then(data => {
       // 서버에서 반환되는 값이 "true" 또는 "false" 문자열임을 가정
-      const hasUnread = (data.hasUnread === "true"); // 서버에서 'true'/'false' 문자열 반환 확인
+      const hasUnread = (data === "true"); // 서버에서 'true'/'false' 문자열 반환 확인
 
       const notificationCountArea = document.querySelector(".notification-count-area");
 
@@ -697,6 +697,8 @@ const notReadCheck = () => {
         console.error("notification-count-area 요소를 찾을 수 없습니다.");
         return;
       }
+
+
 
       console.log(hasUnread); // true 또는 false 출력
 
@@ -764,7 +766,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
 });
+
+
+
 
 
 /* -----------------알림 목록 창-------------------- */

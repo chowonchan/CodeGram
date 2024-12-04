@@ -1,6 +1,7 @@
 package edu.kh.cgram.story.controller;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.member.dto.Member;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
+@SessionAttributes("loginMember")
 @Controller
 @RequiredArgsConstructor
 public class StoryController {
@@ -72,35 +74,32 @@ public class StoryController {
   
   
   
-  
+  // mainFeed에서 스토리 목록 처리
   @PostMapping("/api/story/view/{storyNo}")
   @ResponseBody
-  public Map<String, Boolean> updateStoryCheck(
-  		@PathVariable Long storyNo,
-      @AuthenticationPrincipal UserDetails userDetails) {
+  public Map<String, Object> updateStoryCheck(
+  	@PathVariable int storyNo,
+		@ModelAttribute("loginMember") Member loginMember) {
+		
+  	int memberNo = loginMember.getMemberNo();
   	
-      storyService.updateStoryCheck(storyNo, userDetails.getUsername());
-      return Collections.singletonMap("success", true);
-  }
+  	return storyService.updateStoryCheck1(storyNo, memberNo);
+	}
   
   
-	/*
-	 * @PostMapping("/api/story/like/{storyNo}")
-	 * 
-	 * @ResponseBody public Map<String, Boolean> likeStory(@PathVariable Long
-	 * storyNo,
-	 * 
-	 * @AuthenticationPrincipal UserDetails userDetails) {
-	 * storyService.insertStoryLike(storyNo, userDetails.getUsername()); return
-	 * Collections.singletonMap("success", true); }
-	 * 
-	 * @DeleteMapping("/api/story/like/{storyNo}")
-	 * 
-	 * @ResponseBody public Map<String, Boolean> unlikeStory(@PathVariable Long
-	 * storyNo,
-	 * 
-	 * @AuthenticationPrincipal UserDetails userDetails) {
-	 * storyService.deleteStoryLike(storyNo, userDetails.getUsername()); return
-	 * Collections.singletonMap("success", true); }
-	 */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

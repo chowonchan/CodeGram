@@ -32,8 +32,7 @@
 			
 			<choose>
 				<when test="notificationType == 'insertComment'
-							or notificationType == 'boardLike'
-							or notificationType == 'commentLike'">
+							or notificationType == 'boardLike'">
 							
 					(SELECT MEMBER_NO
 					 FROM "BOARD"
@@ -41,11 +40,11 @@
 				</when>
 				
 				<!-- 알림 종류가 답글인 경우 -->
-<!-- 			<when test="notificationType == 'insertChildComment'">
+ 				<when test="notificationType == 'CommentLike'">
 					(SELECT MEMBER_NO 
-					 FROM "COMMENT"
+					 FROM "COMMENT_LIKE"
 					 WHERE COMMENT_NO = #{pkNo})
-				</when> -->
+				</when>
 				
 				<when test="notificationType == 'chatting'">
 					#{pkNo}
@@ -125,12 +124,16 @@
 	<select id="notReadCheck" resultType="boolean">
 		SELECT CASE 
 		    WHEN EXISTS (
+		    
 		        SELECT 1
 		        FROM "NOTIFICATION"
 		        WHERE NOTIFICATION_CHECK = 'N'
+		        AND RECEIVE_MEMBER_NO = #{receiveMemberNo}
+		        
 		    ) THEN 'true'
 		    ELSE 'false'
 		END AS hasUnread
+		FROM DUAL
 	</select>
 	
 	
