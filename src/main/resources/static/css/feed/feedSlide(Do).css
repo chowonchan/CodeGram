@@ -1,13 +1,13 @@
 /* 이미지 슬라이더 스타일 */
 .post-images-container {
-  width: 100%;
+  width: 500px;
   position: relative;
   overflow: hidden;
 }
 
 .image-slider {
   position: relative;
-  width: 100%;
+  width: 500px;
   height: 45%; /* 기본적으로 부모 div의 높이에 대한 비율로 설정, 작은 화면에서 적당한 크기 */
   overflow: hidden;
 }
@@ -20,9 +20,9 @@
 }
 
 .post-image {
-  min-width: 100%;
   will-change: transform;
   height: 100%;
+  width: 500px;
   object-fit: cover; /* 이미지 비율에 맞게 크기 조정 */
   border: none;
 }

@@ -12,11 +12,10 @@
 
 /* 게시물 이미지 *지우지 말 것* */
 .post-image {
-  width: 468px;
+  width: 500px;
   height: 468px;
   object-fit: cover;
   display: block;
-  flex-shrink: 0;
 }
 
 
@@ -138,10 +137,8 @@
 
 .post-images-container {
   position: relative;
-  width: 468px;
+  width: 500px;
   overflow: hidden;
-  border-top: 1px solid #e1e1e1;
-  border-bottom: 1px solid #e1e1e1;
 }
 
 .image-slider {
