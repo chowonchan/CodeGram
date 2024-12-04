@@ -153,6 +153,12 @@
   color: inherit;
 }
 
+.commentUser-nickname{
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+}
+
 .user-nickname:hover {
   color: gray;
 }
