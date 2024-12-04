@@ -8,18 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface StoryService {
 
-	List<Story> getFollowingStories(String memberNickname);
 
-	Story getStoryDetail(Long storyNo);
-
-	void updateStoryCheck(Long storyNo, String memberNickname);
-	
-	/*
-	 * void insertStoryLike(Long storyNo, String username);
-	 *
-	 * void deleteStoryLike(Long storyNo, String username);
-	 */
-	
 	
 	
 	
