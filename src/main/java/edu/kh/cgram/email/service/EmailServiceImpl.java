@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(emailContent, true);
 
             // CID를 통해 이메일에 이미지 첨부
-            helper.addInline("logo", new ClassPathResource("static/images/DMLOGO.png"));
+            helper.addInline("logo", new ClassPathResource("static/images/logo.png"));
 
             // 메일 발송
             mailSender.send(mimeMessage);

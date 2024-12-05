@@ -13,7 +13,8 @@
 /* 게시물 이미지 *지우지 말 것* */
 .post-image {
   width: 500px;
-  height: 468px;
+  /* height: 468px; */
+  height: 700px;
   object-fit: cover;
   display: block;
 }

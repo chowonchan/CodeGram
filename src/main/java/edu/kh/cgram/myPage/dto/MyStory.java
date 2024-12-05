@@ -19,4 +19,5 @@ public class MyStory {
 	private String imgRename;
 	private String imgPath;
 	private String createdAt;
+	private String thumbnail=imgPath + imgRename;
 }
