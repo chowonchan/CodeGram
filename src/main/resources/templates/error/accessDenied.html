@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>접근 차단</title>
@@ -7,5 +7,60 @@
     <h1>차단당한 계정입니다.</h1>
     <p>해당 계정에 접근할 수 없습니다.</p>
     <a href="/board/randomPeed">홈으로 돌아가기</a>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>접근 차단</title>
+    <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8d7da;
+            color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 1em;
+        }
+
+        /* 설명 텍스트 스타일 */
+        p {
+            font-size: 1.2em;
+            margin-bottom: 2em;
+        }
+
+        /* 링크 버튼 스타일 */
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 링크 버튼 호버 효과 */
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>차단당한 계정입니다.</h1>
+    <p>해당 계정에 접근할 수 없습니다.</p>
+    <a href="/main">홈으로 돌아가기</a>
 </body>
 </html>

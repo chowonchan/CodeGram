@@ -40,8 +40,6 @@ public interface MemberMapper {
 
 	int getFollowCount(@Param("memberNo") int memberNo);
 
-//int isBlocked(int loginMemberNo, int targetMemberNo);
-
 	public int isBlocked(@Param("loginMemberNo") int loginMemberNo, @Param("targetMemberNo") int targetMemberNo);
 
 	List<BoardImg> selectMemberPosts(@Param("nickname") String nickname, @Param("cp") int cp);

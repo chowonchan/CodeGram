@@ -145,8 +145,8 @@ main {
   border: 1px solid #ddd;
 }*/
 
-.footer{
-  margin-left: 400px;
+.footer-container{
+  z-index: -1;
 }
 
 

@@ -32,6 +32,7 @@ const commentSubmit = document.getElementById("commentSubmit");
 const carouselImages = document.getElementById("carouselImages");
 const leftArrow = document.querySelector(".left-arrow");
 const rightArrow = document.querySelector(".right-arrow");
+const bookMark = document.querySelector(".fa-bookmark");
 
 // 신고 사유 목록
 const reportReasons = [
@@ -267,8 +268,8 @@ const likeFunction = (boardNo) => {
                     likeButton.classList.remove("fa-solid", "liked");
                     likeButton.classList.add("fa-regular");
 
-                    mainLikeBtn.classList.remove("fa-solid", "liked");
-                    mainLikeBtn.classList.add("fa-regular");
+                    mainLikeBtn?.classList.remove("fa-solid", "liked");
+                    mainLikeBtn?.classList.add("fa-regular");
 
                     
                     openDetail(boardNo); // 좋아요 상태 갱신
@@ -293,8 +294,8 @@ const likeFunction = (boardNo) => {
                     likeButton.classList.remove("fa-regular");
                     likeButton.classList.add("fa-solid", "liked");
 
-                    mainLikeBtn.classList.remove("fa-regular");
-                    mainLikeBtn.classList.add("fa-solid", "liked");
+                    mainLikeBtn?.classList.remove("fa-regular");
+                    mainLikeBtn?.classList.add("fa-solid", "liked");
 
                     const content =
                         `<strong>${loginMemberName}</strong>
@@ -607,6 +608,31 @@ rightArrow.addEventListener("click", () => {
         updateCarouselPosition();
     }
 });
+
+bookMark?.addEventListener("click", () => {
+    const boardNo = feedModal.dataset.boardNo;
+
+    // 비동기로 mark 요청 
+    fetch("/board/mark", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: boardNo
+    })
+    .then(response => response.json())
+    .then(result => {
+        // mark 결과가 담긴 result 객체의 check 값에 따라
+        // mark 아이콘을 비우기/채우기 지정
+        if (result.check === "insert") {
+        bookMark.classList.add("fa-solid");
+        bookMark.classList.remove("fa-regular");
+        }
+        if (result.check === "delete") {
+        bookMark.classList.add("fa-regular");
+        bookMark.classList.remove("fa-solid");
+        }
+    })
+    .catch(err => console.error(err));
+})
 
 
 // 이모지

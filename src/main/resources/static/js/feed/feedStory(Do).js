@@ -38,15 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   storyItems.forEach(item => {
     item.addEventListener('click', function () {
-      const storyNo = this.dataset.storyNo;
-      const memberNickname = this.querySelector('.story-username').textContent;
-
+      const memberNickname = this.dataset.memberNickname;
 
       // 스토리 모달 URL 생성 및 이동
       const storyUrl = `${location.href.split("/")[2]}/story/${memberNickname}`;
 
       // AJAX를 통한 스토리 조회 상태 업데이트
-      fetch(`/api/story/view/${storyNo}`, {
+      fetch(`/api/story/view/${memberNickname}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
