@@ -1,5 +1,6 @@
 package edu.kh.cgram.story.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import edu.kh.cgram.member.dto.Member;
@@ -43,6 +44,22 @@ public class StoryController {
 //      return "story/storyModal";
 	  return "story/story-detail";
   }
+  
+  @GetMapping("/story/storyList")
+  public String storyList(
+		  @RequestParam("memberNickname") String memberNickname,
+		  @SessionAttribute("loginMember") Member loginMember,
+		  Model model
+  ) {
+	  model.addAttribute("memberNickname", memberNickname);
+	  
+	  List<Member> memberStoryList = storyService.memberStoryList(loginMember.getMemberNo());
+	  
+	  model.addAttribute("memberStoryList", memberStoryList);
+	  
+	  return "story/story-list";
+  }
+  
   
   @ResponseBody
   @PostMapping("/story/submit")
