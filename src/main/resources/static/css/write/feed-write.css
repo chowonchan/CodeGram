@@ -221,6 +221,14 @@
     object-fit: cover; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
 }
 
+.story-preview {
+    width: 734px;
+    height: 734px;
+    max-width: 100%; /* 부모 요소 너비를 넘지 않음 */
+    max-height: 100%; /* 부모 요소 높이를 넘지 않음 */
+    object-fit: cover; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+}
+
 .profile {
     width: 28px;
     height: 28px;

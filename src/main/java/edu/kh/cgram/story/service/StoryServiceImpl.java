@@ -53,6 +53,11 @@ public class StoryServiceImpl implements StoryService {
 		int result = storyMapper.storyInsert(story);
 		
 		try {
+			File folder = new File(folderPath);
+			if(folder.exists() == false) {	// 폴더가 없을 경우
+				folder.mkdirs();		// 폴더 생성
+			}
+			
 			image.transferTo(new File(folderPath + rename));
 		} catch (Exception e) {
 			e.printStackTrace();
