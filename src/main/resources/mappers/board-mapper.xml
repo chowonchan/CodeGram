@@ -50,7 +50,13 @@
 			BI.BOARD_NO,
 			BI.IMG_NO,
 			BI.IMG_PATH,
-			BI.IMG_RENAME
+			BI.IMG_RENAME,
+			(SELECT COUNT(*)
+			 FROM BOARD_LIKE BL
+			 WHERE BL.BOARD_NO = B.BOARD_NO) AS likeCount,
+			(SELECT COUNT(*) 
+         	 FROM "COMMENT" C 
+         	 WHERE C.BOARD_NO = B.BOARD_NO) AS commentCount
 		FROM
 			BOARD B
 		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
@@ -63,7 +69,7 @@
 		AND B.BOARD_DEL_FL = 'N'
 		AND B.MEMBER_NO != #{memberNo}
 		AND IMG_ORDER = 1
-		ORDER BY B.CREATED_AT DESC
+		ORDER BY DBMS_RANDOM.VALUE
 	</select>
 
 	<!-- 게시글 상세 조회 -->

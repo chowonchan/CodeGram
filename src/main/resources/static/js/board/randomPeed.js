@@ -27,6 +27,12 @@ function renderRandomPosts(posts) {
     postItem.innerHTML = `
       <a>
         <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
+        <div class="post-overlay">
+          <div class="post-info">
+            <span class="likes"><i class="fa-solid fa-heart"></i> ${post.likeCount || 0}</span>
+            <span class="comments"><i class="fa-solid fa-comment"></i> ${post.commentCount || 0}</span>
+          </div>
+        </div>
       </a>
     `;
     postsGrid.appendChild(postItem);
