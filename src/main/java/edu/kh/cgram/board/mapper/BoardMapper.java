@@ -59,5 +59,5 @@ public interface BoardMapper {
 		List<Map<String, Object>> selectBoardImages(int boardNo);
     
 		
-    int feedDelete(int boardNo, int memberNo);
+    int feedDelete(@Param("boardNo") int boardNo, @Param("memberNo") int memberNo);
 }
