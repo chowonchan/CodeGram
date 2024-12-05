@@ -61,15 +61,15 @@
       <span class="fa-solid fa-bars"></span>
       <span>더보기</span>
       <div class="more-menu">
-        <a id="moreTab" href="#">
+        <a id="moreTab" th:href= "@{/member/{nickname}?button=setting (nickname=${session.loginMember.memberNickname})}">
           <span class="fa-solid fa-gear"></span>
-          <div>설정</div>
+          <span>설정</span>
         </a>
         <a id="moreTab1" href="/board/myActivity">
           <span class="fa-solid fa-history"></span>
           <div>내 활동</div>
         </a>
-        <a id="moreTab2" href="#">
+        <a id="moreTab2" th:href="@{/member/{nickname}?tab=saved (nickname=${session.loginMember.memberNickname})}">
           <span class="fa-solid fa-flag"></span>
           <div>저장됨</div>
         </a>
@@ -160,4 +160,18 @@
     const loginMemberName = /*[[${session.loginMember?.memberName}]]*/ '로그인 회원 닉네임';
     const loginMemberNickname = /*[[${session.loginMember?.memberNickname}]]*/ '로그인 회원 닉네임';
   </script>
+
+  <!-- 프로필 설정 모달 -->
+  <!-- <div id="profileSettingModal2" class="modal2 hidden">
+    <div class="modal2-content">
+      <ul class="modal2-options">
+        <li id="followList2" class="option followList">팔로우 목록</li>
+        <li id="blockList2" class="option blockList">차단 목록</li>
+        <li id="logout2" class="option logout">로그아웃</li>
+        <li id="cancleModal" class="option cancle">취소</li>
+      </ul>
+    </div>
+  </div> -->
+  
+
 </body>

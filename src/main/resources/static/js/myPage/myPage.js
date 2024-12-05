@@ -16,27 +16,33 @@ document.addEventListener("DOMContentLoaded", async() => {
     followingList: document.getElementById("followingList"),
     followerList: document.getElementById("followerList")
   };
-// 로그 추가
-console.log("팔로우 탭 요소:", followTabs.followTab);
-console.log("팔로워 탭 요소:", followTabs.followerTab);
-console.log("팔로우 리스트 컨텐츠:", followTabs.followingListContent);
-console.log("팔로워 리스트 컨텐츠:", followTabs.followerListContent);
-console.log("팔로우 리스트:", followTabs.followingList);
-console.log("팔로워 리스트:", followTabs.followerList);
+  // 로그 추가
+  console.log("팔로우 탭 요소:", followTabs.followTab);
+  console.log("팔로워 탭 요소:", followTabs.followerTab);
+  console.log("팔로우 리스트 컨텐츠:", followTabs.followingListContent);
+  console.log("팔로워 리스트 컨텐츠:", followTabs.followerListContent);
+  console.log("팔로우 리스트:", followTabs.followingList);
+  console.log("팔로워 리스트:", followTabs.followerList);
 
 
-// 팔로우 목록 버튼 클릭 이벤트 추가
-const followListButton = document.getElementById("followList");
-followListButton?.addEventListener("click", () => {
+  // 팔로우 목록 버튼 클릭 이벤트 추가
+  const followListButton = document.getElementById("followList");
+  followListButton?.addEventListener("click", () => {
   followModals.followListModal.style.display = "flex"; // 모달 열기
   loadFollowList(); // 팔로우 리스트 로드
-});
+  });
 
   // 팔로우 리스트 모달 닫기
   document.getElementById("closeFollowList")?.addEventListener("click", () => {
     followModals.followListModal.style.display = "none"; // 모달 닫기
   });
 
+  // 외부 클릭 시 모달 닫기
+  window.addEventListener("click", (event) => {
+    if (event.target === followModals.followListModal) {
+      followModals.followListModal.style.display = "none"; // 모달 숨기기
+    }
+  });
   // 탭 전환
   followTabs.followTab.addEventListener("click", () => {
     followTabs.followTab.classList.add("active");
@@ -121,6 +127,14 @@ followListButton?.addEventListener("click", () => {
   buttons.profileSettingButton?.addEventListener("click", () => {
     modals.profileSettingModal.style.display = "flex";
   });
+    // URL의 쿼리 파라미터 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const buttonParam = urlParams.get("button"); // "button" 파라미터 값 가져오기
+  
+    // 쿼리 파라미터가 "setting"이면 모달 자동으로 열기
+    if (buttonParam === "setting") {
+      modals.profileSettingModal.style.display = "flex";
+    }
 
   buttons.profileMoreButton?.addEventListener("click", () => {
     modals.profileMoreModal.style.display = "flex";
@@ -183,45 +197,45 @@ followListButton?.addEventListener("click", () => {
     modals.profileModal.style.display = "none";
   });
 
-// 팔로우 상태 확인 및 버튼 초기화
-async function initFollowButton(button) {
-  console.log("[initFollowButton] 팔로우 버튼 초기화 시작");
+  // 팔로우 상태 확인 및 버튼 초기화
+  async function initFollowButton(button) {
+    console.log("[initFollowButton] 팔로우 버튼 초기화 시작");
 
-  const nickname = extractNicknameFromURL();
-  if (!nickname) {
-    console.error("[initFollowButton] 닉네임을 URL에서 추출할 수 없습니다.");
-    return;
-  }
-
-  console.log(`[initFollowButton] 추출된 닉네임: ${nickname}`);
-
-  try {
-    const response = await fetch(`/follow/status/${nickname}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log("[initFollowButton] 서버 응답 데이터:", result);
-
-      if (result.success) {
-        button.textContent = result.isFollowing ? "팔로우 취소" : "팔로우";
-        console.log(`[initFollowButton] 버튼 텍스트 설정: ${button.textContent}`);
-      } else {
-        console.error("[initFollowButton] 서버 반환 오류:", result.message);
-      }
-    } else {
-      console.error("[initFollowButton] HTTP 오류 발생:", response.status);
-      alert("팔로우 상태 확인 중 문제가 발생했습니다. 잠시 후 다시 시도하세요.");
+    const nickname = extractNicknameFromURL();
+    if (!nickname) {
+      console.error("[initFollowButton] 닉네임을 URL에서 추출할 수 없습니다.");
+      return;
     }
-  } catch (error) {
-    console.error("[initFollowButton] 네트워크 오류 발생:", error);
-    alert("네트워크 오류로 팔로우 상태를 확인할 수 없습니다.");
-  } finally {
-    console.log("[initFollowButton] 팔로우 버튼 초기화 완료");
+
+    console.log(`[initFollowButton] 추출된 닉네임: ${nickname}`);
+
+    try {
+      const response = await fetch(`/follow/status/${nickname}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("[initFollowButton] 서버 응답 데이터:", result);
+
+        if (result.success) {
+          button.textContent = result.isFollowing ? "팔로우 취소" : "팔로우";
+          console.log(`[initFollowButton] 버튼 텍스트 설정: ${button.textContent}`);
+        } else {
+          console.error("[initFollowButton] 서버 반환 오류:", result.message);
+        }
+      } else {
+        console.error("[initFollowButton] HTTP 오류 발생:", response.status);
+        alert("팔로우 상태 확인 중 문제가 발생했습니다. 잠시 후 다시 시도하세요.");
+      }
+    } catch (error) {
+      console.error("[initFollowButton] 네트워크 오류 발생:", error);
+      alert("네트워크 오류로 팔로우 상태를 확인할 수 없습니다.");
+    } finally {
+      console.log("[initFollowButton] 팔로우 버튼 초기화 완료");
+    }
   }
-}
 
   if (buttons.profileFollowButton) {
     // 팔로우 상태 초기화
@@ -433,7 +447,12 @@ document.getElementById("blockList")?.addEventListener("click", async () => {
     console.error(err);
   }
 });
-
+  // 외부 클릭 이벤트 리스너 추가
+  window.addEventListener("click", (event) => {
+    if (event.target === blockListModal) {
+      blockListModal.style.display = "none"; // 모달 숨기기
+    }
+  });
 // 모달 닫기 버튼
 document.getElementById("closeBlockList")?.addEventListener("click", () => {
   const blockListModal = document.getElementById("blockListModal");
@@ -629,9 +648,9 @@ async function loadFollowerList() {
     }
 
 
-
   });
 
+  
 
   document.addEventListener("DOMContentLoaded", () => {
     const myUploadsTab = document.getElementById("myUploadsTab");
@@ -639,7 +658,7 @@ async function loadFollowerList() {
   
     // 초기 활성화 상태 설정
     myUploadsTab.classList.add("active");
-  
+
     // 클릭 이벤트 리스너 추가
     myUploadsTab.addEventListener("click", () => activateTab(myUploadsTab, "uploads"));
     savedTab?.addEventListener("click", () => activateTab(savedTab, "saved"));
@@ -651,6 +670,8 @@ async function loadFollowerList() {
   
     // 클릭된 탭에 'active' 클래스 추가
     activeTab.classList.add("active");
+
+    currentPage = 1;
   
     // 서버에서 데이터 로드 (AJAX)
     fetch(type === "uploads" ? `/member/${location.pathname.split("/")[2]}/posts` : "/myPage/saved")
@@ -816,3 +837,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 현재 URL에서 쿼리 파라미터 읽기
+  const urlParams = new URLSearchParams(window.location.search);
+  // 'tab' 파라미터 가져오기
+  const activeTab = urlParams.get('tab'); 
+
+  if (activeTab) {
+    // 모든 탭에서 'active' 클래스 제거
+    document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+
+    // 해당 ID를 가진 탭에 'active' 클래스 추가
+    const targetTab = document.querySelector(`#${activeTab}`);
+    if (targetTab) {
+      targetTab.classList.add("active");
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // URL의 쿼리 파라미터 확인
+  const urlParams = new URLSearchParams(window.location.search);
+  const buttonParam = urlParams.get("button"); // "button" 파라미터 값 가져오기
+
+  // 쿼리 파라미터가 "setting"이면 모달 자동으로 열기
+  if (buttonParam === "setting") {
+    modals.profileSettingModal.style.display = "flex";
+  }
+});
+
+
+

@@ -26,14 +26,11 @@ public interface StoryMapper {
 	
 	// 새로 작성 코드들
 	
-	// nsertStoryRead으로 StoryNo 갯수 조회하기
+	// insertStoryRead으로 StoryNo 갯수 조회하기
 	int selectStoryNo(@Param("memberNickname") String memberNickname,@Param("memberNo") int memberNo);
 	
 	// 스토리를 이미 읽었는지 확인
 	int checkStory(@Param("memberNickname") String memberNickname,@Param("memberNo") int memberNo);
-
-	// 스토리 리드 추가
-	int insertStoryRead(@Param("memberNickname") String memberNickname,@Param("memberNo") int memberNo);
 
 	// 로그인한 회원이 팔로우한 회원들의 24시간 이내 스토리 목록 조회
 	int selectStoryList(int memberNo);

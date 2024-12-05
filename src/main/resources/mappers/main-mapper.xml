@@ -254,21 +254,27 @@
 			RNUM DESC
 	</select>
 	
+	<!-- 팔로우하지 않은 회원을 5개 조회 -->
 	<select id="selectRecommendList" resultType="Member">
-	SELECT 
-	    MEMBER_NO,
-	    MEMBER_NICKNAME,
-	    MEMBER_NAME,
-	    PROFILE_IMG
-	FROM 
-	    MEMBER MM
-	WHERE 
-	    MEMBER_DEL_BAN_FL = 1
-	AND 
-	    MEMBER_NO NOT IN (
-	        SELECT FOLLOWER_MEMBER
-	        FROM FOLLOW
-	        WHERE FOLLOWING_MEMBER = #{memberNo})
+		SELECT 
+		    MEMBER_NO,
+		    MEMBER_NICKNAME,
+		    MEMBER_NAME,
+		    PROFILE_IMG
+		FROM 
+		    MEMBER
+		WHERE 
+		    MEMBER_DEL_BAN_FL = 1
+		AND 
+		    MEMBER_NO NOT IN (
+		        SELECT FOLLOWER_MEMBER
+		        FROM FOLLOW
+		        WHERE FOLLOWING_MEMBER = #{memberNo}
+		        )
+		AND
+			MEMBER_NO != #{memberNo}
+		ORDER BY MEMBER_NICKNAME
+		FETCH FIRST 5 ROWS ONLY
 	</select>
 	
 	

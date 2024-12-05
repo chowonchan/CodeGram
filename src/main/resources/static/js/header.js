@@ -806,6 +806,285 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* -----------------알림 목록 창-------------------- */
 
+
+
+
+
+/* -----------------설정 모달 창-------------------- */
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   // DOM 요소 선택
+//   const openProfileSetting = document.getElementById("openProfileSetting"); // 설정 버튼
+//   const profileSettingModal2 = document.getElementById("profileSettingModal2"); // 모달
+//   const cancelModal = document.getElementById("cancleModal"); // 취소 버튼
+//   console.log(document.getElementById("openProfileSetting"));
+//   console.log(document.getElementById("profileSettingModal2"));
+//   console.log(document.getElementById("cancleModal"));
+//   // "설정" 클릭 시 모달 열기
+//   openProfileSetting.addEventListener("click", function (event) {
+//     event.preventDefault(); // 기본 동작 방지
+//     profileSettingModal2.classList.remove("hidden"); // 모달 표시
+//     profileSettingModal2.classList.add("active");
+//   });
+
+//   // "취소" 클릭 시 모달 닫기
+//   cancelModal.addEventListener("click", function () {
+//     profileSettingModal2.classList.add("hidden"); // 모달 숨기기
+//     profileSettingModal2.classList.remove("active");
+//   });
+
+//   // 모달 외부 클릭 시 닫기
+//   window.addEventListener("click", function (event) {
+//     if (event.target === profileSettingModal2) {
+//       profileSettingModal2.classList.add("hidden"); // 모달 숨기기
+//       profileSettingModal2.classList.remove("active");
+//     }
+//   });
+// });
+
+// // 차단 목록 모달 열기
+// document.getElementById("blockList")?.addEventListener("click", async () => {
+//   try {
+//     const response = await fetch("/block/blockList");
+//     if (!response.ok) throw new Error("차단 목록 데이터를 불러오는 데 실패했습니다.");
+
+//     const data = await response.json();
+
+//     const blockedUsers = data.blockList;
+//     console.log("서버에서 반환된 데이터:", data); // 서버 데이터 확인
+//     const userList = document.getElementById("blockedUsers");
+//     userList.innerHTML = "";
+
+//     if (!blockedUsers || blockedUsers.length === 0) {
+//       const emptyMessage = document.createElement("p");
+//       emptyMessage.textContent = "차단한 회원이 없습니다.";
+//       emptyMessage.classList.add("empty-message");
+//       userList.appendChild(emptyMessage);
+//     } else {
+//       blockedUsers.forEach(user => {
+//         console.log("차단된 사용자 데이터:", user); // 각 사용자 데이터 확인
+//         const userItem = document.createElement("li");
+//         userItem.className = "user-item";
+//         userItem.innerHTML = `
+//           <img src="${user.PROFILE_IMG ||'/images/defaultImg.png'}" class="profile-img">
+//           <span class="nickname">${user.MEMBER_NICKNAME || '알 수 없음'}</span>
+//           <button class="unblock-btn" data-user-id="${user.MEMBERNO}">차단 취소</button>
+//         `;
+//         console.log("생성된 버튼의 data-user-id 값:", user.MEMBERNO);
+//         userList.appendChild(userItem);
+//       });
+//     }
+
+//     // 모달 표시
+//     const blockListModal = document.getElementById("blockListModal");
+//     blockListModal.style.display = "flex"; // 모달 보이기
+//   } catch (err) {
+//     alert("차단 목록을 불러오는 중 오류가 발생했습니다.");
+//     console.error(err);
+//   }
+// });
+
+// // 모달 닫기 버튼
+// document.getElementById("closeBlockList")?.addEventListener("click", () => {
+//   const blockListModal = document.getElementById("blockListModal");
+//   blockListModal.style.display = "none"; // 모달 숨기기
+// });
+
+
+// // 차단 취소 버튼 이벤트 처리
+// document.getElementById("blockedUsers").addEventListener("click", async (event) => {
+//   if (event.target.classList.contains("unblock-btn")) {
+//     const userId = event.target.dataset.userId; // 버튼에 저장된 사용자 ID
+//         // userId 값 검증
+//         if (!userId || userId === "undefined") {
+//           alert("차단 취소할 사용자 ID를 찾을 수 없습니다.");
+//           console.error("잘못된 userId:", userId);
+//           return;
+//         }
+//     try {
+//       // 서버로 DELETE 요청 보내기
+//       const response = await fetch(`/block/unBlock`, {
+//         method: "DELETE",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ blockedMemberNo: userId }),
+//       });
+
+//       if (!response.ok) throw new Error("차단 해제 요청 실패");
+
+//       const result = await response.json();
+//       if (result.success) {
+//         // DOM에서 사용자 항목 제거
+//         event.target.closest(".user-item").remove();
+//         alert(result.message || "차단이 해제되었습니다.");
+//       } else {
+//         alert(result.message || "차단 해제 중 문제가 발생했습니다.");
+//       }
+//     } catch (error) {
+//       console.error("차단 해제 요청 중 오류:", error);
+//       alert("차단 해제 요청 중 문제가 발생했습니다.");
+//     }
+//   }
+// });
+
+//   // 팔로잉 목록 로드
+//   async function loadFollowList() {
+//     console.log("[loadFollowList] 팔로우 목록 로드 시작");
+//     try {
+//       const response = await fetch("/follow/followList");
+//       console.log("[loadFollowList] 서버 요청 완료");
+//       if (!response.ok) throw new Error("팔로우 리스트를 가져오는 데 실패했습니다.");
+
+//       const data = await response.json();
+//       console.log("팔로우 리스트 데이터:", data); // 콘솔에 출력
+
+//       followTabs.followingList.innerHTML = "";
+//       console.log("[loadFollowList] 기존 팔로우 리스트 초기화");
+//       // console.log("followTabs.followingList:", followTabs.followingList);
+
+//       if (data.length === 0) {
+//         followTabs.followingList.innerHTML = "<p class='empty-message'>팔로우한 사용자가 없습니다.</p>";
+//       } else {
+//         data.forEach(user => {
+//           const userItem = document.createElement("li");
+//           userItem.className = "user-item";
+//           userItem.innerHTML = `
+//             <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
+//             <span class="nickname">${user.NICKNAME}</span>
+//             <button class="unfollow-btn" data-user-nick="${user.NICKNAME}">언팔로우</button>
+//         `;
+//           followTabs.followingList.appendChild(userItem);
+//         });
+//       }
+//     } catch (error) {
+//       console.error("팔로우 목록 로드 실패:", error);
+//     }
+//   }
+
+//   // 팔로워 목록 로드
+// async function loadFollowerList() {
+//   console.log("[loadFollowerList] 팔로워 목록 로드 시작");
+//   try {
+//     const response = await fetch("/follow/followerList");
+//     console.log("[loadFollowerList] 서버 요청 완료");
+//     if (!response.ok) throw new Error("팔로워 리스트를 가져오는 데 실패했습니다.");
+
+//     const data = await response.json();
+//     console.log("팔로워 리스트 데이터:", data);
+
+//     followTabs.followerList.innerHTML = "";
+//     console.log("[loadFollowerList] 기존 팔로워 리스트 초기화");
+
+//     if (data.length === 0) {
+//       followTabs.followerList.innerHTML = "<p class='empty-message'>팔로워가 없습니다.</p>";
+//     } else {
+//       for (const user of data) {
+//         const userItem = document.createElement("li");
+//         userItem.className = "user-item";
+
+//         // 서버로 해당 사용자의 팔로우 상태 확인
+//         let isFollowing = false;
+//         try {
+//           const followStatusResponse = await fetch(`/follow/status/${user.NICKNAME}`, {
+//             method: "GET",
+//             headers: { "Content-Type": "application/json" },
+//           });
+//           if (followStatusResponse.ok) {
+//             const followStatusData = await followStatusResponse.json();
+//             isFollowing = followStatusData.isFollowing;
+//             console.log(`[loadFollowerList] ${user.NICKNAME} 팔로우 상태: ${isFollowing}`);
+//           } else {
+//             console.error(`[loadFollowerList] 팔로우 상태 확인 실패: ${user.NICKNAME}`);
+//           }
+//         } catch (error) {
+//           console.error(`[loadFollowerList] 팔로우 상태 확인 중 오류: ${user.NICKNAME}`, error);
+//         }
+
+//         // 팔로워 항목 생성
+//         userItem.innerHTML = `
+//           <img src="${user.PROFILEIMG || '/images/default-profile.png'}">
+//           <span class="nickname">${user.NICKNAME}</span>
+//           <button class="follow-back-btn" data-user-nick="${user.NICKNAME}">
+//             ${isFollowing ? "언팔로우" : "맞팔로우"}
+//           </button>
+//         `;
+
+//         followTabs.followerList.appendChild(userItem);
+//       }
+//     }
+//   } catch (error) {
+//     console.error("[loadFollowerList] 팔로워 목록 로드 실패:", error);
+//   }
+// }
+
+
+//   // 언팔로우 버튼 이벤트
+//   followTabs.followingList.addEventListener("click", async (event) => {
+//     if (event.target.classList.contains("unfollow-btn")) {
+//       const userNick = event.target.dataset.userNick;
+
+//       try {
+//         const response = await fetch(`/follow/${userNick}`, { method: "DELETE" });
+
+//         if (response.ok) {
+//           event.target.closest(".user-item").remove();
+//           alert("팔로우를 취소했습니다.");
+//         } else {
+//           alert("팔로우 취소 실패.");
+//         }
+//       } catch (error) {
+//         console.error("팔로우 취소 중 오류:", error);
+//       }
+//     }
+//   });
+
+//   // 맞팔로우 버튼 이벤트
+//   followTabs.followerList.addEventListener("click", async (event) => {
+//     if (event.target.classList.contains("follow-back-btn")) {
+//       const userNick = event.target.dataset.userNick;
+//       const action = event.target.textContent.trim();//추가
+//       try {
+//         let response;
+//         if (action === "맞팔로우") {
+//           console.log(`[${action}] 요청 시작: /follow/${userNick} (POST)`);
+//           response = await fetch(`/follow/${userNick}`, { method: "POST" });
+//         } else if (action === "언팔로우") {
+//           console.log(`[${action}] 요청 시작: /follow/${userNick} (DELETE)`);
+//           response = await fetch(`/follow/${userNick}`, { method: "DELETE" });
+//         }
+
+//         // 응답 객체 확인
+//         if (!response) {
+//           console.error(`[${action}] 응답 객체가 정의되지 않음.`);
+//           alert("서버 요청에 실패했습니다. 잠시 후 다시 시도해주세요.");
+//           return;
+//         }
+//         // 요청 결과 확인
+//         if (response.ok) {
+//           const result = await response.json(); // 응답 데이터를 JSON으로 변환
+//           console.log(`[${action}] 요청 성공:`, result);
+
+//           // 버튼 상태 업데이트
+//           event.target.textContent = action === "맞팔로우" ? "언팔로우" : "맞팔로우";
+//           console.log(`[${action}] 버튼 상태 업데이트 완료: ${event.target.textContent}`);
+//         } else {
+//           console.error(`[${action}] 요청 실패: HTTP 상태 코드 ${response.status}`);
+//           alert(`${action} 실패. 잠시 후 다시 시도해주세요.`);
+//         }
+//       } catch (error) {
+//         console.error(`[${action}] 요청 중 오류:`, error);
+//         alert(`네트워크 오류가 발생했습니다. (${error.message})`);
+//       }
+//     }
+
+//   // 로그아웃
+//   buttons.logout?.addEventListener("click", () => {
+//     window.location.href = "/member/logout";
+//   });
+
+//   });
+
 // document.addEventListener("DOMContentLoaded", () => {
 //   const randomValue = (Math.random() + 0.1).toFixed(2);
 //   setTimeout( () => {

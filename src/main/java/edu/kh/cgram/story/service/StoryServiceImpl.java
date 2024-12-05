@@ -101,9 +101,7 @@ public class StoryServiceImpl implements StoryService {
 		
 		
 		// 읽지 않은 스토리를 읽을 경우 스토리 리드에 값 저장
-		int result2 = 0;
 		if(result == 0) {
-			result2 = storyMapper.insertStoryRead(memberNickname, memberNo);
 		}
 		
 		Map<String, Object> map = new HashMap<>();
