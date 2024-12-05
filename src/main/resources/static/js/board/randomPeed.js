@@ -22,15 +22,15 @@ function renderRandomPosts(posts) {
 
   posts.forEach(post => {
     const postItem = document.createElement("div");
-    postItem.classList.add("post-item");
+    postItem.classList.add("post-items");
     postItem.setAttribute("data-board-no", post.boardNo);
     postItem.innerHTML = `
       <a>
         <img class="post-image" src="${post.imgPath}${post.imgRename}" alt="Post Image" />
         <div class="post-overlay">
           <div class="post-info">
-            <span class="likes"><i class="fa-solid fa-heart"></i> ${post.likeCount || 0}</span>
-            <span class="comments"><i class="fa-solid fa-comment"></i> ${post.commentCount || 0}</span>
+            <span class="likes"><i class="fa-solid fa-heart"></i><div class="post-like-count">${post.likeCount || 0}</div></span>
+            <span class="feed-comments"><i class="fa-solid fa-comment"></i><div class="post-comment-count">${post.commentCount || 0}</div></span>
           </div>
         </div>
       </a>

@@ -512,9 +512,6 @@ const selectCommentReportList = (query) => {
           }
           </td>
         `;
-        tr.addEventListener("click", () => {
-          location.href = `/board/${commentReport.contentNo}`; // 게시물 상세 페이지로 이동
-        });
 
         // 버튼 이벤트 추가
         const statusButton = tr.querySelector(".status-btn.red");
@@ -523,6 +520,7 @@ const selectCommentReportList = (query) => {
           statusButton.addEventListener("click", e => {
 
 
+            const clickCounts = {};
             // 닉네임별 클릭 횟수 증가
             if (!clickCounts[commentReport.memberNickname]) {
               clickCounts[commentReport.memberNickname] = 0;
@@ -531,22 +529,20 @@ const selectCommentReportList = (query) => {
 
             // 알림 내용
             const count = clickCounts[commentReport.memberNickname];
-            const content = `부적절한 댓글로 인해 경고 ${count}회 알림을 보냅니다.`;
+            const content = `부적절한 댓글로 인해 경고 ${count}회 알림을 <br> 보냅니다.`;
             console.log("// 상대방에게 알림 보내기");
 
             // 알림 전송
             sendNoti(
               "warning",
               location.pathname,
-              feedReport.reportNo,
+              commentReport.reportNo,
               content
             );
 
             // 상태 업데이트
             updateCommentStatus(commentReport.contentNo);
             e.stopPropagation();
-
-
           });
         }
 
@@ -556,6 +552,10 @@ const selectCommentReportList = (query) => {
             e.stopPropagation();
           });
         }
+
+        tr.addEventListener("click", () => {
+          location.href = `/board/${commentReport.contentNo}`; // 게시물 상세 페이지로 이동
+        });
 
         commentReportList.appendChild(tr);
       });

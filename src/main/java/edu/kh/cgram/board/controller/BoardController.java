@@ -83,6 +83,7 @@ public class BoardController {
       result.put("likeCount", board.getLikeCount());
       result.put("createdAt", board.getCreatedAt());
       result.put("imageRename", board.getImageRename());
+      result.put("commentCount", board.getCommentCount());
       result.put("comments", comments);
 			result.put("isLiked", isLiked);
 			result.put("images", images);

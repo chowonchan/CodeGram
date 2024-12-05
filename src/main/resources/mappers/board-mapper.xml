@@ -120,7 +120,8 @@
             READ_COUNT AS readCount,
             CREATED_AT AS createdAt,
             (SELECT MEMBER_NICKNAME FROM MEMBER WHERE MEMBER_NO = b.MEMBER_NO) AS memberNickname,
-            (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = b.BOARD_NO) AS likeCount
+            (SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = b.BOARD_NO) AS likeCount,
+            (SELECT COUNT(*) FROM "COMMENT" C WHERE C.BOARD_NO = #{boardNo}) AS commentCount
         FROM BOARD b
         WHERE BOARD_NO = #{boardNo}
     </select>

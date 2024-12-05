@@ -26,7 +26,7 @@ body {
   width: 100%;
   height: auto;
 }
-.post-item {
+.post-items {
   background-color: #f8f8f8;
   height: 315px; /* 고정된 높이 */
   display: flex;
@@ -77,10 +77,20 @@ footer {
   font-weight: bold;
 }
 
+.likes, .feed-comments{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  margin-left: 5px;
+  gap: 5px;
+}
+
 .post-info i {
   margin-right: 5px; /* 아이콘과 숫자 간격 */
 }
 
-.post-item:hover .post-overlay {
+.post-items:hover .post-overlay {
   opacity: 1; /* 오버레이 보이기 */
 }

@@ -55,8 +55,9 @@ function renderLikedPosts(posts) {
     postItem.addEventListener("click", (e) => {
       const boardNo = postItem.getAttribute("data-board-no");
       e.preventDefault();
-      e.stopPropagation();
-      openDetail(boardNo);
+      // e.stopPropagation();
+
+      if(!postItem.querySelector(".post-checkbox"))  openDetail(boardNo);
     });
   });
 }
@@ -147,8 +148,9 @@ function renderMemberPosts(posts) {
     postItem.addEventListener("click", (e) => {
       const boardNo = postItem.getAttribute("data-board-no");
       e.preventDefault();
-      e.stopPropagation();
-      openDetail(boardNo);
+      // e.stopPropagation();
+
+      if(!postItem.querySelector(".post-checkbox"))  openDetail(boardNo);
     });
   });
 }
@@ -271,8 +273,7 @@ selectButton.addEventListener("click", () => {
       checkbox.classList.add("post-checkbox");
       item.prepend(checkbox); // 게시물 앞에 체크박스 추가
       item.addEventListener("click", (e) => {
-        e.preventDefault();
-        checkbox.checked = !checkbox.checked; // 체크 상태를 반전
+        if(e.target != checkbox) checkbox.checked = !checkbox.checked; // 체크 상태를 반전
       });
     });
   } else if(likeLink.classList.contains("active")) {
@@ -285,8 +286,7 @@ selectButton.addEventListener("click", () => {
       checkbox.classList.add("post-checkbox");
       item.prepend(checkbox); // 게시물 앞에 체크박스 추가
       item.addEventListener("click", (e) => {
-        e.preventDefault();
-        checkbox.checked = !checkbox.checked; // 체크 상태를 반전
+        if(e.target != checkbox) checkbox.checked = !checkbox.checked; // 체크 상태를 반전
       });
     });
   } else if(commentLink.classList.contains("active")) {
@@ -298,6 +298,9 @@ selectButton.addEventListener("click", () => {
       checkbox.dataset.commentNo = item.dataset.commentNo;
       checkbox.classList.add("post-checkbox");
       item.prepend(checkbox); // 게시물 앞에 체크박스 추가
+      item.addEventListener("click", (e) => {
+        if(e.target != checkbox) checkbox.checked = !checkbox.checked; // 체크 상태를 반전
+      });
     });
   } else {
     return;
