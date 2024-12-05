@@ -221,6 +221,7 @@ if (chattingSock != undefined) {
           lastPartnerTime = currentTime;
 
           // 프로필 이미지는 시간 단위로 한 번만 표시
+          const selectPartnerProfile = document.querySelector(".list-profile").getAttribute("data-profile");
           const img = document.createElement("img");
           img.setAttribute("src", selectPartnerProfile);
           img.classList.add("profile-image");
@@ -451,6 +452,7 @@ const selectRoomList = () => {
         const listProfile = document.createElement("img");
         listProfile.classList.add("list-profile");
 
+
         if (chatRoom.partnerProfile == undefined) {
           listProfile.setAttribute("src", userDefaultImage);
         } else {
@@ -561,7 +563,9 @@ const chatRoomListAddEvent = () => {
       selectPartnerNo = item.getAttribute("partner-no");
       selectPartnerNickname = item.getAttribute("partner-nickname");
 
-      selectPartnerProfile = item.children[0].children[0].getAttribute("src") || userDefaultImage;
+      selectPartnerProfile = document.querySelector(".list-profile").getAttribute("src") || userDefaultImage;
+
+      // selectPartnerProfile = item.children[0].children[0].getAttribute("src") || userDefaultImage;
       selectPartnerName = item.children[1].children[0].children[0].innerText;
 
       if (item.children[1].children[1].children[1] != undefined) {
@@ -621,7 +625,19 @@ const chatRoomListAddEvent = () => {
 
 
 
-      (span2, span3).addEventListener("click", (e) => {
+      span2.addEventListener("click", (e) => {
+        e.stopPropagation(); // 부모 클릭 이벤트로 전파되지 않도록 방지
+
+        fetch(`/chatting/selectNickname?partnerNo=${selectPartnerNo}`)
+          .then(resp => resp.text())
+          .then(partnerNickname => {
+            window.location.href = `/member/${partnerNickname}`;
+
+          })
+
+        // 상대방 ID를 포함한 URL로 이동
+      });
+      span3.addEventListener("click", (e) => {
         e.stopPropagation(); // 부모 클릭 이벤트로 전파되지 않도록 방지
 
         fetch(`/chatting/selectNickname?partnerNo=${selectPartnerNo}`)
