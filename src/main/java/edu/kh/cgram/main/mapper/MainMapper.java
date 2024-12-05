@@ -61,7 +61,7 @@ public interface MainMapper {
 	// 지정된 페이지 분량의 Feed 목록 조회
 	List<Board> selectFeedList(int memberNo, RowBounds rowBounds);
 
-	// 팔로우하지 않은 회원 추천 목록
+	// 팔로우하지 않은 회원을 5개 조회
 	List<Recommend> selectRecommendList(int memberNo);
 	
 	// 팔로우 한 스토리 목록

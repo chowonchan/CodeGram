@@ -107,7 +107,7 @@ public class MainServiceImpl implements MainService {
 		// 팔로우 하고 있는 회원들의 피드 목록 조회
 		List<Board> feedList = mapper.selectFeedList(memberNo, rowBounds);
 		
-		// 팔로우 하지 않은 회원 추천 목록
+		// 팔로우하지 않은 회원을 5개 조회
 		List<Recommend> recommendList = mapper.selectRecommendList(memberNo);
 		
 		List<Story> storyList = mapper.selectStoryList(memberNo);
