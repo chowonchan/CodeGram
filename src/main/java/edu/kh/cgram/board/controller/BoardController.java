@@ -7,6 +7,8 @@ import java.util.Map;
 import edu.kh.cgram.board.dto.Board;
 import edu.kh.cgram.board.service.EditBoardService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class BoardController {
 	
+	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 	private final BoardService service;
 	private final MyActivityService myActivityService;
 	
@@ -193,6 +196,7 @@ public class BoardController {
 			@RequestBody int boardNo,
 			@SessionAttribute("loginMember") Member loginMember
 	) {
+		log.debug("boardNo: {}", boardNo);
 		return service.feedDelete(boardNo, loginMember.getMemberNo());
 	}
 
