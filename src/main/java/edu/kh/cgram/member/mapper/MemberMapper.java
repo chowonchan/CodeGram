@@ -44,6 +44,6 @@ public interface MemberMapper {
 
 	List<BoardImg> selectMemberPosts(@Param("nickname") String nickname, @Param("cp") int cp);
 
-	boolean disclosure(@Param("loginMemberNo") int loginMemberNo,@Param("targetMemberNo") int targetMemberNo);
+	boolean disclosure(int targetMemberNo);
 
 }

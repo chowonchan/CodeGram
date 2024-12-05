@@ -44,6 +44,6 @@ public interface MemberService {
 	
 	List<BoardImg> getMemberPosts(String nickname, int cp);
 
-	boolean disclosure(int loginMemberNo, int targetMemberNo);
+	boolean disclosure(int targetMemberNo);
 
 }

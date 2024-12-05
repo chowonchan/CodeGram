@@ -209,8 +209,8 @@ public class MemberServiceImpl implements MemberService{
 	}
  	
  	@Override
- 	public boolean disclosure(int loginMemberNo, int targetMemberNo) {
- 		return mapper.disclosure(loginMemberNo, targetMemberNo);
+ 	public boolean disclosure(int targetMemberNo) {
+ 		return mapper.disclosure(targetMemberNo);
  	}
 	
 }
