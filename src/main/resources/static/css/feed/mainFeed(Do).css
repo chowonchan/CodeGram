@@ -104,7 +104,8 @@ body {
   background-color: #ffffff;
   border-bottom: 1px solid #DBDBDB;
   width: 500px;
-  height: 700px;
+  /* height: 700px; */
+  height: 1000px;
   padding-bottom: 16px;
   margin-bottom: 20px;
 }
