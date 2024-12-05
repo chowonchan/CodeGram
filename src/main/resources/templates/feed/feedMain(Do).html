@@ -20,7 +20,7 @@
 
 
 <div class="header-container" th:replace="~{fragments/header}"></div>
-<div th:replace= "~{feed/feedDetail}"></div>
+<div th:replace="~{feed/feedDetail}"></div>
 
 <body>
   <!-- 사이드바 조각 -->
@@ -43,12 +43,13 @@
               </div>
 
               <div class="stories-container" th:if="${not #lists.isEmpty(storyList)}">
-                <div th:data-story-id="${story.memberNickname}" th:each="story : ${storyList}" class="story-item" >
-                  <div class="story-wrapper"   th:classappend="${story.storyCount > 0 ? 'viewed' : ''}">
-                  <!-- <div class="story-wrapper"> -->
+                <div th:data-story-id="${story.memberNickname}" th:each="story : ${storyList}" class="story-item">
+                  <div class="story-wrapper" th:classappend="${story.storyCount > 0 ? 'viewed' : ''}">
+                    <!-- <div class="story-wrapper"> -->
                     <div class="story-border">
-                      <img th:unless="${story.profileImg}" src="/images/defaultImg.png"  class="story-profile-image">
-                      <img th:if="${story.profileImg}"     th:src="${story.profileImg}" class="story-profile-image">
+                      <img th:unless="${story.profileImg}" src="https://via.placeholder.com/50"
+                        class="story-profile-image">
+                      <img th:if="${story.profileImg}" th:src="${story.profileImg}" class="story-profile-image">
                     </div>
                   </div>
                   <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
@@ -82,14 +83,14 @@
 
                 <!-- 게시물이 존재할 때 -->
                 <th:block th:unless="${#lists.isEmpty(feedList)}">
-                  <article class="board-article"  th:data-board-no="${board.boardNo}" th:each="board : ${feedList}">
+                  <article class="board-article" th:data-board-no="${board.boardNo}" th:each="board : ${feedList}">
                     <div class="post">
                       <div class="post-header post-header-padding">
                         <div class="board-profile">
                           <div class="user-profile inline-block">
                             <a th:href="|member/${board.memberNickname}|">
                               <div class="user-profile-img pointer radius">
-                                <img th:unless="${board.profileImg}" src="/images/defaultImg.png">
+                                <img th:unless="${board.profileImg}" src="https://via.placeholder.com/50">
                                 <img th:if="${board.profileImg}" th:src="${board.profileImg}">
                               </div>
                             </a>
@@ -114,22 +115,27 @@
                       <!-- 이미지 슬라이드 영역 -->
                       <div class="post-images-container">
                         <div class="image-slider">
+
                           <button class="slider-button prev-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                               fill="none" stroke="currentColor" stroke-width="2">
                               <path d="M15 18l-6-6 6-6" />
                             </svg>
                           </button>
+
                           <button class="slider-button next-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                               fill="none" stroke="currentColor" stroke-width="2">
                               <path d="M9 18l6-6-6-6" />
                             </svg>
                           </button>
+
                           <div class="image-track">
                             <th:block th:each="i : ${#numbers.sequence(0, #lists.size(board.imageList)-1)}">
                               <th:block th:with="img = ${board.imageList[i]}">
-                                <img th:src="|${img.imgPath}${img.imgRename}|" class="post-image">
+                                <div class="post-image-box">
+                                  <img th:src="|${img.imgPath}${img.imgRename}|" class="post-image">
+                                </div>
                               </th:block>
                             </th:block>
                           </div>
@@ -144,7 +150,8 @@
                           <div class="box-1">
                             <button class="action-button like-button pointer">
                               <div class="action-button-div">
-                                <span class="fa-heart" th:classappend="${board.likeCheck == 1} ? 'fa-solid liked': fa-regular">
+                                <span class="fa-heart"
+                                  th:classappend="${board.likeCheck == 1} ? 'fa-solid liked': fa-regular">
                                 </span>
                               </div>
                             </button>
@@ -169,7 +176,8 @@
                         <div class="post-caption contentContainer">
                           <span class="feed-imp-Nick" th:text="${board.memberNickname}">닉</span>
                           <!-- 타임리프에서 넘어온 content를 여기에 삽입 -->
-                          <th:block th:unless="${board.boardContent != null && #strings.length(board.boardContent) > 200}">
+                          <th:block
+                            th:unless="${board.boardContent != null && #strings.length(board.boardContent) > 200}">
                             <span class="shortContent" th:text="${board.boardContent}">(짧내용)</span>
                           </th:block>
 
