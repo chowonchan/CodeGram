@@ -79,7 +79,7 @@ public class StoryController {
 		
   	int memberNo = loginMember.getMemberNo();
   	
-  	return storyService.updateStoryCheck1(storyNo, memberNo);
+		return null; /* storyService.updateStoryCheck1(storyNo, memberNo) */
 	}
   
   
