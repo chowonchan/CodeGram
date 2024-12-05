@@ -58,8 +58,6 @@ public class StoryController {
 	  model.addAttribute("memberStoryList", memberStoryList);
 	  
 	  return "story/story-list";
-	  
-	  
   }
   
   
