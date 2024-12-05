@@ -207,5 +207,10 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mapper.selectMemberPosts(nickname, cp);
 	}
+ 	
+ 	@Override
+ 	public boolean disclosure(int loginMemberNo, int targetMemberNo) {
+ 		return mapper.disclosure(loginMemberNo, targetMemberNo);
+ 	}
 	
 }

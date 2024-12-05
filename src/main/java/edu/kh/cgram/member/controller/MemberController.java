@@ -247,6 +247,14 @@ public class MemberController {
 			model.addAttribute("message", "차단당한 계정입니다.");
 			return "error/accessDenied"; // 접근 차단 페이지로 리다이렉트
 		}
+		
+		// 비공개 여부 확인
+//		boolean disclosure = service.disclosure(loginMemberNo, targetMemberNo);
+//		log.debug("비공개 여부 확인 결과: {}", disclosure);
+//		
+//		if (disclosure) {
+//
+//		}
 
 		// 추가 데이터 조회
 		int postCount = service.getPostCountByMemberNo(member.getMemberNo());

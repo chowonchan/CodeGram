@@ -116,7 +116,9 @@
 	      AND BLOCKED_MEMBER = #{targetMemberNo}
 	</select>
 	
+    <select id="targetMemberNo">
     
+    </select>
 	
 	
 	<!-- 이메일 중복 검사 -->
