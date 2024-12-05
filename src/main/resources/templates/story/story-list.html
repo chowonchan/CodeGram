@@ -33,7 +33,18 @@
       font-size: 4vh;
       color: #ffffff;
       font-weight: bold;
-      padding: 0vh 0vh 0vh 1vh
+      padding: 0vh 0vh 0vh 1vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 999;
+      user-select: none;
+      &:hover {
+          cursor: pointer;
+      }
+      &:active {
+        opacity: 0.4;
+      }
     }
 
     /* 전체 버튼 스타일 */
@@ -45,6 +56,11 @@
       cursor: pointer;
       width: 3vh;
       height: 3vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 999;
+      user-select: none;
     }
 
     /* SVG 기본 스타일 */
@@ -66,6 +82,13 @@
     /* 아이콘의 기본 색상 */
     .story-close-button {
         color: #ffffff;
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:active {
+        opacity: 0.4;
+      }
     }
 
     /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
@@ -188,7 +211,7 @@
 </head>
 <body>
 
-  [[${memberStoryList}]]
+<!--  [[${memberStoryList}]]-->
   <div class="logo">codegram</div>
 
   <div class="story-close-button">
@@ -212,7 +235,7 @@
           <div th:text="${cMember.storyList[0].createdAt}" class="created-at">시간</div>
         </div>
 
-        <div class="full" >
+        <div class="full">
           <div class="img-container">
             <img  th:object="${cMember.storyList[0]}" th:src="|*{imgPath}*{imgRename}|" th:data-story-no="*{storyNo}" data-story-index="0">
           </div>

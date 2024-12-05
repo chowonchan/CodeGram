@@ -805,3 +805,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* -----------------알림 목록 창-------------------- */
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const randomValue = (Math.random() + 0.1).toFixed(2);
+//   setTimeout( () => {
+//     document.getElementById("preLoad").remove();
+//   },randomValue)
+//
+// });
+
+window.onload = () => {
+  document.getElementById("preLoad").remove();
+};

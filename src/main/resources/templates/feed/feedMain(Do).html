@@ -47,8 +47,8 @@
                   <div class="story-wrapper"   th:classappend="${story.storyCount > 0 ? 'viewed' : ''}">
                   <!-- <div class="story-wrapper"> -->
                     <div class="story-border">
-                      <img th:unless="${story.profileImg}" src="https://via.placeholder.com/50" class="story-profile-image">
-                      <img th:if="${story.profileImg}"     th:src="${story.profileImg}"         class="story-profile-image">
+                      <img th:unless="${story.profileImg}" src="/images/defaultImg.png"  class="story-profile-image">
+                      <img th:if="${story.profileImg}"     th:src="${story.profileImg}" class="story-profile-image">
                     </div>
                   </div>
                   <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
@@ -89,7 +89,7 @@
                           <div class="user-profile inline-block">
                             <a th:href="|member/${board.memberNickname}|">
                               <div class="user-profile-img pointer radius">
-                                <img th:unless="${board.profileImg}" src="https://via.placeholder.com/50">
+                                <img th:unless="${board.profileImg}" src="/images/defaultImg.png">
                                 <img th:if="${board.profileImg}" th:src="${board.profileImg}">
                               </div>
                             </a>

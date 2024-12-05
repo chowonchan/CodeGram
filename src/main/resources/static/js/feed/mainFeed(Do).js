@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="user-profile-img pointer radius">
               ${board.profileImg ?
           `<img src="${board.profileImg}">` :
-          `<img src="https://via.placeholder.com/50">`
+          `<img src="/images/defaultImg.png">`
         }
             </div>
           </a>
