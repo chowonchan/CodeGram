@@ -650,6 +650,7 @@ async function loadFollowerList() {
 
   });
 
+  
 
   document.addEventListener("DOMContentLoaded", () => {
     const myUploadsTab = document.getElementById("myUploadsTab");
@@ -657,7 +658,7 @@ async function loadFollowerList() {
   
     // 초기 활성화 상태 설정
     myUploadsTab.classList.add("active");
-  
+
     // 클릭 이벤트 리스너 추가
     myUploadsTab.addEventListener("click", () => activateTab(myUploadsTab, "uploads"));
     savedTab?.addEventListener("click", () => activateTab(savedTab, "saved"));
@@ -669,6 +670,8 @@ async function loadFollowerList() {
   
     // 클릭된 탭에 'active' 클래스 추가
     activeTab.classList.add("active");
+
+    currentPage = 1;
   
     // 서버에서 데이터 로드 (AJAX)
     fetch(type === "uploads" ? `/member/${location.pathname.split("/")[2]}/posts` : "/myPage/saved")
