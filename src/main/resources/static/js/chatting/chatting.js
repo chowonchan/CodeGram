@@ -563,7 +563,9 @@ const chatRoomListAddEvent = () => {
       selectPartnerNo = item.getAttribute("partner-no");
       selectPartnerNickname = item.getAttribute("partner-nickname");
 
-      selectPartnerProfile = document.querySelector(".list-profile").getAttribute("src") || userDefaultImage;
+      selectPartnerProfile = item.querySelector(".list-profile")
+      ? item.querySelector(".list-profile").getAttribute("src")
+      : userDefaultImage;
 
       // selectPartnerProfile = item.children[0].children[0].getAttribute("src") || userDefaultImage;
       selectPartnerName = item.children[1].children[0].children[0].innerText;
