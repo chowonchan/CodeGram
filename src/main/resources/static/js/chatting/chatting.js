@@ -330,7 +330,7 @@ inputSearch.addEventListener("input", () => {
         if (member.profileImg == null) img.setAttribute("src", userDefaultImage);
         else img.setAttribute("src", member.profileImg);
 
-        let nickname = member.memberNickname;
+        // let nickname = member.memberNickname;
         let name = member.memberName;
 
         const span = document.createElement("span");
@@ -408,7 +408,7 @@ const chattingEnter = (e) => {
         }
 
       }, 300);
-      document.querySelector('.modal-overlay').style.display = 'none';
+      document.querySelector('.modal-overlaySearch').style.display = 'none';
 
     })
     .catch(err => console.error(err));
