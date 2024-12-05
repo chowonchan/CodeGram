@@ -1,5 +1,5 @@
 document.querySelector('.close-button2').addEventListener('click', () => {
-  document.querySelector('.modal-overlay').style.display = 'none';
+  document.querySelector('.modal-overlaySearch').style.display = 'none';
 });
 
 const searchInput = document.querySelector('.search-input');
