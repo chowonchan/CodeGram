@@ -159,17 +159,15 @@ function clearStoryProgress() {
 
 let backflagStory = false;
 
-document.getElementById("storymodalContentTopPrev").addEventListener("click", () => {
+modalStoryTopPrev.addEventListener("click", () => {
   console.log("뒤로가기 버튼 클릭 : ", modalStoryProgress);
   switch (modalStoryProgress) {
     case 2 :
+
+
+    case 4 :
       backflagStory = true;
       modalStoryCloseAlert();
-      break;
-      // case 3 : modalWithImg(); break;
-      // case 4 : modalImgEdit(); break;
-    case 4 :
-      modalStoryWithImg();
       break;
     default :
       console.log("뒤로가기 버튼 클릭");

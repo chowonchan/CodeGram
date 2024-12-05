@@ -780,7 +780,8 @@ document.addEventListener('DOMContentLoaded',  function () {
         postItem.appendChild(postImage);
         postsContent.appendChild(postItem);
 
-        history.pushState({}, "", "/new-url");
+        // history.pushState({}, "", "/member/" + nickname + "/myPage");
+        // history.pushState({}, "", "/member/" + nickname + "/myPage?bNo=" + post.boardNo);
       });
       
 
