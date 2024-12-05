@@ -234,9 +234,13 @@ public class MemberController {
 
 		int loginMemberNo = loginMember.getMemberNo();
 		int targetMemberNo = member.getMemberNo();
+		log.info("로그인 사용자 번호: {}", loginMemberNo);
+		log.info("타겟 사용자 번호: {}", targetMemberNo);
 
 		// 차단 여부 확인
-		boolean isBlocked = service.isUserBlocked(loginMemberNo, targetMemberNo);
+		boolean isBlocked = service.isBlocked(loginMemberNo, targetMemberNo);
+		log.debug("차단 여부 확인 결과: {}", isBlocked);
+
 
 		if (isBlocked) {
 			log.warn("차단된 계정에 접근 시도: {}", member.getMemberNickname());

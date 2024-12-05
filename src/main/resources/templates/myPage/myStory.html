@@ -7,10 +7,15 @@
   <link rel="stylesheet" href="/css/header.css">
   <link rel="stylesheet" href="/css/footer.css">
   <link rel="stylesheet" href="/css/mypage/myStory.css">
+  <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 </head>
 <body>
   
   <main>
+    <div class="myStory-back-button-container" id="myStoryBackButtonContainer">
+      <button class="back-button" id="myStoryBackButton"><i class="fas fa-arrow-left" th:text="보관"></i></button>
+      <div class="back-button-text" id="myStoryBackButtonText" th:text="스토리"></div>
+    </div>
     <session>
       <th:block class="header-container" th:replace="~{fragments/header}"></th:block>  
       <!-- 스토리 목록 -->

@@ -6,6 +6,7 @@
 .footer {
   padding: 20px;
   text-align: center;
+  
 }
 .footer-links {
   margin-bottom: 10px;
@@ -19,4 +20,8 @@
 .footer-team {
   font-size: 14px;
   color: #666;
+}
+
+.footer-container{
+  z-index: -1;
 }

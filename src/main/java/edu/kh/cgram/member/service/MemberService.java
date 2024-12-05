@@ -39,7 +39,7 @@ public interface MemberService {
 
 	int getFollowCount(int memberNo);
 
-	public boolean isUserBlocked(@Param("loginMemberNo") int loginMemberNo,@Param("targetMemberNo") int targetMemberNo);
+	public boolean isBlocked(@Param("loginMemberNo") int loginMemberNo,@Param("targetMemberNo") int targetMemberNo);
 
 	
 	List<BoardImg> getMemberPosts(String nickname, int cp);
