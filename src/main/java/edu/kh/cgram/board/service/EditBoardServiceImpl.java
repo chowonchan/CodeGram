@@ -71,6 +71,11 @@ public class EditBoardServiceImpl implements EditBoardService {
             // 사용자 정의 예외로 변경하기
         }
         
+        File folder = new File(folderPath);
+        if(folder.exists() == false) {	// 폴더가 없을 경우
+            folder.mkdirs();		// 폴더 생성
+        }
+        
         for(BoardImg boardImg : boardImgs) {
             String rename = boardImg.getImgRename();
             MultipartFile uploadFile = boardImg.getUploadFile();
@@ -143,6 +148,7 @@ public class EditBoardServiceImpl implements EditBoardService {
         if(uploadImgs.isEmpty()) return result;
 
         try {
+            
             for(BoardImg img : uploadImgs) {
                 img.getUploadFile()
                         .transferTo(new File(folderPath + img.getImgRename()));

@@ -35,6 +35,7 @@ public class Story {
 
 	private String 	storyCheck; // 'Y' or 'N'
 	private String 	storyLiked; // 'Y' or 'N'
+	private int		storyCount;
 
 	
 	private List<Member> visitorList;

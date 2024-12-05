@@ -428,44 +428,6 @@ textArea.addEventListener('input', () => {
 });
 
 
-// // 검색 결과 업데이트 함수
-// function updateSearchResults(results, isHashtag = false) {
-//   searchResults.innerHTML = ''; // 이전 결과 지우기
-//   if (results.length === 0) {
-//     searchResults.innerHTML = '<div style="padding-right: 20px; text-align: center;"><p>검색 결과가 없습니다.</p></div>';
-//     return;
-//   }
-//
-//   // 검색 결과 렌더링
-//   results.forEach(result => {
-//     const resultItem = document.createElement('div');
-//     resultItem.classList.add('result-item');
-//     if (isHashtag) {
-//       // 해시태그 결과 랜더링
-//       resultItem.innerHTML = `
-//         <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
-//           <div class="hashtag-name">${result.tagName}</div>
-//           <div class="hashtag-count">게시물 수: ${result.postCount}</div>
-//         </a>
-//       `;
-//     } else {
-//       resultItem.innerHTML = `
-//           <a href="/member/${result.memberNickname}" class="member-info">
-//             <div class="profile-img">
-//               <img src="${result.profileImg}">
-//             </div>
-//             <div class="member-text">
-//               <div class="member-nickname">${result.memberNickname}</div>
-//               <div class="member-name">${result.memberName}</div>
-//             </div>
-//           </a>
-//       `;
-//     }
-//     searchResults.appendChild(resultItem);
-//   });
-//
-// }
-
 
 //=======================================================
 // 제출
@@ -512,78 +474,5 @@ async function submitForm() {
 
 // ====================================================================================================
 
-
-// 검색 입력 필드 이벤트 리스너
-// textArea.addEventListener('input', () => {
-//   const query = textArea.innerText.trim();
-//   if (query) {
-//     clearButton.style.display = 'block'; // 입력값이 있을 때 X 버튼 표시
-//     recentSearch.style.display = 'none'; // 최근 검색 항목 숨기기
-//     searchResults.style.display = 'block'; // 검색 결과 표시
-//
-//     let searchUrl;
-//
-//     if (query.startsWith('#')) {
-//       // 해시태그 검색인 경우
-//       searchUrl = `/hashtag/search?query=${encodeURIComponent(query)}`;
-//     } else if (isKorean(query)) {
-//       searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=name`;
-//     } else {
-//       searchUrl = `/member/search?query=${encodeURIComponent(query)}&type=nickName`;
-//     }
-//
-//     // 비동기 요청(Fetch API 사용)
-//     fetch(searchUrl)
-//         .then(response => response.json())
-//         .then(data => {
-//           updateSearchResults(data, query.startsWith('#')); // 해시태그 여부 전달
-//         })
-//         .catch(error => {
-//           console.error('Error fetching search results:', error);
-//         });
-//   } else {
-//     clearButton.style.display = 'none'; // 입력값이 없을 때 X 버튼 숨김
-//     recentSearch.style.display = 'block'; // 최근 검색 항목 표시
-//     searchResults.innerHTML = ''; // 검색 결과 초기화
-//     searchResults.style.display = 'none'; // 검색 결과 숨기기
-//   }
-// });
-
-// 검색 결과 업데이트 함수
-// function updateSearchResults(results, isHashtag = false) {
-//   searchResults.innerHTML = ''; // 이전 결과 지우기
-//   if (results.length === 0) {
-//     searchResults.innerHTML = '<div style="padding-right: 20px; text-align: center;"><p>검색 결과가 없습니다.</p></div>';
-//     return;
-//   }
-//
-//   // 검색 결과 렌더링
-//   results.forEach(result => {
-//     const resultItem = document.createElement('div');
-//     resultItem.classList.add('result-item');
-//     if (isHashtag) {
-//       // 해시태그 결과 랜더링
-//       resultItem.innerHTML = `
-//         <a href="/hashtag/${encodeURIComponent(result.tagName)}" class="hashtag-info">
-//           <div class="hashtag-name">${result.tagName}</div>
-//           <div class="hashtag-count">게시물 수: ${result.postCount}</div>
-//         </a>
-//       `;
-//     } else {
-//       resultItem.innerHTML = `
-//           <a href="/member/${result.memberNickname}" class="member-info">
-//             <div class="profile-img">
-//               <img src="${result.profileImg}">
-//             </div>
-//             <div class="member-text">
-//               <div class="member-nickname">${result.memberNickname}</div>
-//               <div class="member-name">${result.memberName}</div>
-//             </div>
-//           </a>
-//       `;
-//     }
-//     searchResults.appendChild(resultItem);
-//   });
-// }
 
 // 모달창 이벤트 전부 분리
