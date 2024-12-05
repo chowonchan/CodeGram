@@ -60,9 +60,9 @@
       <span class="fa-solid fa-bars"></span>
       <span>더보기</span>
       <div class="more-menu">
-        <a id="moreTab" href="#">
-          <span class="fa-solid fa-gear" id="openProfileSetting"></span>
-          <div>설정</div>
+        <a id="moreTab" th:href= "@{/member/{nickname}?button=setting (nickname=${session.loginMember.memberNickname})}">
+          <span class="fa-solid fa-gear"></span>
+          <span>설정</span>
         </a>
         <a id="moreTab1" href="/board/myActivity">
           <span class="fa-solid fa-history"></span>
@@ -161,15 +161,16 @@
   </script>
 
   <!-- 프로필 설정 모달 -->
-  <div id="profileSettingModal2" class="modal2 hidden">
+  <!-- <div id="profileSettingModal2" class="modal2 hidden">
     <div class="modal2-content">
       <ul class="modal2-options">
-        <li id="followList" class="option followList">팔로우 목록</li>
-        <li id="blockList" class="option blockList">차단 목록</li>
-        <li id="logout" class="option logout">로그아웃</li>
+        <li id="followList2" class="option followList">팔로우 목록</li>
+        <li id="blockList2" class="option blockList">차단 목록</li>
+        <li id="logout2" class="option logout">로그아웃</li>
         <li id="cancleModal" class="option cancle">취소</li>
       </ul>
     </div>
-  </div>
+  </div> -->
+  
 
 </body>
