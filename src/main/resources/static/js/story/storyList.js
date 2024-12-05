@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 storyIndex++;
                 const story = storyList[storyIndex];
 
+                inner.querySelector(".story-left").style.display = 'flex';
+                inner.querySelector(".story-right").style.display = 'flex';
+
                 img.src = story.imgPath + story.imgRename;
                 img.dataset.storyNo = story.storyNo;
                 img.dataset.storyIndex = storyIndex;
@@ -65,9 +68,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     hiddenStory(inner);
                     showStory(inner.nextElementSibling);
 
+                    inner.querySelector(".story-left").style.display = 'flex';
+                    inner.querySelector(".story-right").style.display = 'flex';
+
                     console.log(inner.nextElementSibling);
                     moveToCenter(inner.nextElementSibling)
 
+                } else {
+                    inner.querySelector(".story-right").style.display = 'none';
                 }
             }
 
@@ -85,10 +93,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 storyIndex--;
                 const story = storyList[storyIndex];
 
+                inner.querySelector(".story-left").style.display = 'flex';
+                inner.querySelector(".story-right").style.display = 'flex';
+
                 img.src = story.imgPath + story.imgRename;
                 img.dataset.storyNo = story.storyNo;
                 img.dataset.storyIndex = storyIndex;
                 createdAt.textContent = story.createdAt;
+
 
                 moveToCenter(img)
 
@@ -98,8 +110,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 if(idx > 0){ // 왼쪽에 다른 회원 스토리가 있음
                     hiddenStory(inner);
                     showStory(inner.previousElementSibling);
+                    inner.querySelector(".story-left").style.display = 'flex';
+                    inner.querySelector(".story-right").style.display = 'flex';
 
                     moveToCenter(inner.previousElementSibling)
+                } else {
+                    inner.querySelector(".story-left").style.display = 'none';
                 }
             }
 
@@ -171,3 +187,17 @@ function moveToCenter(element) {
     },200)
 }
 
+const closeBtn = document.querySelector(".story-close-button");
+const logo = document.querySelector(".logo");
+
+closeBtn.addEventListener('click', () => {
+    gotoMain();
+});
+
+logo.addEventListener('click', () => {
+    gotoMain();
+});
+
+function gotoMain() {
+    location.href = "/main";
+}
