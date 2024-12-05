@@ -89,8 +89,8 @@ function loadStories(page) {
                 const listItem = document.createElement("li");
                 listItem.classList.add("story-item");
                 listItem.innerHTML = `
-                    <div class="story-thumbnail">
-                        <img src="${story.imgPath}" alt="Thumbnail">
+                    <div class="story-thumbnail" storyNo="${story.storyNo}">
+                        <img src="${story.imgPath+story.imgRename}" alt="Thumbnail">
                     </div>
                     <span>${story.createdAt}</span>
 

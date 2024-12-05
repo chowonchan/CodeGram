@@ -31,6 +31,9 @@ html, body {
   height: 150px;
   object-fit: cover;
   border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .story-created-at {
@@ -155,4 +158,9 @@ footer {
   color: #555;
   font-size: 16px;
   margin: 20px 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
