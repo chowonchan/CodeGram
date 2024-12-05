@@ -148,7 +148,8 @@
     		   R.REPORT_CATEGORY AS reportCategory,
     		   R.CREATED_AT AS createdAt,
     		   C.COMMENT_DEL_FL AS commentDelFl,
-    		   R.REPORT_VIEW AS reportView
+    		   R.REPORT_VIEW AS reportView,
+    		   C.BOARD_NO AS boardNo
         FROM REPORT R
         JOIN MEMBER M ON (R.MEMBER_NO = M.MEMBER_NO)
         JOIN "COMMENT" C ON (R.CONTENT_NO = C.COMMENT_NO)

@@ -181,7 +181,7 @@ const selectFeedList = (cp = 1) => {
         tr.innerHTML = `
           <td>${feed.boardNo}</td>
           <td>${feed.memberNickname}</td>
-          <td><a href="/board/${feed.boardNo}" title="${feed.boardContent}">${truncatedContent || "내용 없음"}</a></td>
+          <td><a title="${feed.boardContent}">${truncatedContent || "내용 없음"}</a></td>
           <td>${feed.createdAt}</td>
           <td>${feed.readCount}</td>
           <td>
@@ -195,7 +195,7 @@ const selectFeedList = (cp = 1) => {
         `;
 
         tr.addEventListener("click", () => {
-          location.href = `/board/${feed.boardNo}`; // 게시물 상세 페이지로 이동
+          openDetail(feed.boardNo);
         });
 
         // 버튼 이벤트 추가
@@ -327,7 +327,7 @@ const selectFeedReportList = (query) => {
         tr.innerHTML = `
           <td>${feedReport.reportNo}</td>
           <td>${feedReport.memberNickname}</td>
-          <td><a href="/board/${feedReport.contentNo}" title="${feedReport.boardContent}">${feedReport.boardContent || "내용 없음"}</a></td>
+          <td><a title="${feedReport.boardContent}">${feedReport.boardContent || "내용 없음"}</a></td>
           <td>${feedReport.reportCategory}</td>
           <td>${feedReport.createdAt}</td>
           <td>
@@ -343,7 +343,7 @@ const selectFeedReportList = (query) => {
         `;
 
         tr.addEventListener("click", () => {
-          location.href = `/board/${feedReport.contentNo}`; // 게시물 상세 페이지로 이동
+          openDetail(feedReport.contentNo);
         });
 
         // 버튼 이벤트 추가
@@ -498,7 +498,7 @@ const selectCommentReportList = (query) => {
         tr.innerHTML = `
           <td>${commentReport.reportNo}</td>
           <td>${commentReport.memberNickname}</td>
-          <td><a href="/board/${commentReport.contentNo}" title="${commentReport.commentContent}">${truncatedContent}</a></td>
+          <td><a" title="${commentReport.commentContent}">${truncatedContent}</a></td>
           <td>${commentReport.reportCategory}</td>
           <td>${commentReport.createdAt}</td>
           <td>
@@ -554,7 +554,7 @@ const selectCommentReportList = (query) => {
         }
 
         tr.addEventListener("click", () => {
-          location.href = `/board/${commentReport.contentNo}`; // 게시물 상세 페이지로 이동
+          openDetail(commentReport.boardNo); // 게시물 상세 페이지로 이동
         });
 
         commentReportList.appendChild(tr);
