@@ -249,8 +249,8 @@ public class MemberController {
 		}
 		
 		// 비공개 여부 확인
-		boolean disclosure = service.disclosure(targetMemberNo);
-		log.debug("비공개 여부 확인 결과: {}", disclosure);
+//		boolean disclosure = service.disclosure(targetMemberNo);
+//		log.debug("비공개 여부 확인 결과: {}", disclosure);
 		
 //		if (disclosure) {
 //
