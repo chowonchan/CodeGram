@@ -8,6 +8,7 @@ import java.util.Map;
 
 import edu.kh.cgram.board.dto.BoardImg;
 import edu.kh.cgram.common.util.FileUtil;
+import edu.kh.cgram.member.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -116,8 +117,45 @@ public class StoryServiceImpl implements StoryService {
 		return map;
 	}
 	
+	@Override
+	public List<Member> memberStoryList(int memberNo) {
+		
+		// 팔로우한 회원의 24시간 내 스토리 목록 조회
+		List<Story> list = storyMapper.memberStoryList(memberNo);
+		
+		List<Member> memberList = new ArrayList<>();
+		
+		for(Story story : list) {
+			Member member = checkInListMember(memberList, story.getMemberNo());
+			
+			// memberList에 이미 존재하는 회원인 경우
+			if(member != null) {
+				member.getStoryList().add(story);
+				continue;
+			}
+			
+			// memberList에 없는 회원인 경우
+			member = new Member();
+			member.setMemberNo(story.getMemberNo());
+			member.setMemberNickname(story.getMemberNickname());
+			member.setProfileImg(story.getProfileImg());
+			member.setStoryList(new ArrayList<>());
+			member.getStoryList().add(story);
+			memberList.add(member);
+		}
+		
+		return memberList;
+	}
 	
 	
-
-
+	// memberList에 같은 회원 번호를 가진 회원이 있는지 검사
+	private Member checkInListMember(List<Member> memberList,int memberNo){
+		for(Member member : memberList) {
+			if(member.getMemberNo() == memberNo) {
+				return member;
+			}
+		}
+		return null;
+	}
+	
 }
