@@ -231,11 +231,11 @@ function scrollStoryLock() {
 
 // 이미지 삽입 관련 script
 function isSupportedStoryFile(file) {
-  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
   return allowedTypes.includes(file.type);
 }
 
-const maxSizeStory = 1024 * 1024 * 10;  // 10MB를 byte 단위로 작성
+const maxSizeStory = 1024 * 1024 * 20;  // 10MB를 byte 단위로 작성
 // 이미지는 최대 5장까지
 const lastValidStoryFiles = [null, null, null, null, null];
 
@@ -268,10 +268,10 @@ const storyPreviewList = document.getElementsByClassName("story-preview");
 const updateStoryPreview = (file, order) => {  // 이미지 순서까지 얻어와야
 
   // 선택된 파일이 지정된 크기를 초과한 경우선택 막기
-  const maxSize = 1024 * 1024 * 10;
+  const maxSize = 1024 * 1024 * 20;
 
   if (file.size > maxSize) {   // 파일 크기 초과 시
-    alert("10MB 이하의 이미지만 선택해 주세요");
+    alert("20MB 이하의 이미지만 선택해 주세요");
 
     if (lastValidStoryFiles[order] === null) {
       storyInputImageList[order].value = ""; // 선택 파일 삭제

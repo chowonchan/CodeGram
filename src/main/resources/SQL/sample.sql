@@ -7,11 +7,11 @@ SELECT  * FROM STORY;
 
 /* PL/SQL을 이용해서 맴버 샘플 데이터 삽입 (PW는 pass01!) */
 BEGIN
-    FOR I IN 1..10 LOOP
+    FOR I IN 1..21 LOOP
             INSERT INTO "MEMBER"
             VALUES(
                    SEQ_MEMBER_NO.NEXTVAL,
-                   'pass' || SEQ_MEMBER_NO.CURRVAL,
+                   'sample' || SEQ_MEMBER_NO.CURRVAL,
                    '$2a$10$RY0ttpgkDhNnm/ZExrVZqe4HfzjSoJizjbJBGybCJGdmSOWER4a7m',
                    'test' || SEQ_MEMBER_NO.CURRVAL || '@cgram.com',
                    'nick' || SEQ_MEMBER_NO.CURRVAL,
@@ -20,6 +20,8 @@ BEGIN
                   );
         END LOOP;
 END;
+
+COMMIT;
 
 -- 게시글 샘플 데이터
 BEGIN

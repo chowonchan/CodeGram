@@ -250,7 +250,7 @@ function scrollLock() {
 
 // 이미지 삽입 관련 script
 function isSupportedFile(file) {
-  const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
   return allowedTypes.includes(file.type);
 }
 
