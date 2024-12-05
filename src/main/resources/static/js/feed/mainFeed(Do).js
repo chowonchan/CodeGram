@@ -433,7 +433,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // ----
 
 
-   // initializeSliders(); // 슬라이더 버튼 초기화 및 실행 함수
       const a = articleElement.querySelector(".important-box a");
       a.addEventListener("click", e => {
         e.preventDefault();
