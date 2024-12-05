@@ -280,6 +280,7 @@ saveButton.addEventListener("click", async () => {
 
         if (result.status === "success") {
             alert("프로필이 성공적으로 저장되었습니다.");
+            window.history.back();
         } else {
             alert("프로필 저장 중 오류가 발생했습니다.");
         }
