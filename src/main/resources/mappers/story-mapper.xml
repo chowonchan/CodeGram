@@ -34,8 +34,8 @@
             SELECT SEQ_STORY_NO.NEXTVAL FROM DUAL
         </selectKey>
 
-        INSERT INTO STORY (STORY_NO, IMG_PATH, CREATED_AT, STORY_DEL_FL, READ_COUNT, MEMBER_NO, IMG_RENAME)
-        VALUES (#{storyNo}, #{imgPath}, DEFAULT, DEFAULT, DEFAULT, #{memberNo}, #{imgRename})
+        INSERT INTO STORY (STORY_NO, IMG_PATH, CREATED_AT, STORY_DEL_FL, MEMBER_NO, IMG_RENAME)
+        VALUES (#{storyNo}, #{imgPath}, DEFAULT, DEFAULT, #{memberNo}, #{imgRename})
     </insert>
 
 
@@ -82,7 +82,7 @@
     
     <!-- 스토리를 누르면 스토리 리드 추가 -->
     <insert id="insertStoryRead">
-    	INSERT INTO "STORY_READ" (MEMBER_NO, STORY_NO, CREATED_AT)
+    	INSERT INTO "STORY_READ" (MEMBER_NO, STORY_NO, CREATE_AT)
     	VALUES(#{memberNo}, #{storyNo}, DEFAULT)
     </insert>
     
