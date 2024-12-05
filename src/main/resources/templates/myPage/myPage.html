@@ -131,7 +131,6 @@
     <div class="modal-content">
       <!-- 모달 옵션 목록 -->
       <ul class="modal-options">
-        <!-- <li id="notificationSetting" class="option notification">알림설정</li> -->
         <li id="followList" class="option followList">팔로우 목록</li>
         <li id="blockList" class="option blockList ">차단 목록</li>
         <li id="logout" class="option logout">로그아웃</li>
@@ -143,7 +142,7 @@
   <!-- 프로필 -> 더보기 모달 -->
   <div id="profileMoreModal" class="modal">
     <!-- 모달 내부 콘텐츠 -->
-    <div class="modal-content">
+    <div class="modal-content" id="profileMoreModalContent">
       <!-- 모달 옵션 목록 -->
       <ul class="modal-options">
         <li id="blockUser" class="option block">차단</li>
@@ -154,7 +153,7 @@
   </div>
 
   <div id="profileInfoModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" id="profileInfoModalContent">
       <!-- 프로필 이미지 표시 -->
       <div class="profile-image" id="profileImageArea">
         <img th:src="${member.profileImg != null ? member.profileImg : '/images/defaultImg.png'}" id="profileImg" alt="프로필 이미지">
@@ -221,56 +220,6 @@
     </div>
   </div>
 
-<!--&lt;!&ndash; 모달 전체 컨테이너 &ndash;&gt;-->
-<!--<div id="feedModal" style="display: none;" class="modal">-->
-<!--  &lt;!&ndash; 모달 오버레이 &ndash;&gt;-->
-<!--  <div id="modalOverlay" class="modal-overlay"></div>-->
-
-<!--  &lt;!&ndash; 모달 콘텐츠 &ndash;&gt;-->
-<!--  <div class="modal-content">-->
-<!--    <img id="feedImage" src="" alt="Post Image" class="modal-image">-->
-<!--    <div class="modal-header">-->
-<!--      <a id="userNickname" href="#" class="user-nickname">작성자 닉네임</a>-->
-<!--      <i class="fas fa-ellipsis" id="ellipsisButton"></i>-->
-<!--    </div>-->
-<!--    <div class="modal-body">-->
-<!--      <p id="feedDescription" class="feed-description">게시물 내용</p>-->
-<!--      <p id="feedTime" class="feed-time">게시 시간</p>-->
-<!--      <p id="likesCount" class="likes-count">좋아요 0개</p>-->
-<!--    </div>-->
-<!--    <ul id="commentList" class="comment-list"></ul>-->
-<!--    <i id="likeButton" class="far fa-heart like-button"></i>-->
-<!--  </div>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; 옵션 모달 &ndash;&gt;-->
-<!--<div id="optionsModal" style="display: none;">-->
-<!--  <ul>-->
-<!--    <li class="detail-options-button edit">수정</li>-->
-<!--    <li class="detail-options-button delete">삭제</li>-->
-<!--  </ul>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; 수정/삭제 모달 &ndash;&gt;-->
-<!--<div id="editDeleteModal" style="display: none;">-->
-<!--  <button class="detail-edit-delete-button edit">수정</button>-->
-<!--  <button class="detail-edit-delete-button delete">삭제</button>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; 좋아요 목록 모달 &ndash;&gt;-->
-<!--<div id="likesModal" style="display: none;">-->
-<!--  <div id="likesModalOverlay" class="modal-overlay"></div>-->
-<!--  <ul id="likesList" class="likes-list"></ul>-->
-<!--  <button id="closeLikesModal" class="close-modal-button">닫기</button>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; 신고 모달 &ndash;&gt;-->
-<!--<div id="reportModal" style="display: none;">-->
-<!--  <div id="reportModalOverlay" class="modal-overlay"></div>-->
-<!--  <h2>신고 사유를 선택해주세요</h2>-->
-<!--  <ul id="reportReasonList" class="report-reason-list"></ul>-->
-<!--  <button id="closeReportModal" class="close-modal-button">닫기</button>-->
-<!--</div>-->
 
 
 
