@@ -80,6 +80,7 @@ public class StoryController {
   	int memberNo = loginMember.getMemberNo();
   	
   	return storyService.updateStoryCheck1(memberNickname, memberNo);
+
 	}
   
   
