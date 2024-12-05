@@ -27,6 +27,7 @@
 		JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
 		WHERE B.MEMBER_NO = #{memberNo}
     	AND B.BOARD_DEL_FL = 'N'
+    	AND BI.IMG_ORDER = 1
 	</select>
 
 	<update id="deleteBoards">
