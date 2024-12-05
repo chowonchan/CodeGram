@@ -222,12 +222,6 @@
 
         <!-- 추천 목록 -->
         <div class="recommend-list">
-
-          <!-- 혹시 회원 추천 목록이 null or 0개일때 오류 안 나게 -->
-          <article th:if="${recommendList != null && recommendList.size() > 0}" class="recommend-user">
-            <small class="recommend-zero">모든 회원이<br>follow되어있습니다</small>
-          </article>
-
           <!-- 팔로우 안 된 회원조회 -->
           <article th:each="recommend : ${recommendList}" class="recommend-user">
             <span class="recommend-user-img">
