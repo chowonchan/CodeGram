@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CODEGRAM_TEST</title>
+  <title>CODEGRAM</title>
 
   <link rel="stylesheet" th:href="@{/css/feed/mainFeed(Do).css}">
   <link rel="stylesheet" th:href="@{/css/feed/feedStory(Do).css}">
@@ -43,7 +43,7 @@
               </div>
 
               <div class="stories-container" th:if="${not #lists.isEmpty(storyList)}">
-                <div th:each="story : ${storyList}" class="story-item" th:data-story-id="${story.memberNickname}">
+                <div th:data-story-id="${story.memberNickname}" th:each="story : ${storyList}" class="story-item" >
                   <div class="story-wrapper"   th:classappend="${story.storyCount > 0 ? 'viewed' : ''}">
                   <!-- <div class="story-wrapper"> -->
                     <div class="story-border">
@@ -55,7 +55,7 @@
                 </div>
               </div>
 
-              <th:block th:if="${stories != null && #lists.size(stories) > 6}">
+              <th:block th:if="${storyList != null && #lists.size(storyList) > 6}">
 
                 <button class="nav-button prev">
                   <span class="nav-icon">←</span>
@@ -222,8 +222,14 @@
 
         <!-- 추천 목록 -->
         <div class="recommend-list">
-          <!-- 걍 동기로 할래.. -->
-          <article th:each="recommend : ${recommendList.subList(0, 5)}" class="recommend-user">
+
+          <!-- 혹시 회원 추천 목록이 null or 0개일때 오류 안 나게 -->
+          <article th:if="${recommendList != null && recommendList.size() > 0}" class="recommend-user">
+            <small class="recommend-zero">모든 회원이<br>follow되어있습니다</small>
+          </article>
+
+          <!-- 팔로우 안 된 회원조회 -->
+          <article th:each="recommend : ${recommendList}" class="recommend-user">
             <span class="recommend-user-img">
               <img th:unless="${recommend.profileImg}" src="https://via.placeholder.com/32">
               <img th:if="${recommend.profileImg}" th:src="${recommend.profileImg}">
@@ -238,6 +244,7 @@
               <!-- 팔로우 누르면 바뀐 버튼이 나와야됨. 추후 수정 -->
             </div>
           </article>
+
         </div>
       </section>
     </section> <!-- 회원 추천 영역 end -->

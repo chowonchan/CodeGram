@@ -48,7 +48,7 @@
 
 
     
-    <!-- 아래는 수정이 필요할 수 있는 코드 -->
+    <!-- 아래는 스토리 확인을 위한 구문들 -->
     
     <!-- 스토리를 이미 읽었는지 확인 -->
     <select id="checkStory" resultType="_int">
@@ -79,12 +79,6 @@
 		AND S.CREATED_AT > CURRENT_DATE - 1
     </select>
     
-    
-    <!-- 스토리를 누르면 스토리 리드 추가 -->
-    <insert id="insertStoryRead">
-    	INSERT INTO "STORY_READ" (MEMBER_NO, STORY_NO, CREATE_AT)
-    	VALUES(#{memberNo}, #{storyNo}, DEFAULT)
-    </insert>
     
     <!-- 팔로우한 회원의 24시간 내 스토리 존재 여부 확인 -->
     <select id="selectStoryHas">

@@ -74,6 +74,7 @@ public class StoryController {
   @PostMapping("/api/story/view/{memberNickname}")
   @ResponseBody
   public Map<String, Object> updateStoryCheck(
+//  	@RequestBody String memberNickname,
   	@PathVariable String memberNickname,
 		@ModelAttribute("loginMember") Member loginMember) {
 		

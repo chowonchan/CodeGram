@@ -82,7 +82,7 @@
 /* 스토리 섹션 컨테이너 */
 .stories-section {
   position: relative;
-  width: 650px;
+  width: 625px;
   background: #fff;
   border-radius: 8px;
   margin-bottom: 24px;
@@ -124,4 +124,21 @@
   padding: 40px;
   text-align: center;
   color: #8e8e8e;
+}
+
+.story-item.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.error-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(211, 211, 211);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 1000;
 }
