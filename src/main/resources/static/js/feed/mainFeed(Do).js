@@ -284,9 +284,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const heart = articleElement.querySelector(".fa-heart");
   const bookMark = articleElement.querySelector(".fa-bookmark");
   const boardLikeCount = articleElement.querySelector(".likeCount");
-  
- // initializeSliders(); // 슬라이더 버튼 초기화 및 실행 함수
-document.addEventListener('DOMContentLoaded', function () {
+
+  // ---- dot 초기화 후 재실행하기위함 
+  initializeSliders();
   function initializeSliders() {
     const sliders = document.querySelectorAll('.image-slider');
 
@@ -428,13 +428,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 슬라이더 초기화 실행
-  initializeSliders();
-});
+  initializeSliders(); // 슬라이더 초기화 실행
+
+  // ----
 
 
-
-  
+   // initializeSliders(); // 슬라이더 버튼 초기화 및 실행 함수
       const a = articleElement.querySelector(".important-box a");
       a.addEventListener("click", e => {
         e.preventDefault();
