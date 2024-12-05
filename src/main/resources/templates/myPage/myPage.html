@@ -131,7 +131,6 @@
     <div class="modal-content">
       <!-- 모달 옵션 목록 -->
       <ul class="modal-options">
-        <!-- <li id="notificationSetting" class="option notification">알림설정</li> -->
         <li id="followList" class="option followList">팔로우 목록</li>
         <li id="blockList" class="option blockList ">차단 목록</li>
         <li id="logout" class="option logout">로그아웃</li>
@@ -143,7 +142,7 @@
   <!-- 프로필 -> 더보기 모달 -->
   <div id="profileMoreModal" class="modal">
     <!-- 모달 내부 콘텐츠 -->
-    <div class="modal-content">
+    <div class="modal-content" id="profileMoreModalContent">
       <!-- 모달 옵션 목록 -->
       <ul class="modal-options">
         <li id="blockUser" class="option block">차단</li>
@@ -154,7 +153,7 @@
   </div>
 
   <div id="profileInfoModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" id="profileInfoModalContent">
       <!-- 프로필 이미지 표시 -->
       <div class="profile-image" id="profileImageArea">
         <img th:src="${member.profileImg != null ? member.profileImg : '/images/defaultImg.png'}" id="profileImg" alt="프로필 이미지">

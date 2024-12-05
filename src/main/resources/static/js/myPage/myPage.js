@@ -816,3 +816,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 현재 URL에서 쿼리 파라미터 읽기
+  const urlParams = new URLSearchParams(window.location.search);
+  // 'tab' 파라미터 가져오기
+  const activeTab = urlParams.get('tab'); 
+
+  if (activeTab) {
+    // 모든 탭에서 'active' 클래스 제거
+    document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+
+    // 해당 ID를 가진 탭에 'active' 클래스 추가
+    const targetTab = document.querySelector(`#${activeTab}`);
+    if (targetTab) {
+      targetTab.classList.add("active");
+    }
+  }
+});
+

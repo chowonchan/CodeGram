@@ -805,3 +805,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* -----------------알림 목록 창-------------------- */
+
+
+
+
+
+/* -----------------설정 모달 창-------------------- */
+
+document.addEventListener("DOMContentLoaded", function () {
+  // DOM 요소 선택
+  const openProfileSetting = document.getElementById("openProfileSetting"); // 설정 버튼
+  const profileSettingModal = document.getElementById("profileSettingModal2"); // 모달
+  const cancelModal = document.getElementById("cancleModal"); // 취소 버튼
+  console.log(document.getElementById("openProfileSetting"));
+  console.log(document.getElementById("profileSettingModal2"));
+  console.log(document.getElementById("cancleModal"));
+  // "설정" 클릭 시 모달 열기
+  openProfileSetting.addEventListener("click", function (event) {
+    event.preventDefault(); // 기본 동작 방지
+    profileSettingModal.classList.remove("hidden"); // 모달 표시
+    profileSettingModal.classList.add("active");
+  });
+
+  // "취소" 클릭 시 모달 닫기
+  cancelModal.addEventListener("click", function () {
+    profileSettingModal.classList.add("hidden"); // 모달 숨기기
+    profileSettingModal.classList.remove("active");
+  });
+
+  // 모달 외부 클릭 시 닫기
+  window.addEventListener("click", function (event) {
+    if (event.target === profileSettingModal) {
+      profileSettingModal.classList.add("hidden"); // 모달 숨기기
+      profileSettingModal.classList.remove("active");
+    }
+  });
+});
