@@ -347,6 +347,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("changePasswordButton").addEventListener("click", () => {
       const newPassword = document.getElementById("newPassword").value.trim();
       const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      // 비밀번호 정규표현식 검사
+      const lengthCheck = newPassword.length >= 6 && newPassword.length <= 20;
+      const letterCheck = /[a-zA-Z]/.test(newPassword); // 영어 알파벳 포함
+      const numberCheck = /\d/.test(newPassword); // 숫자 포함
+      const specialCharCheck = /[\!\@\#\_\*\-]/.test(newPassword); // 특수문자 포함
   
       if (!newPassword || !confirmPassword) {
         alert("모든 필드를 입력해주세요.");
@@ -357,12 +362,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("비밀번호가 일치하지 않습니다.");
         return;
       }
-
-        // 비밀번호 정규표현식 검사
-      const lengthCheck = inputPw.length >= 6 && inputPw.length <= 20;
-      const letterCheck = /[a-zA-Z]/.test(inputPw); // 영어 알파벳 포함
-      const numberCheck = /\d/.test(inputPw); // 숫자 포함
-      const specialCharCheck = /[\!\@\#\_\*\-]/.test(inputPw); // 특수문자 포함
 
       // 조건이 하나라도 만족하지 못하면
       if ( !(lengthCheck && letterCheck && numberCheck && specialCharCheck) ) {
