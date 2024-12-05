@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 img.dataset.storyNo = story.storyNo;
                 img.dataset.storyIndex = storyIndex;
                 createdAt.textContent = story.createdAt;
-                storyCheck(story.storyNo);
+                storyCheck(story.storyNo)
                 moveToCenter(img);
             } else {
                 // 현재 회원이 다른 스토리가 없을 경우
