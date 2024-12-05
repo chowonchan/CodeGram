@@ -117,7 +117,9 @@
 	</select>
 	
     <select id="targetMemberNo">
-    
+    	SELECT MEMBER_DISCLOSURE_SCOPE
+    	FROM MEMBER
+    	WHERE MEMBER_NO = #{targetMemberNo}
     </select>
 	
 	
