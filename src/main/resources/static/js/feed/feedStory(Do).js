@@ -1,4 +1,4 @@
-// mainFeed.js
+// story.js
 document.addEventListener('DOMContentLoaded', () => {
   const storiesContainer = document.querySelector('.stories-container');
   let currentPosition = 0;
