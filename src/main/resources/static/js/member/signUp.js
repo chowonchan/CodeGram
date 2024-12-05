@@ -1,3 +1,15 @@
+/* 필수 입력 항목의 유효성검사 여부를 체크하기 위한 객체(체크리스트) */
+const checkObj = {
+  "memberName"      : false,
+  "memberEmail"     : false,
+  "authKey"         : false,
+  "memberId"        : false,
+  "memberPw"        : false,
+  "memberPwConfirm" : false,
+  "memberNickname"  : false,
+  "memberBirth"     : false
+};
+
 // 현재 날짜로 기본값 설정
 window.onload = function() {
   const today = new Date();
@@ -62,7 +74,7 @@ window.onload = function() {
   
   // 생년월일 유효성 검사
   function validateBirthDate() {
-  const selectedYear = birthYear.value;
+  const selectedYear = birthYear.value; 
   const selectedMonth = birthMonth.value - 1; // 월은 0부터 시작
   const selectedDay = birthDay.value;
   
@@ -78,7 +90,7 @@ window.onload = function() {
   birthMessage.classList.remove("error");
   checkObj.memberBirth = true; // 유효한 생년월일로 기록
   } else {
-  birthMessage.innerText = "14살이 넘고나서 와라 애송이";
+  birthMessage.innerText = "14세 이상만 가입할 수 있습니다.";
   birthMessage.classList.add("error");
   birthMessage.classList.remove("confirm");
   checkObj.memberBirth = false; // 유효하지 않은 생년월일로 기록
@@ -89,18 +101,6 @@ window.onload = function() {
   birthYear.addEventListener("change", validateBirthDate);
   birthMonth.addEventListener("change", validateBirthDate);
   birthDay.addEventListener("change", validateBirthDate);
-};
-
-/* 필수 입력 항목의 유효성검사 여부를 체크하기 위한 객체(체크리스트) */
-const checkObj = {
-  "memberName"      : false,
-  "memberEmail"     : false,
-  "authKey"         : false,
-  "memberId"        : false,
-  "memberPw"        : false,
-  "memberPwConfirm" : false,
-  "memberNickname"  : false,
-  "memberBirth"     : false
 };
 
 /* -------- 이메일 유효성 검사 -------- */
@@ -371,7 +371,7 @@ memberPw.addEventListener("input", () => {
   // 비밀번호 확인이 작성된 상태에서
   // 비밀번호가 입력된 경우
   if(memberPwConfirm.vlaue.trim().length>0){
-    checkPw(); // 같른지 비교하는 함수 호출
+    checkPw();
   }
 
 });
@@ -434,20 +434,18 @@ let authTimer; // 타이머 역할의 setInterval을 저장할 변수
 
 // 인증번호 버튼을 클릭시
 sendAuthKeyBtn.addEventListener("click",()=>{
-
+  memberEmail.readOnly = true; // 읽기 전용으로 설정
   checkObj.authKey = false; // 인증 안된 상태로 기록
   authKeyMessage.innerText = ""; // 인증 관련 메시지 삭제
 
   if(authTimer != undefined){
     clearInterval(authTimer); // 이전 인증 타이머 없애기
   }
-    // 이메일 입력 필드를 비활성화 (클릭 불가)
-    // memberEmail.disabled = true;
 
   // 1) 작성된 이메일이 유효하지 않은 경우
   if(checkObj.memberEmail===false){
     alert("유효한 이메일 작성 후 클릭하세요");
-    // memberEmail.disabled = false; // 이메일 다시 활성화
+    memberEmail.readOnly = false; // 읽기 가능하게 전환
     return;
   }
 
@@ -616,7 +614,7 @@ const signUpForm = document.querySelector("#signUpForm");
 
 signUpForm.addEventListener("submit", e=> {
 
-  // e.preventDefault(); // 기본 이벤트(form 제출) 막기
+   e.preventDefault(); // 기본 이벤트(form 제출) 막기
 
   // for(let key in 객체)
   // -> 반복마다 객체의 키 깂을 하나씩 꺼내서 key 변수에 저장
@@ -636,7 +634,7 @@ signUpForm.addEventListener("submit", e=> {
         case "memberPw"        : str = "비밀번호가 유효하지 않습니다"; break;
         case "memberPwConfirm" : str = "비밀번호 확인이 일치하지 않습니다"; break;
         case "authKey"         : str = "이메일이 인증되지 않았습니다"; break;
-        case "memberBirth"     : str = "14살이 넘고나서 와라 애송이"; break;
+        case "memberBirth"     : str = "14세 이상만 가입할 수 있습니다. "; break;
       }
 
       alert(str); // 경고 출력
@@ -644,11 +642,12 @@ signUpForm.addEventListener("submit", e=> {
        // 유효하지 않은 요소로 focus 이동
       document.getElementById(key).focus();
 
-      e.preventDefault(); // 제출 막기
+      // e.preventDefault(); // 제출 막기
 
-      return;
+       return;
 
-    }
-  
-  }
+    } 
+  } 
+    // 모든 유효성 검사 통과 시 폼 제출
+    signUpForm.submit();
 })

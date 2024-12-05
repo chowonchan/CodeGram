@@ -47,8 +47,8 @@
                   <div class="story-wrapper"   th:classappend="${story.storyCount > 0 ? 'viewed' : ''}">
                   <!-- <div class="story-wrapper"> -->
                     <div class="story-border">
-                      <img th:unless="${story.profileImg}" src="https://via.placeholder.com/50" class="story-profile-image">
-                      <img th:if="${story.profileImg}"     th:src="${story.profileImg}"         class="story-profile-image">
+                      <img th:unless="${story.profileImg}" src="/images/defaultImg.png"  class="story-profile-image">
+                      <img th:if="${story.profileImg}"     th:src="${story.profileImg}" class="story-profile-image">
                     </div>
                   </div>
                   <span th:text="${story.memberNickname}" class="story-username">닉네임</span>
@@ -89,7 +89,7 @@
                           <div class="user-profile inline-block">
                             <a th:href="|member/${board.memberNickname}|">
                               <div class="user-profile-img pointer radius">
-                                <img th:unless="${board.profileImg}" src="https://via.placeholder.com/50">
+                                <img th:unless="${board.profileImg}" src="/images/defaultImg.png">
                                 <img th:if="${board.profileImg}" th:src="${board.profileImg}">
                               </div>
                             </a>
@@ -222,12 +222,6 @@
 
         <!-- 추천 목록 -->
         <div class="recommend-list">
-
-          <!-- 혹시 회원 추천 목록이 null or 0개일때 오류 안 나게 -->
-          <article th:if="${recommendList != null && recommendList.size() > 0}" class="recommend-user">
-            <small class="recommend-zero">모든 회원이<br>follow되어있습니다</small>
-          </article>
-
           <!-- 팔로우 안 된 회원조회 -->
           <article th:each="recommend : ${recommendList}" class="recommend-user">
             <span class="recommend-user-img">

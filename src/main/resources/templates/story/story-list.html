@@ -33,7 +33,18 @@
       font-size: 4vh;
       color: #ffffff;
       font-weight: bold;
-      padding: 0vh 0vh 0vh 1vh
+      padding: 0vh 0vh 0vh 1vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 999;
+      user-select: none;
+      &:hover {
+          cursor: pointer;
+      }
+      &:active {
+        opacity: 0.4;
+      }
     }
 
     /* 전체 버튼 스타일 */
@@ -45,6 +56,11 @@
       cursor: pointer;
       width: 3vh;
       height: 3vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 999;
+      user-select: none;
     }
 
     /* SVG 기본 스타일 */
@@ -66,6 +82,13 @@
     /* 아이콘의 기본 색상 */
     .story-close-button {
         color: #ffffff;
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:active {
+        opacity: 0.4;
+      }
     }
 
     /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
@@ -73,15 +96,18 @@
         color: #ff9999;
         transform: scale(1.2);
     }
-  
+
+
     .story-container {
       width: 88.755vw;
       height: 100vh;
       position: absolute;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: space-evenly;
       align-items: center;
+      left: 1000px;
+      padding-right: 1000px;
     }
 
     .out {
@@ -112,6 +138,9 @@
 
     .inner.in{
       opacity: 0.4;
+      transition-timing-function: ease-out;
+      transition-property: width, height, opacity;
+      transition-duration: 100ms;
     }
 
     .story-header, .story-footer{ display: none;}
@@ -183,7 +212,7 @@
 </head>
 <body>
 
-  [[${memberStoryList}]]
+<!--  [[${memberStoryList}]]-->
   <div class="logo">codegram</div>
 
   <div class="story-close-button">
@@ -196,7 +225,7 @@
 
   <div id="b" class="story-container">
     <th:block th:each="cMember : ${memberStoryList}">
-      <div class="inner in">
+      <div class="inner in" th:data-member-nick="*{cMember.memberNickname}">
         <div class="story-header">
           <!-- 프로필 이미지 없을 경우 -->
           <img th:unless="${cMember.profileImg}" th:src="#{user.default.image}" class="profile">
@@ -207,7 +236,7 @@
           <div th:text="${cMember.storyList[0].createdAt}" class="created-at">시간</div>
         </div>
 
-        <div class="full" >
+        <div class="full">
           <div class="img-container">
             <img  th:object="${cMember.storyList[0]}" th:src="|*{imgPath}*{imgRename}|" th:data-story-no="*{storyNo}" data-story-index="0">
           </div>

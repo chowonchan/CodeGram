@@ -1064,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //         if (response.ok) {
 //           const result = await response.json(); // 응답 데이터를 JSON으로 변환
 //           console.log(`[${action}] 요청 성공:`, result);
-  
+
 //           // 버튼 상태 업데이트
 //           event.target.textContent = action === "맞팔로우" ? "언팔로우" : "맞팔로우";
 //           console.log(`[${action}] 버튼 상태 업데이트 완료: ${event.target.textContent}`);
@@ -1084,3 +1084,15 @@ document.addEventListener("DOMContentLoaded", () => {
 //   });
 
 //   });
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const randomValue = (Math.random() + 0.1).toFixed(2);
+//   setTimeout( () => {
+//     document.getElementById("preLoad").remove();
+//   },randomValue)
+//
+// });
+
+window.onload = () => {
+  document.getElementById("preLoad").remove();
+};

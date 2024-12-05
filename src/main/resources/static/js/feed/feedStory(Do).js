@@ -28,6 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 스토리 아이템 클릭 이벤트 처리
+  const storyItem = document.getElementsByClassName("story-item")
+
+  for (let i = 0; i < storyItem.length; i++) {
+    storyItem[i].addEventListener("click", () => {
+      window.location = ("/story/storyList?memberNickname=" + storyItem[i].dataset.storyId)
+    })
+  }
+
+
 
 
 
