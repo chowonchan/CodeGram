@@ -505,6 +505,9 @@ document.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("comment-like-button")) {
       const commentNo = e.target.dataset.commentNo;
+
+      // const commentMemberNo = e.target.dateaset.memberNo;
+      
       const isLiked = e.target.classList.contains("liked");
 
       const commentLikeButtons = Array.from(document.querySelectorAll(".comment-like-button"));
@@ -538,8 +541,10 @@ document.addEventListener("click", (e) => {
                   e.target.classList.add("liked");
                   e.target.classList.replace("fa-regular", "fa-solid");
 
+                
 
                   const commentNickname = document.querySelectorAll(".commentUser-nickname")[index].innerText;
+                  console.log('commentNickname', commentNickname);
                   const boardNo = feedModal.dataset.boardNo;
 
       
@@ -547,7 +552,7 @@ document.addEventListener("click", (e) => {
 
                   const content =
                   `<strong>${loginMemberName}</strong>님이 
-                    회원님의 게시글에 <br>
+                    회원님의 댓글에 <br>
                     좋아요를 눌렀습니다`;
                 
                   // type, url, pkNo, content

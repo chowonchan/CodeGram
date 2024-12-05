@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         const rightBtn = inner.querySelector('.story-right');
         const leftBtn = inner.querySelector('.story-left');
 
+
         // 누르면 이동
         imgContainer.addEventListener('click', () => {
             const innerAll = document.querySelectorAll(".inner.in");
@@ -60,7 +61,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 createdAt.textContent = story.createdAt;
 
                 moveToCenter(img)
-
             } else {
                 // 현재 회원이 다른 스토리가 없을 경우
 
@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
                     inner.querySelector(".story-right").style.display = 'none';
                 }
             }
-
 
 
         });
@@ -102,6 +101,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 createdAt.textContent = story.createdAt;
 
 
+
                 moveToCenter(img)
 
             }else {
@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 if(idx > 0){ // 왼쪽에 다른 회원 스토리가 있음
                     hiddenStory(inner);
                     showStory(inner.previousElementSibling);
+
                     inner.querySelector(".story-left").style.display = 'flex';
                     inner.querySelector(".story-right").style.display = 'flex';
 
@@ -138,7 +139,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
     nicknames.forEach(item => {
         if(memberNickname === item.innerText){
             showStory(item);
+
             moveToCenter(item)
+
         }
     })
 });
@@ -170,6 +173,7 @@ const hiddenStory = (item) => {
     inner.querySelector(".story-right").style.display = 'none';
     inner.querySelector(".story-left").style.display = 'none';
 }
+
 
 function moveToCenter(element) {
     element.scrollIntoView({
