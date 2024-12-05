@@ -56,7 +56,7 @@
         OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
     
-	<update id="updateFeedStatusBoard">
+	<update id="updateFeedStatus">
 	    UPDATE BOARD
 	    SET BOARD_DEL_FL = CASE
 	        WHEN BOARD_DEL_FL = 'N' THEN 'Y'

@@ -134,6 +134,15 @@ const openDetail = (boardNo) => {
                 }
             }
 
+            const postItem = document.querySelectorAll(".post-items");
+
+            for(let item of postItem) {
+                if(item.dataset.boardNo == boardNo) {
+                    item.querySelector(".post-like-count").innerText = data.likeCount;
+                    item.querySelector(".post-comment-count").innerText = data.commentCount;
+                }
+            }
+
 
         })
         .catch(err => {

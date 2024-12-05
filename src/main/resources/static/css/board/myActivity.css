@@ -4,6 +4,7 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
+  user-select: none;
   min-height: 100vh;
 }
 .main-content {
@@ -226,12 +227,17 @@ footer {
 }
 .post-checkbox {
   position: absolute;
+  display: none;
   bottom: 5px; /* 아래에서 5px 떨어짐 */
   right: 5px; /* 오른쪽에서 5px 떨어짐 */
   z-index: 2; /* 이미지 위에 체크박스가 표시되도록 설정 */
   width: 20px; /* 체크박스 크기 설정 */
   height: 20px; /* 체크박스 크기 설정 */
   cursor: pointer; /* 클릭 가능한 상태를 표시 */
+}
+
+.post-checkbox:checked {
+  display: block;
 }
 .no-comments-message, .no-posts-message {
   text-align: center;
