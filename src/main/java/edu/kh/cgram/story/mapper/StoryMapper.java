@@ -20,7 +20,7 @@ public interface StoryMapper {
 	int storyInsert(Story story);
 
 	// 스토리 삭제
-	int storyDelete(int storyNo, int memberNo);
+	int storyDelete(@Param("storyNo") int storyNo, @Param("memberNo") int memberNo);
 
 
 	
@@ -30,14 +30,13 @@ public interface StoryMapper {
 	int checkStory(@Param("storyNo") int storyNo,@Param("memberNo") int memberNo);
 
 	// 스토리 리드 추가
-	int insertStoryRead(@Param("storyNo") int storyNo,@Param("memberNo") int memberNo);
+	int insertStoryRead(@Param("storyNo") int storyNo, @Param("memberNo") int memberNo);
 
 	// 로그인한 회원이 팔로우한 회원들의 24시간 이내 스토리 목록 조회
 	int selectStoryList(int memberNo);
 
 	//팔로우한 회원의 24시간 내 스토리 존재 여부 확인
 	int selectStoryHas(int memberNo);
-
 }
 
 

@@ -159,7 +159,7 @@ function clearStoryProgress() {
 
 let backflagStory = false;
 
-document.getElementById("storymodalContentTopPrev").addEventListener("click", () => {
+modalStoryTopPrev.addEventListener("click", () => {
   console.log("뒤로가기 버튼 클릭 : ", modalStoryProgress);
   switch (modalStoryProgress) {
     case 2 :
