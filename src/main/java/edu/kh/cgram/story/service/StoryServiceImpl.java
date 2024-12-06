@@ -156,4 +156,14 @@ public class StoryServiceImpl implements StoryService {
 		return null;
 	}
 	
+	@Override
+	public int storyRead(int storyNo, int memberNo) {
+		
+		int result = storyMapper.storyReadCheck(memberNo, storyNo);
+		if(result > 0) { return 0; }
+		
+		return storyMapper.storyRead(memberNo, storyNo);
+		
+		
+	}
 }

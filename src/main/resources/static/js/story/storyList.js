@@ -1,7 +1,7 @@
 // memberStoryList
 let currStoryNo;
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
 
     const innerList = document.querySelectorAll('.inner.in');
 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             const storyList = memberStoryList[idx].storyList;
 
             // 현재 회원 다른 스토리가 존재 할 때
-            if(storyIndex < storyList.length - 1){
+            if (storyIndex < storyList.length - 1) {
                 storyIndex++;
                 const story = storyList[storyIndex];
 
@@ -65,13 +65,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
             } else {
                 // 현재 회원이 다른 스토리가 없을 경우
 
-                if(memberStoryList.length - 1 > idx){ // 오른쪽에 다른 회원 스토리가 있음
+                if (memberStoryList.length - 1 > idx) { // 오른쪽에 다른 회원 스토리가 있음
                     hiddenStory(inner);
                     showStory(inner.nextElementSibling);
 
                     // inner.querySelector(".story-left").style.display = 'flex';
                     inner.querySelector(".story-right").style.display = 'flex';
 
+                    storyRead(inner.nextElementSibling)
                     console.log(inner.nextElementSibling);
                     moveToCenter(inner.nextElementSibling)
 
@@ -89,7 +90,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
             const storyList = memberStoryList[idx].storyList;
 
-            if(storyIndex > 0){
+            if (storyIndex > 0) {
                 storyIndex--;
                 const story = storyList[storyIndex];
 
@@ -100,13 +101,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 img.dataset.storyNo = story.storyNo;
                 img.dataset.storyIndex = storyIndex;
                 createdAt.textContent = story.createdAt;
+                storyRead(story.storyNo)
                 console.log(story.storyNo);
                 moveToCenter(img);
 
-            }else {
+            } else {
                 // 현재 회원이 다른 스토리가 없을 경우
 
-                if(idx > 0){ // 왼쪽에 다른 회원 스토리가 있음
+                if (idx > 0) { // 왼쪽에 다른 회원 스토리가 있음
                     hiddenStory(inner);
                     showStory(inner.previousElementSibling);
 
@@ -119,7 +121,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
             }
 
 
-
         });
 
     });
@@ -128,22 +129,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 // 처음 들어왔을 떄 동작
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(location.search);
     const memberNickname = params.get("memberNickname");
 
     const nicknames = document.querySelectorAll(".story-header div:first-of-type");
 
     nicknames.forEach(item => {
-        if(memberNickname === item.innerText){
+        if (memberNickname === item.innerText) {
             showStory(item);
             moveToCenter(item);
         }
     })
 });
-
-
-
 
 
 // 보는 스토리
@@ -159,6 +157,7 @@ const showStory = (item) => {
     inner.querySelector(".story-left").style.display = 'flex';
 
     const storyNo = inner.querySelector(".img-container img").dataset.storyNo;
+    storyRead(storyNo)
     console.log(storyNo);
 }
 
@@ -178,17 +177,39 @@ const hiddenStory = (item) => {
 function moveToCenter(element) {
     element.scrollIntoView({
         behavior: 'smooth',  // 부드러운 스크롤
-        block: 'center',     // 세로 중앙에 맞춤
-        inline: 'center'     // 가로 중앙에 맞춤
+        block   : 'center',     // 세로 중앙에 맞춤
+        inline  : 'center'     // 가로 중앙에 맞춤
     });
-    setTimeout( () => {
+    setTimeout(() => {
         element.scrollIntoView({
             behavior: 'auto',
-            block: 'center',     // 세로 중앙에 맞춤
-            inline: 'center'     // 가로 중앙에 맞춤
+            block   : 'center',     // 세로 중앙에 맞춤
+            inline  : 'center'     // 가로 중앙에 맞춤
         });
-    },250)
+    }, 250)
 }
+
+function storyRead(storyNo) {
+
+    try {
+        const response = fetch("/story/storyRead", {
+            method: "POST",
+            body  : storyNo
+        });
+
+        if (response.ok) {
+            const result = response.text();
+            if (result > 0) {
+                console.log("읽음처리 성공");
+            }
+            // 모달 닫기, 화면 초기화 등 추가 작업
+            else console.log("읽음처리 실패");
+        }
+    } catch (error) {
+        console.error("폼 제출 오류:", error);
+    }
+}
+
 
 const closeBtn = document.querySelector(".story-close-button");
 const logo = document.querySelector(".logo");
@@ -208,3 +229,4 @@ function gotoMain() {
 function storyCheck(storyNo) {
     console.log(storyNo);
 }
+

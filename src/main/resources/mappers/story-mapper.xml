@@ -138,8 +138,19 @@
 		ORDER BY STORY_NO ASC
 
 	</select>
-    
 
+	<!-- 스토리 읽음 -->
+	<insert id="storyRead">
+		INSERT INTO STORY_READ
+		VALUES (#{memberNo}, #{storyNo}, DEFAULT)
+	</insert>
+
+	<select id="storyReadCheck" resultType="_int">
+		SELECT COUNT(*)
+		FROM STORY_READ
+		WHERE MEMBER_NO = #{memberNo}
+		AND STORY_NO = #{storyNo}
+	</select>
 
 
 </mapper>

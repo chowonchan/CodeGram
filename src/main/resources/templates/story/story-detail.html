@@ -128,8 +128,8 @@
 </head>
 <body>
 
-  [[${story}]]
-  [[${session.loginMember}]]
+<!--  [[${story}]]-->
+<!--  [[${session.loginMember}]]-->
   <div class="logo">codegram</div>
 
   <div class="story-close-button">
@@ -142,14 +142,15 @@
 
   <div id="b" class="story-container">
     <div id="cc" class="inner in" th:object="${story}">
-      <div>
+
+      <div style="display: flex; width: 100%;">
         <!-- 프로필 이미지 없을 경우 -->
-        <img th:unless="*{profileImg}" th:src="#{user.default.image}" class="profile">
+        <img th:unless="${session.loginMember.profileImg}" th:src="#{user.default.image}" class="profile">
         <!-- 프로필 이미지 있을 경우 -->
-        <img th:if="*{profileImg}" th:src="*{profileImg}" class="profile">
-        <div th:text="*{memberNickname}">닉네임</div>
-        <div th:if="${session.loginMember.memberNo == story.memberNo}" id="storyDeleteBtn" class="story-delete">삭제</div>
+        <img th:if="${session.loginMember.profileImg}" th:src="${session.loginMember.profileImg}" class="profile">
+        <div th:text="${session.loginMember.memberNickname}">닉네임</div>
       </div>
+      <div th:if="${session.loginMember.memberNo == story.memberNo}" id="storyDeleteBtn" class="story-delete">삭제</div>
 
       <div class="full">
         <img th:unless="*{imgPath}" th:src="#{user.default.image}" class="full">
