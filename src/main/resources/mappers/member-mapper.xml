@@ -112,8 +112,8 @@
 	<select id="isBlocked" resultType="int">
 	    SELECT COUNT(*)
 	    FROM BLOCK
-	    WHERE BLOCK_MEMBER = #{loginMemberNo}
-	      AND BLOCKED_MEMBER = #{targetMemberNo}
+	    WHERE BLOCK_MEMBER = #{targetMemberNo}
+	      AND BLOCKED_MEMBER = #{loginMemberNo}
 	</select>
 	
     <select id="targetMemberNo">
