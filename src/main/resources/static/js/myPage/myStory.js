@@ -69,10 +69,10 @@ function loadStories(page) {
             return response.json();
         })
         .then(data => {
-            const { stories, totalCount } = data;
+            const {stories, totalCount} = data;
 
-              // 스토리가 없는 경우 처리
-              if (stories.length === 0) {
+            // 스토리가 없는 경우 처리
+            if (stories.length === 0) {
                 // 이미 "스토리가 없습니다" 메시지가 표시된 경우 추가하지 않음
                 if (!document.querySelector(".no-story-message")) {
                     const noStoryMessage = document.createElement("p");
@@ -89,8 +89,8 @@ function loadStories(page) {
                 const listItem = document.createElement("li");
                 listItem.classList.add("story-item");
                 listItem.innerHTML = `
-                    <div class="story-thumbnail" storyNo="${story.storyNo}">
-                        <img src="${story.imgPath+story.imgRename}" alt="Thumbnail">
+                    <div class="story-thumbnail" data-story-No="${story.storyNo}">
+                        <img src="${story.imgPath + story.imgRename}" alt="Thumbnail">
                     </div>
                     <span>${story.createdAt}</span>
 
@@ -114,14 +114,29 @@ loadStories(currentPage);
 
 // "더보기" 버튼 클릭 이벤트
 loadMoreButton.addEventListener("click", () => {
-  currentPage++;
-  loadStories(currentPage);
+    currentPage++;
+    loadStories(currentPage);
 });
 
 backButton.addEventListener("click", () => {
-  window.history.back();
+    window.history.back();
 });
 
 backButtonText.addEventListener("click", () => {
-  window.location.reload();
+    window.location.reload();
 });
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const storyThumbnail = document.getElementsByClassName("story-thumbnail");
+
+    setInterval( () => {
+        for (let i = 0; i < storyThumbnail.length; i++) {
+            storyThumbnail[i].addEventListener("click", () => {
+                window.location = ("/story/" + loginMemberNickname + "/" + storyThumbnail[i].dataset.storyNo)
+            })
+        }
+    },100)
+
+})

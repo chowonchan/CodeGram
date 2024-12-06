@@ -235,7 +235,7 @@
     <th:block th:each="cMember : ${memberStoryList}">
         <div class="inner in" th:data-member-nick="*{cMember.memberNickname}">
             <div class="story-header">
-                <div style="display: flex;">
+                <div style="display: flex; width: 100%;">
                     <!-- 프로필 이미지 없을 경우 -->
                     <img th:unless="${cMember.profileImg}" th:src="#{user.default.image}" class="profile">
                     <!-- 프로필 이미지 있을 경우 -->
