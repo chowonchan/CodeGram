@@ -27,10 +27,13 @@
 	
 	
 	<select id="selectMemberSaved" resultType="BoardImg">
-        SELECT B.*
+        SELECT BI.*
         FROM BOARD B
         JOIN MARK M ON B.BOARD_NO = M.BOARD_NO
+        JOIN BOARD_IMG BI ON B.BOARD_NO = BI.BOARD_NO
         WHERE M.MEMBER_NO = #{memberNo}
+        AND BOARD_DEL_FL = 'N'
+        AND BI.IMG_ORDER = 1
     </select>
 	
 	<select id="findMemberByNickname" resultType="Member">
