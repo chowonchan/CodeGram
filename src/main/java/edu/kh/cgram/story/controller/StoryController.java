@@ -84,6 +84,15 @@ public class StoryController {
 		return storyService.storyDelete(storyNo, loginMember.getMemberNo());
   }
   
+  @PostMapping("/story/storyRead")
+  @ResponseBody
+  public int storyRead(
+		  @RequestBody int storyNo,
+		  @SessionAttribute("loginMember") Member loginMember
+  ) {
+		return storyService.storyRead(storyNo, loginMember.getMemberNo());
+  }
+  
   
   
   

@@ -1,283 +1,287 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>스토리 조회</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스토리 조회</title>
 
-  <style>
+    <style>
 
-    body {
-      max-width: 100vw;
-      width: 100vw;
-      max-height: 100vh;
-      height: 100vh;
-      background-color: #1a1a1a;
-      overflow-y: scroll;
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
+        body {
+            max-width: 100vw;
+            width: 100vw;
+            max-height: 100vh;
+            height: 100vh;
+            background-color: #1a1a1a;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
 
-      display: flex;
-      justify-content: center;
-    }
+            display: flex;
+            justify-content: center;
+        }
 
-    .story-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: absolute;
-    }
+        .story-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+        }
 
-    .logo {
-      font-size: 4vh;
-      color: #ffffff;
-      font-weight: bold;
-      padding: 0vh 0vh 0vh 1vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 999;
-      user-select: none;
-      &:hover {
-          cursor: pointer;
-      }
-      &:active {
-        opacity: 0.4;
-      }
-    }
+        .logo {
+            font-size: 4vh;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 0vh 0vh 0vh 1vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 999;
+            user-select: none;
 
-    /* 전체 버튼 스타일 */
-    .story-close-button {
-      padding: 1vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      width: 3vh;
-      height: 3vh;
-      position: fixed;
-      right: 0;
-      top: 0;
-      z-index: 999;
-      user-select: none;
-    }
+            &:hover {
+                cursor: pointer;
+            }
 
-    /* SVG 기본 스타일 */
-    .story-close-button svg {
-        width: 2vh;
-        height: 2vh;
-        fill: none; /* 내부 채우기 없음 */
-        stroke: currentColor;
-        transition: transform 0.2s, color 0.2s;
-    }
+            &:active {
+                opacity: 0.4;
+            }
+        }
 
-    /* 선 스타일 */
-    .story-close-button-line-diagonal {
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-width: 3;
-    }
+        /* 전체 버튼 스타일 */
+        .story-close-button {
+            padding: 1vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 3vh;
+            height: 3vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 999;
+            user-select: none;
+        }
 
-    /* 아이콘의 기본 색상 */
-    .story-close-button {
-        color: #ffffff;
-      position: fixed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:active {
-        opacity: 0.4;
-      }
-    }
+        /* SVG 기본 스타일 */
+        .story-close-button svg {
+            width: 2vh;
+            height: 2vh;
+            fill: none; /* 내부 채우기 없음 */
+            stroke: currentColor;
+            transition: transform 0.2s, color 0.2s;
+        }
 
-    /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
-    .story-close-button:hover {
-        color: #ff9999;
-        transform: scale(1.2);
-    }
+        /* 선 스타일 */
+        .story-close-button-line-diagonal {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 3;
+        }
 
+        /* 아이콘의 기본 색상 */
+        .story-close-button {
+            color: #ffffff;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    .story-container {
-      width: 88.755vw;
-      height: 100vh;
-      position: absolute;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: center;
-      left: 1000px;
-      padding-right: 1000px;
-    }
+            &:active {
+                opacity: 0.4;
+            }
+        }
 
-    .out {
-      width: 206px;
-      height: 366px;
-      border-radius: 10px;
-      border: none;
-      background-color: lightslategray;
-    }
-
-    .in {
-      width: 514px;
-      height: 914px;
-      border: 1px solid black;
-      border-radius: 10px;
-      background-color: gray;
-    }
-
-    .inner {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 206px;
-      height: 366px;
-    }
+        /* 마우스를 올렸을 때 색상 변경 및 크기 확대 */
+        .story-close-button:hover {
+            color: #ff9999;
+            transform: scale(1.2);
+        }
 
 
-    .inner.in{
-      opacity: 0.4;
-      transition-timing-function: ease-out;
-      transition-property: width, height, opacity;
-      transition-duration: 100ms;
-      border-radius: 10px;
-      border: none;
-    }
+        .story-container {
+            width: 88.755vw;
+            height: 100vh;
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            left: 1000px;
+            padding-right: 1000px;
+        }
 
-    .story-header, .story-footer{ display: none;}
+        .out {
+            width: 206px;
+            height: 366px;
+            border-radius: 10px;
+            border: none;
+            background-color: lightslategray;
+        }
+
+        .in {
+            width: 514px;
+            height: 914px;
+            border: 1px solid black;
+            border-radius: 10px;
+            background-color: gray;
+        }
+
+        .inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 206px;
+            height: 366px;
+        }
 
 
-    .full {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    
-    .profile {
-      width: 32px;
-      height: 32px;
-    }
+        .inner.in {
+            opacity: 0.4;
+            transition-timing-function: ease-out;
+            transition-property: width, height, opacity;
+            transition-duration: 100ms;
+            border-radius: 10px;
+            border: none;
+        }
 
-    .story-delete {
-      cursor: pointer;
-    }
+        .story-header, .story-footer {
+            display: none;
+        }
 
-    .story-container .full{
-      position : relative;
-    }
 
-    .img-container{
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: absolute;
-    }
+        .full {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
-    .img-container img{
-      object-fit: cover;
-      height: 100%;
-      max-width: 514px;
-      width: 100%;
-    }
+        .profile {
+            width: 32px;
+            height: 32px;
+        }
 
-    .story-left{
-      position: absolute;
-      top: 50%;
-      left: -40px;
-      font-size: 20px;
-      display: none; /*flex 변경*/
-      width: 24px;
-      height: 24px;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      font-weight: bold;
+        .story-delete {
+            cursor: pointer;
+        }
 
-    }
+        .story-container .full {
+            position: relative;
+        }
 
-    .story-right{
-      position: absolute;
-      top: 50%;
-      right: -40px;
-      font-size: 20px;
-      display: none; /*flex 변경*/
-      width: 24px;
-      height: 24px;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      font-weight: bold;
-    }
+        .img-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+        }
 
-  </style>
+        .img-container img {
+            object-fit: contain;
+            height: 100%;
+            max-width: 514px;
+            width: 100%;
+        }
+
+        .story-left {
+            position: absolute;
+            top: 50%;
+            left: -40px;
+            font-size: 20px;
+            display: none; /*flex 변경*/
+            width: 24px;
+            height: 24px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-weight: bold;
+
+        }
+
+        .story-right {
+            position: absolute;
+            top: 50%;
+            right: -40px;
+            font-size: 20px;
+            display: none; /*flex 변경*/
+            width: 24px;
+            height: 24px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+    </style>
 
 </head>
 <body>
 
 <!--  [[${memberStoryList}]]-->
-  <div class="logo">codegram</div>
+<div class="logo">codegram</div>
 
-  <div class="story-close-button">
+<div class="story-close-button">
     <svg aria-label="Close" role="img" viewBox="0 0 24 24">
         <title>Close</title>
         <polyline class="story-close-button-line-diagonal" points="20.643 3.357 12 12 3.353 20.647"></polyline>
         <line class="story-close-button-line-diagonal" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
     </svg>
-  </div>
+</div>
 
-  <div id="b" class="story-container">
+<div id="b" class="story-container">
     <th:block th:each="cMember : ${memberStoryList}">
-      <div class="inner in" th:data-member-nick="*{cMember.memberNickname}">
-        <div class="story-header">
-          <!-- 프로필 이미지 없을 경우 -->
-          <img th:unless="${cMember.profileImg}" th:src="#{user.default.image}" class="profile">
-          <!-- 프로필 이미지 있을 경우 -->
-          <img th:if="${cMember.profileImg}" th:src="${cMember.profileImg}" class="profile">
-          <div th:text="${cMember.memberNickname}">닉네임</div>
+        <div class="inner in" th:data-member-nick="*{cMember.memberNickname}">
+            <div class="story-header">
+                <div style="display: flex;">
+                    <!-- 프로필 이미지 없을 경우 -->
+                    <img th:unless="${cMember.profileImg}" th:src="#{user.default.image}" class="profile">
+                    <!-- 프로필 이미지 있을 경우 -->
+                    <img th:if="${cMember.profileImg}" th:src="${cMember.profileImg}" class="profile">
+                    <div th:text="${cMember.memberNickname}">닉네임</div>
+                </div>
+                <div th:text="${cMember.storyList[0].createdAt}" class="created-at">시간</div>
+            </div>
 
-          <div th:text="${cMember.storyList[0].createdAt}" class="created-at">시간</div>
+            <div class="full">
+                <div class="img-container">
+                    <img th:object="${cMember.storyList[0]}" th:src="|*{imgPath}*{imgRename}|"
+                         th:data-story-no="*{storyNo}" data-story-index="0">
+                </div>
+
+                <button class="story-left">&lt;</button>
+                <button class="story-right">&gt;</button>
+
+            </div>
+
+            <div class="story-footer">
+                <ul>
+                    <li class="story-visitor"
+                        th:each="visitor : ${visitorList}"
+                        th:object="${visitor}"
+                        th:id="|visitor${visitor.memberNo}|"
+                    >
+
+                    </li>
+                </ul>
+                <div th:text="*{memberNickname + '에게 답장하기'}"></div>
+                <div th:text="*{'StoryLikeCheck : ' + storyLiked}">좋아요 체크</div>
+            </div>
+
+
         </div>
-
-        <div class="full">
-          <div class="img-container">
-            <img  th:object="${cMember.storyList[0]}" th:src="|*{imgPath}*{imgRename}|" th:data-story-no="*{storyNo}" data-story-index="0">
-          </div>
-
-          <button class="story-left">&lt;</button>
-          <button class="story-right">&gt;</button>
-
-        </div>
-
-        <div class="story-footer">
-          <ul>
-            <li class="story-visitor"
-                th:each="visitor : ${visitorList}"
-                th:object="${visitor}"
-                th:id="|visitor${visitor.memberNo}|"
-            >
-
-            </li>
-          </ul>
-          <div th:text="*{memberNickname + '에게 답장하기'}"></div>
-          <div th:text="*{'StoryLikeCheck : ' + storyLiked}">좋아요 체크</div>
-        </div>
-
-
-      </div>
     </th:block>
-  </div>
+</div>
 
 
-
-
-  <script th:inline="javascript">
+<script th:inline="javascript">
     const memberStoryList = /*[[${memberStoryList}]]*/ null;
 
-  </script>
+</script>
 
-  <script src="/js/story/storyList.js"></script>
-
+<script src="/js/story/storyList.js"></script>
 
 
 </body>

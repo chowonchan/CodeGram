@@ -41,6 +41,11 @@ public interface StoryMapper {
 	
 	// 팔로우한 회원의 24시간 내 스토리 목록 조회
 	List<Story> memberStoryList(int memberNo);
+	
+	
+	int storyRead(int memberNo, int storyNo);
+	
+	int storyReadCheck(int memberNo, int storyNo);
 }
 
 

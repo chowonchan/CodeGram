@@ -7,7 +7,7 @@ SELECT  * FROM STORY;
 
 /* PL/SQL을 이용해서 맴버 샘플 데이터 삽입 (PW는 pass01!) */
 BEGIN
-    FOR I IN 1..21 LOOP
+    FOR I IN 1..10 LOOP
             INSERT INTO "MEMBER"
             VALUES(
                    SEQ_MEMBER_NO.NEXTVAL,
