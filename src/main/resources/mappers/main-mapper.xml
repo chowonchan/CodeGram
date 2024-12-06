@@ -250,6 +250,8 @@
 					FOLLOWING_MEMBER = #{memberNo}
 				AND
 					CONFIRM = 1)
+		OR
+			M.MEMBER_NO = #{memberNo}
 		ORDER BY
 			RNUM DESC
 	</select>
